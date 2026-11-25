@@ -8,6 +8,7 @@
   "max_hp": 1200,
   "cost": 1000,
   "speed_cm_per_s": 750,
+  "turn_rate_deg_per_s": 90,
   "radius_cm": 320,
   "visual": {
     "model": "res://assets/models/units/us_mbt.glb",

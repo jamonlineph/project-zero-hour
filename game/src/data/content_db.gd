@@ -48,6 +48,13 @@ func _load_unit(path: String) -> void:
 	u.cost = _req_int(src, "cost", path, 0)
 	u.speed = Fx.from_ratio(_req_int(src, "speed_cm_per_s", path, 0), 100 * SimWorld.TICK_RATE)
 	u.radius = Fx.from_ratio(_req_int(src, "radius_cm", path, 1), 100)
+	# Optional. Missing or 0 means the unit turns instantly (infantry, drones).
+	if src.has("turn_rate_deg_per_s"):
+		var deg_per_s: int = _req_int(src, "turn_rate_deg_per_s", path, 0)
+		if deg_per_s > 0:
+			# Round up so slow turners never get a turn rate of 0.
+			var per_tick: int = (deg_per_s * Fx.ANGLE_FULL + 360 * SimWorld.TICK_RATE - 1) / (360 * SimWorld.TICK_RATE)
+			u.turn_rate = mini(per_tick, Fx.ANGLE_FULL)
 	var visual: Variant = src.get("visual", {})
 	if visual is Dictionary:
 		u.model_path = str((visual as Dictionary).get("model", ""))

@@ -26,8 +26,9 @@ func _init(seed_value: int = 1, width_m: int = 256, height_m: int = 256) -> void
 	map_height = Fx.from_int(height_m)
 
 
-## Adds a unit and returns its id. x and y are fixed-point meters.
-func spawn_unit(def: UnitDef, player_id: int, x: int, y: int) -> int:
+## Adds a unit and returns its id. x and y are fixed-point meters; facing is a
+## binary angle (0 = +X).
+func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -> int:
 	var e := SimEntity.new()
 	e.id = _next_id
 	_next_id += 1
@@ -37,12 +38,15 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int) -> int:
 	e.y = clampi(y, 0, map_height)
 	e.prev_x = e.x
 	e.prev_y = e.y
+	e.facing = Fx.wrap_angle(facing)
+	e.prev_facing = e.facing
 	e.radius = def.radius
 	e.max_hp = def.max_hp
 	e.hp = def.max_hp
 	if def.speed > 0:
 		e.mover = SimMover.new()
 		e.mover.speed = def.speed
+		e.mover.turn_rate = def.turn_rate
 	entities[e.id] = e
 	entity_ids.append(e.id)
 	return e.id
@@ -67,6 +71,7 @@ func step() -> void:
 		var e: SimEntity = entities[id]
 		e.prev_x = e.x
 		e.prev_y = e.y
+		e.prev_facing = e.facing
 	_apply_commands()
 	# System order is part of the rules. Add new systems here, in order, and
 	# document the order in docs/02-architecture.md.

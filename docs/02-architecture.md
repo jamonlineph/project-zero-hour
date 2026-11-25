@@ -56,7 +56,7 @@ Code under `src/sim/` must obey all of these. Breaking any of them causes desync
 | Position, radius, range | fixed-point meters | centimeters (`radius_cm`, `range_cm`) |
 | Speed | fixed-point meters per tick | centimeters per second (`speed_cm_per_s`) |
 | Time | ticks (15 per second) | milliseconds (`reload_ms`, `build_time_ms`) |
-| Angles (from P1-01) | binary angle units, 4096 per turn | degrees |
+| Angles, facing | binary angle units, 4096 per turn; 0 = +X, 1024 = +Y | degrees (`turn_rate_deg_per_s`) |
 | Health, cost, damage | plain ints | plain ints |
 
 The loader (`ContentDb`) converts data units into sim units with integer math.
@@ -72,9 +72,9 @@ Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from 
 - **Systems** are static functions over all entities that have a component, for example `MovementSystem.step(world)`.
 - `SimWorld.step()` runs them in a fixed order:
 
-1. Save `prev_x` and `prev_y` (for view interpolation).
+1. Save `prev_x`, `prev_y` and `prev_facing` (for view interpolation).
 2. Apply this tick's commands.
-3. Movement (later: pathing, then avoidance).
+3. Movement: turn toward the heading, then move (later: pathing, then avoidance).
 4. *(planned)* Targeting → weapons fire → projectiles → damage → deaths.
 5. *(planned)* Production, construction, economy, power.
 6. *(planned)* Vision and fog.

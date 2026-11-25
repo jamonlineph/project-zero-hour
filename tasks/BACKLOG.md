@@ -146,7 +146,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Accept:** tests compare against Python reference values for 64 sample angles; maximum errors are documented.
 - **Files:** `game/src/sim/fx.gd`, `trig_table.gd`, `tools/gen_trig_table.py`, `game/tests/unit/test_fx_trig.gd`.
 
-### P1-02 · Facing and turn rate — ⬜
+### P1-02 · Facing and turn rate — ✅ 2026-11-25 (Claude Code)
 - **Needs:** P1-01
 - **Do:**
   - `SimEntity.facing` (binary angle).

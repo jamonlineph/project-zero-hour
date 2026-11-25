@@ -75,8 +75,10 @@ func _spawn_group(def_id: String, player_id: int, x_m: int, y_m: int, count: int
 	if def == null:
 		push_error("Sandbox: unknown unit '%s'" % def_id)
 		return
+	# Each side starts facing the other: player 1 looks toward +X, others toward -X.
+	var facing: int = 0 if player_id == LOCAL_PLAYER else Fx.ANGLE_HALF
 	for i: int in count:
-		world.spawn_unit(def, player_id, Fx.from_int(x_m), Fx.from_int(y_m + i * 8))
+		world.spawn_unit(def, player_id, Fx.from_int(x_m), Fx.from_int(y_m + i * 8), facing)
 
 
 func _build_environment() -> void:

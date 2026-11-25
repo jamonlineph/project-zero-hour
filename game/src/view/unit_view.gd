@@ -5,7 +5,6 @@ extends Node3D
 ## never writes it.
 
 const RING_COLOR := Color(0.35, 1.0, 0.45)
-const FACING_SMOOTHING: float = 0.35
 
 var entity_id: int = 0
 var _ring: MeshInstance3D
@@ -22,6 +21,7 @@ func setup(entity: SimEntity, def: UnitDef, team_color: Color) -> void:
 	_ring.visible = false
 	add_child(_ring)
 	position = Vector3(Fx.to_float(entity.x), 0.0, Fx.to_float(entity.y))
+	rotation.y = yaw_from_sim_angle(float(entity.facing))
 
 
 func set_selected(selected: bool) -> void:
@@ -33,13 +33,16 @@ func set_selected(selected: bool) -> void:
 func update_from_sim(e: SimEntity, alpha: float) -> void:
 	var px: float = lerpf(Fx.to_float(e.prev_x), Fx.to_float(e.x), alpha)
 	var pz: float = lerpf(Fx.to_float(e.prev_y), Fx.to_float(e.y), alpha)
-	var new_pos := Vector3(px, 0.0, pz)
-	var delta: Vector3 = new_pos - position
-	if delta.length_squared() > 0.000001:
-		# Models face +Z (Vector3.MODEL_FRONT), so this angle points them along delta.
-		var target_yaw: float = atan2(delta.x, delta.z)
-		rotation.y = lerp_angle(rotation.y, target_yaw, FACING_SMOOTHING)
-	position = new_pos
+	position = Vector3(px, 0.0, pz)
+	var facing: float = float(e.prev_facing) + float(Fx.angle_diff(e.prev_facing, e.facing)) * alpha
+	rotation.y = yaw_from_sim_angle(facing)
+
+
+## Sim angle a points along (cos a, sin a) in sim X/Y, which is Godot X/Z.
+## Models face +Z (Vector3.MODEL_FRONT); rotating by yaw t points +Z along
+## (sin t, cos t), so t = PI/2 - a.
+static func yaw_from_sim_angle(sim_angle: float) -> float:
+	return wrapf(PI * 0.5 - sim_angle * TAU / float(Fx.ANGLE_FULL), -PI, PI)
 
 
 func _make_model(def: UnitDef, radius_m: float, team_color: Color) -> Node3D:
