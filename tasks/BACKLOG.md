@@ -11,7 +11,7 @@ Every task has:
 
 Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 
-**Current phase: 0 (foundations).**
+**Current phase: 0 (foundations), with device-free Phase 1 sim tasks allowed while the owner's device checks (P0-12, P0-13, P0-15) are pending.**
 
 ---
 
@@ -50,7 +50,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - `.github/workflows/ci.yml` runs the repo checks and the Godot tests on push and PR.
 - **Note:** not yet run on GitHub (see P0-08).
 
-### P0-07 · Publish the repo on GitHub — ⬜ (owner)
+### P0-07 · Publish the repo on GitHub — ✅ 2026-11-25 (owner + Claude Code: jamonlineph/project-zero-hour)
 - **Goal:** the repo lives on GitHub so every AI tool can clone it.
 - **Do (owner):**
   1. Create an **empty** repository (no README, license or .gitignore), private or public.
@@ -58,7 +58,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   3. Set the default branch to `main`.
 - **Accept:** `main` on GitHub matches the local history.
 
-### P0-08 · First green CI run — ⬜
+### P0-08 · First green CI run — ✅ 2026-11-25 (Claude Code: run 1 on main passed both jobs)
 - **Needs:** P0-07
 - **Do:**
   - Open the Actions tab and check that both jobs pass.
@@ -66,7 +66,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - If a job fails, reproduce it with `tools/run_tests.sh` and fix it.
 - **Accept:** both CI jobs are green on `main`. Add a CI badge to `README.md`.
 
-### P0-09 · GitHub housekeeping — ⬜
+### P0-09 · GitHub housekeeping — 🔄 2026-11-25 (Claude Code: labels + issue templates done; branch protection needs the owner, steps in docs/07-ai-workflow.md)
 - **Needs:** P0-08
 - **Do:**
   - Protect `main` so CI must pass before merging (owner clicks; agent writes the steps).
@@ -84,7 +84,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - The owner picks one.
 - **Accept:** the name is recorded in `docs/00-vision.md`. The project name in `game/project.godot` and README is updated (the folder and repo can keep the codename).
 
-### P0-11 · Android export preset — ⬜
+### P0-11 · Android export preset — 🔄 2026-11-25 (Claude Code: preset + CI debug APK; Gradle/AAB moved to P2-19)
 - **Do:**
   - Write `game/export_presets.cfg` with an Android preset, following [docs/05-platforms.md](../docs/05-platforms.md):
     - Gradle build
@@ -114,7 +114,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Confirm the HUD reflows and edge panning works.
 - **Accept:** results are recorded and issues are filed as tasks.
 
-### P0-14 · Desktop exports and build artifacts — ⬜
+### P0-14 · Desktop exports and build artifacts — 🔄 2026-11-25 (Claude Code: Linux + Windows presets, CI artifacts, release on v* tags; macOS still to do)
 - **Do:**
   - Add Windows, Linux and macOS presets to `export_presets.cfg`.
   - Add a CI job that exports Linux and Windows builds on tags `v*` and uploads them as release artifacts. It must download the export templates matching `GODOT_VERSION`.
@@ -137,7 +137,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 
 ## Phase 1: Core RTS systems (placeholder art)
 
-### P1-01 · Fixed-point angles and trigonometry — ⬜
+### P1-01 · Fixed-point angles and trigonometry — ✅ 2026-11-25 (Claude Code)
 - **Goal:** angles in the sim without floats.
 - **Do:**
   - Binary angles with 4096 units per turn.
@@ -486,6 +486,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 ### P2-19 · Google Play internal testing — ⬜ (owner + agent)
 - **Needs:** P0-11
 - **Accept:**
+  - A Gradle-build Android preset exports an AAB (`--install-android-build-template`), targeting SDK 36.
   - The owner has a Play developer account and the app is created with Play App Signing.
   - The first AAB is uploaded by hand.
   - A CI job uploads later builds to the internal track using repository secrets the owner sets up. No keys in the repo.

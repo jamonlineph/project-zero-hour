@@ -1,6 +1,6 @@
 # Roadmap
 
-Each phase ends with an **exit check**: a playable, testable state. Don't start a phase's features until the previous exit check passes. Art, audio and design work may run ahead.
+Each phase ends with an **exit check**: a playable, testable state. Don't start a phase's features until the previous exit check passes. Art, audio and design work may run ahead. Simulation tasks that need no device may also start while the previous phase only waits on the owner's device checks.
 
 Durations assume one owner plus AI agents working most days, with volunteer or commissioned help for art and audio. They will move, but the order matters more than the dates. Task IDs (P0-01 and so on) point into [tasks/BACKLOG.md](../tasks/BACKLOG.md).
 

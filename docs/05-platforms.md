@@ -22,21 +22,27 @@
 
 ## Android export (P0-11)
 
-The owner does this once, with an agent writing the exact steps.
-- Install the Android SDK and JDK 17 as described in Godot's "Exporting for Android" docs. Download Godot's export templates (Editor → Manage Export Templates).
-- Create `export_presets.cfg` with an Android preset:
-  - Gradle build on
-  - both ABIs
-  - min SDK per Godot's default
-  - **target SDK 36**: Google Play has required Android 16 / API 36 for new apps and updates since 31 August 2026
-  - the include filter `data/*` so the JSON content is packed
-- Native libraries must support **16 KB memory pages**. Play has required this since November 2025 for apps targeting Android 15+. Use Godot's official 4.7 templates and verify with Play's pre-launch report.
-- Mark the app as a game (`android:appCategory="game"`). Use landscape orientation, but allow resizing for Googlebook windows.
-- Permissions: none for single-player. `INTERNET` only once multiplayer arrives.
-- Signing:
-  - The debug keystore is local.
-  - The release upload key stays **outside the repo**; Godot keeps passwords in `.godot/export_credentials.cfg`, which is ignored.
-  - Use Play App Signing.
+**The easy way (no setup):** every CI run on GitHub builds a debug APK.
+1. Open the repo's **Actions** tab and click the latest green run.
+2. Under **Artifacts**, download `android-debug-apk` and unzip it.
+3. Copy `signal-front-debug.apk` to the phone or Googlebook and open it. Allow "install unknown apps" for your file manager or browser when Android asks.
+
+Tagging a commit `v*` (for example `v0.0.1`) also attaches the APK and desktop builds to a GitHub release.
+
+**What's configured** (`game/export_presets.cfg`, preset "Android"):
+- debug APK built from Godot's prebuilt template (no Gradle), ABIs `arm64-v8a` and `x86_64`
+- target SDK 36, Godot 4.7's default: Google Play has required Android 16 / API 36 for new apps and updates since 31 August 2026
+- min SDK per Godot's default (24; 29 recommended for Vulkan)
+- `data/*` packed as non-resource files, so the JSON content ships
+- app category game, immersive mode, all screen sizes, no permissions
+- landscape orientation comes from the project settings (sensor landscape)
+
+**Exporting on your own computer:** install JDK 17 and the Android SDK (command-line tools, platform-tools, build-tools), and set `JAVA_HOME` and `ANDROID_HOME`. Install Godot's 4.7.2 export templates (Editor → Manage Export Templates), then run `tools/export_builds.sh Android`. Godot creates a debug keystore on first use, or you can pass one through `GODOT_ANDROID_KEYSTORE_DEBUG_PATH`, `_USER` and `_PASSWORD` like CI does.
+
+**For Google Play (P2-19):**
+- A second preset with the Gradle build on exports an Android App Bundle (AAB).
+- Native libraries must support **16 KB memory pages**. Play has required this since November 2025 for apps targeting Android 15+. Use Godot's official 4.7 templates and check Play's pre-launch report.
+- Signing: the release upload key stays **outside the repo** (repository secrets for CI; Godot keeps local passwords in `.godot/export_credentials.cfg`, which is ignored). Use Play App Signing.
 
 ## Googlebook specifics
 

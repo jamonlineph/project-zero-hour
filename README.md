@@ -1,5 +1,7 @@
 # Signal Front (codename)
 
+[![CI](https://github.com/jamonlineph/project-zero-hour/actions/workflows/ci.yml/badge.svg)](https://github.com/jamonlineph/project-zero-hour/actions/workflows/ci.yml)
+
 An open-source, modern-warfare **real-time strategy** game for **Android phones and tablets, Googlebook, Chromebooks and PC**, built with **Godot 4** and **Blender**.
 
 It uses the classic 2000s base-building formula (builders, supply trucks, power, tech trees, veterancy, commander powers, superweapons) with original content built around what defines warfare in 2026: drones, electronic warfare and sensor networks.

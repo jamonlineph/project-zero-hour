@@ -73,6 +73,15 @@ Every few weeks, ask an agent for a **plan check** (prompt below). It compares t
 - [ ] New art has manifest rows (CI checks this, but glance anyway).
 - [ ] If the agent changed AGENTS.md or anything in `docs/decisions/`, you agreed to it.
 
+## Protect the main branch (one-time, P0-09)
+
+So nothing broken lands on `main`:
+1. On GitHub, open the repo → **Settings** → **Branches** (or **Rules** → **Rulesets**).
+2. Add a rule for `main`: **Require a pull request before merging** and **Require status checks to pass**.
+3. Pick the checks "Repo checks (provenance, banned files)", "Godot tests (headless)" and "Builds (Android debug APK, Linux, Windows)".
+
+After that, agents work on branches (`claude/...`, `task/...`) and you merge their pull requests when CI is green.
+
 ## Things only you can do
 
 - Create the GitHub repository, accounts and keys (Google Play developer account, upload keystore).

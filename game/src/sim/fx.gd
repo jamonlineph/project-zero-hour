@@ -88,6 +88,89 @@ static func isqrt(n: int) -> int:
 	return x
 
 
+# --- Angles -----------------------------------------------------------------
+# Binary angles: 4096 units per full turn. Angle 0 points along +X and angles
+# grow toward +Y (sim Y is Godot +Z). Always wrap with wrap_angle().
+
+const ANGLE_FULL: int = 4096
+const ANGLE_HALF: int = 2048
+const ANGLE_QUARTER: int = 1024
+const ANGLE_MASK: int = ANGLE_FULL - 1
+const _OCTANT: int = 512
+
+
+## Whole degrees -> binary angle (truncated), e.g. 90 -> 1024.
+static func angle_from_degrees(degrees: int) -> int:
+	return wrap_angle((degrees * ANGLE_FULL) / 360)
+
+
+static func wrap_angle(angle: int) -> int:
+	return angle & ANGLE_MASK
+
+
+## Sine of a binary angle, as fixed (-ONE..ONE). Exact table lookup.
+static func sin_a(angle: int) -> int:
+	var a: int = angle & ANGLE_MASK
+	var idx: int = a & (ANGLE_QUARTER - 1)
+	match a >> 10:
+		0:
+			return TrigTable.SINE_QUARTER[idx]
+		1:
+			return TrigTable.SINE_QUARTER[ANGLE_QUARTER - idx]
+		2:
+			return -TrigTable.SINE_QUARTER[idx]
+		_:
+			return -TrigTable.SINE_QUARTER[ANGLE_QUARTER - idx]
+
+
+static func cos_a(angle: int) -> int:
+	return sin_a(angle + ANGLE_QUARTER)
+
+
+## Binary angle of the vector (dx, dy), within 1 unit of the true angle.
+## Inputs are any ints (fixed or raw) within MAX_ABS. atan2_a(0, 0) is 0.
+static func atan2_a(dy: int, dx: int) -> int:
+	if dx == 0 and dy == 0:
+		return 0
+	var ax: int = absi(dx)
+	var ay: int = absi(dy)
+	# Angle in the first octant: theta = atan(small / big), 0..512.
+	var small: int = mini(ax, ay)
+	var big: int = maxi(ax, ay)
+	var lo: int = 0
+	var hi: int = _OCTANT
+	# Largest theta with tan(theta) <= small / big, found without division:
+	# sin(theta) * big <= cos(theta) * small.
+	while lo < hi:
+		var mid: int = (lo + hi + 1) >> 1
+		if TrigTable.SINE_QUARTER[mid] * big <= TrigTable.SINE_QUARTER[ANGLE_QUARTER - mid] * small:
+			lo = mid
+		else:
+			hi = mid - 1
+	var theta: int = lo
+	# Round to the nearer of theta and theta + 1.
+	if theta < _OCTANT:
+		var err_lo: int = small * TrigTable.SINE_QUARTER[ANGLE_QUARTER - theta] - big * TrigTable.SINE_QUARTER[theta]
+		var err_hi: int = big * TrigTable.SINE_QUARTER[theta + 1] - small * TrigTable.SINE_QUARTER[ANGLE_QUARTER - theta - 1]
+		if err_hi < err_lo:
+			theta += 1
+	if ay > ax:
+		theta = ANGLE_QUARTER - theta
+	if dx < 0:
+		theta = ANGLE_HALF - theta
+	if dy < 0:
+		theta = ANGLE_FULL - theta
+	return theta & ANGLE_MASK
+
+
+## Shortest signed turn from `from` to `to`, in (-2048, 2048].
+static func angle_diff(from: int, to: int) -> int:
+	var d: int = (to - from) & ANGLE_MASK
+	if d > ANGLE_HALF:
+		d -= ANGLE_FULL
+	return d
+
+
 static func _bit_length(n: int) -> int:
 	var bits: int = 0
 	while n > 0:

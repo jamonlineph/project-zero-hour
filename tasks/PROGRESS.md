@@ -4,6 +4,31 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-25: P0-07 to P0-09, P0-11, P0-14, P1-01 (Claude Code, branch claude/phase-0-wrapup)
+
+**Done:**
+- The repo is on GitHub (jamonlineph/project-zero-hour). The first CI run on `main` passed both jobs.
+- **Builds:** `game/export_presets.cfg` (Android debug APK, Linux, Windows). A new CI job exports all three after the tests pass and uploads them as artifacts (APK about 54 MB). On `v*` tags it attaches them to a GitHub release. CI now also runs on `claude/**` and `task/**` branches.
+- **Housekeeping:** GitHub labels (phases, areas, good-first-task) and issue templates. Branch-protection steps for the owner are in `docs/07-ai-workflow.md`.
+- **P1-01 fixed-point trigonometry:** binary angles (4096 per turn), a generated quarter-wave sine table (`tools/gen_trig_table.py` → `game/src/sim/trig_table.gd`), and `Fx.sin_a`, `cos_a`, `atan2_a`, `angle_diff`, `angle_from_degrees`. atan2 is within 1 unit (0.09°) in all 4096 directions.
+- Roadmap rule clarified: device-free sim tasks may start while the previous phase only waits on the owner's device checks.
+
+**Tests:**
+- `tools/run_tests.sh` → 32 tests, 0 failed; `smoke_main: ok` (Godot 4.7.2, headless).
+- GitHub Actions on the branch: repo checks, Godot tests and builds all green.
+
+**Not verified:**
+- The APK hasn't been installed on a phone or Googlebook yet (P0-12, P0-13).
+- macOS export not added (P0-14 stays 🔄). The Gradle/AAB preset moved to P2-19.
+
+**Next:**
+- Owner: download the APK from Actions and try it (P0-12), merge this branch, set branch protection.
+- Agents: P1-02 (facing and turn rate), then P1-03 (map grid).
+
+**For the owner:** questions Q-1 to Q-6 in `tasks/QUESTIONS.md` are still open.
+
+---
+
 ## 2026-11-25: P0-01 to P0-06, project setup (Claude Code)
 
 **Done:**
