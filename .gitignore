@@ -23,3 +23,6 @@ Thumbs.db
 
 # Local tools
 /tools/bin/
+
+# Godot binary downloaded by tools/ci/download_godot.sh
+/godot-bin
