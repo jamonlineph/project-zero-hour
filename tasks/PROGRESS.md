@@ -4,6 +4,41 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-25: P1-02, P1-03, P1-04 (Claude Code, branch claude/phase-0-wrapup)
+
+**Done:**
+- **P1-02 facing and turn rate:**
+  - Units have a sim facing, and turn at `turn_rate_deg_per_s` from data (missing = instant, as for infantry).
+  - They creep at 25% speed until they face within 22.5° of their heading.
+  - The view draws the sim facing, interpolated between ticks.
+  - The two sides now spawn facing each other.
+- **P1-03 map grid:**
+  - `SimMap` uses 2 m cells, with a terrain layer and a building-footprint layer (claim/release, all-or-nothing).
+  - Maps are content: `game/data/maps/sandbox.json` has a ridge with a gap plus rocks.
+  - The sandbox draws its rocks from the map, so what you see is what blocks.
+- **P1-04 pathfinding:**
+  - Deterministic A* with 8 directions, no corner cutting, (f, h, index) tie-breaks and a 5/4-weighted octile heuristic.
+  - Line-of-sight smoothing into a few waypoints.
+  - A blocked or unreachable goal sends the unit to the nearest reachable cell.
+  - `PathingSystem` plans at most 3 searches per tick, and units follow their waypoints.
+
+**Tests:** `tools/run_tests.sh` → 58 tests, 0 failed; `smoke_main: ok`. A unit ordered across the sandbox goes through the ridge gap without ever entering a rock cell.
+
+**Measured (desktop, GDScript):**
+- About 1 ms per typical 20–60 m search.
+- About 22 ms per worst-case search across a maze of walls on a 256 m map (it was 91 ms before optimizing).
+- The P1-04 speed target isn't met yet, so I added **P1-04b**, with options (Jump Point Search, or C++ per ADR 0004).
+
+**Not verified:**
+- Nothing seen on screen yet (P0-15).
+- Units still overlap each other, and big tanks can clip rock corners: they follow cell centers without accounting for their radius. Avoidance and clearance come in P1-06.
+
+**Next:**
+- P1-04b (pathfinding speed), P1-05 (group movement: one shared path per group also cuts searches), P1-06 (separation).
+- Owner: merge the branch, try the APK, answer Q-1 to Q-6.
+
+---
+
 ## 2026-11-25: P0-07 to P0-09, P0-11, P0-14, P1-01 (Claude Code, branch claude/phase-0-wrapup)
 
 **Done:**

@@ -25,7 +25,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Movement | Fixed-point movement toward a target | P0 | ✅ |
 | Group movement | Formation offsets for group orders | P0 | ✅ basic |
 | Turning | Units turn at `turn_rate` (data: `turn_rate_deg_per_s`, missing = instant); they creep at 25% speed until facing within 22.5° of their heading | P1-02 | ✅ |
-| Pathfinding | Grid A* with deterministic tie-breaks, path smoothing; flow fields for big groups | P1-04, P1-05 | ⬜ |
+| Pathfinding | Grid A* (8 directions, no corner cutting, deterministic tie-breaks, weighted heuristic), line-of-sight smoothing, nearest reachable spot for blocked goals. Flow fields for big groups come in P1-05; speed-up in P1-04b | P1-04 | ✅ (speed: P1-04b) |
 | Avoidance | Units don't overlap; they push or wait | P1-06 | ⬜ |
 | Health and death | hp, death, removal, wreck props | P1-07 | ⬜ |
 | Weapons | Range, reload, projectile or instant, splash, min range, anti-air/ground flags | P1-08 | ⬜ |

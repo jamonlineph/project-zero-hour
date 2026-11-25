@@ -15,6 +15,10 @@ var height_cells: int = 0
 var _blocked: PackedByteArray = PackedByteArray()      ## 1 = terrain blocks movement
 var _footprint: PackedInt32Array = PackedInt32Array()  ## entity id occupying the cell, 0 = none
 var _heights: PackedInt32Array = PackedInt32Array()    ## fixed-point meters
+## Combined walkability with a 1-cell blocked border, for the pathfinder's
+## inner loop (no bounds checks). 1 = walkable. Index with padded_index().
+var walk: PackedByteArray = PackedByteArray()
+var padded_width: int = 0
 
 
 func _init(width_m: int = 256, height_m: int = 256) -> void:
@@ -27,6 +31,12 @@ func _init(width_m: int = 256, height_m: int = 256) -> void:
 	_footprint.fill(0)
 	_heights.resize(count)
 	_heights.fill(0)
+	padded_width = width_cells + 2
+	walk.resize(padded_width * (height_cells + 2))
+	walk.fill(0)
+	for cy: int in height_cells:
+		for cx: int in width_cells:
+			walk[padded_index(cx, cy)] = 1
 
 
 func in_bounds(cx: int, cy: int) -> bool:
@@ -35,6 +45,11 @@ func in_bounds(cx: int, cy: int) -> bool:
 
 func index(cx: int, cy: int) -> int:
 	return cy * width_cells + cx
+
+
+## Index into `walk` (grid with a blocked border). Valid for -1..width/height.
+func padded_index(cx: int, cy: int) -> int:
+	return (cy + 1) * padded_width + cx + 1
 
 
 ## Cell coordinate containing a fixed-point position (may be out of bounds).
@@ -82,6 +97,7 @@ func add_obstacle_m(x_m: int, y_m: int, w_m: int, h_m: int) -> void:
 	for cy: int in range(maxi(y0, 0), mini(y1, height_cells - 1) + 1):
 		for cx: int in range(maxi(x0, 0), mini(x1, width_cells - 1) + 1):
 			_blocked[index(cx, cy)] = 1
+			walk[padded_index(cx, cy)] = 0
 
 
 ## Claims a w x h cell rectangle for an entity. Fails (claims nothing) unless
@@ -95,6 +111,7 @@ func place_footprint(cx: int, cy: int, w: int, h: int, entity_id: int) -> bool:
 	for y: int in range(cy, cy + h):
 		for x: int in range(cx, cx + w):
 			_footprint[index(x, y)] = entity_id
+			walk[padded_index(x, y)] = 0
 	return true
 
 
@@ -105,6 +122,8 @@ func clear_footprint(entity_id: int) -> int:
 		if _footprint[i] == entity_id:
 			_footprint[i] = 0
 			released += 1
+			if _blocked[i] == 0:
+				walk[padded_index(i % width_cells, i / width_cells)] = 1
 	return released
 
 

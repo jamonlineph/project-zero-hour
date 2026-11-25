@@ -75,11 +75,12 @@ Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from 
 
 1. Save `prev_x`, `prev_y` and `prev_facing` (for view interpolation).
 2. Apply this tick's commands.
-3. Movement: turn toward the heading, then move (later: pathing, then avoidance).
-4. *(planned)* Targeting → weapons fire → projectiles → damage → deaths.
-5. *(planned)* Production, construction, economy, power.
-6. *(planned)* Vision and fog.
-7. `tick += 1`
+3. Pathing: plan routes for movers that need one (`PathingSystem`, at most 3 searches per tick).
+4. Movement: turn toward the current waypoint, then move along the path (later: avoidance).
+5. *(planned)* Targeting → weapons fire → projectiles → damage → deaths.
+6. *(planned)* Production, construction, economy, power.
+7. *(planned)* Vision and fog.
+8. `tick += 1`
 
 Keep this list in sync with the code whenever you add a system.
 

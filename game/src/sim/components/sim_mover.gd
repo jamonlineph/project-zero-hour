@@ -16,8 +16,28 @@ const SLOW_DEN: int = 4
 var speed: int = 0                  ## fixed-point meters per tick
 var turn_rate: int = INSTANT_TURN   ## binary angle units per tick
 var has_target: bool = false
-var target_x: int = 0               ## fixed-point meters
+var target_x: int = 0               ## fixed-point meters (final destination)
 var target_y: int = 0
+var needs_path: bool = false        ## waiting for PathingSystem to plan a route
+var path: Array[Vector2i] = []      ## waypoints in fixed-point meters; last = destination
+var path_index: int = 0             ## waypoint currently being driven to
+
+
+## Sets a new destination and asks for a path to it.
+func order_move(tx: int, ty: int) -> void:
+	target_x = tx
+	target_y = ty
+	has_target = true
+	needs_path = true
+	path.clear()
+	path_index = 0
+
+
+func stop() -> void:
+	has_target = false
+	needs_path = false
+	path.clear()
+	path_index = 0
 
 
 func write_hash(h: SimHash) -> void:
@@ -26,3 +46,9 @@ func write_hash(h: SimHash) -> void:
 	h.add_bool(has_target)
 	h.add_int(target_x)
 	h.add_int(target_y)
+	h.add_bool(needs_path)
+	h.add_int(path_index)
+	h.add_int(path.size())
+	for p: Vector2i in path:
+		h.add_int(p.x)
+		h.add_int(p.y)

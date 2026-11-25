@@ -15,6 +15,7 @@ var rng: SimRng
 var map_width: int = 0      ## fixed-point meters
 var map_height: int = 0
 var map: SimMap             ## passability grid (see SimMap)
+var pathfinder: Pathfinder  ## A* over `map`, shared by all movers
 var entities: Dictionary[int, SimEntity] = {}
 var entity_ids: Array[int] = []   ## ascending ids: always iterate this
 var _next_id: int = 1
@@ -36,6 +37,7 @@ static func from_map(seed_value: int, def: MapDef) -> SimWorld:
 ## Replaces the grid. Call before spawning anything.
 func set_map(new_map: SimMap) -> void:
 	map = new_map
+	pathfinder = Pathfinder.new(new_map)
 	map_width = new_map.width_cells * SimMap.CELL
 	map_height = new_map.height_cells * SimMap.CELL
 
@@ -89,6 +91,7 @@ func step() -> void:
 	_apply_commands()
 	# System order is part of the rules. Add new systems here, in order, and
 	# document the order in docs/02-architecture.md.
+	PathingSystem.step(self)
 	MovementSystem.step(self)
 	tick += 1
 
@@ -138,14 +141,14 @@ func _apply_move(c: SimCommand) -> void:
 	var offsets: Array[Vector2i] = Formation.grid_offsets(movers.size(), spacing)
 	for i: int in movers.size():
 		var e: SimEntity = movers[i]
-		e.mover.target_x = clampi(c.target_x + offsets[i].x, 0, map_width)
-		e.mover.target_y = clampi(c.target_y + offsets[i].y, 0, map_height)
-		e.mover.has_target = true
+		e.mover.order_move(
+			clampi(c.target_x + offsets[i].x, 0, map_width),
+			clampi(c.target_y + offsets[i].y, 0, map_height))
 
 
 func _apply_stop(c: SimCommand) -> void:
 	for e: SimEntity in _owned_movers(c):
-		e.mover.has_target = false
+		e.mover.stop()
 
 
 ## Entities named in the command that exist, belong to the issuing player and

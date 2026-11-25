@@ -163,7 +163,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Tests for cell lookups, footprint block/unblock, and conversion from world (Fx) to cell.
   - The sandbox rocks become sim obstacles (the view reads them from the map).
 
-### P1-04 · Grid pathfinding — ⬜
+### P1-04 · Grid pathfinding — ✅ 2026-11-25 (Claude Code; the speed target is not met yet, see P1-04b)
 - **Needs:** P1-03
 - **Do:**
   - A* on the grid, 8 directions, no corner cutting, deterministic tie-breaking (f, then h, then cell index).
@@ -173,6 +173,24 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Accept:**
   - Tests: around a wall, unreachable target (go to the nearest reachable cell), identical paths across runs.
   - Performance test: 50 paths per second on a 256×256 m map within 2 ms per tick on desktop.
+
+### P1-04b · Faster pathfinding — ⬜
+- **Needs:** P1-04
+- **Why:** measured in P1-04 (GDScript, desktop, Godot 4.7.2):
+  - About 1 ms per typical 20–60 m search.
+  - About 22 ms per worst-case search (corner to corner through a maze of walls on a 256 m map, ~1,800 cells expanded).
+  - The P1-04 target was 50 searches per second within 2 ms per tick. Phones are 3–5× slower than desktops.
+  - Until this lands, `PathingSystem.MAX_SEARCHES_PER_TICK` is 3.
+- **Do:** pick one, measure, and record the result:
+  - **(a)** Jump Point Search on the same grid (same rules: no corner cutting, deterministic tie-breaks).
+  - **(b)** Move `Pathfinder._search` to a C++ GDExtension. Per ADR 0004 this needs a new ADR and must keep the integer rules and the same results.
+
+  Also add a per-tick expansion budget so a single worst-case search is spread over several ticks.
+- **Accept:**
+  - `test_pathfinder` passes unchanged.
+  - The worst-case search is under 3 ms on desktop.
+  - A tick with 3 typical searches stays under 2 ms on desktop.
+  - Numbers are recorded in PROGRESS.
 
 ### P1-05 · Group movement — ⬜
 - **Needs:** P1-04
