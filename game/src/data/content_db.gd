@@ -11,6 +11,7 @@ extends RefCounted
 const INDEX_PATH: String = "res://data/index.json"
 
 var units: Dictionary[String, UnitDef] = {}
+var maps: Dictionary[String, MapDef] = {}
 var errors: PackedStringArray = []
 
 
@@ -18,6 +19,7 @@ var errors: PackedStringArray = []
 ## the messages are in `errors`.
 func load_all(index_path: String = INDEX_PATH) -> bool:
 	units.clear()
+	maps.clear()
 	errors.clear()
 	var index: Variant = _read_json(index_path)
 	if not index is Dictionary:
@@ -25,11 +27,53 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 		return false
 	for path: Variant in (index as Dictionary).get("units", []):
 		_load_unit(str(path))
+	for path: Variant in (index as Dictionary).get("maps", []):
+		_load_map(str(path))
 	return errors.is_empty()
 
 
 func get_unit(id: String) -> UnitDef:
 	return units.get(id, null)
+
+
+func get_map(id: String) -> MapDef:
+	return maps.get(id, null)
+
+
+func _load_map(path: String) -> void:
+	var parsed: Variant = _read_json(path)
+	if not parsed is Dictionary:
+		errors.append("%s: expected a JSON object" % path)
+		return
+	var src: Dictionary = parsed
+	var m := MapDef.new()
+	m.id = _req_string(src, "id", path)
+	m.name = _req_string(src, "name", path)
+	m.width_m = _req_int(src, "width_m", path, 16)
+	m.height_m = _req_int(src, "height_m", path, 16)
+	var obstacles: Variant = src.get("obstacles_m", [])
+	if not obstacles is Array:
+		errors.append("%s: 'obstacles_m' must be a list" % path)
+		obstacles = []
+	for i: int in (obstacles as Array).size():
+		var o: Variant = obstacles[i]
+		if not o is Array or (o as Array).size() != 4:
+			errors.append("%s: obstacle %d must be [x_m, y_m, w_m, h_m]" % [path, i])
+			continue
+		var rect := PackedInt32Array()
+		for v: Variant in o:
+			if not (v is float or v is int) or float(v) != floorf(float(v)):
+				errors.append("%s: obstacle %d must hold whole numbers" % [path, i])
+				break
+			rect.append(int(v))
+		if rect.size() == 4:
+			if rect[2] <= 0 or rect[3] <= 0:
+				errors.append("%s: obstacle %d needs a positive size" % [path, i])
+			else:
+				m.obstacles_m.append(rect)
+	if path.get_file().get_basename() != m.id:
+		errors.append("%s: file name must match id '%s'" % [path, m.id])
+	maps[m.id] = m
 
 
 func _load_unit(path: String) -> void:

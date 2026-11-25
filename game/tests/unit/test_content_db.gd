@@ -16,6 +16,14 @@ func test_every_unit_file_is_listed_in_index() -> void:
 			assert_true(listed.has("res://data/units/" + file), "%s is missing from data/index.json" % file)
 
 
+func test_every_map_file_is_listed_in_index() -> void:
+	var index: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(ContentDb.INDEX_PATH))
+	var listed: Array = index.get("maps", [])
+	for file: String in DirAccess.get_files_at("res://data/maps/"):
+		if file.ends_with(".json"):
+			assert_true(listed.has("res://data/maps/" + file), "%s is missing from data/index.json" % file)
+
+
 func test_units_have_sane_values() -> void:
 	var db := ContentDb.new()
 	db.load_all()

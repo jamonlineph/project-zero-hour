@@ -3,12 +3,13 @@ extends Node3D
 ## per side, and wires the runner, view, camera, input and HUD together.
 ## P1-32 replaces this with a real menu and match setup (tasks/BACKLOG.md).
 
-const MAP_SIZE_M: int = 128
+const MAP_ID: String = "sandbox"
 const LOCAL_PLAYER: int = 1
 const ENEMY_PLAYER: int = 2
 const SEED: int = 20261125
 
 var content: ContentDb
+var map_def: MapDef
 var world: SimWorld
 var runner: SimRunner
 var game_view: GameView
@@ -23,7 +24,14 @@ func _ready() -> void:
 	if not content.load_all():
 		for message: String in content.errors:
 			push_error(message)
-	world = SimWorld.new(SEED, MAP_SIZE_M, MAP_SIZE_M)
+	map_def = content.get_map(MAP_ID)
+	if map_def == null:
+		push_error("Sandbox: map '%s' is missing; using an empty 128 m map" % MAP_ID)
+		map_def = MapDef.new()
+		map_def.id = MAP_ID
+		map_def.width_m = 128
+		map_def.height_m = 128
+	world = SimWorld.from_map(SEED, map_def)
 	_spawn_sandbox_units()
 	_build_environment()
 
@@ -43,8 +51,8 @@ func _ready() -> void:
 	rts_camera = RtsCamera.new()
 	rts_camera.name = "RtsCamera"
 	add_child(rts_camera)
-	rts_camera.set_bounds(Rect2(0, 0, MAP_SIZE_M, MAP_SIZE_M))
-	rts_camera.focus_on(Vector3(MAP_SIZE_M * 0.35, 0.0, MAP_SIZE_M * 0.5))
+	rts_camera.set_bounds(Rect2(0, 0, map_def.width_m, map_def.height_m))
+	rts_camera.focus_on(Vector3(map_def.width_m * 0.35, 0.0, map_def.height_m * 0.5))
 
 	hud = Hud.new()
 	hud.name = "Hud"
@@ -99,7 +107,7 @@ func _build_environment() -> void:
 	add_child(sun)
 
 	var plane := PlaneMesh.new()
-	plane.size = Vector2(MAP_SIZE_M, MAP_SIZE_M)
+	plane.size = Vector2(map_def.width_m, map_def.height_m)
 	var ground_mat := StandardMaterial3D.new()
 	ground_mat.albedo_color = Color(0.36, 0.42, 0.28)
 	ground_mat.roughness = 1.0
@@ -107,21 +115,21 @@ func _build_environment() -> void:
 	ground.name = "Ground"
 	ground.mesh = plane
 	ground.material_override = ground_mat
-	ground.position = Vector3(MAP_SIZE_M * 0.5, 0.0, MAP_SIZE_M * 0.5)
+	ground.position = Vector3(map_def.width_m * 0.5, 0.0, map_def.height_m * 0.5)
 	add_child(ground)
 
-	# Scattered rocks so camera movement is easy to see. View-only decoration,
-	# so ordinary random numbers are fine here (never in the sim).
+	# Rocks are drawn from the map's obstacles, so what you see is what blocks
+	# movement. Heights are view-only decoration, so ordinary random numbers are
+	# fine here (never in the sim).
 	var rng := RandomNumberGenerator.new()
 	rng.seed = SEED
 	var rock_mat := StandardMaterial3D.new()
 	rock_mat.albedo_color = Color(0.45, 0.43, 0.40)
-	for i: int in 40:
+	for o: PackedInt32Array in map_def.obstacles_m:
 		var rock := MeshInstance3D.new()
 		var box := BoxMesh.new()
-		box.size = Vector3(rng.randf_range(0.6, 2.0), rng.randf_range(0.3, 1.2), rng.randf_range(0.6, 2.0))
+		box.size = Vector3(o[2], rng.randf_range(1.5, 4.0), o[3])
 		rock.mesh = box
 		rock.material_override = rock_mat
-		rock.position = Vector3(rng.randf_range(4.0, MAP_SIZE_M - 4.0), box.size.y * 0.5, rng.randf_range(4.0, MAP_SIZE_M - 4.0))
-		rock.rotation.y = rng.randf_range(0.0, TAU)
+		rock.position = Vector3(o[0] + o[2] * 0.5, box.size.y * 0.5, o[1] + o[3] * 0.5)
 		add_child(rock)

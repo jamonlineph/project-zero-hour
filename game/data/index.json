@@ -4,5 +4,8 @@
     "res://data/units/us_rifle_squad.json",
     "res://data/units/ru_mbt.json",
     "res://data/units/ru_motor_rifle_squad.json"
+  ],
+  "maps": [
+    "res://data/maps/sandbox.json"
   ]
 }

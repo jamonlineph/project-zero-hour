@@ -14,6 +14,7 @@ var tick: int = 0
 var rng: SimRng
 var map_width: int = 0      ## fixed-point meters
 var map_height: int = 0
+var map: SimMap             ## passability grid (see SimMap)
 var entities: Dictionary[int, SimEntity] = {}
 var entity_ids: Array[int] = []   ## ascending ids: always iterate this
 var _next_id: int = 1
@@ -22,8 +23,21 @@ var _pending: Dictionary[int, Array] = {}   ## tick -> Array of SimCommand
 
 func _init(seed_value: int = 1, width_m: int = 256, height_m: int = 256) -> void:
 	rng = SimRng.new(seed_value)
-	map_width = Fx.from_int(width_m)
-	map_height = Fx.from_int(height_m)
+	set_map(SimMap.new(width_m, height_m))
+
+
+## Creates a world on a map from content data.
+static func from_map(seed_value: int, def: MapDef) -> SimWorld:
+	var world := SimWorld.new(seed_value, def.width_m, def.height_m)
+	world.set_map(def.make_sim_map())
+	return world
+
+
+## Replaces the grid. Call before spawning anything.
+func set_map(new_map: SimMap) -> void:
+	map = new_map
+	map_width = new_map.width_cells * SimMap.CELL
+	map_height = new_map.height_cells * SimMap.CELL
 
 
 ## Adds a unit and returns its id. x and y are fixed-point meters; facing is a
@@ -84,6 +98,7 @@ func state_hash() -> int:
 	var h := SimHash.new()
 	h.add_int(tick)
 	h.add_int(rng.state)
+	map.write_hash(h)
 	h.add_int(entity_ids.size())
 	for id: int in entity_ids:
 		entities[id].write_hash(h)

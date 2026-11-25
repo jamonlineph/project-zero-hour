@@ -58,12 +58,13 @@ Code under `src/sim/` must obey all of these. Breaking any of them causes desync
 | Time | ticks (15 per second) | milliseconds (`reload_ms`, `build_time_ms`) |
 | Angles, facing | binary angle units, 4096 per turn; 0 = +X, 1024 = +Y | degrees (`turn_rate_deg_per_s`) |
 | Health, cost, damage | plain ints | plain ints |
+| Map size, obstacles | `SimMap` cells of 2 m (`SimMap.CELL`) | whole meters (`width_m`, `obstacles_m`) |
 
 The loader (`ContentDb`) converts data units into sim units with integer math.
 
 ### Coordinates
 
-Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from `(0, 0)` to `(map_width, map_height)`. Terrain height (from P1-30) is a separate integer heightmap. Models face +Z in Godot (`Vector3.MODEL_FRONT`), which is −Y in Blender.
+Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from `(0, 0)` to `(map_width, map_height)`. `world.map` (`SimMap`) divides it into 2 m cells with a terrain-blocked layer and a building-footprint layer; cell `(cx, cy)` covers `[cx·2 m, (cx+1)·2 m)`. Terrain height (from P1-30) is a separate integer heightmap. Models face +Z in Godot (`Vector3.MODEL_FRONT`), which is −Y in Blender.
 
 ### Entities, components, systems
 

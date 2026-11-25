@@ -2,6 +2,8 @@
 
 ## Map format (P1-30)
 
+*Until P1-30, a map is a single JSON file in `game/data/maps/<id>.json` with `width_m`, `height_m` and `obstacles_m` (blocked rectangles `[x, y, w, h]` in meters). See `sandbox.json`.*
+
 - A map is a folder: `game/data/maps/<id>/`. It holds:
   - `map.json`: size, players, start positions, supply sites, neutral buildings, triggers
   - `height.png`: 16-bit heightmap

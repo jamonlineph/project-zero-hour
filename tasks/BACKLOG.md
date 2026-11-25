@@ -155,7 +155,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - The view uses sim facing (remove the view-only facing).
 - **Accept:** tests for turn direction, arrival and no overshoot; determinism test still green.
 
-### P1-03 · Map grid and passability — ⬜
+### P1-03 · Map grid and passability — ✅ 2026-11-25 (Claude Code)
 - **Do:**
   - `SimMap`: 2 m cells, passable flags, a building footprint layer, integer height (flat for now).
   - A temporary test map with rock obstacles, shared by the sandbox and tests.
