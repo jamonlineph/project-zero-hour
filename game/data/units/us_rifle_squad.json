@@ -1,0 +1,16 @@
+{
+  "id": "us_rifle_squad",
+  "faction": "us",
+  "role": "basic_infantry",
+  "name": "Rifle Squad",
+  "armor_class": "infantry",
+  "status": "placeholder stats",
+  "max_hp": 240,
+  "cost": 250,
+  "speed_cm_per_s": 380,
+  "radius_cm": 150,
+  "visual": {
+    "model": "res://assets/models/units/us_rifle_squad.glb",
+    "icon": "res://assets/icons/units/us_rifle_squad.png"
+  }
+}

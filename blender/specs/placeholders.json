@@ -1,0 +1,26 @@
+{
+  "_doc": "Placeholder asset specs for blender/build_assets.py. Sizes in meters. See docs/04-art-pipeline.md.",
+  "team_color_preview": [0.16, 0.47, 0.95],
+  "factions": {
+    "us": {"body": [0.46, 0.43, 0.32]},
+    "cn": {"body": [0.34, 0.39, 0.35]},
+    "ru": {"body": [0.23, 0.28, 0.19]},
+    "irr": {"body": [0.55, 0.45, 0.33]}
+  },
+  "assets": [
+    {"id": "us_mbt", "category": "units", "archetype": "tracked", "faction": "us",
+     "length": 7.9, "width": 3.6, "height": 2.4, "aps": true, "tri_budget": 3000},
+    {"id": "ru_mbt", "category": "units", "archetype": "tracked", "faction": "ru",
+     "length": 7.0, "width": 3.5, "height": 2.2, "cage": true, "tri_budget": 3000},
+    {"id": "us_rifle_squad", "category": "units", "archetype": "infantry", "faction": "us",
+     "figures": 4, "tri_budget": 3200},
+    {"id": "ru_motor_rifle_squad", "category": "units", "archetype": "infantry", "faction": "ru",
+     "figures": 4, "tri_budget": 3200},
+    {"id": "us_logistics_truck", "category": "units", "archetype": "wheeled", "faction": "us",
+     "length": 8.0, "width": 2.5, "height": 3.0, "axles": 3, "cargo": "crates", "tri_budget": 2000},
+    {"id": "ru_recon_drone", "category": "units", "archetype": "drone", "faction": "ru",
+     "size": 1.4, "tri_budget": 800},
+    {"id": "us_command_hq", "category": "buildings", "archetype": "building", "faction": "us",
+     "width": 14.0, "depth": 12.0, "height": 6.0, "details": ["mast", "vents"], "tri_budget": 5000}
+  ]
+}

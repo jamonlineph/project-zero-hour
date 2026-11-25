@@ -1,0 +1,35 @@
+; Engine configuration file.
+; Edit through the Godot editor (Project > Project Settings) when possible.
+; Input actions are registered in code (res://src/input/input_actions.gd),
+; not here, so they stay readable and reviewable.
+
+config_version=5
+
+[application]
+
+config/name="Signal Front"
+config/description="Open-source modern-warfare RTS (codename). See README.md at the repo root."
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.7", "Mobile")
+config/icon="res://icon.svg"
+
+[debug]
+
+gdscript/warnings/integer_division=0
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=4
+
+[input_devices]
+
+pointing/emulate_mouse_from_touch=false
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

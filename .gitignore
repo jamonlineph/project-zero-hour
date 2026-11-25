@@ -1,0 +1,25 @@
+# Godot
+game/.godot/
+game/export/
+*.apk
+*.aab
+*.idsig
+*.keystore
+*.jks
+export_credentials.cfg
+
+# Blender
+*.blend1
+*.blend2
+build/
+
+# Python / OS / editors
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local tools
+/tools/bin/

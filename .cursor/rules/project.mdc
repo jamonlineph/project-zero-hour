@@ -1,0 +1,6 @@
+---
+description: Signal Front project rules
+alwaysApply: true
+---
+
+Before doing anything, read AGENTS.md at the repository root and follow it exactly. It is the single source of truth for rules, workflow, commands and the definition of done.

@@ -1,0 +1,16 @@
+{
+  "id": "ru_motor_rifle_squad",
+  "faction": "ru",
+  "role": "basic_infantry",
+  "name": "Motorized Rifle Squad",
+  "armor_class": "infantry",
+  "status": "placeholder stats",
+  "max_hp": 220,
+  "cost": 200,
+  "speed_cm_per_s": 360,
+  "radius_cm": 150,
+  "visual": {
+    "model": "res://assets/models/units/ru_motor_rifle_squad.glb",
+    "icon": "res://assets/icons/units/ru_motor_rifle_squad.png"
+  }
+}

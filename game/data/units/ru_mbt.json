@@ -1,0 +1,16 @@
+{
+  "id": "ru_mbt",
+  "faction": "ru",
+  "role": "main_battle_tank",
+  "name": "Main Battle Tank",
+  "armor_class": "heavy_armor",
+  "status": "placeholder stats",
+  "max_hp": 1100,
+  "cost": 850,
+  "speed_cm_per_s": 700,
+  "radius_cm": 300,
+  "visual": {
+    "model": "res://assets/models/units/ru_mbt.glb",
+    "icon": "res://assets/icons/units/ru_mbt.png"
+  }
+}

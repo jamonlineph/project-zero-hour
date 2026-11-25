@@ -1,0 +1,8 @@
+{
+  "units": [
+    "res://data/units/us_mbt.json",
+    "res://data/units/us_rifle_squad.json",
+    "res://data/units/ru_mbt.json",
+    "res://data/units/ru_motor_rifle_squad.json"
+  ]
+}

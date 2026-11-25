@@ -1,0 +1,17 @@
+path,author,source,license,generated_by,notes
+game/assets/icons/buildings/us_command_hq.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_command_hq)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/ru_mbt.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/ru_motor_rifle_squad.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_motor_rifle_squad)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/ru_recon_drone.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_recon_drone)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_logistics_truck.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_logistics_truck)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_mbt.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_rifle_squad.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_rifle_squad)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/us_command_hq.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_command_hq)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/ru_mbt.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/ru_motor_rifle_squad.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_motor_rifle_squad)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/ru_recon_drone.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_recon_drone)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_logistics_truck.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_logistics_truck)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_mbt.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_rifle_squad.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_rifle_squad)",CC-BY-SA-4.0,script,placeholder
+game/assets/sprites/units/ru_mbt_8dir.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/sprites/units/us_mbt_8dir.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_mbt)",CC-BY-SA-4.0,script,placeholder
