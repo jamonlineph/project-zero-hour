@@ -47,6 +47,9 @@ var _next_projectile_id: int = 1
 var _index_cols: int = 1
 var _index_rows: int = 1
 var _index: Array[Array] = []
+## The same buckets split by team (players only, no neutrals), so enemy
+## searches never walk through friendly units. Rebuilt with _index.
+var _team_index: Dictionary[int, Array] = {}
 var _pending: Dictionary[int, Array] = {}   ## tick -> Array of SimCommand
 
 
@@ -394,13 +397,44 @@ func query_radius(x: int, y: int, radius: int) -> Array[SimEntity]:
 	var x1: int = clampi((x + radius) / INDEX_BUCKET, 0, _index_cols - 1)
 	var y0: int = clampi((y - radius) / INDEX_BUCKET, 0, _index_rows - 1)
 	var y1: int = clampi((y + radius) / INDEX_BUCKET, 0, _index_rows - 1)
+	# Fx.length is floor(sqrt), so length <= r exactly when dx²+dy² < (r+1)².
+	var limit: int = (radius + 1) * (radius + 1)
 	for by: int in range(y0, y1 + 1):
 		for bx: int in range(x0, x1 + 1):
 			for e: SimEntity in _index[by * _index_cols + bx]:
 				var dx: int = e.x - x
 				var dy: int = e.y - y
-				if absi(dx) <= radius and absi(dy) <= radius and Fx.length(dx, dy) <= radius:
+				if absi(dx) <= radius and absi(dy) <= radius and dx * dx + dy * dy < limit:
 					result.append(e)
+	return result
+
+
+## Like query_radius, but only entities that are enemies of `player_id`
+## (another team, not neutral). Skips friendly units before any distance math,
+## which matters inside big blobs of one player's units.
+func query_enemies(player_id: int, x: int, y: int, radius: int) -> Array[SimEntity]:
+	var result: Array[SimEntity] = []
+	if player_id == 0:
+		return result
+	if _index.is_empty():
+		_rebuild_index()
+	var team: int = team_of(player_id)
+	var x0: int = clampi((x - radius) / INDEX_BUCKET, 0, _index_cols - 1)
+	var x1: int = clampi((x + radius) / INDEX_BUCKET, 0, _index_cols - 1)
+	var y0: int = clampi((y - radius) / INDEX_BUCKET, 0, _index_rows - 1)
+	var y1: int = clampi((y + radius) / INDEX_BUCKET, 0, _index_rows - 1)
+	var limit: int = (radius + 1) * (radius + 1)
+	for other: int in _team_index:
+		if other == team:
+			continue
+		var buckets: Array = _team_index[other]
+		for by: int in range(y0, y1 + 1):
+			for bx: int in range(x0, x1 + 1):
+				for e: SimEntity in buckets[by * _index_cols + bx]:
+					var dx: int = e.x - x
+					var dy: int = e.y - y
+					if absi(dx) <= radius and absi(dy) <= radius and dx * dx + dy * dy < limit:
+						result.append(e)
 	return result
 
 
@@ -411,11 +445,22 @@ func _rebuild_index() -> void:
 		_index.resize(_index_cols * _index_rows)
 	for i: int in _index.size():
 		_index[i] = []
+	_team_index.clear()
 	for id: int in entity_ids:
 		var e: SimEntity = entities[id]
 		var bx: int = clampi(e.x / INDEX_BUCKET, 0, _index_cols - 1)
 		var by: int = clampi(e.y / INDEX_BUCKET, 0, _index_rows - 1)
-		_index[by * _index_cols + bx].append(e)
+		var b: int = by * _index_cols + bx
+		_index[b].append(e)
+		if e.player_id != 0:
+			var team: int = team_of(e.player_id)
+			if not _team_index.has(team):
+				var buckets: Array[Array] = []
+				buckets.resize(_index.size())
+				for i: int in buckets.size():
+					buckets[i] = []
+				_team_index[team] = buckets
+			(_team_index[team] as Array)[b].append(e)
 
 
 func _remove_dead() -> void:

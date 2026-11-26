@@ -35,18 +35,20 @@ static func step(world: SimWorld) -> void:
 		movers.append(e)
 		buckets[_bucket_of(e, cols, rows)].append(e)
 	for a: SimEntity in movers:
-		var b_index: int = _bucket_of(a, cols, rows)
-		var bx: int = b_index % cols
-		var by: int = b_index / cols
-		for dy: int in range(-1, 2):
-			for dx: int in range(-1, 2):
-				var nx: int = bx + dx
-				var ny: int = by + dy
-				if nx < 0 or ny < 0 or nx >= cols or ny >= rows:
+		var bx: int = clampi(a.x / BUCKET, 0, cols - 1)
+		var by: int = clampi(a.y / BUCKET, 0, rows - 1)
+		for ny: int in range(by - 1, by + 2):
+			if ny < 0 or ny >= rows:
+				continue
+			for nx: int in range(bx - 1, bx + 2):
+				if nx < 0 or nx >= cols:
 					continue
 				for b: SimEntity in buckets[ny * cols + nx]:
+					# Cheap box test inline; _separate repeats it exactly.
 					if b.id > a.id:
-						_separate(world, a, b)
+						var reach: int = a.radius + b.radius
+						if absi(b.x - a.x) < reach and absi(b.y - a.y) < reach:
+							_separate(world, a, b)
 
 
 static func _bucket_of(e: SimEntity, cols: int, rows: int) -> int:
@@ -91,8 +93,10 @@ static func _separate(world: SimWorld, a: SimEntity, b: SimEntity) -> void:
 static func _try_move(world: SimWorld, e: SimEntity, nx: int, ny: int) -> void:
 	nx = clampi(nx, 0, world.map_width)
 	ny = clampi(ny, 0, world.map_height)
-	var c: Vector2i = world.map.cell_of(nx, ny)
-	if not world.map.is_passable(c.x, c.y):
+	# Same as map.is_passable(cell_of(nx, ny)): `walk` is 0 for blocked,
+	# claimed and out-of-bounds cells (positions are >= 0 here).
+	var map: SimMap = world.map
+	if map.walk[(ny / SimMap.CELL + 1) * map.padded_width + nx / SimMap.CELL + 1] == 0:
 		return
 	e.x = nx
 	e.y = ny

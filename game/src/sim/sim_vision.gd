@@ -39,6 +39,9 @@ func is_explored(team: int, x: int, y: int) -> bool:
 ## Rebuilds every team's visible layer from its living units' vision.
 func update(world: SimWorld) -> void:
 	var fresh: Dictionary[int, PackedByteArray] = {}
+	# Units of one team in the same cell with the same sight stamp the same
+	# circle; stamp it once. (Stamping is an OR, so the result is identical.)
+	var stamped: Dictionary[int, bool] = {}
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
 		if e.dead or e.player_id == 0 or e.vision <= 0:
@@ -49,7 +52,14 @@ func update(world: SimWorld) -> void:
 			layer.resize(cols * rows)
 			layer.fill(0)
 			fresh[team] = layer
-		_stamp(fresh, team, e.x / CELL, e.y / CELL, (e.vision + CELL / 2) / CELL)
+		var cx: int = e.x / CELL
+		var cy: int = e.y / CELL
+		var r: int = (e.vision + CELL / 2) / CELL
+		var key: int = ((team * 65536 + cy) * 65536 + cx) * 1024 + r
+		if stamped.has(key):
+			continue
+		stamped[key] = true
+		_stamp(fresh, team, cx, cy, r)
 	for team: int in fresh:
 		_visible[team] = fresh[team]
 		if not _explored.has(team):

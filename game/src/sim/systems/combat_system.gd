@@ -54,8 +54,9 @@ static func in_range(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 	var reach: int = w.max_range + t.radius
 	if absi(dx) > reach or absi(dy) > reach:
 		return false
-	var dist: int = Fx.length(dx, dy)
-	return dist <= reach and dist >= w.min_range
+	# Same as Fx.length(dx, dy) <= reach and >= min_range (length is floor(sqrt)).
+	var sq: int = dx * dx + dy * dy
+	return sq < (reach + 1) * (reach + 1) and sq >= w.min_range * w.min_range
 
 
 static func _valid_target(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
@@ -68,8 +69,8 @@ static func _acquire(world: SimWorld, e: SimEntity, w: SimWeapon) -> SimEntity:
 	var best: SimEntity = null
 	var best_structure: bool = true
 	var best_dist: int = 0
-	for t: SimEntity in world.query_radius(e.x, e.y, w.max_range + SimWorld.MAX_UNIT_RADIUS):
-		if t.dead or not world.are_enemies(e.player_id, t.player_id):
+	for t: SimEntity in world.query_enemies(e.player_id, e.x, e.y, w.max_range + SimWorld.MAX_UNIT_RADIUS):
+		if t.dead:
 			continue
 		if not DamageMatrix.can_target(w.targets, t.armor_class) or not in_range(e, w, t):
 			continue

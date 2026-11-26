@@ -394,12 +394,19 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Do:** scene flow: menu → setup (faction, color, AI, map, credits) → match → end screen → menu. Pause menu.
 - **Accept:** smoke test drives the flow headless.
 
-### P1-33 · Performance harness — ⬜
+### P1-33 · Performance harness — ✅ 2026-11-26 (Claude Code: battle, march and view scenarios; CI gate on normalized medians; optimizations cut the sim from 34–79 ms to about 9–12 ms per tick on desktop, see P1-33b)
 - **Do:**
   - `game/tests/perf/` scenes that spawn N units moving and fighting.
   - Record sim ms per tick and frame time.
   - CI fails on more than 20% regression against `perf_baseline.json`.
 - **Accept:** baseline committed; documented.
+
+### P1-33b · Sim within the phone budget at 300 units — ⛔ (waiting on Q-7 and a phone measurement)
+- **Needs:** P1-33, P0-12
+- **Do:**
+  - Measure `tools/run_perf.sh` numbers on a mid-range phone (an export with the perf scenes, or the phone test from P1-37).
+  - If over 8 ms per tick: follow the owner's answer to Q-7 (C++ GDExtension for separation and movement through a new ADR, or rule and scale changes).
+- **Accept:** ≤ 8 ms per tick at 300 entities on the mid-range test phone; golden replays unchanged unless the owner approved a rule change.
 
 ### P1-34 · Placeholder art for the vertical-slice roster — ✅ 2026-11-26 (Claude Code: 35 models and icons; special abilities such as jamming, transport and endurance come with Phase 2)
 - **Do:**

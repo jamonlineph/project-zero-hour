@@ -4,6 +4,20 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P1-33 Performance harness (Claude Code, branch claude/phase-0-wrapup)
+- Done: `tools/run_perf.sh` runs three fixed scenarios headless (two 150-unit armies fighting; 300 vehicles marching through the sandbox ridge gap; the view syncing 300 entities) and writes `build/perf/latest.json`. CI fails when a scenario's normalized median (ms per tick ÷ a calibration workload) is more than 20% above `game/tests/perf/perf_baseline.json`. `--profile` prints ms per tick for each sim system.
+- The harness found the sim far over budget, so I optimized it without changing any result (golden replays still match bit for bit):
+  - Target search skips friendly units through a per-team spatial index, and distance checks use exact squared comparisons instead of square roots.
+  - Separation inlines its cheap overlap test and reads the padded walk grid.
+  - Vision stamps each (team, cell, sight radius) circle once.
+  - Result on this desktop: battle 34 → about 9 ms per tick, march 79 → about 12 ms.
+- Tests: `tools/run_tests.sh` -> 118 tests, 0 failed (golden replays unchanged); smoke tests ok.
+- Not verified: phone speed. The phone budget is 8 ms per tick at 300 units and a mid-range phone is roughly 3× slower than this desktop, so we are probably still over. That is P1-33b, and Q-7 asks the owner whether native code is allowed.
+- Next: P1-23 desktop controls.
+- For the owner: Q-7 (native code for the sim's hot spots).
+
+---
+
 ## 2026-11-26: P1-27 Fog rendering (Claude Code, branch claude/phase-0-wrapup)
 - Done: `FogOfWar` turns the local team's vision into a texture after every sim tick; a terrain shader (`fog_terrain.gdshader`) draws unexplored ground nearly black and explored-but-unseen ground at 45% brightness, with soft edges. Ground and rocks use it. Supply sites appear once explored. The minimap already had fog.
 - Tests: `tools/run_tests.sh` -> 118 tests, 0 failed; smoke_main now checks that every enemy view is hidden exactly when the player can't see it, and that the fog texture matches the sim's grid.

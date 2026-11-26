@@ -27,6 +27,15 @@ jobs:
         run: tools/ci/download_godot.sh
       - name: Run unit and smoke tests
         run: GODOT="$PWD/godot-bin" tools/run_tests.sh
+      - name: Performance harness (fails on a regression over 20%)
+        run: GODOT="$PWD/godot-bin" tools/run_perf.sh
+      - name: Upload performance results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-results
+          path: build/perf/latest.json
+          if-no-files-found: ignore
 
   builds:
     name: Builds (Android debug APK, Linux, Windows)
