@@ -2,9 +2,9 @@ class_name CombatSystem
 extends RefCounted
 ## Weapons: targeting, reloading, firing, projectiles and impacts (P1-08).
 ##
-## - Targets: enemies (another non-neutral player) whose armor class the weapon
-##   can hit, within range (center distance minus the target's radius) and
-##   outside min range. Best target = units before structures, then nearest,
+## - Targets: visible enemies (another team, not neutral) whose armor class the
+##   weapon can hit, within range (center distance minus the target's radius)
+##   and outside min range. Best target = units before structures, then nearest,
 ##   then lowest id. Units without a target look for one every
 ##   ACQUIRE_INTERVAL ticks (staggered by id), or right after losing one.
 ## - Weapons fire regardless of facing (turrets); units that stand still turn
@@ -26,7 +26,7 @@ static func step(world: SimWorld) -> void:
 				w.cooldown -= 1
 			var t: SimEntity = world.get_entity(w.target_id) if w.target_id != 0 else null
 			var lost: bool = false
-			if t != null and not _valid_target(e, w, t):
+			if t != null and not _valid_target(world, e, w, t):
 				# An ATTACK order keeps its target while chasing it out of range.
 				var chasing: bool = e.order == SimEntity.Order.ATTACK and e.order_target_id == t.id and not t.dead
 				if not chasing:
@@ -55,13 +55,10 @@ static func in_range(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 	return dist <= reach and dist >= w.min_range
 
 
-static func _valid_target(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
-	return not t.dead and _is_enemy(e.player_id, t.player_id) \
-			and DamageMatrix.can_target(w.targets, t.armor_class) and in_range(e, w, t)
-
-
-static func _is_enemy(player_a: int, player_b: int) -> bool:
-	return player_a != player_b and player_b != 0
+static func _valid_target(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
+	return not t.dead and world.are_enemies(e.player_id, t.player_id) \
+			and DamageMatrix.can_target(w.targets, t.armor_class) and in_range(e, w, t) \
+			and world.can_see(e.player_id, t.x, t.y)
 
 
 static func _acquire(world: SimWorld, e: SimEntity, w: SimWeapon) -> SimEntity:
@@ -69,9 +66,11 @@ static func _acquire(world: SimWorld, e: SimEntity, w: SimWeapon) -> SimEntity:
 	var best_structure: bool = true
 	var best_dist: int = 0
 	for t: SimEntity in world.query_radius(e.x, e.y, w.max_range + SimWorld.MAX_UNIT_RADIUS):
-		if t.dead or not _is_enemy(e.player_id, t.player_id):
+		if t.dead or not world.are_enemies(e.player_id, t.player_id):
 			continue
 		if not DamageMatrix.can_target(w.targets, t.armor_class) or not in_range(e, w, t):
+			continue
+		if not world.can_see(e.player_id, t.x, t.y):
 			continue
 		var structure: bool = t.armor_class == "structure"
 		var dist: int = Fx.length(t.x - e.x, t.y - e.y)
@@ -163,7 +162,7 @@ static func _impact(world: SimWorld, player_id: int, attacker_id: int, target_id
 			world.apply_damage(t, damage, damage_type, attacker_id)
 		return
 	for t: SimEntity in world.query_radius(x, y, splash_radius + SimWorld.MAX_UNIT_RADIUS):
-		if t.dead or not _is_enemy(player_id, t.player_id):
+		if t.dead or not world.are_enemies(player_id, t.player_id):
 			continue
 		var dist: int = maxi(0, Fx.length(t.x - x, t.y - y) - t.radius)
 		if dist > splash_radius:

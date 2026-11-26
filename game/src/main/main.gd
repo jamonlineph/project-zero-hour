@@ -46,6 +46,7 @@ func _ready() -> void:
 	game_view = GameView.new()
 	game_view.name = "GameView"
 	game_view.setup(world, content)
+	game_view.local_player_id = LOCAL_PLAYER
 	add_child(game_view)
 	game_view.sync(0.0)
 

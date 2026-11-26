@@ -9,6 +9,7 @@
   "cost": 250,
   "speed_cm_per_s": 380,
   "radius_cm": 150,
+  "vision_cm": 4500,
   "weapons": [
     "assault_rifles"
   ],

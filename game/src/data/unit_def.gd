@@ -13,6 +13,7 @@ var cost: int = 0
 var speed: int = 0              ## fixed-point meters per tick
 var turn_rate: int = Fx.ANGLE_FULL  ## binary angle units per tick; ANGLE_FULL = turns instantly
 var radius: int = 0             ## fixed-point meters
+var vision: int = 45 * Fx.ONE   ## sight radius, fixed-point meters (data: vision_cm)
 var weapons: Array[WeaponDef] = []
 var model_path: String = ""     ## res:// path to a .glb; may not exist yet
 var icon_path: String = ""      ## res:// path to a .png build icon; may not exist yet

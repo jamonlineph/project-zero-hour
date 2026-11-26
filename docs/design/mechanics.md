@@ -31,7 +31,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Weapons | Range, reload, instant / ballistic / guided projectiles, splash (enemies only), min range, target categories | P1-08 | ✅ |
 | Damage types × armor classes | Damage multiplier table (`game/data/damage_matrix.json`, [combat.md](combat.md)) | P1-09 | ✅ |
 | Attack orders | Attack unit, attack-move, stop, hold position (guard later) | P1-10 | ✅ |
-| Vision and fog of war | Per-player visibility grid; black shroud never seen; grey fog previously seen | P1-11 | ⬜ |
+| Vision and fog of war | Per-team visibility on 8 m cells (updated every 3 ticks), explored memory, shared allied vision; only visible enemies can be targeted or clicked. Fog rendering: P1-27 | P1-11 | ✅ |
 | Veterancy | Three ranks earned from kills: +damage, +armor, self-repair at the top rank | P1-17 | ⬜ |
 | Garrisoning | Infantry enter buildings and fire from them; flame/thermobaric weapons clear them | P3-05 | ⬜ |
 | Transports | Vehicles carry infantry; some have firing ports | P3-06 | ⬜ |

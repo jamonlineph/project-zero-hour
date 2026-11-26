@@ -236,7 +236,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Touch: a command bar placeholder.
 - **Accept:** tests for each command; the smoke test orders an attack and sees damage.
 
-### P1-11 · Vision and fog of war — ⬜
+### P1-11 · Vision and fog of war — ✅ 2026-11-26 (Claude Code: 8 m vision cells, teams share vision; enemy units hidden in the view; fog rendering is P1-27)
 - **Needs:** P1-03
 - **Do:**
   - A per-player visibility grid (visible, explored) updated every 3 ticks, with vision radius from data.

@@ -5,6 +5,8 @@ extends Node3D
 
 var world: SimWorld
 var content: ContentDb
+## Units of other teams are only drawn where this player can see (fog of war).
+var local_player_id: int = 1
 var _views: Dictionary[int, UnitView] = {}
 
 
@@ -23,7 +25,10 @@ func sync(alpha: float) -> void:
 			_views[id].queue_free()
 			_views.erase(id)
 	for id: int in world.entity_ids:
-		_views[id].update_from_sim(world.entities[id], alpha)
+		var e: SimEntity = world.entities[id]
+		var v: UnitView = _views[id]
+		v.update_from_sim(e, alpha)
+		v.visible = not world.are_enemies(local_player_id, e.player_id) or world.can_see(local_player_id, e.x, e.y)
 
 
 ## Simple placeholder effects for sim events until P1-28 adds real ones: a

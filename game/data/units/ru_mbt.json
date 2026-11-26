@@ -10,6 +10,7 @@
   "speed_cm_per_s": 700,
   "turn_rate_deg_per_s": 80,
   "radius_cm": 300,
+  "vision_cm": 4500,
   "weapons": [
     "tank_cannon_125"
   ],

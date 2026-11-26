@@ -297,6 +297,9 @@ func _pick_unit(screen_pos: Vector2, own: bool) -> int:
 		var owner_id: int = runner.world.entities[id].player_id
 		if (owner_id == local_player_id) != own or (not own and owner_id == 0):
 			continue
+		var ent: SimEntity = runner.world.entities[id]
+		if not own and not runner.world.can_see(local_player_id, ent.x, ent.y):
+			continue
 		var sp: Variant = _screen_pos(id)
 		if sp == null:
 			continue

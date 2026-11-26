@@ -70,25 +70,26 @@ func _run() -> void:
 		quit(1)
 
 
-## Orders the player's units to attack an enemy and waits for damage.
+## Attack-moves the player's units toward the enemy and waits for damage.
 func _check_attack(world: SimWorld, selection: SelectionController) -> PackedStringArray:
 	var problems: PackedStringArray = []
-	var target_id: int = 0
+	var enemies: Array[int] = []
 	for id: int in world.entity_ids:
 		if world.entities[id].player_id == 2:
-			target_id = id
-			break
-	if target_id == 0:
+			enemies.append(id)
+	if enemies.is_empty():
 		problems.append("no enemy unit to attack")
 		return problems
+	var first: SimEntity = world.get_entity(enemies[0])
 	selection.box_select(Rect2(Vector2(-10000, -10000), Vector2(20000, 20000)))
-	selection.order_attack(target_id)
-	for i: int in 1200:
+	selection.runner.submit(SimCommand.make_attack_move(selection.selected, first.x, first.y))
+	for i: int in 1500:
 		await process_frame
-		var t: SimEntity = world.get_entity(target_id)
-		if t == null or t.hp < t.max_hp:
-			return problems
-	problems.append("an attack order dealt no damage within 1200 frames")
+		for id: int in enemies:
+			var t: SimEntity = world.get_entity(id)
+			if t == null or t.hp < t.max_hp:
+				return problems
+	problems.append("an attack-move toward the enemy dealt no damage within 1500 frames")
 	return problems
 
 

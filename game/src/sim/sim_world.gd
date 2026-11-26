@@ -23,6 +23,9 @@ var pathfinder: Pathfinder  ## A* over `map`, shared by all movers
 var entities: Dictionary[int, SimEntity] = {}
 var entity_ids: Array[int] = []   ## ascending ids: always iterate this
 var damage_matrix: DamageMatrix = DamageMatrix.new()
+var vision: SimVision
+## Player -> team. Players not listed are on a team of their own (team = id).
+var player_team: Dictionary[int, int] = {}
 var projectiles: Array[SimProjectile] = []   ## in creation order
 ## What happened this tick, for the view and audio (not part of the state hash).
 ## Dictionaries with a "type": "fired", "hit" or "died".
@@ -53,6 +56,20 @@ func set_map(new_map: SimMap) -> void:
 	pathfinder = Pathfinder.new(new_map)
 	map_width = new_map.width_cells * SimMap.CELL
 	map_height = new_map.height_cells * SimMap.CELL
+	vision = SimVision.new(map_width, map_height)
+
+
+func team_of(player_id: int) -> int:
+	return player_team.get(player_id, player_id)
+
+
+func are_enemies(player_a: int, player_b: int) -> bool:
+	return player_a != 0 and player_b != 0 and team_of(player_a) != team_of(player_b)
+
+
+## True if `player_id`'s team currently sees the point (fixed-point meters).
+func can_see(player_id: int, x: int, y: int) -> bool:
+	return vision.is_visible(team_of(player_id), x, y)
 
 
 ## Adds a unit and returns its id. x and y are fixed-point meters; facing is a
@@ -71,6 +88,7 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 	e.facing = Fx.wrap_angle(facing)
 	e.prev_facing = e.facing
 	e.radius = def.radius
+	e.vision = def.vision
 	e.max_hp = def.max_hp
 	e.hp = def.max_hp
 	if def.speed > 0:
@@ -112,6 +130,8 @@ func step() -> void:
 	PathingSystem.step(self)
 	MovementSystem.step(self)
 	SeparationSystem.step(self)
+	if tick % SimVision.UPDATE_INTERVAL == 0:
+		vision.update(self)
 	_rebuild_index()
 	CombatSystem.step(self)
 	_remove_dead()
@@ -191,6 +211,7 @@ func state_hash() -> int:
 	h.add_int(tick)
 	h.add_int(rng.state)
 	map.write_hash(h)
+	vision.write_hash(h)
 	h.add_int(entity_ids.size())
 	for id: int in entity_ids:
 		entities[id].write_hash(h)
@@ -294,7 +315,7 @@ func _apply_stop(c: SimCommand) -> void:
 ## to hit it ignore the order.
 func _apply_attack(c: SimCommand) -> void:
 	var t: SimEntity = get_entity(c.target_entity)
-	if t == null or t.dead or t.player_id == c.player_id or t.player_id == 0:
+	if t == null or t.dead or not are_enemies(c.player_id, t.player_id) or not can_see(c.player_id, t.x, t.y):
 		return
 	for e: SimEntity in _owned_entities(c):
 		var able: bool = false

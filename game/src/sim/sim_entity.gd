@@ -20,6 +20,7 @@ var prev_y: int = 0
 var facing: int = 0             ## binary angle (Fx.ANGLE_FULL per turn); 0 = +X, 1024 = +Y
 var prev_facing: int = 0        ## facing at the start of the tick, for view interpolation
 var radius: int = 0             ## fixed-point meters
+var vision: int = 0             ## sight radius, fixed-point meters
 var hp: int = 0
 var max_hp: int = 0
 var dead: bool = false          ## set when hp reaches 0; removed at the end of the tick
@@ -46,6 +47,7 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(y)
 	h.add_int(facing)
 	h.add_int(radius)
+	h.add_int(vision)
 	h.add_int(hp)
 	h.add_int(max_hp)
 	h.add_bool(dead)

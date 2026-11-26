@@ -114,6 +114,7 @@ func test_splash_hits_enemies_only_and_respects_min_range() -> void:
 	var mortar: WeaponDef = _content().get_weapon("test_mortar")
 	var shooter: int = _spawn(world, "us_rifle_squad", 1, 20, 50)
 	world.get_entity(shooter).weapons = [SimWeapon.from_def(mortar)] as Array[SimWeapon]
+	world.get_entity(shooter).vision = Fx.from_int(100)   # mortars need someone to see far
 	var e1: int = _spawn(world, "ru_motor_rifle_squad", 2, 70, 50)
 	var e2: int = _spawn(world, "ru_motor_rifle_squad", 2, 72, 52)
 	var friend: int = _spawn(world, "us_rifle_squad", 1, 71, 48)
@@ -133,6 +134,7 @@ func test_projectiles_take_time_to_arrive() -> void:
 	var world := _world()
 	var shooter: int = _spawn(world, "us_rifle_squad", 1, 20, 50)
 	world.get_entity(shooter).weapons = [SimWeapon.from_def(_content().get_weapon("test_mortar"))] as Array[SimWeapon]
+	world.get_entity(shooter).vision = Fx.from_int(100)
 	var target: int = _spawn(world, "ru_motor_rifle_squad", 2, 80, 50)
 	world.get_entity(target).weapons.clear()
 	var fired_at: int = -1
@@ -154,6 +156,10 @@ func test_attack_order_chases_and_kills() -> void:
 	var hunter: int = _spawn(world, "us_mbt", 1, 20, 50)
 	var prey: int = _spawn(world, "ru_motor_rifle_squad", 2, 150, 120)
 	world.get_entity(prey).weapons.clear()
+	# A friendly spotter near the prey shares its vision with the hunter.
+	var spotter: int = _spawn(world, "us_rifle_squad", 1, 160, 140)
+	world.get_entity(spotter).weapons.clear()
+	world.step()
 	_command(world, SimCommand.make_attack([hunter], prey))
 	_run(world, 15 * 60)
 	assert_false(world.entities.has(prey), "the target survived")

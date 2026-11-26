@@ -30,7 +30,8 @@ static func step(world: SimWorld) -> void:
 
 static func _attack(world: SimWorld, e: SimEntity) -> void:
 	var t: SimEntity = world.get_entity(e.order_target_id)
-	if t == null or t.dead:
+	# Lose the target if it dies or drops out of sight (no chasing ghosts).
+	if t == null or t.dead or not world.can_see(e.player_id, t.x, t.y):
 		e.order = SimEntity.Order.IDLE
 		e.order_target_id = 0
 		if e.mover != null:
