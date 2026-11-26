@@ -4,7 +4,7 @@ extends Control
 ## switches to the game scene.
 
 const GAME_SCENE: String = "res://scenes/main.tscn"
-const MAP_ID: String = "sandbox"
+const MAP_ID: String = "twin_ridge"   ## mirrored, so neither side is favored (P2-11b)
 
 var content: ContentDb
 var faction: String = "us"

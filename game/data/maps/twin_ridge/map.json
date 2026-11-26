@@ -1,0 +1,101 @@
+{
+  "id": "twin_ridge",
+  "name": "Twin Ridge",
+  "_doc": "A 1v1 skirmish map, exactly mirrored across x = 64 (every obstacle, start and supply site has a twin), so neither side starts with an advantage (P2-11b). The sandbox stays as the developer test map.",
+  "width_m": 128,
+  "height_m": 128,
+  "obstacles_m": [
+    [
+      61,
+      10,
+      6,
+      46
+    ],
+    [
+      61,
+      74,
+      6,
+      44
+    ],
+    [
+      40,
+      22,
+      4,
+      4
+    ],
+    [
+      84,
+      22,
+      4,
+      4
+    ],
+    [
+      18,
+      100,
+      4,
+      6
+    ],
+    [
+      106,
+      100,
+      4,
+      6
+    ],
+    [
+      48,
+      92,
+      4,
+      4
+    ],
+    [
+      76,
+      92,
+      4,
+      4
+    ],
+    [
+      10,
+      30,
+      6,
+      3
+    ],
+    [
+      112,
+      30,
+      6,
+      3
+    ]
+  ],
+  "start_positions_m": [
+    [
+      20,
+      46
+    ],
+    [
+      108,
+      46
+    ]
+  ],
+  "supply_sites_m": [
+    [
+      40,
+      40,
+      30000
+    ],
+    [
+      88,
+      40,
+      30000
+    ],
+    [
+      40,
+      112,
+      20000
+    ],
+    [
+      88,
+      112,
+      20000
+    ]
+  ]
+}

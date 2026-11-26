@@ -505,11 +505,17 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P1-31, P2-09
 - **Accept:** easy and normal difficulty for America and North Korea; counter-building; uses powers; AI-vs-AI results logged.
 
-### P2-11b · Find and remove the west-side advantage — ⬜
+### P2-11b · Find and remove the west-side advantage — ✅ 2026-11-26 (Claude Code: on Twin Ridge each side won 20 of 40; see P2-11c for faction balance)
 - **Seen (2026-11-26, `ai_matches.gd`, normal vs normal on the sandbox map):** player 1 (west) won 8 of 8 as America and 6 of 6 when the factions were swapped (North Korea west), so it is a side bias, not faction balance. Making fire simultaneous within a tick (a real fairness fix, done in P2-11) did not change it.
 - **Suspects:** the sandbox map is not mirrored (rocks, one contested supply site at x 86 instead of 88, the ridge centered at x 65); the AI's building-spot search tries east first, which is toward the front for the west player and toward the map edge for the east player; player 1's AI thinks one tick earlier.
 - **Do:** test each suspect with `godot --headless --path game --script res://tests/tools/ai_matches.gd -- 10 normal normal [swap]`; fix the cause; P2-12's mirror-fair map will be judged with the same tool.
 - **Accept:** on a mirrored map, neither side wins more than 55% of 40 runs.
+
+### P2-11c · Faction balance: North Korea beats America in AI-vs-AI — ⬜
+- **Seen (2026-11-26, Twin Ridge, normal vs normal, 40 runs):** North Korea won all 40, from either side. Side fairness is fine (P2-11b); this is balance or AI play.
+- **Suspects:** America's preset spends on rocket artillery that needs spotters and on recon drones the AI doesn't use well; North Korea's cheaper squads, cage armor and Reserve Call-Up snowball; America's composite armor arrives later than North Korea's reactive armor.
+- **Do:** try one change at a time and measure with `ai_matches.gd` (20 runs each way); prefer AI preset fixes before changing unit numbers (those must stay in sync with `vertical-slice.md`, see P2-10).
+- **Accept:** neither faction wins more than 60% of 40 normal-vs-normal runs on Twin Ridge; final tuning comes from human playtests (P2-20).
 
 ### P2-12 · Map "Riverside" — ⬜
 - **Needs:** P1-30

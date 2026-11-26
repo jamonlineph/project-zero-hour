@@ -186,9 +186,12 @@ func _next_in_build_order(mine: _Mine) -> String:
 func _find_spot(world: SimWorld, def: BuildingDef, hq: SimEntity) -> Vector2i:
 	var dirs: Array[Vector2i] = [Vector2i(1, 0), Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 1),
 		Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1), Vector2i(-1, 0)]
+	# Mirror the search for a base on the east half, so both sides lay out
+	# their bases the same way relative to the front (P2-11b fairness).
+	var sx: int = 1 if hq.x < world.map_width / 2 else -1
 	for ring: int in range(1, 9):
 		for d: Vector2i in dirs:
-			var cx: int = hq.x + d.x * ring * 10 * Fx.ONE
+			var cx: int = hq.x + d.x * sx * ring * 10 * Fx.ONE
 			var cy: int = hq.y + d.y * ring * 10 * Fx.ONE
 			var origin: Vector2i = SimWorld.footprint_origin(def, cx, cy)
 			if _clear(world, def, origin) and world.can_place(def, origin):

@@ -13,6 +13,7 @@
 - The sim gets integer heights (`SimMap.height_at`) and the passability grid; `TerrainView` builds the ground mesh from the same heights, so what you see is what the sim uses.
 - Later: `splat.png` (terrain texture weights), `props.json` (decorations), neutral buildings and triggers.
 - Sizes: 256×256 m (1v1), 384×384 m (2v2), 512×512 m (4 players). The sandbox is 128×128 m.
+- Maps today: **sandbox** (developer test map, not mirrored) and **Twin Ridge** (`twin_ridge`, 128×128 m, exactly mirrored; used for skirmishes and AI duels until Riverside exists).
 
 ## Map design rules
 

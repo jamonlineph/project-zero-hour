@@ -1,6 +1,6 @@
 extends SceneTree
 ## Plays AI-vs-AI skirmishes headless and logs the results (P2-11).
-## Usage: godot --headless --path game --script res://tests/tools/ai_matches.gd -- [runs] [p1_level] [p2_level] [swap]
+## Usage: godot --headless --path game --script res://tests/tools/ai_matches.gd -- [runs] [p1_level] [p2_level] [swap] [map=<id>]
 ## "swap" trades the two factions between the start positions (tells a
 ## faction imbalance apart from a map-side bias).
 ## Writes build/ai/results.json and prints a summary. Used for balance and
@@ -10,7 +10,11 @@ func _initialize() -> void:
 	var args: PackedStringArray = OS.get_cmdline_user_args()
 	var runs: int = int(args[0]) if args.size() > 0 else 10
 	var levels: Array = [args[1] if args.size() > 1 else "normal", args[2] if args.size() > 2 else "normal"]
-	var swap: bool = args.size() > 3 and args[3] == "swap"
+	var swap: bool = args.has("swap")
+	var map_id: String = ""
+	for a: String in args:
+		if a.begins_with("map="):
+			map_id = a.trim_prefix("map=")
 	var db := ContentDb.new()
 	if not db.load_all():
 		printerr("ai_matches: content failed to load")
@@ -24,6 +28,8 @@ func _initialize() -> void:
 			(sc["players"] as Array)[i]["difficulty"] = levels[i]
 		if swap:
 			_swap_factions(sc)
+		if map_id != "":
+			sc["map"] = map_id
 		var runner := SimRunner.new()
 		runner.world = MatchSetup.build_from(db, sc, 1000 + r)
 		runner.players = [1, 2]

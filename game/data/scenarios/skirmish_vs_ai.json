@@ -1,7 +1,7 @@
 {
   "id": "skirmish_vs_ai",
   "name": "Skirmish against the computer",
-  "map": "sandbox",
+  "map": "twin_ridge",
   "victory": "buildings",
   "players": [
     {

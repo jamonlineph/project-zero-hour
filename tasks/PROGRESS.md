@@ -4,6 +4,19 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-11b West-side advantage found and removed (Claude Code, branch claude/phase-0-wrapup)
+- Done: tested the suspects one at a time with `ai_matches.gd`.
+  - On a flat, exactly mirrored copy of the sandbox, the west player still won 20 of 26, so map asymmetry was only part of it.
+  - The AI's building-spot search tried east first: toward the front for the west base, toward the map edge for the east base. It is now mirrored for a base on the east half.
+  - The mirrored map became a real skirmish map, **Twin Ridge** (`twin_ridge`), now used by the skirmish menu, `skirmish_vs_ai` and `ai_duel`. The sandbox stays as the developer test map.
+- Result: 40 runs on Twin Ridge, normal vs normal, half with the factions swapped. Each side won exactly 20 (passes the 55% rule). But North Korea won all 40 from either side: a faction balance issue, logged as **P2-11c** with suspects.
+- The determinism check plays the AI duel, which now uses Twin Ridge, so its hash changed again: the phone should show **3797961381**.
+- Tests: `tools/run_tests.sh` -> 236 tests, 0 failed.
+- Next: P2-11c (balance), P2-12 (map "Riverside").
+- For the owner: the determinism-check number is now 3797961381.
+
+---
+
 ## 2026-11-26: P2-11 Skirmish AI v1 (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **Difficulty:** easy and normal, chosen in the main menu ("Computer: Normal"). Easy thinks half as often, attacks a minute later with bigger waves, and doesn't counter-build or research.
