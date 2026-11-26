@@ -5,6 +5,8 @@ extends Node3D
 ## never writes it.
 
 const RING_COLOR := Color(0.35, 1.0, 0.45)
+const DRONE_HOVER_M: float = 6.0  ## drones fly; the sim keeps them on the ground plane
+
 
 var entity_id: int = 0
 var _ring: MeshInstance3D
@@ -38,6 +40,8 @@ func setup(entity: SimEntity, def: UnitDef, team_color: Color) -> void:
 	name = "Unit_%d" % entity.id
 	var radius_m: float = Fx.to_float(entity.radius)
 	_model = _make_model(def, radius_m, team_color)
+	if def != null and def.armor_class == "drone":
+		_model.position.y = DRONE_HOVER_M
 	add_child(_model)
 	_ring = _make_ring(radius_m)
 	_ring.visible = false

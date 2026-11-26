@@ -1,0 +1,16 @@
+{
+  "id": "us_rocket_pod",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "damage": 220,
+  "damage_type": "high_explosive",
+  "range_cm": 16000,
+  "reload_ms": 10000,
+  "projectile": "ballistic",
+  "targets": [
+    "ground"
+  ],
+  "min_range_cm": 2000,
+  "projectile_speed_cm_per_s": 8000,
+  "splash_radius_cm": 600,
+  "splash_edge_percent": 40
+}

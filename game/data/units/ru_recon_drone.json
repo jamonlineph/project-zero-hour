@@ -1,0 +1,20 @@
+{
+  "id": "ru_recon_drone",
+  "faction": "ru",
+  "role": "recon_drone",
+  "name": "Recon Drone",
+  "armor_class": "drone",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 50,
+  "cost": 250,
+  "speed_cm_per_s": 1400,
+  "radius_cm": 100,
+  "vision_cm": 7000,
+  "build_time_ms": 6000,
+  "requires": [],
+  "weapons": [],
+  "visual": {
+    "model": "res://assets/models/units/ru_recon_drone.glb",
+    "icon": "res://assets/icons/units/ru_recon_drone.png"
+  }
+}

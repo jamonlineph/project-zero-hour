@@ -1,0 +1,23 @@
+{
+  "id": "ru_howitzer",
+  "faction": "ru",
+  "role": "artillery",
+  "name": "Self-Propelled Howitzer",
+  "armor_class": "heavy_armor",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 500,
+  "cost": 1100,
+  "speed_cm_per_s": 500,
+  "turn_rate_deg_per_s": 70,
+  "radius_cm": 320,
+  "vision_cm": 4000,
+  "build_time_ms": 18000,
+  "requires": [],
+  "weapons": [
+    "ru_howitzer_152"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/ru_howitzer.glb",
+    "icon": "res://assets/icons/units/ru_howitzer.png"
+  }
+}

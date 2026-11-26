@@ -1,0 +1,23 @@
+{
+  "id": "us_rocket_artillery",
+  "faction": "us",
+  "role": "artillery",
+  "name": "Guided Rocket Artillery",
+  "armor_class": "light_vehicle",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 450,
+  "cost": 1300,
+  "speed_cm_per_s": 700,
+  "turn_rate_deg_per_s": 90,
+  "radius_cm": 280,
+  "vision_cm": 4000,
+  "build_time_ms": 18000,
+  "requires": [],
+  "weapons": [
+    "us_rocket_pod"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/us_rocket_artillery.glb",
+    "icon": "res://assets/icons/units/us_rocket_artillery.png"
+  }
+}

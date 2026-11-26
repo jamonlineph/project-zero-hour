@@ -1,0 +1,13 @@
+{
+  "id": "bunker_machine_gun",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "damage": 15,
+  "damage_type": "small_arms",
+  "range_cm": 3500,
+  "reload_ms": 800,
+  "projectile": "instant",
+  "targets": [
+    "ground",
+    "drone"
+  ]
+}

@@ -18,7 +18,10 @@
   ],
   "produces": [
     "ru_mbt",
-    "ru_logistics_truck"
+    "ru_logistics_truck",
+    "ru_ifv",
+    "ru_howitzer",
+    "ru_ew_vehicle"
   ],
   "visual": {
     "model": "res://assets/models/buildings/ru_vehicle_plant.glb",

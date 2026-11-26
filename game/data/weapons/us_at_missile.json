@@ -1,0 +1,13 @@
+{
+  "id": "us_at_missile",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "damage": 140,
+  "damage_type": "anti_tank",
+  "range_cm": 4500,
+  "reload_ms": 4000,
+  "projectile": "guided",
+  "targets": [
+    "ground"
+  ],
+  "projectile_speed_cm_per_s": 6000
+}

@@ -1,0 +1,27 @@
+{
+  "id": "us_bunker",
+  "faction": "us",
+  "name": "Hardened Bunker",
+  "armor_class": "structure",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 1500,
+  "cost": 600,
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "build_time_ms": 10000,
+  "power": 0,
+  "vision_cm": 4500,
+  "requires": [
+    "us_barracks"
+  ],
+  "produces": [],
+  "weapons": [
+    "bunker_machine_gun"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/us_bunker.glb",
+    "icon": "res://assets/icons/buildings/us_bunker.png"
+  }
+}

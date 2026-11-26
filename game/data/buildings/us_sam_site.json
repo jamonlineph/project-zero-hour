@@ -1,0 +1,27 @@
+{
+  "id": "us_sam_site",
+  "faction": "us",
+  "name": "Long-Range Air Defense",
+  "armor_class": "structure",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 1100,
+  "cost": 1000,
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "build_time_ms": 15000,
+  "power": -3,
+  "vision_cm": 9000,
+  "requires": [
+    "us_logistics_hub"
+  ],
+  "produces": [],
+  "weapons": [
+    "sam_interceptor"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/us_sam_site.glb",
+    "icon": "res://assets/icons/buildings/us_sam_site.png"
+  }
+}

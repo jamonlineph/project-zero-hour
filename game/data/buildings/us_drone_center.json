@@ -1,0 +1,26 @@
+{
+  "id": "us_drone_center",
+  "faction": "us",
+  "name": "Drone Operations Center",
+  "armor_class": "structure",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 1400,
+  "cost": 1200,
+  "footprint_cells": [
+    5,
+    5
+  ],
+  "build_time_ms": 14000,
+  "power": -2,
+  "vision_cm": 5000,
+  "requires": [
+    "us_logistics_hub"
+  ],
+  "produces": [
+    "us_recon_drone"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/us_drone_center.glb",
+    "icon": "res://assets/icons/buildings/us_drone_center.png"
+  }
+}

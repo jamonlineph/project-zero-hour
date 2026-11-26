@@ -1,0 +1,27 @@
+{
+  "id": "ru_drone_launch_site",
+  "faction": "ru",
+  "name": "Drone Launch Site",
+  "armor_class": "structure",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 1400,
+  "cost": 1200,
+  "footprint_cells": [
+    5,
+    5
+  ],
+  "build_time_ms": 14000,
+  "power": -2,
+  "vision_cm": 5000,
+  "requires": [
+    "ru_logistics_hub"
+  ],
+  "produces": [
+    "ru_recon_drone",
+    "ru_loitering_team"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/ru_drone_launch_site.glb",
+    "icon": "res://assets/icons/buildings/ru_drone_launch_site.png"
+  }
+}

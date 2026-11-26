@@ -18,7 +18,10 @@
   ],
   "produces": [
     "us_mbt",
-    "us_logistics_truck"
+    "us_logistics_truck",
+    "us_ifv",
+    "us_rocket_artillery",
+    "us_laser_cuas"
   ],
   "visual": {
     "model": "res://assets/models/buildings/us_vehicle_depot.glb",

@@ -17,7 +17,8 @@
     "us_microreactor"
   ],
   "produces": [
-    "us_rifle_squad"
+    "us_rifle_squad",
+    "us_at_team"
   ],
   "visual": {
     "model": "res://assets/models/buildings/us_barracks.glb",

@@ -4,6 +4,33 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P1-04b to P1-34 (Claude Code, branch claude/phase-0-wrapup)
+
+**Done:**
+- **Pathfinding (P1-04b):** Jump Point Search with precomputed straight-run tables. Worst case 2.4 ms, typical 0.09 ms (was 22 ms worst).
+- **Movement (P1-05, P1-06):** one shared path per group; compact groups keep their layout, spread groups form a grid. Bucket-grid separation stops units overlapping.
+- **Combat (P1-07 to P1-10):** health and death, damage matrix and weapons from data, instant, ballistic and guided projectiles, splash. Attack, attack-move, hold and stop.
+- **Vision (P1-11):** per-team 8 m vision grid with explored memory. Units only target what their team sees.
+- **Base and economy (P1-12 to P1-16):** construction by engineers, production queues with rally points, prerequisites, supply trucks and supply sites, power (low power halves production and shuts down armed buildings).
+- **Progression (P1-17 to P1-19):** veterancy, commander rank, victory and defeat rules.
+- **Replays and lockstep (P1-20, P1-21):** replays with golden replay tests; a lockstep scheduler with input delay and hash checks.
+- **AI (P1-31):** skirmish AI v0 from presets in `game/data/ai`. An AI-vs-AI duel ends at about 5:00 game time.
+- **UI (P1-25, P1-26, P1-32):** HUD with minimap and a 3×4 command grid (Q-W-E-R / A-S-D-F / Z-X-C-V); building placement ghost; main menu, skirmish setup, pause menu and end screen.
+- **Roster (P1-34):** every unit and building in `docs/design/vertical-slice.md` has data, a Blender placeholder model and an icon (35 assets). New generator options are listed in `docs/04-art-pipeline.md`.
+
+**Tests:** `tools/run_tests.sh` → 118 tests, 0 failed; `smoke_main: ok`; `smoke_menu: ok`. `python3 tools/check_repo.py` → ok.
+
+**Not verified:**
+- Nothing seen on a real screen. The test machine has no GPU; the owner check is P0-15.
+- Not run on an Android phone or a Googlebook (P0-12, P0-13).
+- The new units' special rules are not in yet: EW jamming, transports, drone endurance, active protection and cage armor come in Phase 2 (P2-01 to P2-04). Drones still path on the ground in the sim; the view lifts them 6 m.
+
+**Next:** P1-22 (unit views v2), P1-27 (fog rendering), P1-23/P1-24 (controls), P1-33 (performance harness).
+
+**For the owner:** play a skirmish from the menu and say how it feels; answer Q-1 to Q-6 in `tasks/QUESTIONS.md`.
+
+---
+
 ## 2026-11-25: P1-02, P1-03, P1-04 (Claude Code, branch claude/phase-0-wrapup)
 
 **Done:**

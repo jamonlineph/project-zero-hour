@@ -401,7 +401,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - CI fails on more than 20% regression against `perf_baseline.json`.
 - **Accept:** baseline committed; documented.
 
-### P1-34 · Placeholder art for the vertical-slice roster — ⬜
+### P1-34 · Placeholder art for the vertical-slice roster — ✅ 2026-11-26 (Claude Code: 35 models and icons; special abilities such as jamming, transport and endurance come with Phase 2)
 - **Do:**
   - Add specs and data for every unit and building in [vertical-slice.md](../docs/design/vertical-slice.md).
   - Add archetypes if needed: a launcher truck, a helicopter for later.

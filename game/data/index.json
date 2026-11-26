@@ -5,7 +5,17 @@
     "res://data/weapons/tank_cannon_120.json",
     "res://data/weapons/tank_cannon_125.json",
     "res://data/weapons/assault_rifles.json",
-    "res://data/weapons/test_mortar.json"
+    "res://data/weapons/test_mortar.json",
+    "res://data/weapons/us_at_missile.json",
+    "res://data/weapons/ru_at_missile.json",
+    "res://data/weapons/us_ifv_autocannon.json",
+    "res://data/weapons/ru_ifv_autocannon.json",
+    "res://data/weapons/us_rocket_pod.json",
+    "res://data/weapons/ru_howitzer_152.json",
+    "res://data/weapons/us_cuas_laser.json",
+    "res://data/weapons/ru_loitering_munition.json",
+    "res://data/weapons/bunker_machine_gun.json",
+    "res://data/weapons/sam_interceptor.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",
@@ -15,7 +25,18 @@
     "res://data/units/us_engineer.json",
     "res://data/units/ru_engineer.json",
     "res://data/units/us_logistics_truck.json",
-    "res://data/units/ru_logistics_truck.json"
+    "res://data/units/ru_logistics_truck.json",
+    "res://data/units/us_at_team.json",
+    "res://data/units/us_ifv.json",
+    "res://data/units/us_rocket_artillery.json",
+    "res://data/units/us_laser_cuas.json",
+    "res://data/units/us_recon_drone.json",
+    "res://data/units/ru_at_team.json",
+    "res://data/units/ru_ifv.json",
+    "res://data/units/ru_howitzer.json",
+    "res://data/units/ru_ew_vehicle.json",
+    "res://data/units/ru_recon_drone.json",
+    "res://data/units/ru_loitering_team.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",
@@ -27,7 +48,13 @@
     "res://data/buildings/ru_power_plant.json",
     "res://data/buildings/ru_barracks.json",
     "res://data/buildings/ru_logistics_hub.json",
-    "res://data/buildings/ru_vehicle_plant.json"
+    "res://data/buildings/ru_vehicle_plant.json",
+    "res://data/buildings/us_drone_center.json",
+    "res://data/buildings/us_bunker.json",
+    "res://data/buildings/us_sam_site.json",
+    "res://data/buildings/ru_drone_launch_site.json",
+    "res://data/buildings/ru_trench_line.json",
+    "res://data/buildings/ru_sam_site.json"
   ],
   "maps": [
     "res://data/maps/sandbox.json"

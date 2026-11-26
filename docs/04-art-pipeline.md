@@ -61,6 +61,20 @@ Units and buildings are low-poly 3D models, so the camera can zoom and rotate an
 - Textures compress to ASTC/ETC2 for mobile (`import_etc2_astc=true` in the project).
 - Each asset should have one material plus `team_color`.
 
+## Placeholder generator options
+
+`blender/sf_generators.py` has one function per archetype. Options go in the asset's spec line.
+
+| Archetype | Options |
+|---|---|
+| `tracked` | `length`, `width`, `height`; `turret` (false for engineers), `turret_scale`, `turret_offset`, `barrel_length` (0 = none), `barrel_radius`; `aps`, `cage`; `extras`: `dozer_blade`, `crane`, `antennas`, `rear_door`; `turret_extras`: `missile_box`, `sight` |
+| `wheeled` | `length`, `width`, `height`, `axles`; `cargo`: `crates`, `armored`, `launcher`, `pods`, `laser`, `ew`; `extras` as for tracked |
+| `infantry` | `figures`, `scale`; `weapon`: `rifle`, `launcher`, `drone_case` |
+| `drone` | `size`; `wing` (true = small fixed-wing instead of a quadcopter) |
+| `building` | `width`, `depth`, `height`; `style`: `block` (default), `bunker`, `trench`, `sam`; `details` for blocks: `mast`, `vents`, `garage`, `reactor`, `stacks`, `tanks`, `pad`, `dish`, `flag` |
+
+Every model needs at least one `team_color` surface; the smoke test checks this. Drones are modeled at ground level, and the view lifts them 6 m.
+
 ## Workflow for one asset
 
 1. **Spec:** add it to `blender/specs/placeholders.json` (size, archetype, options).

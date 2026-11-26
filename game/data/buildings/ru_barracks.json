@@ -17,7 +17,8 @@
     "ru_power_plant"
   ],
   "produces": [
-    "ru_motor_rifle_squad"
+    "ru_motor_rifle_squad",
+    "ru_at_team"
   ],
   "visual": {
     "model": "res://assets/models/buildings/ru_barracks.glb",

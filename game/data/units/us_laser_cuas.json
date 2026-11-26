@@ -1,0 +1,23 @@
+{
+  "id": "us_laser_cuas",
+  "faction": "us",
+  "role": "counter_drone",
+  "name": "Laser Counter-Drone Vehicle",
+  "armor_class": "light_vehicle",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 450,
+  "cost": 900,
+  "speed_cm_per_s": 650,
+  "turn_rate_deg_per_s": 110,
+  "radius_cm": 260,
+  "vision_cm": 5500,
+  "build_time_ms": 14000,
+  "requires": [],
+  "weapons": [
+    "us_cuas_laser"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/us_laser_cuas.glb",
+    "icon": "res://assets/icons/units/us_laser_cuas.png"
+  }
+}
