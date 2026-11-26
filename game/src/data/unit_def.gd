@@ -15,6 +15,13 @@ var turn_rate: int = Fx.ANGLE_FULL  ## binary angle units per tick; ANGLE_FULL =
 var radius: int = 0             ## fixed-point meters
 var vision: int = 45 * Fx.ONE   ## sight radius, fixed-point meters (data: vision_cm)
 var weapons: Array[WeaponDef] = []
+var build_ticks: int = 1        ## production time (data: build_time_ms)
+var requires: PackedStringArray = []   ## building ids the player must own (built)
+var builder: bool = false       ## can construct and repair buildings
+var gatherer: bool = false      ## collects supply
+var gather_capacity: int = 0
+var gather_load_ticks: int = 1
+var gather_unload_ticks: int = 1
 var model_path: String = ""     ## res:// path to a .glb; may not exist yet
 var icon_path: String = ""      ## res:// path to a .png build icon; may not exist yet
 

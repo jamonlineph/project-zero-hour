@@ -11,8 +11,10 @@ extends RefCounted
 const INDEX_PATH: String = "res://data/index.json"
 
 var units: Dictionary[String, UnitDef] = {}
+var buildings: Dictionary[String, BuildingDef] = {}
 var weapons: Dictionary[String, WeaponDef] = {}
 var maps: Dictionary[String, MapDef] = {}
+var scenarios: Dictionary[String, Dictionary] = {}   ## raw scenario data, see MatchSetup
 var damage_matrix: DamageMatrix = DamageMatrix.new()
 var errors: PackedStringArray = []
 
@@ -21,8 +23,10 @@ var errors: PackedStringArray = []
 ## the messages are in `errors`.
 func load_all(index_path: String = INDEX_PATH) -> bool:
 	units.clear()
+	buildings.clear()
 	weapons.clear()
 	maps.clear()
+	scenarios.clear()
 	damage_matrix = DamageMatrix.new()
 	errors.clear()
 	var index: Variant = _read_json(index_path)
@@ -36,8 +40,13 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 		_load_weapon(str(path))
 	for path: Variant in (index as Dictionary).get("units", []):
 		_load_unit(str(path))
+	for path: Variant in (index as Dictionary).get("buildings", []):
+		_load_building(str(path))
 	for path: Variant in (index as Dictionary).get("maps", []):
 		_load_map(str(path))
+	for path: Variant in (index as Dictionary).get("scenarios", []):
+		_load_scenario(str(path))
+	_check_references()
 	return errors.is_empty()
 
 
@@ -51,6 +60,115 @@ func get_map(id: String) -> MapDef:
 
 func get_weapon(id: String) -> WeaponDef:
 	return weapons.get(id, null)
+
+
+func get_building(id: String) -> BuildingDef:
+	return buildings.get(id, null)
+
+
+## Cost of a unit or building id (0 if unknown).
+func cost_of(id: String) -> int:
+	if units.has(id):
+		return units[id].cost
+	if buildings.has(id):
+		return buildings[id].cost
+	return 0
+
+
+func _load_building(path: String) -> void:
+	var parsed: Variant = _read_json(path)
+	if not parsed is Dictionary:
+		errors.append("%s: expected a JSON object" % path)
+		return
+	var src: Dictionary = parsed
+	var b := BuildingDef.new()
+	b.id = _req_string(src, "id", path)
+	b.faction = _req_string(src, "faction", path)
+	b.name = _req_string(src, "name", path)
+	b.armor_class = str(src.get("armor_class", "structure"))
+	b.max_hp = _req_int(src, "max_hp", path, 1)
+	b.cost = _req_int(src, "cost", path, 0)
+	var fp: Variant = src.get("footprint_cells", [])
+	if fp is Array and (fp as Array).size() == 2:
+		b.footprint_w = maxi(1, int(fp[0]))
+		b.footprint_h = maxi(1, int(fp[1]))
+	else:
+		errors.append("%s: 'footprint_cells' must be [w, h]" % path)
+	b.build_ticks = _ms_to_ticks(_req_int(src, "build_time_ms", path, 1))
+	b.power = int(src.get("power", 0))
+	if src.has("vision_cm"):
+		b.vision = Fx.from_ratio(_req_int(src, "vision_cm", path, 0), 100)
+	b.requires = _string_list(src, "requires", path)
+	b.produces = _string_list(src, "produces", path)
+	b.dropoff = bool(src.get("dropoff", false))
+	b.free_unit = str(src.get("free_unit", ""))
+	for weapon_id: Variant in src.get("weapons", []):
+		var w: WeaponDef = get_weapon(str(weapon_id))
+		if w == null:
+			errors.append("%s: unknown weapon '%s'" % [path, str(weapon_id)])
+		else:
+			b.weapons.append(w)
+	var visual: Variant = src.get("visual", {})
+	if visual is Dictionary:
+		b.model_path = str((visual as Dictionary).get("model", ""))
+		b.icon_path = str((visual as Dictionary).get("icon", ""))
+	if path.get_file().get_basename() != b.id:
+		errors.append("%s: file name must match id '%s'" % [path, b.id])
+	if buildings.has(b.id) or units.has(b.id):
+		errors.append("%s: duplicate id '%s'" % [path, b.id])
+	buildings[b.id] = b
+
+
+func _load_scenario(path: String) -> void:
+	var parsed: Variant = _read_json(path)
+	if not parsed is Dictionary:
+		errors.append("%s: expected a JSON object" % path)
+		return
+	var src: Dictionary = parsed
+	var id: String = _req_string(src, "id", path)
+	if path.get_file().get_basename() != id:
+		errors.append("%s: file name must match id '%s'" % [path, id])
+	scenarios[id] = src
+
+
+## Every id one file mentions must exist in another.
+func _check_references() -> void:
+	for u: UnitDef in units.values():
+		for r: String in u.requires:
+			if not buildings.has(r):
+				errors.append("unit %s requires unknown building '%s'" % [u.id, r])
+	for b: BuildingDef in buildings.values():
+		for r: String in b.requires:
+			if not buildings.has(r):
+				errors.append("building %s requires unknown building '%s'" % [b.id, r])
+		for p: String in b.produces:
+			if not units.has(p):
+				errors.append("building %s produces unknown unit '%s'" % [b.id, p])
+		if b.free_unit != "" and not units.has(b.free_unit):
+			errors.append("building %s gives unknown unit '%s'" % [b.id, b.free_unit])
+	for id: String in scenarios:
+		var sc: Dictionary = scenarios[id]
+		if not maps.has(str(sc.get("map", ""))):
+			errors.append("scenario %s uses unknown map '%s'" % [id, str(sc.get("map", ""))])
+		for spawn: Variant in sc.get("spawns", []):
+			var def_id: String = str((spawn as Dictionary).get("def", ""))
+			if not units.has(def_id) and not buildings.has(def_id):
+				errors.append("scenario %s spawns unknown '%s'" % [id, def_id])
+
+
+func _string_list(d: Dictionary, key: String, path: String) -> PackedStringArray:
+	var out := PackedStringArray()
+	var v: Variant = d.get(key, [])
+	if not v is Array:
+		errors.append("%s: '%s' must be a list" % [path, key])
+		return out
+	for item: Variant in v:
+		out.append(str(item))
+	return out
+
+
+static func _ms_to_ticks(ms: int) -> int:
+	return maxi(1, (ms * SimWorld.TICK_RATE + 999) / 1000)
 
 
 func _load_damage_matrix(path: String) -> void:
@@ -147,6 +265,11 @@ func _load_map(path: String) -> void:
 				errors.append("%s: obstacle %d needs a positive size" % [path, i])
 			else:
 				m.obstacles_m.append(rect)
+	for site: Variant in src.get("supply_sites_m", []):
+		if site is Array and (site as Array).size() == 3:
+			m.supply_sites.append(PackedInt32Array([int(site[0]), int(site[1]), int(site[2])]))
+		else:
+			errors.append("%s: supply sites must be [x_m, y_m, amount]" % path)
 	if path.get_file().get_basename() != m.id:
 		errors.append("%s: file name must match id '%s'" % [path, m.id])
 	maps[m.id] = m
@@ -177,6 +300,16 @@ func _load_unit(path: String) -> void:
 			# Round up so slow turners never get a turn rate of 0.
 			var per_tick: int = (deg_per_s * Fx.ANGLE_FULL + 360 * SimWorld.TICK_RATE - 1) / (360 * SimWorld.TICK_RATE)
 			u.turn_rate = mini(per_tick, Fx.ANGLE_FULL)
+	if src.has("build_time_ms"):
+		u.build_ticks = _ms_to_ticks(_req_int(src, "build_time_ms", path, 1))
+	u.requires = _string_list(src, "requires", path)
+	u.builder = bool(src.get("builder", false))
+	var g: Variant = src.get("gatherer", null)
+	if g is Dictionary:
+		u.gatherer = true
+		u.gather_capacity = _req_int(g, "capacity", path, 1)
+		u.gather_load_ticks = _ms_to_ticks(_req_int(g, "load_ms", path, 1))
+		u.gather_unload_ticks = _ms_to_ticks(_req_int(g, "unload_ms", path, 1))
 	if damage_matrix.armor_classes.size() > 0 and not damage_matrix.armor_classes.has(u.armor_class):
 		errors.append("%s: armor_class '%s' is not in the damage matrix" % [path, u.armor_class])
 	for weapon_id: Variant in src.get("weapons", []):

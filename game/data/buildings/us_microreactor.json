@@ -1,0 +1,22 @@
+{
+  "id": "us_microreactor",
+  "faction": "us",
+  "name": "Microreactor",
+  "armor_class": "structure",
+  "status": "placeholder stats",
+  "max_hp": 1200,
+  "cost": 800,
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "build_time_ms": 10000,
+  "power": 10,
+  "vision_cm": 5000,
+  "requires": [],
+  "produces": [],
+  "visual": {
+    "model": "res://assets/models/buildings/us_microreactor.glb",
+    "icon": "res://assets/icons/buildings/us_microreactor.png"
+  }
+}

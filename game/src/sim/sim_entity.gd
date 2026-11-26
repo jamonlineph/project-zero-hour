@@ -24,8 +24,13 @@ var vision: int = 0             ## sight radius, fixed-point meters
 var hp: int = 0
 var max_hp: int = 0
 var dead: bool = false          ## set when hp reaches 0; removed at the end of the tick
+var cost: int = 0               ## credits; weights veterancy XP (P1-17)
 var mover: SimMover = null      ## only on entities that can move
 var weapons: Array[SimWeapon] = []
+var building: SimBuilding = null
+var builder: SimBuilder = null
+var gatherer: SimGatherer = null
+var supply: SimSupply = null    ## supply sites only
 
 var order: Order = Order.IDLE
 var order_target_id: int = 0    ## ATTACK: the entity to destroy
@@ -63,3 +68,9 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(weapons.size())
 	for w: SimWeapon in weapons:
 		w.write_hash(h)
+	h.add_int(cost)
+	for c: Variant in [building, builder, gatherer, supply]:
+		if c == null:
+			h.add_int(-1)
+		else:
+			c.write_hash(h)

@@ -90,6 +90,6 @@ func show_move_marker(point: Vector3) -> void:
 
 func _create_view(e: SimEntity) -> void:
 	var v := UnitView.new()
-	v.setup(e, content.get_unit(e.def_id), TeamColors.for_player(e.player_id))
+	v.setup_entity(e, content, TeamColors.for_player(e.player_id))
 	add_child(v)
 	_views[e.id] = v

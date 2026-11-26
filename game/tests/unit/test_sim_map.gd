@@ -87,6 +87,8 @@ func test_sandbox_units_do_not_start_inside_rocks() -> void:
 	var world: SimWorld = main.get("world")
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
+		if e.mover == null:
+			continue   # buildings and supply sites occupy their own cells
 		var c: Vector2i = world.map.cell_of(e.x, e.y)
 		assert_true(world.map.is_passable(c.x, c.y), "unit %d starts on a blocked cell" % id)
 	main.free()

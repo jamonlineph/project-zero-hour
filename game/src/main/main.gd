@@ -3,7 +3,7 @@ extends Node3D
 ## per side, and wires the runner, view, camera, input and HUD together.
 ## P1-32 replaces this with a real menu and match setup (tasks/BACKLOG.md).
 
-const MAP_ID: String = "sandbox"
+const SCENARIO_ID: String = "sandbox"
 const LOCAL_PLAYER: int = 1
 const ENEMY_PLAYER: int = 2
 const SEED: int = 20261125
@@ -24,16 +24,15 @@ func _ready() -> void:
 	if not content.load_all():
 		for message: String in content.errors:
 			push_error(message)
-	map_def = content.get_map(MAP_ID)
+	world = MatchSetup.build(content, SCENARIO_ID, SEED)
+	if world == null:
+		push_error("Sandbox: scenario '%s' failed to load; using an empty map" % SCENARIO_ID)
+		world = SimWorld.new(SEED, 128, 128)
+	map_def = content.get_map(str(content.scenarios.get(SCENARIO_ID, {}).get("map", "")))
 	if map_def == null:
-		push_error("Sandbox: map '%s' is missing; using an empty 128 m map" % MAP_ID)
 		map_def = MapDef.new()
-		map_def.id = MAP_ID
 		map_def.width_m = 128
 		map_def.height_m = 128
-	world = SimWorld.from_map(SEED, map_def)
-	world.damage_matrix = content.damage_matrix
-	_spawn_sandbox_units()
 	_build_environment()
 
 	runner = SimRunner.new()
@@ -72,25 +71,6 @@ func _process(_delta: float) -> void:
 	game_view.sync(runner.alpha)
 	game_view.play_events(runner.pending_events)
 	runner.pending_events.clear()
-
-
-func _spawn_sandbox_units() -> void:
-	_spawn_group("us_mbt", LOCAL_PLAYER, 30, 56, 3)
-	_spawn_group("us_rifle_squad", LOCAL_PLAYER, 24, 70, 2)
-	_spawn_group("ru_mbt", ENEMY_PLAYER, 98, 56, 3)
-	_spawn_group("ru_motor_rifle_squad", ENEMY_PLAYER, 104, 70, 2)
-
-
-## Spawns `count` units in a column starting at (x_m, y_m), in meters.
-func _spawn_group(def_id: String, player_id: int, x_m: int, y_m: int, count: int) -> void:
-	var def: UnitDef = content.get_unit(def_id)
-	if def == null:
-		push_error("Sandbox: unknown unit '%s'" % def_id)
-		return
-	# Each side starts facing the other: player 1 looks toward +X, others toward -X.
-	var facing: int = 0 if player_id == LOCAL_PLAYER else Fx.ANGLE_HALF
-	for i: int in count:
-		world.spawn_unit(def, player_id, Fx.from_int(x_m), Fx.from_int(y_m + i * 8), facing)
 
 
 func _build_environment() -> void:

@@ -10,9 +10,28 @@
     "res://data/units/us_mbt.json",
     "res://data/units/us_rifle_squad.json",
     "res://data/units/ru_mbt.json",
-    "res://data/units/ru_motor_rifle_squad.json"
+    "res://data/units/ru_motor_rifle_squad.json",
+    "res://data/units/us_engineer.json",
+    "res://data/units/ru_engineer.json",
+    "res://data/units/us_logistics_truck.json",
+    "res://data/units/ru_logistics_truck.json"
+  ],
+  "buildings": [
+    "res://data/buildings/us_command_hq.json",
+    "res://data/buildings/us_microreactor.json",
+    "res://data/buildings/us_barracks.json",
+    "res://data/buildings/us_logistics_hub.json",
+    "res://data/buildings/us_vehicle_depot.json",
+    "res://data/buildings/ru_command_hq.json",
+    "res://data/buildings/ru_power_plant.json",
+    "res://data/buildings/ru_barracks.json",
+    "res://data/buildings/ru_logistics_hub.json",
+    "res://data/buildings/ru_vehicle_plant.json"
   ],
   "maps": [
     "res://data/maps/sandbox.json"
+  ],
+  "scenarios": [
+    "res://data/scenarios/sandbox.json"
   ]
 }

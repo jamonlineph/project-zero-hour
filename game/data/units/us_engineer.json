@@ -1,0 +1,22 @@
+{
+  "id": "us_engineer",
+  "faction": "us",
+  "role": "builder",
+  "name": "Armored Engineer Vehicle",
+  "armor_class": "light_vehicle",
+  "status": "placeholder stats",
+  "max_hp": 600,
+  "cost": 1000,
+  "speed_cm_per_s": 600,
+  "turn_rate_deg_per_s": 120,
+  "radius_cm": 250,
+  "vision_cm": 4000,
+  "build_time_ms": 10000,
+  "requires": [],
+  "builder": true,
+  "weapons": [],
+  "visual": {
+    "model": "res://assets/models/units/us_engineer.glb",
+    "icon": "res://assets/icons/units/us_engineer.png"
+  }
+}

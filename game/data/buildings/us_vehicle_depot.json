@@ -1,0 +1,27 @@
+{
+  "id": "us_vehicle_depot",
+  "faction": "us",
+  "name": "Vehicle Depot",
+  "armor_class": "structure",
+  "status": "placeholder stats",
+  "max_hp": 2500,
+  "cost": 2000,
+  "footprint_cells": [
+    7,
+    6
+  ],
+  "build_time_ms": 20000,
+  "power": -2,
+  "vision_cm": 5000,
+  "requires": [
+    "us_logistics_hub"
+  ],
+  "produces": [
+    "us_mbt",
+    "us_logistics_truck"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/us_vehicle_depot.glb",
+    "icon": "res://assets/icons/buildings/us_vehicle_depot.png"
+  }
+}

@@ -9,6 +9,8 @@ var width_m: int = 0
 var height_m: int = 0
 ## Each obstacle is [x_m, y_m, w_m, h_m]: a blocked rectangle from its corner.
 var obstacles_m: Array[PackedInt32Array] = []
+## Each supply site is [x_m, y_m, amount]: a finite stock of credits.
+var supply_sites: Array[PackedInt32Array] = []
 
 
 ## Builds the sim grid for this map.

@@ -18,6 +18,12 @@ const BINDINGS: Dictionary = {
 	"cmd_stop": [KEY_S],
 	"cmd_attack_move": [KEY_A],
 	"cmd_hold": [KEY_H],
+	# Temporary debug keys until the build menu exists (P1-25, P1-26).
+	"debug_build_power": [KEY_N],
+	"debug_build_barracks": [KEY_B],
+	"debug_build_hub": [KEY_L],
+	"debug_build_vehicles": [KEY_V],
+	"debug_produce": [KEY_P],
 }
 
 

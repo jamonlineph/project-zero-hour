@@ -1,0 +1,27 @@
+{
+  "id": "ru_vehicle_plant",
+  "faction": "ru",
+  "name": "Vehicle Plant",
+  "armor_class": "structure",
+  "status": "placeholder stats",
+  "max_hp": 2500,
+  "cost": 2000,
+  "footprint_cells": [
+    7,
+    6
+  ],
+  "build_time_ms": 20000,
+  "power": -2,
+  "vision_cm": 5000,
+  "requires": [
+    "ru_logistics_hub"
+  ],
+  "produces": [
+    "ru_mbt",
+    "ru_logistics_truck"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/ru_vehicle_plant.glb",
+    "icon": "res://assets/icons/buildings/ru_vehicle_plant.png"
+  }
+}

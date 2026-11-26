@@ -10,6 +10,8 @@
   "speed_cm_per_s": 380,
   "radius_cm": 150,
   "vision_cm": 4500,
+  "build_time_ms": 6000,
+  "requires": [],
   "weapons": [
     "assault_rifles"
   ],

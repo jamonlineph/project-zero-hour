@@ -1,0 +1,26 @@
+{
+  "id": "us_barracks",
+  "faction": "us",
+  "name": "Barracks",
+  "armor_class": "structure",
+  "status": "placeholder stats",
+  "max_hp": 1500,
+  "cost": 500,
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "build_time_ms": 12000,
+  "power": -1,
+  "vision_cm": 5000,
+  "requires": [
+    "us_microreactor"
+  ],
+  "produces": [
+    "us_rifle_squad"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/us_barracks.glb",
+    "icon": "res://assets/icons/buildings/us_barracks.png"
+  }
+}

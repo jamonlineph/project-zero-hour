@@ -67,6 +67,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		order_hold()
 	elif event.is_action_pressed("cmd_attack_move") and not selected.is_empty():
 		attack_move_armed = true
+	elif event.is_action_pressed("debug_build_power"):
+		debug_build(["microreactor", "power_plant", "power_station"], get_viewport().get_mouse_position())
+	elif event.is_action_pressed("debug_build_barracks"):
+		debug_build(["barracks"], get_viewport().get_mouse_position())
+	elif event.is_action_pressed("debug_build_hub"):
+		debug_build(["logistics_hub"], get_viewport().get_mouse_position())
+	elif event.is_action_pressed("debug_build_vehicles"):
+		debug_build(["vehicle_depot", "vehicle_plant", "vehicle_factory"], get_viewport().get_mouse_position())
+	elif event.is_action_pressed("debug_produce"):
+		debug_produce()
 
 
 # --- Public actions (also used by tests and, later, HUD buttons) ---
@@ -131,13 +141,71 @@ func order_attack_move(screen_pos: Vector2) -> void:
 	game_view.show_move_marker(point)
 
 
-## Right-click / tap on a point: attack an enemy there, otherwise move.
+## Right-click / tap on a point. In order of preference: attack a visible
+## enemy there; send gatherers to a supply site; send builders to finish or
+## repair one of our buildings; set the rally point when only buildings are
+## selected; otherwise move.
 func order_at(screen_pos: Vector2) -> void:
+	var world: SimWorld = runner.world
 	var enemy: int = _pick_unit(screen_pos, false)
 	if enemy != 0:
 		order_attack(enemy)
-	else:
-		order_move(screen_pos)
+		return
+	var site: int = _pick(screen_pos, func(e: SimEntity) -> bool: return e.supply != null)
+	if site != 0 and _selected_any(func(e: SimEntity) -> bool: return e.gatherer != null):
+		runner.submit(SimCommand.make_gather(selected, site))
+		return
+	var own_building: int = _pick(screen_pos, func(e: SimEntity) -> bool:
+		return e.building != null and e.player_id == local_player_id)
+	if own_building != 0 and _selected_any(func(e: SimEntity) -> bool: return e.builder != null):
+		runner.submit(SimCommand.make_repair(selected, own_building))
+		return
+	if not selected.is_empty() and not _selected_any(func(e: SimEntity) -> bool: return e.mover != null):
+		var ground: Variant = rts_camera.screen_to_ground(screen_pos)
+		if ground != null:
+			var point: Vector3 = ground
+			for id: int in selected:
+				if world.entities.has(id) and world.entities[id].building != null:
+					runner.submit(SimCommand.make_rally(id, Fx.from_float(point.x), Fx.from_float(point.z)))
+			game_view.show_move_marker(point)
+		return
+	order_move(screen_pos)
+
+
+## Places a building of the player's faction whose id ends with one of the
+## suffixes, centered under the cursor, using the selected builders.
+func debug_build(suffixes: PackedStringArray, screen_pos: Vector2) -> void:
+	var world: SimWorld = runner.world
+	if world.content == null:
+		return
+	var faction: String = world.get_player(local_player_id).faction
+	var building_id: String = ""
+	for suffix: String in suffixes:
+		if world.content.get_building(faction + "_" + suffix) != null:
+			building_id = faction + "_" + suffix
+			break
+	var ground: Variant = rts_camera.screen_to_ground(screen_pos)
+	if building_id == "" or ground == null or selected.is_empty():
+		return
+	var point: Vector3 = ground
+	runner.submit(SimCommand.make_build(selected, building_id, Fx.from_float(point.x), Fx.from_float(point.z)))
+
+
+## Queues the first unit each selected building can make.
+func debug_produce() -> void:
+	var world: SimWorld = runner.world
+	for id: int in selected:
+		var e: SimEntity = world.get_entity(id)
+		if e != null and e.building != null and not e.building.produces.is_empty():
+			runner.submit(SimCommand.make_produce(id, e.building.produces[0]))
+
+
+func _selected_any(predicate: Callable) -> bool:
+	for id: int in selected:
+		var e: SimEntity = runner.world.get_entity(id)
+		if e != null and predicate.call(e):
+			return true
+	return false
 
 
 # --- Mouse ---
@@ -289,16 +357,22 @@ func _pick_own_unit(screen_pos: Vector2) -> int:
 	return _pick_unit(screen_pos, true)
 
 
-## Nearest own (own = true) or enemy (own = false) unit within the pick radius.
+## Nearest own (own = true) or visible enemy (own = false) entity within the
+## pick radius, or 0.
 func _pick_unit(screen_pos: Vector2, own: bool) -> int:
+	var world: SimWorld = runner.world
+	return _pick(screen_pos, func(e: SimEntity) -> bool:
+		if own:
+			return e.player_id == local_player_id
+		return world.are_enemies(local_player_id, e.player_id) and world.can_see(local_player_id, e.x, e.y))
+
+
+## Nearest entity accepted by `predicate` within the pick radius, or 0.
+func _pick(screen_pos: Vector2, predicate: Callable) -> int:
 	var best_id: int = 0
 	var best_dist: float = _pick_radius_px()
 	for id: int in runner.world.entity_ids:
-		var owner_id: int = runner.world.entities[id].player_id
-		if (owner_id == local_player_id) != own or (not own and owner_id == 0):
-			continue
-		var ent: SimEntity = runner.world.entities[id]
-		if not own and not runner.world.can_see(local_player_id, ent.x, ent.y):
+		if not predicate.call(runner.world.entities[id]):
 			continue
 		var sp: Variant = _screen_pos(id)
 		if sp == null:

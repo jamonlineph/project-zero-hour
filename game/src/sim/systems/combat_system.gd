@@ -21,6 +21,9 @@ static func step(world: SimWorld) -> void:
 		var e: SimEntity = world.entities[id]
 		if e.dead or e.weapons.is_empty():
 			continue
+		# Unfinished buildings can't fire; built ones need power.
+		if e.building != null and (not e.building.built or world.get_player(e.player_id).low_power()):
+			continue
 		for w: SimWeapon in e.weapons:
 			if w.cooldown > 0:
 				w.cooldown -= 1

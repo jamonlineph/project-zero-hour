@@ -23,6 +23,13 @@ var pathfinder: Pathfinder  ## A* over `map`, shared by all movers
 var entities: Dictionary[int, SimEntity] = {}
 var entity_ids: Array[int] = []   ## ascending ids: always iterate this
 var damage_matrix: DamageMatrix = DamageMatrix.new()
+## Read-only content (unit and building definitions) for production and
+## construction. Set by MatchSetup; tests may leave it null.
+var content: ContentDb
+var players: Dictionary[int, SimPlayer] = {}
+## How players lose (P1-19): "buildings" (all buildings and builders gone),
+## "units" (everything gone) or "none" (sandbox).
+var victory_rule: String = "buildings"
 var vision: SimVision
 ## Player -> team. Players not listed are on a team of their own (team = id).
 var player_team: Dictionary[int, int] = {}
@@ -97,6 +104,14 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 		e.mover.turn_rate = def.turn_rate
 	for w: WeaponDef in def.weapons:
 		e.weapons.append(SimWeapon.from_def(w))
+	e.cost = def.cost
+	if def.builder:
+		e.builder = SimBuilder.new()
+	if def.gatherer:
+		e.gatherer = SimGatherer.new()
+		e.gatherer.capacity = def.gather_capacity
+		e.gatherer.load_ticks = def.gather_load_ticks
+		e.gatherer.unload_ticks = def.gather_unload_ticks
 	entities[e.id] = e
 	entity_ids.append(e.id)
 	return e.id
@@ -104,6 +119,151 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 
 func get_entity(id: int) -> SimEntity:
 	return entities.get(id, null)
+
+
+## The player's state, created on first use (0 credits, own team).
+func get_player(player_id: int) -> SimPlayer:
+	if not players.has(player_id):
+		var p := SimPlayer.new()
+		p.id = player_id
+		p.team = team_of(player_id)
+		players[player_id] = p
+	return players[player_id]
+
+
+## Places a building with its footprint origin at cell (cx, cy). Returns its id,
+## or 0 if the footprint is blocked. Unbuilt buildings start at 10% health.
+func spawn_building(def: BuildingDef, player_id: int, cx: int, cy: int, built: bool) -> int:
+	var id: int = _next_id
+	if not map.place_footprint(cx, cy, def.footprint_w, def.footprint_h, id):
+		return 0
+	_next_id += 1
+	var e := SimEntity.new()
+	e.id = id
+	e.player_id = player_id
+	e.def_id = def.id
+	e.armor_class = def.armor_class
+	e.x = cx * SimMap.CELL + (def.footprint_w * SimMap.CELL) / 2
+	e.y = cy * SimMap.CELL + (def.footprint_h * SimMap.CELL) / 2
+	e.prev_x = e.x
+	e.prev_y = e.y
+	e.radius = (mini(def.footprint_w, def.footprint_h) * SimMap.CELL) / 2
+	e.vision = def.vision
+	e.max_hp = def.max_hp
+	e.hp = def.max_hp if built else maxi(1, def.max_hp / 10)
+	e.cost = def.cost
+	var b := SimBuilding.new()
+	b.cell_x = cx
+	b.cell_y = cy
+	b.w = def.footprint_w
+	b.h = def.footprint_h
+	b.built = built
+	b.total = def.build_ticks * 2
+	b.progress = b.total if built else 0
+	b.power = def.power
+	b.produces = def.produces.duplicate()
+	b.dropoff = def.dropoff
+	b.free_unit = def.free_unit
+	e.building = b
+	for w: WeaponDef in def.weapons:
+		e.weapons.append(SimWeapon.from_def(w))
+	entities[e.id] = e
+	entity_ids.append(e.id)
+	return e.id
+
+
+## Footprint origin that centers a building on the point (fixed-point meters).
+static func footprint_origin(def: BuildingDef, x: int, y: int) -> Vector2i:
+	return Vector2i(SimMap.cell_coord(x) - def.footprint_w / 2, SimMap.cell_coord(y) - def.footprint_h / 2)
+
+
+## A neutral supply site holding `amount` credits, blocking a 2x2-cell area.
+func spawn_supply_site(x: int, y: int, amount: int) -> int:
+	var id: int = _next_id
+	var cx: int = SimMap.cell_coord(x) - 1
+	var cy: int = SimMap.cell_coord(y) - 1
+	if not map.place_footprint(cx, cy, 2, 2, id):
+		return 0
+	_next_id += 1
+	var e := SimEntity.new()
+	e.id = id
+	e.player_id = 0
+	e.def_id = "supply_site"
+	e.armor_class = "structure"
+	e.x = cx * SimMap.CELL + SimMap.CELL
+	e.y = cy * SimMap.CELL + SimMap.CELL
+	e.prev_x = e.x
+	e.prev_y = e.y
+	e.radius = SimMap.CELL
+	e.max_hp = 1
+	e.hp = 1
+	e.supply = SimSupply.new()
+	e.supply.remaining = amount
+	entities[e.id] = e
+	entity_ids.append(e.id)
+	return e.id
+
+
+## True if the player owns a finished building of every id in `requires`.
+func has_requirements(player_id: int, requires: PackedStringArray) -> bool:
+	for req: String in requires:
+		var found: bool = false
+		for id: int in entity_ids:
+			var e: SimEntity = entities[id]
+			if e.player_id == player_id and e.def_id == req and e.building != null and e.building.built and not e.dead:
+				found = true
+				break
+		if not found:
+			return false
+	return true
+
+
+## Distance from a point to the nearest edge of an entity: its footprint for
+## buildings and supply sites, its circle otherwise (fixed-point meters).
+func distance_to_body(x: int, y: int, target: SimEntity) -> int:
+	if target.building == null and target.supply == null:
+		return maxi(0, Fx.length(target.x - x, target.y - y) - target.radius)
+	var half_w: int = target.radius
+	var half_h: int = target.radius
+	if target.building != null:
+		half_w = (target.building.w * SimMap.CELL) / 2
+		half_h = (target.building.h * SimMap.CELL) / 2
+	var dx: int = maxi(0, absi(x - target.x) - half_w)
+	var dy: int = maxi(0, absi(y - target.y) - half_h)
+	return Fx.length(dx, dy)
+
+
+## The open cell next to an entity's body that is nearest to (x, y): where a
+## builder or gatherer parks to work on it.
+func approach_point(target: SimEntity, x: int, y: int) -> Vector2i:
+	var cx0: int
+	var cy0: int
+	var w: int
+	var h: int
+	if target.building != null:
+		cx0 = target.building.cell_x
+		cy0 = target.building.cell_y
+		w = target.building.w
+		h = target.building.h
+	else:
+		var c: Vector2i = map.cell_of(target.x, target.y)
+		cx0 = c.x - 1
+		cy0 = c.y - 1
+		w = 2
+		h = 2
+	var best := Vector2i(target.x, target.y)
+	var best_d: int = -1
+	for cy: int in range(cy0 - 1, cy0 + h + 1):
+		for cx: int in range(cx0 - 1, cx0 + w + 1):
+			var edge: bool = cx == cx0 - 1 or cy == cy0 - 1 or cx == cx0 + w or cy == cy0 + h
+			if not edge or not map.is_passable(cx, cy):
+				continue
+			var p: Vector2i = SimMap.cell_center(cx, cy)
+			var d: int = Fx.length_sq(p.x - x, p.y - y)
+			if best_d < 0 or d < best_d:
+				best = p
+				best_d = d
+	return best
 
 
 func queue_command(cmd: SimCommand) -> void:
@@ -127,6 +287,10 @@ func step() -> void:
 	# System order is part of the rules. Add new systems here, in order, and
 	# document the order in docs/02-architecture.md.
 	OrderSystem.step(self)
+	PowerSystem.step(self)
+	ConstructionSystem.step(self)
+	ProductionSystem.step(self)
+	GatherSystem.step(self)
 	PathingSystem.step(self)
 	MovementSystem.step(self)
 	SeparationSystem.step(self)
@@ -212,6 +376,12 @@ func state_hash() -> int:
 	h.add_int(rng.state)
 	map.write_hash(h)
 	vision.write_hash(h)
+	var player_ids: Array[int] = []
+	for pid: int in players:
+		player_ids.append(pid)
+	player_ids.sort()
+	for pid: int in player_ids:
+		players[pid].write_hash(h)
 	h.add_int(entity_ids.size())
 	for id: int in entity_ids:
 		entities[id].write_hash(h)
@@ -243,6 +413,9 @@ func _apply_commands() -> void:
 					e.order_y = c.target_y
 			SimCommand.Type.HOLD:
 				_apply_hold(c)
+			SimCommand.Type.BUILD, SimCommand.Type.PRODUCE, SimCommand.Type.CANCEL, \
+					SimCommand.Type.RALLY, SimCommand.Type.GATHER, SimCommand.Type.SELL, SimCommand.Type.REPAIR:
+				BaseCommands.apply(self, c)
 			_:
 				push_error("SimWorld: unknown command type %d" % c.type)
 
@@ -299,6 +472,13 @@ func _apply_move(c: SimCommand) -> void:
 		e.mover.follow_leader = 0 if e == leader or n == 1 else leader.id
 		e.order = SimEntity.Order.MOVE
 		e.order_target_id = 0
+		# A direct move order takes builders and gatherers off their jobs.
+		if e.builder != null:
+			e.builder.target_id = 0
+		if e.gatherer != null:
+			e.gatherer.state = SimGatherer.State.IDLE
+			e.gatherer.auto = false
+			e.gatherer.site_id = 0
 
 
 func _apply_stop(c: SimCommand) -> void:
@@ -341,6 +521,10 @@ func _apply_hold(c: SimCommand) -> void:
 
 ## Entities named in the command that exist, are alive and belong to the
 ## issuing player. Sorted by id, duplicates removed.
+func owned_entities(c: SimCommand) -> Array[SimEntity]:
+	return _owned_entities(c)
+
+
 func _owned_entities(c: SimCommand) -> Array[SimEntity]:
 	var ids: Array[int] = c.entity_ids.duplicate()
 	ids.sort()

@@ -15,5 +15,12 @@
     [100, 22, 4, 4],
     [76, 86, 3, 3],
     [10, 30, 6, 3]
+  ],
+  "_supply_doc": "Supply sites [x_m, y_m, credits]: one per base plus two contested.",
+  "supply_sites_m": [
+    [40, 40, 30000],
+    [88, 40, 30000],
+    [40, 112, 20000],
+    [86, 112, 20000]
   ]
 }

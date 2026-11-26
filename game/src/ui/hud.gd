@@ -3,7 +3,7 @@ extends CanvasLayer
 ## Minimal developer HUD: a status line, control hints and the selection box.
 ## The real HUD comes in Phase 1 (P1-25, docs/design/controls-and-ui.md).
 
-const HELP_TEXT := "Mouse: left-click/drag select, right-click move/attack, A+click attack-move, H hold, S stop, wheel zoom, middle-drag pan, arrows pan, , . rotate\nTouch: tap unit select, tap enemy attack, tap ground move, drag pan, hold then drag box-select, double-tap select same type, pinch zoom/rotate"
+const HELP_TEXT := "Debug build (select an engineer, point, press): N power, B barracks, L logistics hub, V vehicle factory. P: queue a unit in selected buildings.\nMouse: left-click/drag select, right-click move/attack, A+click attack-move, H hold, S stop, wheel zoom, middle-drag pan, arrows pan, , . rotate\nTouch: tap unit select, tap enemy attack, tap ground move, drag pan, hold then drag box-select, double-tap select same type, pinch zoom/rotate"
 
 var selection_box: SelectionBox
 var _runner: SimRunner
@@ -46,7 +46,9 @@ func _on_ticked(tick: int) -> void:
 func _process(_delta: float) -> void:
 	if _runner == null or _runner.world == null:
 		return
-	_status.text = "Signal Front dev sandbox | tick %d | %d fps | selected %d | state %08x" % [
+	var p: SimPlayer = _runner.world.get_player(_runner.local_player_id)
+	_status.text = "Credits %d | Power %d/%d%s | tick %d | %d fps | selected %d | state %08x" % [
+		p.credits, p.power_used, p.power_produced, " LOW" if p.low_power() else "",
 		_runner.world.tick, Engine.get_frames_per_second(), _selected_count, _last_hash]
 	var view_size: Vector2 = get_viewport().get_visible_rect().size
 	_help.position = Vector2(12.0, view_size.y - _help.size.y - 12.0)

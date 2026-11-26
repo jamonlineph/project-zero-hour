@@ -1,0 +1,22 @@
+{
+  "id": "sandbox",
+  "name": "Development Sandbox",
+  "map": "sandbox",
+  "victory": "none",
+  "players": [
+    {"id": 1, "team": 1, "faction": "us", "credits": 10000},
+    {"id": 2, "team": 2, "faction": "ru", "credits": 10000}
+  ],
+  "spawns": [
+    {"def": "us_command_hq", "player": 1, "x_m": 20, "y_m": 46},
+    {"def": "us_engineer", "player": 1, "x_m": 32, "y_m": 40},
+    {"def": "us_logistics_truck", "player": 1, "x_m": 32, "y_m": 46},
+    {"def": "us_mbt", "player": 1, "x_m": 30, "y_m": 56, "count": 3, "step_y_m": 8, "facing_deg": 0},
+    {"def": "us_rifle_squad", "player": 1, "x_m": 24, "y_m": 70, "count": 2, "step_y_m": 8, "facing_deg": 0},
+    {"def": "ru_command_hq", "player": 2, "x_m": 108, "y_m": 46},
+    {"def": "ru_engineer", "player": 2, "x_m": 96, "y_m": 40, "facing_deg": 180},
+    {"def": "ru_logistics_truck", "player": 2, "x_m": 96, "y_m": 46, "facing_deg": 180},
+    {"def": "ru_mbt", "player": 2, "x_m": 98, "y_m": 56, "count": 3, "step_y_m": 8, "facing_deg": 180},
+    {"def": "ru_motor_rifle_squad", "player": 2, "x_m": 104, "y_m": 70, "count": 2, "step_y_m": 8, "facing_deg": 180}
+  ]
+}

@@ -3,7 +3,10 @@ extends RefCounted
 ## A player order. Commands are the ONLY way input reaches the simulation,
 ## which is what makes replays and lockstep multiplayer possible.
 
-enum Type { MOVE = 1, STOP = 2, ATTACK = 3, ATTACK_MOVE = 4, HOLD = 5 }
+enum Type {
+	MOVE = 1, STOP = 2, ATTACK = 3, ATTACK_MOVE = 4, HOLD = 5,
+	BUILD = 6, PRODUCE = 7, CANCEL = 8, RALLY = 9, GATHER = 10, SELL = 11, REPAIR = 12,
+}
 
 var tick: int = 0               ## tick on which the command is applied
 var player_id: int = 0
@@ -12,7 +15,9 @@ var type: Type = Type.MOVE
 var entity_ids: Array[int] = []
 var target_x: int = 0           ## fixed-point meters
 var target_y: int = 0
-var target_entity: int = 0      ## ATTACK: entity to destroy
+var target_entity: int = 0      ## ATTACK target, PRODUCE/CANCEL/RALLY/SELL/REPAIR building, GATHER site
+var def_id: String = ""         ## BUILD: building id; PRODUCE: unit id
+var index: int = 0              ## CANCEL: queue slot
 
 
 static func make_move(ids: Array[int], tx: int, ty: int) -> SimCommand:
@@ -45,6 +50,62 @@ static func make_attack_move(ids: Array[int], tx: int, ty: int) -> SimCommand:
 	return c
 
 
+## Builders in `ids` place and construct `building_id` centered on (cx, cy).
+static func make_build(ids: Array[int], building_id: String, cx: int, cy: int) -> SimCommand:
+	var c := make_move(ids, cx, cy)
+	c.type = Type.BUILD
+	c.def_id = building_id
+	return c
+
+
+static func make_produce(building_entity: int, unit_id: String) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.PRODUCE
+	c.target_entity = building_entity
+	c.def_id = unit_id
+	return c
+
+
+static func make_cancel(building_entity: int, slot: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.CANCEL
+	c.target_entity = building_entity
+	c.index = slot
+	return c
+
+
+static func make_rally(building_entity: int, x: int, y: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.RALLY
+	c.target_entity = building_entity
+	c.target_x = x
+	c.target_y = y
+	return c
+
+
+static func make_gather(ids: Array[int], site_entity: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.GATHER
+	c.entity_ids = ids.duplicate()
+	c.target_entity = site_entity
+	return c
+
+
+static func make_sell(building_entity: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.SELL
+	c.target_entity = building_entity
+	return c
+
+
+static func make_repair(ids: Array[int], building_entity: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.REPAIR
+	c.entity_ids = ids.duplicate()
+	c.target_entity = building_entity
+	return c
+
+
 static func make_hold(ids: Array[int]) -> SimCommand:
 	var c := SimCommand.new()
 	c.type = Type.HOLD
@@ -62,6 +123,8 @@ func to_dict() -> Dictionary:
 		"target_x": target_x,
 		"target_y": target_y,
 		"target_entity": target_entity,
+		"def_id": def_id,
+		"index": index,
 	}
 
 
@@ -78,4 +141,6 @@ static func from_dict(d: Dictionary) -> SimCommand:
 	c.target_x = int(d.get("target_x", 0))
 	c.target_y = int(d.get("target_y", 0))
 	c.target_entity = int(d.get("target_entity", 0))
+	c.def_id = str(d.get("def_id", ""))
+	c.index = int(d.get("index", 0))
 	return c

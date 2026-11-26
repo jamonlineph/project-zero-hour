@@ -243,7 +243,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Targeting only hits visible enemies (except kill-chain rules later).
 - **Accept:** tests for visibility, shared allied vision and the targeting restriction; determinism test.
 
-### P1-12 · Buildings and construction — ⬜
+### P1-12 · Buildings and construction — ✅ 2026-11-26 (Claude Code: debug keys N/B/L/V place buildings until P1-26)
 - **Needs:** P1-03, P1-07
 - **Do:**
   - `game/data/buildings/*.json`. A builder component.
@@ -252,12 +252,12 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Sell for a 50% refund. Repair.
 - **Accept:** tests for each rule. Sandbox: the player can build a barracks with the engineer, using a temporary debug key until P1-26.
 
-### P1-13 · Production queues and rally points — ⬜
+### P1-13 · Production queues and rally points — ✅ 2026-11-26 (Claude Code: debug key P queues a unit until the HUD)
 - **Needs:** P1-12
 - **Do:** queue up to 9 items, build time from data, cancel with a refund, rally point command, units spawn at the exit cell.
 - **Accept:** tests for queue order, timing, cancel and rally.
 
-### P1-14 · Tech prerequisites — ⬜
+### P1-14 · Tech prerequisites — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P1-12
 - **Do:**
   - `requires` lists in data (buildings and later rank).
@@ -265,7 +265,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - `ContentDb` checks that references exist.
 - **Accept:** tests; data errors are reported clearly.
 
-### P1-15 · Supply economy — ⬜
+### P1-15 · Supply economy — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P1-12
 - **Do:**
   - Supply sites (map data).
@@ -273,7 +273,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Drop-off buildings and player credits; costs charged and refunded.
 - **Accept:** tests for income, a depleted site, and gatherer retargeting; 10-minute determinism run.
 
-### P1-16 · Power — ⬜
+### P1-16 · Power — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P1-12
 - **Do:** `power` in building data; low-power effects (slower production; powered defenses off).
 - **Accept:** tests.

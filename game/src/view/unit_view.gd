@@ -9,6 +9,28 @@ const RING_COLOR := Color(0.35, 1.0, 0.45)
 var entity_id: int = 0
 var _ring: MeshInstance3D
 var _model: Node3D
+var _static: bool = false       ## buildings and supply sites never turn
+
+
+## Picks the right visual for any entity: unit, building or supply site.
+func setup_entity(entity: SimEntity, content: ContentDb, team_color: Color) -> void:
+	if entity.building == null and entity.supply == null:
+		setup(entity, content.get_unit(entity.def_id) if content != null else null, team_color)
+		return
+	entity_id = entity.id
+	name = "Entity_%d" % entity.id
+	_static = true
+	var radius_m: float = Fx.to_float(entity.radius)
+	if entity.supply != null:
+		_model = _make_supply_crates()
+	else:
+		var def: BuildingDef = content.get_building(entity.def_id) if content != null else null
+		_model = _make_building_model(def, entity, team_color)
+	add_child(_model)
+	_ring = _make_ring(radius_m * 1.3)
+	_ring.visible = false
+	add_child(_ring)
+	position = Vector3(Fx.to_float(entity.x), 0.0, Fx.to_float(entity.y))
 
 
 func setup(entity: SimEntity, def: UnitDef, team_color: Color) -> void:
@@ -31,6 +53,12 @@ func set_selected(selected: bool) -> void:
 ## Moves the node between the previous and current tick positions.
 ## alpha is 0..1: how far we are into the current tick.
 func update_from_sim(e: SimEntity, alpha: float) -> void:
+	if _static:
+		# Buildings rise out of the ground while under construction.
+		if e.building != null:
+			var done: float = 1.0 if e.building.built else float(e.building.progress) / float(maxi(1, e.building.total))
+			_model.scale = Vector3(1.0, 0.15 + 0.85 * done, 1.0)
+		return
 	var px: float = lerpf(Fx.to_float(e.prev_x), Fx.to_float(e.x), alpha)
 	var pz: float = lerpf(Fx.to_float(e.prev_y), Fx.to_float(e.y), alpha)
 	position = Vector3(px, 0.0, pz)
@@ -53,6 +81,54 @@ func _make_model(def: UnitDef, radius_m: float, team_color: Color) -> Node3D:
 			TeamColors.apply(instance, team_color)
 			return instance
 	return _make_placeholder(def, radius_m, team_color)
+
+
+func _make_building_model(def: BuildingDef, e: SimEntity, team_color: Color) -> Node3D:
+	if def != null and def.model_path != "" and ResourceLoader.exists(def.model_path):
+		var scene: PackedScene = load(def.model_path)
+		if scene != null:
+			var instance: Node3D = scene.instantiate()
+			TeamColors.apply(instance, team_color)
+			return instance
+	# Placeholder: a block the size of the footprint with a team-colored band.
+	var size := Vector3(e.building.w * 2.0 * 0.9, 4.0, e.building.h * 2.0 * 0.9)
+	var holder := Node3D.new()
+	holder.name = "Placeholder"
+	var body := MeshInstance3D.new()
+	var box := BoxMesh.new()
+	box.size = size
+	body.mesh = box
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color(0.5, 0.5, 0.47)
+	body.material_override = mat
+	body.position.y = size.y * 0.5
+	holder.add_child(body)
+	var band := MeshInstance3D.new()
+	var band_box := BoxMesh.new()
+	band_box.size = Vector3(size.x * 1.02, 0.6, size.z * 1.02)
+	band.mesh = band_box
+	var band_mat := StandardMaterial3D.new()
+	band_mat.albedo_color = team_color
+	band.material_override = band_mat
+	band.position.y = size.y * 0.7
+	holder.add_child(band)
+	return holder
+
+
+func _make_supply_crates() -> Node3D:
+	var holder := Node3D.new()
+	holder.name = "SupplyCrates"
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color(0.78, 0.62, 0.25)
+	for i: int in 4:
+		var crate := MeshInstance3D.new()
+		var box := BoxMesh.new()
+		box.size = Vector3(1.4, 1.0, 1.4)
+		crate.mesh = box
+		crate.material_override = mat
+		crate.position = Vector3((i % 2) * 1.6 - 0.8, 0.5 + (1.0 if i == 3 else 0.0), (i / 2) * 1.6 - 0.8 if i < 3 else 0.0)
+		holder.add_child(crate)
+	return holder
 
 
 ## Used until a Blender model exists for this unit.
