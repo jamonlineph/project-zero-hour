@@ -19,6 +19,9 @@ var _heights: PackedInt32Array = PackedInt32Array()    ## fixed-point meters
 ## inner loop (no bounds checks). 1 = walkable. Index with padded_index().
 var walk: PackedByteArray = PackedByteArray()
 var padded_width: int = 0
+## Every cell rectangle whose walkability changed, in order. The pathfinder
+## reads new entries to update its lookup tables.
+var change_log: Array[Rect2i] = []
 
 
 func _init(width_m: int = 256, height_m: int = 256) -> void:
@@ -98,6 +101,7 @@ func add_obstacle_m(x_m: int, y_m: int, w_m: int, h_m: int) -> void:
 		for cx: int in range(maxi(x0, 0), mini(x1, width_cells - 1) + 1):
 			_blocked[index(cx, cy)] = 1
 			walk[padded_index(cx, cy)] = 0
+	change_log.append(Rect2i(x0, y0, x1 - x0 + 1, y1 - y0 + 1))
 
 
 ## Claims a w x h cell rectangle for an entity. Fails (claims nothing) unless
@@ -112,18 +116,24 @@ func place_footprint(cx: int, cy: int, w: int, h: int, entity_id: int) -> bool:
 		for x: int in range(cx, cx + w):
 			_footprint[index(x, y)] = entity_id
 			walk[padded_index(x, y)] = 0
+	change_log.append(Rect2i(cx, cy, w, h))
 	return true
 
 
 ## Releases every cell claimed by an entity. Returns how many were released.
 func clear_footprint(entity_id: int) -> int:
 	var released: int = 0
+	var area := Rect2i()
 	for i: int in _footprint.size():
 		if _footprint[i] == entity_id:
 			_footprint[i] = 0
 			released += 1
+			var cell := Vector2i(i % width_cells, i / width_cells)
+			area = Rect2i(cell, Vector2i.ONE) if released == 1 else area.expand(cell).merge(Rect2i(cell, Vector2i.ONE))
 			if _blocked[i] == 0:
-				walk[padded_index(i % width_cells, i / width_cells)] = 1
+				walk[padded_index(cell.x, cell.y)] = 1
+	if released > 0:
+		change_log.append(area)
 	return released
 
 

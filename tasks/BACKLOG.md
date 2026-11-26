@@ -174,7 +174,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Tests: around a wall, unreachable target (go to the nearest reachable cell), identical paths across runs.
   - Performance test: 50 paths per second on a 256×256 m map within 2 ms per tick on desktop.
 
-### P1-04b · Faster pathfinding — ⬜
+### P1-04b · Faster pathfinding — ✅ 2026-11-26 (Claude Code: JPS + JPS+ tables; 2.4 ms worst, 0.09 ms typical on desktop)
 - **Needs:** P1-04
 - **Why:** measured in P1-04 (GDScript, desktop, Godot 4.7.2):
   - About 1 ms per typical 20–60 m search.

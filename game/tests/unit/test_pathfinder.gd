@@ -139,6 +139,48 @@ func test_group_orders_are_spread_over_ticks() -> void:
 		assert_false(world.get_entity(id).mover.needs_path)
 
 
+func _check_tables(map: SimMap, pf: Pathfinder, label: String) -> void:
+	# Table lookups must match a cell-by-cell scan for every cell and direction.
+	pf._sync_tables()
+	var walk: PackedByteArray = map.walk
+	var pw: int = map.padded_width
+	var mismatches: int = 0
+	for y: int in map.height_cells:
+		for x: int in map.width_cells:
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				for goal: Vector2i in [Vector2i(-5, -5), Vector2i(x + d.x * 3, y + d.y * 3)]:
+					var a: int = pf._jump_straight(x, y, d.x, d.y, goal.x, goal.y, walk, pw)
+					var b: int = pf._jump_straight_scan(x, y, d.x, d.y, goal.x, goal.y)
+					if a != b:
+						mismatches += 1
+	assert_eq(mismatches, 0, "JPS+ table mismatches (%s)" % label)
+
+
+func test_jps_tables_match_scanning() -> void:
+	var db := ContentDb.new()
+	db.load_all()
+	var map: SimMap = db.get_map("sandbox").make_sim_map()
+	var pf := Pathfinder.new(map)
+	_check_tables(map, pf, "sandbox")
+	map.place_footprint(20, 20, 4, 3, 9)       # a building appears
+	map.place_footprint(40, 50, 2, 2, 10)
+	_check_tables(map, pf, "after placing buildings")
+	map.clear_footprint(9)                     # and one is destroyed
+	_check_tables(map, pf, "after removing a building")
+
+
+func test_paths_avoid_new_buildings() -> void:
+	var map := SimMap.new(40, 40)
+	var pf := Pathfinder.new(map)
+	var before: Array[Vector2i] = pf.find_path(Fx.from_int(5), Fx.from_int(20), Fx.from_int(35), Fx.from_int(20))
+	assert_eq(before.size(), 1, "open ground should be a straight line")
+	map.place_footprint(9, 4, 2, 14, 3)        # a long building across the line
+	var start := Vector2i(Fx.from_int(5), Fx.from_int(20))
+	var after: Array[Vector2i] = pf.find_path(start.x, start.y, Fx.from_int(35), Fx.from_int(20))
+	assert_true(after.size() >= 2, "should detour around the new building")
+	assert_true(_path_is_walkable(map, start, after))
+
+
 func test_search_speed_on_a_256_m_map() -> void:
 	# Budget from tasks/BACKLOG.md P1-04: 50 searches per second (about 3-4 per
 	# tick) should cost well under 2 ms per tick on a desktop. This test only
@@ -168,4 +210,7 @@ func test_search_speed_on_a_256_m_map() -> void:
 			Fx.from_int(clampi(sx + rng.range_int(80) - 40, 1, 127)), Fx.from_int(clampi(sy + rng.range_int(80) - 40, 1, 127)))
 	var typical_ms: float = float(Time.get_ticks_usec() - started) / 1000.0 / searches
 	print("        pathfinding: %.2f ms per typical search (20-60 m on the sandbox)" % typical_ms)
-	assert_true(per_search_ms < 40.0, "%.2f ms per worst-case search is a big regression" % per_search_ms)
+	# Measured 2.4 ms (worst) and 0.09 ms (typical) on a desktop in P1-04b.
+	# These limits leave room for slower CI machines.
+	assert_true(per_search_ms < 10.0, "%.2f ms per worst-case search is a regression" % per_search_ms)
+	assert_true(typical_ms < 1.0, "%.2f ms per typical search is a regression" % typical_ms)

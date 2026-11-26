@@ -6,9 +6,10 @@ extends RefCounted
 ## a big group order spreads its cost over a few ticks. Units wait in place
 ## until their path is ready (at most a few ticks).
 
-## Measured in P1-04: about 1 ms per typical search on a desktop in GDScript, so
-## 3 per tick keeps typical ticks near 3 ms. P1-04b makes searches cheaper.
-const MAX_SEARCHES_PER_TICK: int = 3
+## Measured after P1-04b (Jump Point Search + JPS+ tables, desktop, GDScript):
+## about 0.1 ms per typical search and 2.5 ms worst case. 8 per tick keeps a
+## typical tick under 1 ms; phones are roughly 3-5x slower.
+const MAX_SEARCHES_PER_TICK: int = 8
 
 
 static func step(world: SimWorld) -> void:
