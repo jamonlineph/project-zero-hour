@@ -10,6 +10,8 @@ var local_player_id: int = 1
 var _views: Dictionary[int, UnitView] = {}
 var _wreck_material: StandardMaterial3D
 var effects: CombatEffects
+## Terrain height at (x, z) in meters (TerrainView.height_at); flat if unset.
+var ground_height: Callable
 var sounds: GameSounds
 var wrecks_made: int = 0
 
@@ -36,6 +38,8 @@ func sync(alpha: float) -> void:
 		var e: SimEntity = world.entities[id]
 		var v: UnitView = _views[id]
 		v.update_from_sim(e, alpha)
+		if ground_height.is_valid():
+			v.position.y = ground_height.call(v.position.x, v.position.z)
 		v.visible = is_shown(e)
 		if v.visible:
 			v.update_status(e)
@@ -94,20 +98,24 @@ func play_events(events: Array[Dictionary]) -> void:
 				effects.play(CombatEffects.Kind.MUZZLE, from)
 				var weapon: WeaponDef = content.weapons.get(str(ev["weapon"]), null) if content != null else null
 				if weapon == null or weapon.projectile == "instant":
-					effects.tracer(from, Vector3(Fx.to_float(ev["tx"]), 1.0, Fx.to_float(ev["ty"])))
+					var tx: float = Fx.to_float(ev["tx"])
+					var tz: float = Fx.to_float(ev["ty"])
+					effects.tracer(from, Vector3(tx, _ground(tx, tz) + 1.0, tz))
 				sounds.play_at(GameSounds.weapon_sound(weapon), from)
 			"hit":
 				if not world.can_see(local_player_id, ev["x"], ev["y"]):
 					continue
 				var radius_m: float = Fx.to_float(ev["radius"])
-				var at := Vector3(Fx.to_float(ev["x"]), 0.6, Fx.to_float(ev["y"]))
+				var at := Vector3(Fx.to_float(ev["x"]), 0.0, Fx.to_float(ev["y"]))
+				at.y = _ground(at.x, at.z) + 0.6
 				effects.play(CombatEffects.Kind.EXPLOSION, at, clampf(0.4 + radius_m * 0.25, 0.4, 3.0))
 				if radius_m > 0.0:
 					sounds.play_at("explosion_small", at)
 			"died":
 				if not world.can_see(local_player_id, ev["x"], ev["y"]):
 					continue
-				var at := Vector3(Fx.to_float(ev["x"]), 0.8, Fx.to_float(ev["y"]))
+				var at := Vector3(Fx.to_float(ev["x"]), 0.0, Fx.to_float(ev["y"]))
+				at.y = _ground(at.x, at.z) + 0.8
 				var unit: UnitDef = content.get_unit(str(ev["def_id"])) if content != null else null
 				if unit != null and unit.is_infantry():
 					effects.play(CombatEffects.Kind.EXPLOSION, at, 0.6)
@@ -119,6 +127,10 @@ func play_events(events: Array[Dictionary]) -> void:
 			"built":
 				if int(ev["player"]) == local_player_id:
 					sounds.play_ui("build_complete")
+
+
+func _ground(x: float, z: float) -> float:
+	return ground_height.call(x, z) if ground_height.is_valid() else 0.0
 
 
 func get_view(entity_id: int) -> UnitView:
@@ -138,7 +150,7 @@ func show_move_marker(point: Vector3) -> void:
 	marker.mesh = torus
 	marker.material_override = mat
 	marker.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	marker.position = Vector3(point.x, 0.08, point.z)
+	marker.position = Vector3(point.x, _ground(point.x, point.z) + 0.08, point.z)
 	marker.scale = Vector3(1.0, 0.1, 1.0)
 	add_child(marker)
 	var tween := marker.create_tween()

@@ -7,5 +7,6 @@ Captured on a machine without a GPU, through a virtual display and software Open
 | `main_menu.png` | Main menu |
 | `skirmish_start.png` | Start of a skirmish against the computer (United States side) |
 | `ai_duel.png` | Computer vs computer, a few minutes in |
+| `sandbox_terrain.png` | The sandbox with terrain heights (P1-30) |
 
 All placeholder art: Blender grey-box models from `blender/build_assets.py`.

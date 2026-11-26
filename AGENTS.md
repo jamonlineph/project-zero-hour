@@ -56,6 +56,7 @@ This file is the single source of truth for every AI agent working in this repo:
 | All tests (unit + smoke) | `tools/run_tests.sh`. On Windows: `tools\run_tests.ps1`. Set `GODOT=/path/to/godot` if Godot isn't on your PATH |
 | Repo checks (provenance, banned files) | `python3 tools/check_repo.py` |
 | Rebuild placeholder art | `tools/build_assets.sh` (set `BLENDER=/path/to/blender`). Options: `--only ID ...`, `--no-icons`, `--sheets` |
+| Rebuild a map's height file | `python3 tools/make_heightmap.py game/data/maps/<id>` (from `terrain_gen` in its `map.json`) |
 | Rebuild placeholder sounds | `python3 tools/gen_sounds.py` (needs numpy; writes `game/assets/audio/sfx/` and the manifest rows) |
 | Re-import assets after adding files | `godot --headless --path game --import` |
 | Regenerate golden replays (only after an intended change to sim rules or data; say why in the commit) | `tools/regen_golden_replays.sh` |

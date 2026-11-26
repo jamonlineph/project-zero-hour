@@ -4,6 +4,16 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P1-30 Terrain and map format v1 (Claude Code, branch claude/phase-0-wrapup)
+- Done: maps are folders (`game/data/maps/<id>/map.json` plus `height.r16`, raw 16-bit heights, one per 2 m cell). The sim gets integer heights; a cell more than `max_step_cm` above a neighbor is an impassable cliff edge, and cells under `water_level_cm` are water. `TerrainView` builds the ground mesh from the same heights (colored by slope and height, darkened by fog). Units, rocks, effects, move markers and the placement ghost sit on the terrain, and mouse and touch picking follow the hills. The sandbox is now a map folder with gentle hills and raised rocks inside its obstacle rectangles, so passability is unchanged (golden replays still match). `tools/make_heightmap.py` builds `height.r16` from `terrain_gen` in `map.json`.
+- Tests: `tools/run_tests.sh` -> 142 tests, 0 failed (new `test_terrain.gd`: loader, exact scaling, bad file size, cliffs, water, sandbox passability unchanged, terrain mesh equals sim heights); smoke_main checks every unit stands on the drawn terrain.
+- Not verified: hills steep enough to matter in play (the sandbox's are gentle on purpose); splat textures and props are not in yet.
+- Found while rendering: renderer errors "material is null" late in long matches under software OpenGL. Logged as P1-30b with reproduction steps.
+- Next: P1-24b guard and patrol, P1-30b, then the owner-only Phase 1 checks (P0-12, P0-13, P0-15, P1-36, P1-37, P1-EXIT).
+- For the owner: none new.
+
+---
+
 ## 2026-11-26: First real renders; P1-28 Effects; P1-29 Audio (Claude Code, branch claude/phase-0-wrapup)
 - **First real look at the game.** A Godot build with OpenGL now runs on this machine through a virtual display and Mesa's software renderer, so the game was rendered for the first time (`docs/screenshots/`). New `--screenshot=<file>` option (`DevCapture`); how-to in `docs/08-testing-and-qa.md`. What it showed, and the fixes:
   - Colors were washed out to near white. Blender palette colors were being treated as linear; `sf_common.get_material` now converts them from sRGB, and all 35 models were rebuilt. Scene ambient light and sun were also turned down.

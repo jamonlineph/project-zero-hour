@@ -92,7 +92,10 @@ func set_ground_point(x: int, y: int) -> void:
 	var player: SimPlayer = world.get_player(selection.local_player_id)
 	valid = world.can_place(def, origin) and player.credits >= def.cost \
 		and world.has_requirements(selection.local_player_id, def.requires) and _has_builder()
-	_ghost.position = Vector3(Fx.to_float(center.x), 1.5, Fx.to_float(center.y))
+	var gx: float = Fx.to_float(center.x)
+	var gz: float = Fx.to_float(center.y)
+	var gy: float = rts_camera.ground_height.call(gx, gz) if rts_camera.ground_height.is_valid() else 0.0
+	_ghost.position = Vector3(gx, gy + 1.5, gz)
 	_mat.albedo_color = OK_COLOR if valid else BAD_COLOR
 
 

@@ -21,6 +21,8 @@ var camera: Camera3D
 var distance: float = 40.0
 ## Turned on when a real mouse moves (touch does not emulate the mouse here).
 var edge_pan_enabled: bool = false
+## Terrain height at (x, z) in meters, for picking on hills; flat if unset.
+var ground_height: Callable
 var _bounds: Rect2 = Rect2(0, 0, 256, 256)   ## x/z rectangle the focus stays in
 var _middle_dragging: bool = false
 var _space_dragging: bool = false
@@ -95,16 +97,26 @@ func has_bookmark(slot: int) -> bool:
 	return _bookmarks.has(slot)
 
 
-## The point on the ground plane (y = 0) under a screen position, or null.
+## The point on the ground under a screen position, or null. With terrain,
+## the ray is intersected with the plane at the ground's height, refined a
+## few times (plenty for the gentle slopes units can drive on).
 func screen_to_ground(screen_pos: Vector2) -> Variant:
 	var origin: Vector3 = camera.project_ray_origin(screen_pos)
 	var dir: Vector3 = camera.project_ray_normal(screen_pos)
 	if absf(dir.y) < 0.0001:
 		return null
-	var t: float = -origin.y / dir.y
-	if t < 0.0:
-		return null
-	return origin + dir * t
+	var level: float = 0.0
+	var hit := Vector3.ZERO
+	for i: int in 4:
+		var t: float = (level - origin.y) / dir.y
+		if t < 0.0:
+			return null
+		hit = origin + dir * t
+		if not ground_height.is_valid():
+			break
+		level = ground_height.call(hit.x, hit.z)
+	hit.y = level
+	return hit
 
 
 func _process(delta: float) -> void:

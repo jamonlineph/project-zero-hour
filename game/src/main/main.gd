@@ -21,6 +21,7 @@ var selection: SelectionController
 var placement: PlacementController
 var pause_menu: PauseMenu
 var fog: FogOfWar
+var terrain: TerrainView
 var pointer: PointerFeedback
 var _game_over_shown: bool = false
 
@@ -64,6 +65,7 @@ func _ready() -> void:
 	game_view = GameView.new()
 	game_view.name = "GameView"
 	game_view.setup(world, content)
+	game_view.ground_height = terrain.height_at
 	game_view.local_player_id = LOCAL_PLAYER
 	add_child(game_view)
 	game_view.sync(0.0)
@@ -72,6 +74,7 @@ func _ready() -> void:
 	rts_camera.name = "RtsCamera"
 	add_child(rts_camera)
 	rts_camera.set_bounds(Rect2(0, 0, map_def.width_m, map_def.height_m))
+	rts_camera.ground_height = terrain.height_at
 	rts_camera.focus_on(_start_focus())
 
 	hud = Hud.new()
@@ -185,17 +188,9 @@ func _build_environment() -> void:
 	fog.setup(world, LOCAL_PLAYER)
 	add_child(fog)
 
-	var plane := PlaneMesh.new()
-	plane.size = Vector2(map_def.width_m, map_def.height_m)
-	plane.subdivide_width = 1
-	plane.subdivide_depth = 1
-	var ground_mat: ShaderMaterial = fog.make_material(Color(0.36, 0.42, 0.28))
-	var ground := MeshInstance3D.new()
-	ground.name = "Ground"
-	ground.mesh = plane
-	ground.material_override = ground_mat
-	ground.position = Vector3(map_def.width_m * 0.5, 0.0, map_def.height_m * 0.5)
-	add_child(ground)
+	terrain = TerrainView.new()
+	terrain.build(map_def, fog)
+	add_child(terrain)
 
 	# Rocks are drawn from the map's obstacles, so what you see is what blocks
 	# movement. Heights are view-only decoration, so ordinary random numbers are
@@ -209,5 +204,7 @@ func _build_environment() -> void:
 		box.size = Vector3(o[2], rng.randf_range(1.5, 4.0), o[3])
 		rock.mesh = box
 		rock.material_override = rock_mat
-		rock.position = Vector3(o[0] + o[2] * 0.5, box.size.y * 0.5, o[1] + o[3] * 0.5)
+		var cx: float = o[0] + o[2] * 0.5
+		var cz: float = o[1] + o[3] * 0.5
+		rock.position = Vector3(cx, map_def.height_at_m(cx, cz) + box.size.y * 0.5 - 0.3, cz)
 		add_child(rock)

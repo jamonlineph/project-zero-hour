@@ -341,9 +341,41 @@ func _load_map(path: String) -> void:
 			m.supply_sites.append(PackedInt32Array([int(site[0]), int(site[1]), int(site[2])]))
 		else:
 			errors.append("%s: supply sites must be [x_m, y_m, amount]" % path)
-	if path.get_file().get_basename() != m.id:
-		errors.append("%s: file name must match id '%s'" % [path, m.id])
+	# Map folders: res://data/maps/<id>/map.json (P1-30). The folder name is the id.
+	var name_from_path: String = path.get_base_dir().get_file() if path.get_file() == "map.json" \
+			else path.get_file().get_basename()
+	if name_from_path != m.id:
+		errors.append("%s: folder or file name must match id '%s'" % [path, m.id])
+	m.max_step_cm = int(src.get("max_step_cm", m.max_step_cm))
+	if src.has("water_level_cm"):
+		m.water_level_cm = int(src["water_level_cm"])
+	if src.has("height"):
+		_load_heights(m, path.get_base_dir().path_join(str(src["height"])), int(src.get("height_scale_cm", 0)), path)
 	maps[m.id] = m
+
+
+## Reads a raw 16-bit little-endian heightmap: one sample per 2 m cell, row by
+## row from the map's (0, 0) corner. 65535 = height_scale_cm. Raw bytes, not a
+## PNG, because Godot re-encodes imported images; raw data is exact everywhere.
+func _load_heights(m: MapDef, file: String, scale_cm: int, path: String) -> void:
+	if scale_cm <= 0:
+		errors.append("%s: 'height_scale_cm' must be positive when 'height' is set" % path)
+		return
+	if not FileAccess.file_exists(file):
+		errors.append("%s: height file %s not found" % [path, file])
+		return
+	var bytes: PackedByteArray = FileAccess.get_file_as_bytes(file)
+	var count: int = m.cells_x() * m.cells_y()
+	if bytes.size() != count * 2:
+		errors.append("%s: %s has %d bytes, expected %d (%d x %d cells, 2 bytes each)" % [
+			path, file.get_file(), bytes.size(), count * 2, m.cells_x(), m.cells_y()])
+		return
+	m.heights_cm.resize(count)
+	for i: int in count:
+		var v: int = bytes.decode_u16(i * 2)
+		m.heights_cm[i] = (v * scale_cm) / 65535
+		if _hasher != null:
+			_hasher.add_int(v)
 
 
 func _load_unit(path: String) -> void:

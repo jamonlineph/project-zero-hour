@@ -1,0 +1,143 @@
+{
+  "id": "sandbox",
+  "name": "Development Sandbox",
+  "width_m": 128,
+  "height_m": 128,
+  "_terrain_doc": "height.r16 is built from terrain_gen by tools/make_heightmap.py (raw 16-bit, one sample per 2 m cell; 65535 = height_scale_cm). A cell more than max_step_cm above a neighbor is an impassable cliff edge.",
+  "height": "height.r16",
+  "height_scale_cm": 800,
+  "max_step_cm": 100,
+  "terrain_gen": {
+    "base_m": 1.0,
+    "hills": [
+      [
+        28,
+        84,
+        16,
+        2.5
+      ],
+      [
+        96,
+        76,
+        14,
+        2.0
+      ],
+      [
+        100,
+        14,
+        12,
+        1.5
+      ],
+      [
+        44,
+        60,
+        10,
+        -0.8
+      ],
+      [
+        24,
+        18,
+        12,
+        1.2
+      ]
+    ],
+    "raise_obstacles_m": 1.5
+  },
+  "_obstacles_doc": "Blocked rectangles [x_m, y_m, w_m, h_m] from the corner. The ridge in the middle has a gap at y 56-74 for pathfinding tests.",
+  "obstacles_m": [
+    [
+      62,
+      10,
+      6,
+      46
+    ],
+    [
+      62,
+      74,
+      6,
+      44
+    ],
+    [
+      40,
+      22,
+      4,
+      4
+    ],
+    [
+      18,
+      100,
+      4,
+      6
+    ],
+    [
+      48,
+      92,
+      4,
+      4
+    ],
+    [
+      80,
+      38,
+      4,
+      6
+    ],
+    [
+      92,
+      100,
+      6,
+      4
+    ],
+    [
+      100,
+      22,
+      4,
+      4
+    ],
+    [
+      76,
+      86,
+      3,
+      3
+    ],
+    [
+      10,
+      30,
+      6,
+      3
+    ]
+  ],
+  "_starts_doc": "Start positions [x_m, y_m] for skirmish: where each player's HQ goes.",
+  "start_positions_m": [
+    [
+      20,
+      46
+    ],
+    [
+      108,
+      46
+    ]
+  ],
+  "_supply_doc": "Supply sites [x_m, y_m, credits]: one per base plus two contested.",
+  "supply_sites_m": [
+    [
+      40,
+      40,
+      30000
+    ],
+    [
+      88,
+      40,
+      30000
+    ],
+    [
+      40,
+      112,
+      20000
+    ],
+    [
+      86,
+      112,
+      20000
+    ]
+  ]
+}

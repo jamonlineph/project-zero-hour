@@ -40,6 +40,7 @@ func _run() -> void:
 		failures.append("main scene did not create its selection controller, world or view")
 	else:
 		failures.append_array(_check_unit_visuals(world, game_view))
+		failures.append_array(_check_units_on_terrain(main, world, game_view))
 		selection.box_select(Rect2(Vector2(-10000, -10000), Vector2(20000, 20000)))
 		if selection.selected.is_empty():
 			failures.append("box select over the whole screen selected nothing")
@@ -504,3 +505,26 @@ func _drag(index: int, pos: Vector2) -> InputEventScreenDrag:
 	d.position = pos
 	d.relative = Vector2(5, 5)
 	return d
+
+
+## P1-30: every unit stands on the terrain the view draws.
+func _check_units_on_terrain(main: Node, world: SimWorld, game_view: GameView) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var terrain: TerrainView = main.get("terrain")
+	if terrain == null:
+		problems.append("the match scene has no terrain")
+		return problems
+	var hilly: bool = false
+	for id: int in world.entity_ids:
+		var v: UnitView = game_view.get_view(id)
+		if v == null:
+			continue
+		var want: float = terrain.height_at(v.position.x, v.position.z)
+		if absf(v.position.y - want) > 0.01:
+			problems.append("%s floats or sinks: y %.2f, ground %.2f" % [world.entities[id].def_id, v.position.y, want])
+			break
+		if want > 0.5:
+			hilly = true
+	if not hilly:
+		problems.append("no unit stands on raised ground; is the sandbox terrain loaded?")
+	return problems

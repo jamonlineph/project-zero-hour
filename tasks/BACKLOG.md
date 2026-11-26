@@ -380,7 +380,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - CC0 or original placeholder sounds for weapons, explosions and selection; log them in the manifest.
 - **Accept:** sounds play on events; volume settings work.
 
-### P1-30 · Terrain and map format v1 — ⬜
+### P1-30 · Terrain and map format v1 — ✅ 2026-11-26 (Claude Code: map folders with raw 16-bit heights, cliffs and water in the sim, terrain mesh in the view; splat textures and props come later)
 - **Needs:** P1-03
 - **Do:**
   - Map folder format ([maps-and-modes.md](../docs/design/maps-and-modes.md)).
@@ -388,6 +388,12 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - One test map.
   - The sandbox loads it.
 - **Accept:** tests for the loader; the view terrain matches sim heights.
+
+### P1-30b · "material is null" errors under software OpenGL — ⬜
+- **Seen:** rendering an `ai_duel` match for about 3:40 of game time with the Compatibility renderer on Mesa llvmpipe (Xvfb) logs 24–48 `Parameter "material" is null` errors (from `material_casts_shadows`, `material_is_animated`, `material_get_instance_shader_parameters`, `material_update_dependency`, in that order). They start soon after the first vehicle wrecks and right after new unit views are created. The game keeps running; nothing visibly breaks. Not seen in the first 1,500 frames.
+- **Reproduce:** `xvfb-run -a godot --rendering-driver opengl3 --path game -- --scenario=ai_duel --screenshot=/tmp/x.png --screenshot-frames=3300`, then grep the output.
+- **Suspects:** a material override or surface override material (wreck darkening in `UnitView.become_wreck`, team-color duplicates in `TeamColors.apply`, `UnitStatus` materials) reaching the renderer before it exists or after it was freed.
+- **Accept:** the run above logs no such errors; check it on a real GPU too (Mobile renderer).
 
 ### P1-31 · Skirmish AI v0 — ✅ 2026-11-26 (Claude Code: AI duel ends at about 5:00 game time; play it with `godot --path game -- --scenario=skirmish_vs_ai`)
 - **Needs:** P1-13, P1-15, P1-10

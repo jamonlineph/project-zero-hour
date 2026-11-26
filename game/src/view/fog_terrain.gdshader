@@ -5,6 +5,7 @@ shader_type spatial;
 render_mode specular_disabled;
 
 uniform vec4 albedo : source_color = vec4(0.36, 0.42, 0.28, 1.0);
+uniform bool use_vertex_color = false;   // TerrainView colors by slope and height
 uniform float roughness_value = 1.0;
 uniform sampler2D fog_texture : filter_linear, repeat_disable;
 uniform vec2 fog_size = vec2(128.0, 128.0);   // meters covered by the texture
@@ -22,6 +23,7 @@ void fragment() {
 	float light = f < 0.5
 		? mix(unexplored_brightness, explored_brightness, f * 2.0)
 		: mix(explored_brightness, 1.0, (f - 0.5) * 2.0);
-	ALBEDO = albedo.rgb * light;
+	vec3 base = use_vertex_color ? COLOR.rgb : albedo.rgb;
+	ALBEDO = base * light;
 	ROUGHNESS = roughness_value;
 }

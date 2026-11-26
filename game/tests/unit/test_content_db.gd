@@ -19,9 +19,15 @@ func test_every_unit_file_is_listed_in_index() -> void:
 func test_every_map_file_is_listed_in_index() -> void:
 	var index: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(ContentDb.INDEX_PATH))
 	var listed: Array = index.get("maps", [])
+	# Maps are folders (P1-30): every folder's map.json must be listed.
+	var folders: PackedStringArray = DirAccess.get_directories_at("res://data/maps/")
+	assert_true(folders.size() > 0, "no map folders found")
+	for folder: String in folders:
+		var file: String = "res://data/maps/%s/map.json" % folder
+		assert_true(FileAccess.file_exists(file), "%s has no map.json" % folder)
+		assert_true(listed.has(file), "%s is missing from data/index.json" % file)
 	for file: String in DirAccess.get_files_at("res://data/maps/"):
-		if file.ends_with(".json"):
-			assert_true(listed.has("res://data/maps/" + file), "%s is missing from data/index.json" % file)
+		assert_false(file.ends_with(".json"), "%s: maps are folders now (data/maps/<id>/map.json)" % file)
 
 
 func test_units_have_sane_values() -> void:

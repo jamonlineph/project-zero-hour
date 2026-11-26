@@ -1,7 +1,8 @@
 class_name SimMap
 extends RefCounted
 ## The battlefield grid: 2 m cells with passability, a building-footprint layer
-## and integer heights (flat until P1-30). Ints only, like the rest of the sim.
+## and integer heights (one per cell, from the map's height.r16; P1-30).
+## Ints only, like the rest of the sim.
 ##
 ## Cell (cx, cy) covers sim X in [cx * 2 m, (cx + 1) * 2 m) and likewise Y.
 ## Terrain blocking comes from the map data; footprints are claimed and released
@@ -89,6 +90,54 @@ func footprint_owner(cx: int, cy: int) -> int:
 
 func height_at(cx: int, cy: int) -> int:
 	return _heights[index(cx, cy)] if in_bounds(cx, cy) else 0
+
+
+## Sets every cell's height (fixed-point meters, row by row). Sizes must match.
+func set_heights(heights: PackedInt32Array) -> void:
+	assert(heights.size() == width_cells * height_cells, "SimMap.set_heights: wrong size")
+	_heights = heights.duplicate()
+
+
+## Blocks cliff edges: every cell more than `max_step` (fixed-point meters)
+## above one of its four neighbors. Blocking only the upper cell keeps the
+## ground below a cliff open while making the step itself impassable.
+## Returns how many cells it blocked.
+func block_cliffs(max_step: int) -> int:
+	var blocked: int = 0
+	for cy: int in height_cells:
+		for cx: int in width_cells:
+			var i: int = index(cx, cy)
+			if _blocked[i] != 0:
+				continue
+			var h: int = _heights[i]
+			var cliff: bool = false
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				var nx: int = cx + d.x
+				var ny: int = cy + d.y
+				if in_bounds(nx, ny) and h - _heights[index(nx, ny)] > max_step:
+					cliff = true
+					break
+			if cliff:
+				_block_cell(cx, cy)
+				blocked += 1
+	return blocked
+
+
+## Blocks every cell lower than `level` (fixed-point meters): deep water.
+func block_below(level: int) -> int:
+	var blocked: int = 0
+	for cy: int in height_cells:
+		for cx: int in width_cells:
+			if _blocked[index(cx, cy)] == 0 and _heights[index(cx, cy)] < level:
+				_block_cell(cx, cy)
+				blocked += 1
+	return blocked
+
+
+func _block_cell(cx: int, cy: int) -> void:
+	_blocked[index(cx, cy)] = 1
+	walk[padded_index(cx, cy)] = 0
+	change_log.append(Rect2i(cx, cy, 1, 1))
 
 
 ## Blocks every cell that overlaps the rectangle (meters, from its corner).
