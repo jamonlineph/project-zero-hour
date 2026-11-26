@@ -34,6 +34,7 @@ var builder: SimBuilder = null
 var gatherer: SimGatherer = null
 var supply: SimSupply = null    ## supply sites only
 var drone: SimDrone = null      ## drones only: endurance and launcher (P2-01)
+var jammer: SimJammer = null    ## jamming field and spoofing (P2-03)
 
 var order: Order = Order.IDLE
 var order_target_id: int = 0    ## ATTACK: the entity to destroy; GUARD: the entity to protect
@@ -73,6 +74,8 @@ func write_hash(h: SimHash) -> void:
 		h.add_int(order_from_y)
 	if drone != null:   # only drones, so older replays hash as before
 		drone.write_hash(h)
+	if jammer != null:
+		jammer.write_hash(h)
 	if mover != null:
 		mover.write_hash(h)
 	else:

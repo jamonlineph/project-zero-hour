@@ -77,6 +77,7 @@ Thresholds scale with the unit's cost: 1×, 2× and 4× its cost in XP.
 | Kill chain | A weapon with `needs_spotter` may fire beyond its owner's own sight range only at targets that a friendly spotter (recon drone, sniper, recon team, satellite pass, cell tower bonus) currently sees. If the spotter dies or is jammed, guided shots in flight lose accuracy |
 | Jamming field | A circle in which enemy `drone` units lose control: they hover, drift and crash when their endurance ends. Enemy `guided` weapons get −50% accuracy. Fiber-optic drones and unguided weapons are immune. Fields don't stack: the strongest wins |
 | Spoofing | Ability: enemy drones in a radius pick a new random target (via `SimRng`) for 5 s, which can include their own side |
+| Jammer data | Units (and later buildings) with `"jammer": {radius_cm, strength, spoof_radius_cm, spoof_range_cm, spoof_cooldown_s}`. North Korea's EW vehicle: 40 m field, spoofs a 25 m area up to 70 m away every 30 s. Jammed drones hover, drift and can't fire; guided shots into the field lose lock 50% of the time and scatter 4–10 m |
 | Drone endurance | Every drone has `endurance_s`. At 20% it returns to its launcher if one exists; at 0 it crashes |
 | Active protection | `aps_charges` intercept incoming `anti_tank` guided missiles and drones with 90% success. One charge reloads every 20 s |
 | Interception | Strategic missiles and strike aircraft are entities with hp. Air-defense sites spend interceptors (stock + reload) to shoot them down |

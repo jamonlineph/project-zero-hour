@@ -63,6 +63,7 @@ func _run() -> void:
 			failures.append("no selected unit moved after a move order")
 		failures.append_array(_check_desktop_controls(main, world, selection))
 		failures.append_array(await _check_touch_controls(main, world, selection))
+		failures.append_array(await _check_spoof_button(main, world, selection))
 		failures.append_array(await _check_hud_build_and_produce(main, world, selection))
 		failures.append_array(await _check_attack(world, selection))
 		if game_view.effects == null or game_view.effects.played == 0:
@@ -558,4 +559,34 @@ func _check_units_on_terrain(main: Node, world: SimWorld, game_view: GameView) -
 			hilly = true
 	if not hilly:
 		problems.append("no unit stands on raised ground; is the sandbox terrain loaded?")
+	return problems
+
+
+## P2-03: a selected jamming vehicle offers "Spoof", and the armed click
+## issues the command (the test spawns the vehicle directly).
+func _check_spoof_button(main: Node, world: SimWorld, selection: SelectionController) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var hud: Hud = main.get("hud")
+	var def: UnitDef = world.content.get_unit("kp_ew_vehicle")
+	var id: int = world.spawn_unit(def, 1, Fx.from_int(30), Fx.from_int(60))
+	for i: int in 5:
+		await process_frame
+	selection.select_ids([id])
+	var labels: Array = []
+	for e: Dictionary in hud.command_grid._entries:
+		labels.append(str(e.get("label", "")))
+	if not labels.has("Spoof"):
+		problems.append("a selected jamming vehicle shows no Spoof button (%s)" % [labels])
+		return problems
+	var slot: int = labels.find("Spoof")
+	hud.command_grid.activate(slot)
+	if not selection.spoof_armed:
+		problems.append("the Spoof button did not arm the spoof order")
+	var center: Vector2 = main.get_viewport().get_visible_rect().size * 0.5
+	selection.handle_armed_click(center)
+	for i: int in 10:
+		await process_frame
+	if world.get_entity(id).jammer.spoof_ready_tick <= 0:
+		problems.append("clicking after Spoof did not spoof (cooldown never started)")
+	selection.select_ids([])
 	return problems

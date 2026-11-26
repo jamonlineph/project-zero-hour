@@ -21,6 +21,13 @@ var builder: bool = false       ## can construct and repair buildings
 var gatherer: bool = false      ## collects supply
 var flying: bool = false        ## flies over terrain (default: armor class "drone")
 var endurance_ticks: int = 0    ## drones: flight time on a full charge (data: endurance_s); 0 = unlimited
+var fiber_optic: bool = false   ## drones: immune to jamming and spoofing
+## Jammer (data: "jammer": {radius_cm, strength, spoof_radius_cm, spoof_range_cm, spoof_cooldown_s}).
+var jam_radius: int = 0
+var jam_strength: int = 0
+var spoof_radius: int = 0
+var spoof_range: int = 0
+var spoof_cooldown_ticks: int = 0
 var gather_capacity: int = 0
 var gather_load_ticks: int = 1
 var gather_unload_ticks: int = 1

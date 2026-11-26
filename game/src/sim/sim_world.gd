@@ -39,6 +39,8 @@ var vision: SimVision
 ## Player -> team. Players not listed are on a team of their own (team = id).
 var player_team: Dictionary[int, int] = {}
 var projectiles: Array[SimProjectile] = []   ## in creation order
+## Jammers that are on this tick (rebuilt by JammingSystem; derived, not hashed).
+var active_jammers: Array[SimEntity] = []
 ## What happened this tick, for the view and audio (not part of the state hash).
 ## Dictionaries with a "type": "fired", "hit" or "died".
 var events: Array[Dictionary] = []
@@ -115,6 +117,14 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 		e.drone = SimDrone.new()
 		e.drone.endurance_max = def.endurance_ticks
 		e.drone.endurance = def.endurance_ticks
+		e.drone.fiber_optic = def.fiber_optic
+	if def.jam_radius > 0:
+		e.jammer = SimJammer.new()
+		e.jammer.radius = def.jam_radius
+		e.jammer.strength = maxi(1, def.jam_strength)
+		e.jammer.spoof_radius = def.spoof_radius
+		e.jammer.spoof_range = def.spoof_range
+		e.jammer.spoof_cooldown = def.spoof_cooldown_ticks
 	for w: WeaponDef in def.weapons:
 		e.weapons.append(SimWeapon.from_def(w))
 	e.cost = def.cost
@@ -128,6 +138,21 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 	entities[e.id] = e
 	entity_ids.append(e.id)
 	return e.id
+
+
+## Strongest hostile jamming field covering (x, y) for `victim_player`'s
+## drones and guided weapons; 0 = none (P2-03). Fields don't stack.
+func jam_level(victim_player: int, x: int, y: int) -> int:
+	var level: int = 0
+	for j: SimEntity in active_jammers:
+		if not are_enemies(j.player_id, victim_player):
+			continue
+		var r: int = j.jammer.radius
+		var dx: int = x - j.x
+		var dy: int = y - j.y
+		if dx * dx + dy * dy <= r * r:
+			level = maxi(level, j.jammer.strength)
+	return level
 
 
 func get_entity(id: int) -> SimEntity:
@@ -318,6 +343,7 @@ func step() -> void:
 	# document the order in docs/02-architecture.md.
 	OrderSystem.step(self)
 	DroneSystem.step(self)
+	JammingSystem.step(self)
 	PowerSystem.step(self)
 	ConstructionSystem.step(self)
 	ProductionSystem.step(self)
@@ -533,7 +559,7 @@ func _apply_commands() -> void:
 			SimCommand.Type.BUILD, SimCommand.Type.PRODUCE, SimCommand.Type.CANCEL, \
 					SimCommand.Type.RALLY, SimCommand.Type.GATHER, SimCommand.Type.SELL, SimCommand.Type.REPAIR:
 				BaseCommands.apply(self, c)
-			SimCommand.Type.GUARD, SimCommand.Type.PATROL:
+			SimCommand.Type.GUARD, SimCommand.Type.PATROL, SimCommand.Type.SPOOF:
 				UnitCommands.apply(self, c)
 			_:
 				push_error("SimWorld: unknown command type %d" % c.type)
@@ -662,6 +688,10 @@ func _owned_entities(c: SimCommand) -> Array[SimEntity]:
 ## Entities named in the command that exist, belong to the issuing player and
 ## can move. Sorted by id, duplicates removed.
 ## For command helpers outside SimWorld (UnitCommands).
+func owned_entities_of(c: SimCommand) -> Array[SimEntity]:
+	return _owned_entities(c)
+
+
 func owned_movers_of(c: SimCommand) -> Array[SimEntity]:
 	return _owned_movers(c)
 

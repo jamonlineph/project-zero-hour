@@ -423,6 +423,15 @@ func _load_unit(path: String) -> void:
 	u.requires = _string_list(src, "requires", path)
 	u.builder = bool(src.get("builder", false))
 	u.flying = bool(src.get("flying", u.armor_class == "drone"))
+	u.fiber_optic = bool(src.get("fiber_optic", false))
+	var jam: Variant = src.get("jammer", null)
+	if jam is Dictionary:
+		u.jam_radius = Fx.from_ratio(_req_int(jam, "radius_cm", path, 1), 100)
+		u.jam_strength = int((jam as Dictionary).get("strength", 1))
+		if (jam as Dictionary).has("spoof_radius_cm"):
+			u.spoof_radius = Fx.from_ratio(_req_int(jam, "spoof_radius_cm", path, 1), 100)
+			u.spoof_range = Fx.from_ratio(_req_int(jam, "spoof_range_cm", path, 1), 100)
+			u.spoof_cooldown_ticks = _req_int(jam, "spoof_cooldown_s", path, 1) * SimWorld.TICK_RATE
 	if src.has("endurance_s"):
 		u.endurance_ticks = _req_int(src, "endurance_s", path, 1) * SimWorld.TICK_RATE
 	var g: Variant = src.get("gatherer", null)

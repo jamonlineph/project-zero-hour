@@ -6,7 +6,7 @@ extends RefCounted
 enum Type {
 	MOVE = 1, STOP = 2, ATTACK = 3, ATTACK_MOVE = 4, HOLD = 5,
 	BUILD = 6, PRODUCE = 7, CANCEL = 8, RALLY = 9, GATHER = 10, SELL = 11, REPAIR = 12,
-	GUARD = 13, PATROL = 14,
+	GUARD = 13, PATROL = 14, SPOOF = 15,
 }
 
 var tick: int = 0               ## tick on which the command is applied
@@ -65,6 +65,13 @@ static func make_guard(ids: Array[int], ward_id: int) -> SimCommand:
 static func make_patrol(ids: Array[int], tx: int, ty: int) -> SimCommand:
 	var c := make_move(ids, tx, ty)
 	c.type = Type.PATROL
+	return c
+
+
+## Jammers in `ids` spoof enemy drones around (tx, ty) (P2-03).
+static func make_spoof(ids: Array[int], tx: int, ty: int) -> SimCommand:
+	var c := make_move(ids, tx, ty)
+	c.type = Type.SPOOF
 	return c
 
 

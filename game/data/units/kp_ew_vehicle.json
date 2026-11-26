@@ -14,7 +14,13 @@
   "build_time_ms": 14000,
   "requires": [],
   "weapons": [],
-  "_todo": "jamming field arrives with P2-03",
+  "jammer": {
+    "radius_cm": 4000,
+    "strength": 1,
+    "spoof_radius_cm": 2500,
+    "spoof_range_cm": 7000,
+    "spoof_cooldown_s": 30
+  },
   "visual": {
     "model": "res://assets/models/units/kp_ew_vehicle.glb",
     "icon": "res://assets/icons/units/kp_ew_vehicle.png"

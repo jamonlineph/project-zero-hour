@@ -196,7 +196,27 @@ func _unit_orders() -> Array[Dictionary]:
 			"action": func() -> void:
 				_selection.disarm()
 				_selection.guard_armed = true},
+		_spoof_entry(),
 	]
+
+
+## "Spoof" for selected jamming vehicles (P2-03), greyed out while cooling down.
+func _spoof_entry() -> Dictionary:
+	var world: SimWorld = _runner.world
+	var any: bool = false
+	var ready: bool = false
+	for id: int in _selection.selected:
+		var e: SimEntity = world.get_entity(id)
+		if e != null and e.jammer != null and e.jammer.spoof_radius > 0:
+			any = true
+			ready = ready or world.tick >= e.jammer.spoof_ready_tick
+	if not any:
+		return {"label": "", "enabled": false}
+	return {"label": "Spoof", "enabled": ready,
+		"tooltip": "Then tap or click: enemy drones there fly off course and may attack their own side",
+		"action": func() -> void:
+			_selection.disarm()
+			_selection.spoof_armed = true}
 
 
 func _build_menu(world: SimWorld) -> Array[Dictionary]:

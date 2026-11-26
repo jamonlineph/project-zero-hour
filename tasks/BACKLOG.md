@@ -463,7 +463,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P2-01
 - **Accept:** laser (single target, unlimited ammo), microwave (cone area) and gun variants follow `combat.md`; tests.
 
-### P2-03 · Jamming fields and spoofing — ⬜
+### P2-03 · Jamming fields and spoofing — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P2-01
 - **Accept:** fields affect drones and guided weapons as specified; fiber-optic immunity; spoofing uses `SimRng`; tests, including determinism.
 

@@ -47,8 +47,8 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 |---|---|---|---|
 | Drone endurance | Drones fly for `endurance_s`, then return to their launcher or crash | P2-01 | ✅ |
 | Counter-drone | Lasers (single target, unlimited shots), microwave (cone, area), airburst guns; jammers come with P2-03 | P2-02 | ✅ |
-| Jamming fields | Areas where enemy drones lose control and guided weapons lose accuracy; fiber-optic drones are immune | P2-03 | ⬜ |
-| Spoofing | Ability: enemy drones in an area retarget randomly (deterministic RNG) | P2-03 | ⬜ |
+| Jamming fields | Areas where enemy drones lose control and guided weapons lose accuracy; fiber-optic drones are immune | P2-03 | ✅ |
+| Spoofing | Ability: enemy drones in an area retarget randomly (deterministic RNG) | P2-03 | ✅ |
 | Kill chain | Long-range weapons can only fire at targets a friendly spotter has marked. Losing the spotter breaks the shot | P2-04 | ⬜ |
 | Active protection | Tanks carry N charges that intercept incoming missiles or drones, then reload slowly | P2-06 | ⬜ |
 | Interceptable strikes | Strategic missiles and air strikes fly visibly; air-defense sites with interceptor stock can shoot them down | P2-07 | ⬜ |

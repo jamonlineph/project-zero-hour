@@ -74,6 +74,8 @@ func setup(entity: SimEntity, def: UnitDef, team_color: Color) -> void:
 	add_child(_ring)
 	_find_parts()
 	_add_status(clampf(radius_m * 2.0, 1.6, 5.0))
+	if entity.jammer != null:
+		add_child(_make_field_ring(Fx.to_float(entity.jammer.radius)))
 	position = Vector3(Fx.to_float(entity.x), 0.0, Fx.to_float(entity.y))
 	rotation.y = yaw_from_sim_angle(float(entity.facing))
 
@@ -306,6 +308,27 @@ func _make_placeholder(def: UnitDef, radius_m: float, team_color: Color) -> Node
 	holder.name = "Placeholder"
 	holder.add_child(mesh_instance)
 	return holder
+
+
+## A faint ring showing a jamming field's reach (P2-03).
+func _make_field_ring(radius_m: float) -> MeshInstance3D:
+	var torus := TorusMesh.new()
+	torus.inner_radius = radius_m - 0.4
+	torus.outer_radius = radius_m
+	torus.rings = 64
+	torus.ring_segments = 3
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.albedo_color = Color(0.75, 0.4, 1.0, 0.45)
+	var ring := MeshInstance3D.new()
+	ring.name = "JammingField"
+	ring.mesh = torus
+	ring.material_override = mat
+	ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	ring.scale = Vector3(1.0, 0.05, 1.0)
+	ring.position.y = 0.3
+	return ring
 
 
 func _make_ring(radius_m: float) -> MeshInstance3D:

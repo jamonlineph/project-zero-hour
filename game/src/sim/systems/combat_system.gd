@@ -27,6 +27,12 @@ static func step(world: SimWorld) -> void:
 		# Unfinished buildings can't fire; built ones need power.
 		if e.building != null and (not e.building.built or world.get_player(e.player_id).low_power()):
 			continue
+		# Jammed drones can't fire; spoofed ones fire only at their spoofed target.
+		if e.drone != null and e.drone.jammed:
+			continue
+		if e.drone != null and e.drone.spoofed_ticks > 0:
+			_fire_spoofed(world, e)
+			continue
 		for w: SimWeapon in e.weapons:
 			if w.cooldown > 0:
 				w.cooldown -= 1
@@ -118,10 +124,10 @@ static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> 
 		return
 	var p := SimProjectile.new()
 	p.id = world.next_projectile_id()
+	p.guided = w.projectile == "guided"
 	p.player_id = e.player_id
 	p.attacker_id = e.id
 	p.target_id = t.id
-	p.guided = w.projectile == "guided"
 	p.x = e.x
 	p.y = e.y
 	p.prev_x = e.x
@@ -135,6 +141,16 @@ static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> 
 	p.splash_edge_percent = w.splash_edge_percent
 	p.weapon_id = w.def_id
 	p.targets = w.targets
+	# Jamming (P2-03): a guided shot at a target inside a hostile field loses
+	# its lock half the time and flies to a scattered point instead.
+	if p.guided and world.jam_level(e.player_id, t.x, t.y) > 0 and world.rng.chance(1, 2):
+		var angle: int = world.rng.range_int(Fx.ANGLE_FULL)
+		var miss: int = 4 * Fx.ONE + world.rng.range_int(6 * Fx.ONE)
+		p.guided = false
+		p.target_id = 0
+		p.dest_x = clampi(t.x + Fx.mul(Fx.cos_a(angle), miss), 0, world.map_width)
+		p.dest_y = clampi(t.y + Fx.mul(Fx.sin_a(angle), miss), 0, world.map_height)
+		world.events.append({"type": "jammed_shot", "x": t.x, "y": t.y})
 	world.projectiles.append(p)
 
 
@@ -203,3 +219,15 @@ static func _cone(world: SimWorld, e: SimEntity, w: SimWeapon, aimed: SimEntity,
 	hits.sort_custom(func(a: SimEntity, b: SimEntity) -> bool: return a.id < b.id)
 	for t: SimEntity in hits:
 		world.apply_damage(t, damage, w.damage_type, e.id)
+
+
+## A spoofed drone fires only at the target spoofing gave it, friend or foe.
+static func _fire_spoofed(world: SimWorld, e: SimEntity) -> void:
+	for w: SimWeapon in e.weapons:
+		if w.cooldown > 0:
+			w.cooldown -= 1
+		var t: SimEntity = world.get_entity(w.target_id) if w.target_id != 0 else null
+		if t == null or t.dead or not in_range(e, w, t):
+			continue
+		if w.cooldown == 0:
+			_fire(world, e, w, t)
