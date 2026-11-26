@@ -81,7 +81,8 @@ Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from 
 4. Movement: turn toward the current waypoint, then move along the path.
 5. Separation: push overlapping units apart without entering blocked cells (`SeparationSystem`).
 5b. Vision: every 3 ticks, rebuild each team's visible cells (`SimVision`).
-6. Combat: rebuild the spatial index, then targeting → firing → projectiles → damage (`CombatSystem`); remove the dead.
+6. Combat: rebuild the spatial index, then targeting → firing → projectiles → damage (`CombatSystem`).
+6b. Veterancy self-repair (`VeterancySystem`), then defeat/victory checks (`VictorySystem`); remove the dead.
 7. *(planned)* Production, construction, economy, power.
 8. *(planned)* Vision and fog.
 9. `tick += 1`

@@ -102,10 +102,11 @@ static func _face(e: SimEntity, t: SimEntity) -> void:
 
 static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> void:
 	w.cooldown = w.reload_ticks
+	var damage: int = (w.damage * (100 + world.damage_bonus(e))) / 100
 	world.events.append({"type": "fired", "attacker": e.id, "weapon": w.def_id,
 			"x": e.x, "y": e.y, "tx": t.x, "ty": t.y})
 	if w.projectile == "instant":
-		_impact(world, e.player_id, e.id, t.id, t.x, t.y, w.damage, w.damage_type,
+		_impact(world, e.player_id, e.id, t.id, t.x, t.y, damage, w.damage_type,
 				w.splash_radius, w.splash_edge_percent)
 		return
 	var p := SimProjectile.new()
@@ -121,7 +122,7 @@ static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> 
 	p.dest_x = t.x
 	p.dest_y = t.y
 	p.speed = w.projectile_speed
-	p.damage = w.damage
+	p.damage = damage
 	p.damage_type = w.damage_type
 	p.splash_radius = w.splash_radius
 	p.splash_edge_percent = w.splash_edge_percent

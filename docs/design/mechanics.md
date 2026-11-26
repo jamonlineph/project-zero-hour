@@ -32,7 +32,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Damage types × armor classes | Damage multiplier table (`game/data/damage_matrix.json`, [combat.md](combat.md)) | P1-09 | ✅ |
 | Attack orders | Attack unit, attack-move, stop, hold position (guard later) | P1-10 | ✅ |
 | Vision and fog of war | Per-team visibility on 8 m cells (updated every 3 ticks), explored memory, shared allied vision; only visible enemies can be targeted or clicked. Fog rendering: P1-27 | P1-11 | ✅ |
-| Veterancy | Three ranks earned from kills: +damage, +armor, self-repair at the top rank | P1-17 | ⬜ |
+| Veterancy | Three ranks from cost-weighted damage dealt (1x/2x/4x own cost): +damage, +armor, self-repair at rank 3 (`rules.json`) | P1-17 | ✅ |
 | Garrisoning | Infantry enter buildings and fire from them; flame/thermobaric weapons clear them | P3-05 | ⬜ |
 | Transports | Vehicles carry infantry; some have firing ports | P3-06 | ⬜ |
 | Crushing | Heavy vehicles crush infantry and light obstacles | P3-07 | ⬜ |
@@ -58,7 +58,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 
 | Mechanic | Spec | Task | Status |
 |---|---|---|---|
-| Commander XP and ranks | XP from damage dealt and objectives; ranks 1–5; each rank gives points | P1-18, P2-09 | ⬜ |
+| Commander XP and ranks | XP from cost-weighted damage dealt plus a building-kill bonus; ranks 1–5 (`rules.json`). Points and powers: P2-09 | P1-18 | ✅ (points: P2-09) |
 | Power tree | Spend points on powers and unlocks per faction ([commander.md](commander.md)) | P2-09 | ⬜ |
 | Superweapon | One per faction; a countdown visible to all players; can be intercepted or destroyed | P3-03 | ⬜ |
 | Sub-faction variants | 2–3 per faction, with roster changes and bonuses | P5 | ⬜ |
@@ -74,4 +74,4 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Gauntlet mode (ladder of AI commanders) | P4-03 | ⬜ |
 | Operations campaign | P4-04 | ⬜ |
 | Map editor and mods | P3-16, P3-17 | ⬜ |
-| Victory conditions (destroy all buildings; options) | P1-19 | ⬜ |
+| Victory conditions ("buildings": all buildings and builders; "units": everything; "none") | P1-19 | ✅ |

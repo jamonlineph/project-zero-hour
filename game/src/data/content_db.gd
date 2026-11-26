@@ -16,6 +16,7 @@ var weapons: Dictionary[String, WeaponDef] = {}
 var maps: Dictionary[String, MapDef] = {}
 var scenarios: Dictionary[String, Dictionary] = {}   ## raw scenario data, see MatchSetup
 var damage_matrix: DamageMatrix = DamageMatrix.new()
+var rules: SimRules = SimRules.new()
 var errors: PackedStringArray = []
 
 
@@ -28,11 +29,14 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	maps.clear()
 	scenarios.clear()
 	damage_matrix = DamageMatrix.new()
+	rules = SimRules.new()
 	errors.clear()
 	var index: Variant = _read_json(index_path)
 	if not index is Dictionary:
 		errors.append("%s: expected a JSON object" % index_path)
 		return false
+	if (index as Dictionary).has("rules"):
+		_load_rules(str(index["rules"]))
 	# Order matters: units refer to weapons; weapons refer to damage types.
 	if (index as Dictionary).has("damage_matrix"):
 		_load_damage_matrix(str(index["damage_matrix"]))
@@ -169,6 +173,33 @@ func _string_list(d: Dictionary, key: String, path: String) -> PackedStringArray
 
 static func _ms_to_ticks(ms: int) -> int:
 	return maxi(1, (ms * SimWorld.TICK_RATE + 999) / 1000)
+
+
+func _load_rules(path: String) -> void:
+	var parsed: Variant = _read_json(path)
+	if not parsed is Dictionary:
+		errors.append("%s: expected a JSON object" % path)
+		return
+	var src: Dictionary = parsed
+	rules.veterancy_xp_multipliers = _int_list(src, "veterancy_xp_multipliers", path, 3)
+	rules.veterancy_damage_bonus = _int_list(src, "veterancy_damage_bonus_percent", path, 4)
+	rules.veterancy_armor_bonus = _int_list(src, "veterancy_armor_bonus_percent", path, 4)
+	rules.self_repair_rank = _req_int(src, "veterancy_self_repair_rank", path, 0)
+	rules.self_repair_percent_per_2s = _req_int(src, "veterancy_self_repair_percent_per_2s", path, 0)
+	rules.commander_rank_xp = _int_list(src, "commander_rank_xp", path, 5)
+	rules.building_kill_xp_percent = _req_int(src, "building_kill_xp_percent", path, 0)
+
+
+func _int_list(d: Dictionary, key: String, path: String, size: int) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	var v: Variant = d.get(key, [])
+	if not v is Array or (v as Array).size() != size:
+		errors.append("%s: '%s' must be a list of %d whole numbers" % [path, key, size])
+		out.resize(size)
+		return out
+	for item: Variant in v:
+		out.append(int(item))
+	return out
 
 
 func _load_damage_matrix(path: String) -> void:

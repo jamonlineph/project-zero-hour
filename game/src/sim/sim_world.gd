@@ -23,13 +23,18 @@ var pathfinder: Pathfinder  ## A* over `map`, shared by all movers
 var entities: Dictionary[int, SimEntity] = {}
 var entity_ids: Array[int] = []   ## ascending ids: always iterate this
 var damage_matrix: DamageMatrix = DamageMatrix.new()
+var rules: SimRules = SimRules.new()
+## Set when only one team (or none) is left (P1-19). winner_team 0 = draw.
+var game_over: bool = false
+var winner_team: int = 0
 ## Read-only content (unit and building definitions) for production and
 ## construction. Set by MatchSetup; tests may leave it null.
 var content: ContentDb
 var players: Dictionary[int, SimPlayer] = {}
 ## How players lose (P1-19): "buildings" (all buildings and builders gone),
-## "units" (everything gone) or "none" (sandbox).
-var victory_rule: String = "buildings"
+## "units" (everything gone) or "none". Worlds made without a scenario (tests)
+## default to "none"; MatchSetup defaults scenarios to "buildings".
+var victory_rule: String = "none"
 var vision: SimVision
 ## Player -> team. Players not listed are on a team of their own (team = id).
 var player_team: Dictionary[int, int] = {}
@@ -298,6 +303,8 @@ func step() -> void:
 		vision.update(self)
 	_rebuild_index()
 	CombatSystem.step(self)
+	VeterancySystem.step(self)
+	VictorySystem.step(self)
 	_remove_dead()
 	tick += 1
 
@@ -307,18 +314,57 @@ func next_projectile_id() -> int:
 	return _next_projectile_id - 1
 
 
-## Deals damage after armor (damage matrix). Returns the damage dealt. An
+## Deals damage after armor (damage matrix, then the target's veterancy) and
+## grants XP to the attacker and its player. Returns the damage dealt. An
 ## entity reaching 0 hp is marked dead and removed at the end of the tick.
 func apply_damage(target: SimEntity, amount: int, damage_type: String, attacker_id: int) -> int:
 	if target.dead:
 		return 0
-	var dealt: int = mini(damage_matrix.apply(amount, damage_type, target.armor_class), target.hp)
+	var raw: int = damage_matrix.apply(amount, damage_type, target.armor_class)
+	if raw > 0:
+		raw = maxi(1, (raw * (100 - rules.veterancy_armor_bonus[target.vet_rank])) / 100)
+	var dealt: int = mini(raw, target.hp)
 	target.hp -= dealt
+	var attacker: SimEntity = get_entity(attacker_id)
+	if attacker != null and dealt > 0 and are_enemies(attacker.player_id, target.player_id):
+		_grant_xp(attacker, (dealt * target.cost) / maxi(1, target.max_hp))
 	if target.hp <= 0:
 		target.dead = true
 		events.append({"type": "died", "id": target.id, "def_id": target.def_id,
 				"player": target.player_id, "x": target.x, "y": target.y, "killer": attacker_id})
+		if attacker != null and target.building != null and are_enemies(attacker.player_id, target.player_id):
+			_grant_player_xp(attacker.player_id, (target.cost * rules.building_kill_xp_percent) / 100)
 	return dealt
+
+
+## Extra damage percent for an attacker's veterancy rank.
+func damage_bonus(e: SimEntity) -> int:
+	return rules.veterancy_damage_bonus[e.vet_rank]
+
+
+func _grant_xp(attacker: SimEntity, amount: int) -> void:
+	if amount <= 0:
+		return
+	attacker.xp += amount
+	var base: int = maxi(100, attacker.cost)
+	while attacker.vet_rank < 3 and attacker.xp >= base * rules.veterancy_xp_multipliers[attacker.vet_rank]:
+		attacker.vet_rank += 1
+		events.append({"type": "promoted", "id": attacker.id, "rank": attacker.vet_rank})
+	_grant_player_xp(attacker.player_id, amount)
+
+
+func _grant_player_xp(player_id: int, amount: int) -> void:
+	if amount <= 0 or player_id == 0:
+		return
+	var p: SimPlayer = get_player(player_id)
+	p.xp += amount
+	var new_rank: int = 1
+	for i: int in rules.commander_rank_xp.size():
+		if p.xp >= rules.commander_rank_xp[i]:
+			new_rank = i + 1
+	if new_rank > p.rank:
+		p.rank = new_rank
+		events.append({"type": "rank_up", "player": player_id, "rank": new_rank})
 
 
 ## Living and dead entities whose position lies within `radius` of (x, y)
@@ -374,6 +420,9 @@ func state_hash() -> int:
 	var h := SimHash.new()
 	h.add_int(tick)
 	h.add_int(rng.state)
+	rules.write_hash(h)
+	h.add_bool(game_over)
+	h.add_int(winner_team)
 	map.write_hash(h)
 	vision.write_hash(h)
 	var player_ids: Array[int] = []

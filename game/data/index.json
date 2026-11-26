@@ -1,4 +1,5 @@
 {
+  "rules": "res://data/rules.json",
   "damage_matrix": "res://data/damage_matrix.json",
   "weapons": [
     "res://data/weapons/tank_cannon_120.json",

@@ -28,6 +28,7 @@ static func build_from(content: ContentDb, sc: Dictionary, seed_value: int) -> S
 	var world := SimWorld.from_map(seed_value, map_def)
 	world.content = content
 	world.damage_matrix = content.damage_matrix
+	world.rules = content.rules
 	world.victory_rule = str(sc.get("victory", "buildings"))
 	for p: Variant in sc.get("players", []):
 		var pd: Dictionary = p

@@ -25,6 +25,8 @@ var hp: int = 0
 var max_hp: int = 0
 var dead: bool = false          ## set when hp reaches 0; removed at the end of the tick
 var cost: int = 0               ## credits; weights veterancy XP (P1-17)
+var xp: int = 0                 ## veterancy XP (cost-weighted damage dealt)
+var vet_rank: int = 0           ## 0..3
 var mover: SimMover = null      ## only on entities that can move
 var weapons: Array[SimWeapon] = []
 var building: SimBuilding = null
@@ -69,6 +71,8 @@ func write_hash(h: SimHash) -> void:
 	for w: SimWeapon in weapons:
 		w.write_hash(h)
 	h.add_int(cost)
+	h.add_int(xp)
+	h.add_int(vet_rank)
 	for c: Variant in [building, builder, gatherer, supply]:
 		if c == null:
 			h.add_int(-1)

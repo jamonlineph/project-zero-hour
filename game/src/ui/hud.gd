@@ -9,6 +9,7 @@ var selection_box: SelectionBox
 var _runner: SimRunner
 var _status: Label
 var _help: Label
+var _banner: Label
 var _selected_count: int = 0
 var _last_hash: int = 0
 
@@ -26,6 +27,11 @@ func _ready() -> void:
 	_help.text = HELP_TEXT
 	_help.modulate = Color(1, 1, 1, 0.8)
 	add_child(_help)
+	_banner = Label.new()
+	_banner.name = "Banner"
+	_banner.add_theme_font_size_override("font_size", 64)
+	_banner.visible = false
+	add_child(_banner)
 
 
 func setup(runner: SimRunner) -> void:
@@ -47,8 +53,14 @@ func _process(_delta: float) -> void:
 	if _runner == null or _runner.world == null:
 		return
 	var p: SimPlayer = _runner.world.get_player(_runner.local_player_id)
-	_status.text = "Credits %d | Power %d/%d%s | tick %d | %d fps | selected %d | state %08x" % [
+	_status.text = "Credits %d | Power %d/%d%s | Rank %s (%d XP) | tick %d | %d fps | selected %d | state %08x" % [
 		p.credits, p.power_used, p.power_produced, " LOW" if p.low_power() else "",
-		_runner.world.tick, Engine.get_frames_per_second(), _selected_count, _last_hash]
+		"*".repeat(p.rank), p.xp, _runner.world.tick, Engine.get_frames_per_second(), _selected_count, _last_hash]
+	if _runner.world.game_over and not _banner.visible:
+		var my_team: int = _runner.world.team_of(_runner.local_player_id)
+		_banner.text = "DRAW" if _runner.world.winner_team == 0 else ("VICTORY" if _runner.world.winner_team == my_team else "DEFEAT")
+		_banner.visible = true
+	if _banner.visible:
+		_banner.position = (get_viewport().get_visible_rect().size - _banner.size) * 0.5
 	var view_size: Vector2 = get_viewport().get_visible_rect().size
 	_help.position = Vector2(12.0, view_size.y - _help.size.y - 12.0)

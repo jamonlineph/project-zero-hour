@@ -278,17 +278,17 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Do:** `power` in building data; low-power effects (slower production; powered defenses off).
 - **Accept:** tests.
 
-### P1-17 · Veterancy — ⬜
+### P1-17 · Veterancy — ✅ 2026-11-26 (Claude Code: pips in the view come with P1-22)
 - **Needs:** P1-08
 - **Do:** XP from cost-weighted damage, three ranks with bonuses (see [combat.md](../docs/design/combat.md)), and pips in the view.
 - **Accept:** tests.
 
-### P1-18 · Commander XP and rank — ⬜
+### P1-18 · Commander XP and rank — ✅ 2026-11-26 (Claude Code: thresholds in game/data/rules.json, to tune)
 - **Needs:** P1-08
 - **Do:** per-player XP and ranks 1–5 with the [commander.md](../docs/design/commander.md) pacing; HUD shows the rank. No powers yet.
 - **Accept:** tests.
 
-### P1-19 · Victory and defeat — ⬜
+### P1-19 · Victory and defeat — ✅ 2026-11-26 (Claude Code: simple banner; full end screen with P1-32)
 - **Needs:** P1-12
 - **Do:** default rule (all buildings and builders destroyed), plus match-end events and an end screen.
 - **Accept:** tests for both outcomes and for simultaneous elimination.
