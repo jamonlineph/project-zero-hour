@@ -453,7 +453,9 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 
 ## Phase 2: Vertical slice (America vs North Korea)
 
-### P2-01 · Drone endurance and return to launcher — ⬜
+*Started 2026-11-26 at the owner's request, in parallel with the Phase 1 device checks (P1-EXIT).*
+
+### P2-01 · Drone endurance and return to launcher — ✅ 2026-11-26 (Claude Code: drones also fly now: straight paths over any terrain)
 - **Needs:** P1-08, P1-04
 - **Accept:** drones have `endurance_s`, return at 20%, and crash at 0; tests.
 
@@ -485,7 +487,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P1-11
 - **Accept:** enemies see decoys as real units until close or scouted; decoys die in one hit; tests.
 
-### P2-09 · Commander power tree (ranks 1–3, US and RU) — ⬜
+### P2-09 · Commander power tree (ranks 1–3, America and North Korea) — ⬜
 - **Needs:** P1-18, P2-07
 - **Accept:** a tree from data; spend points; power bar UI (mouse and touch); every rank 1–3 power from `commander.md` works; tests.
 
@@ -495,7 +497,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 
 ### P2-11 · Skirmish AI v1 — ⬜
 - **Needs:** P1-31, P2-09
-- **Accept:** easy and normal difficulty for US and RU; counter-building; uses powers; AI-vs-AI results logged.
+- **Accept:** easy and normal difficulty for America and North Korea; counter-building; uses powers; AI-vs-AI results logged.
 
 ### P2-12 · Map "Riverside" — ⬜
 - **Needs:** P1-30

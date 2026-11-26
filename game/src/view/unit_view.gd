@@ -209,6 +209,10 @@ func update_from_sim(e: SimEntity, alpha: float) -> void:
 			var done: float = 1.0 if e.building.built else float(e.building.progress) / float(maxi(1, e.building.total))
 			_model.scale = Vector3(1.0, 0.15 + 0.85 * done, 1.0)
 		return
+	if kind == Kind.DRONE and e.drone != null:
+		# Docked drones settle onto their launcher; airborne ones hover.
+		var want: float = 1.0 if e.drone.docked else DRONE_HOVER_M
+		_model.position.y = move_toward(_model.position.y, want, 4.0 * get_process_delta_time())
 	var px: float = lerpf(Fx.to_float(e.prev_x), Fx.to_float(e.x), alpha)
 	var pz: float = lerpf(Fx.to_float(e.prev_y), Fx.to_float(e.y), alpha)
 	position = Vector3(px, 0.0, pz)

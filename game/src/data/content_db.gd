@@ -417,6 +417,9 @@ func _load_unit(path: String) -> void:
 		u.build_ticks = _ms_to_ticks(_req_int(src, "build_time_ms", path, 1))
 	u.requires = _string_list(src, "requires", path)
 	u.builder = bool(src.get("builder", false))
+	u.flying = bool(src.get("flying", u.armor_class == "drone"))
+	if src.has("endurance_s"):
+		u.endurance_ticks = _req_int(src, "endurance_s", path, 1) * SimWorld.TICK_RATE
 	var g: Variant = src.get("gatherer", null)
 	if g is Dictionary:
 		u.gatherer = true

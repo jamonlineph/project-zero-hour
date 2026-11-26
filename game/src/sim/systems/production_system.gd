@@ -38,6 +38,8 @@ static func spawn_from(world: SimWorld, building: SimEntity, def: UnitDef) -> in
 	var exit: Vector2i = world.approach_point(building, south.x, south.y)
 	var id: int = world.spawn_unit(def, building.player_id, exit.x, exit.y, Fx.ANGLE_QUARTER)
 	var u: SimEntity = world.get_entity(id)
+	if u.drone != null:
+		u.drone.home_id = building.id   # drones return here to recharge
 	world.events.append({"type": "produced", "id": id, "def_id": def.id, "player": building.player_id, "building": building.id})
 	if b.has_rally and u.mover != null:
 		u.mover.order_move(b.rally_x, b.rally_y)

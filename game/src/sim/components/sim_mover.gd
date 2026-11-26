@@ -25,6 +25,8 @@ var path_index: int = 0             ## waypoint currently being driven to
 var follow_leader: int = 0
 ## True while an attack-moving unit stops to fight; its path is kept.
 var paused: bool = false
+## Flies (drones): straight-line paths over any terrain, no pushing (P2-01).
+var flying: bool = false
 
 
 ## Sets a new destination and asks for a path to it.
@@ -58,6 +60,8 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(follow_leader)
 	h.add_bool(paused)
 	h.add_int(path_index)
+	if flying:   # only flyers, so older replays hash as before
+		h.add_bool(true)
 	h.add_int(path.size())
 	for p: Vector2i in path:
 		h.add_int(p.x)

@@ -45,7 +45,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 
 | Mechanic | Spec | Task | Status |
 |---|---|---|---|
-| Drone endurance | Drones fly for `endurance_s`, then return to their launcher or crash | P2-01 | ⬜ |
+| Drone endurance | Drones fly for `endurance_s`, then return to their launcher or crash | P2-01 | ✅ |
 | Counter-drone | Lasers (single target, unlimited shots), microwave (cone, area), guns, jammers | P2-02 | ⬜ |
 | Jamming fields | Areas where enemy drones lose control and guided weapons lose accuracy; fiber-optic drones are immune | P2-03 | ⬜ |
 | Spoofing | Ability: enemy drones in an area retarget randomly (deterministic RNG) | P2-03 | ⬜ |

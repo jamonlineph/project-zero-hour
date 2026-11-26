@@ -19,6 +19,8 @@ var build_ticks: int = 1        ## production time (data: build_time_ms)
 var requires: PackedStringArray = []   ## building ids the player must own (built)
 var builder: bool = false       ## can construct and repair buildings
 var gatherer: bool = false      ## collects supply
+var flying: bool = false        ## flies over terrain (default: armor class "drone")
+var endurance_ticks: int = 0    ## drones: flight time on a full charge (data: endurance_s); 0 = unlimited
 var gather_capacity: int = 0
 var gather_load_ticks: int = 1
 var gather_unload_ticks: int = 1

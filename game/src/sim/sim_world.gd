@@ -110,6 +110,11 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 		e.mover = SimMover.new()
 		e.mover.speed = def.speed
 		e.mover.turn_rate = def.turn_rate
+		e.mover.flying = def.flying
+	if def.endurance_ticks > 0:
+		e.drone = SimDrone.new()
+		e.drone.endurance_max = def.endurance_ticks
+		e.drone.endurance = def.endurance_ticks
 	for w: WeaponDef in def.weapons:
 		e.weapons.append(SimWeapon.from_def(w))
 	e.cost = def.cost
@@ -312,6 +317,7 @@ func step() -> void:
 	# System order is part of the rules. Add new systems here, in order, and
 	# document the order in docs/02-architecture.md.
 	OrderSystem.step(self)
+	DroneSystem.step(self)
 	PowerSystem.step(self)
 	ConstructionSystem.step(self)
 	ProductionSystem.step(self)

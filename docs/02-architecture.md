@@ -77,6 +77,7 @@ Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from 
 1. Clear `events`; save `prev_x`, `prev_y` and `prev_facing` (for view interpolation).
 2. Apply this tick's commands.
 2b. Orders: carry out MOVE / ATTACK / ATTACK_MOVE / HOLD / GUARD / PATROL (`OrderSystem`; GUARD and PATROL commands are applied by `UnitCommands`).
+2b'. Drones: endurance, return to the launcher at 20%, recharge when docked, crash at 0 (`DroneSystem`). Flying movers get straight-line paths and are skipped by separation.
 2c. Base and economy: `PowerSystem`, `ConstructionSystem`, `ProductionSystem`, `GatherSystem`.
 3. Pathing: plan routes for movers that need one (`PathingSystem`, at most 8 searches per tick; group followers copy their leader's route).
 4. Movement: turn toward the current waypoint, then move along the path.

@@ -11,6 +11,7 @@
   "radius_cm": 100,
   "vision_cm": 7000,
   "build_time_ms": 6000,
+  "endurance_s": 120,
   "requires": [],
   "weapons": [],
   "visual": {

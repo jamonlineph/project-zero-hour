@@ -22,7 +22,12 @@ static func step(world: SimWorld) -> void:
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
 		var m: SimMover = e.mover
-		if m == null or not m.needs_path or m.follow_leader != 0:
+		if m == null or not m.needs_path:
+			continue
+		if m.flying:
+			_fly(world, e)
+			continue
+		if m.follow_leader != 0:
 			continue
 		if budget == 0:
 			break
@@ -46,6 +51,17 @@ static func step(world: SimWorld) -> void:
 		budget -= 1
 		m.follow_leader = 0
 		_plan(world, e)
+
+
+## Flyers go straight to their destination: no search, no budget.
+static func _fly(world: SimWorld, e: SimEntity) -> void:
+	var m: SimMover = e.mover
+	m.target_x = clampi(m.target_x, 0, world.map_width)
+	m.target_y = clampi(m.target_y, 0, world.map_height)
+	m.path = [Vector2i(m.target_x, m.target_y)]
+	m.path_index = 0
+	m.needs_path = false
+	m.follow_leader = 0
 
 
 static func _plan(world: SimWorld, e: SimEntity) -> void:
