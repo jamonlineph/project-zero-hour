@@ -39,7 +39,8 @@
     "res://data/units/kp_howitzer.json",
     "res://data/units/kp_ew_vehicle.json",
     "res://data/units/kp_recon_drone.json",
-    "res://data/units/kp_loitering_team.json"
+    "res://data/units/kp_loitering_team.json",
+    "res://data/units/kp_decoy_tank.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",

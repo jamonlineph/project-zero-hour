@@ -483,7 +483,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P1-08
 - **Accept:** missiles and strike aircraft are entities; air-defense sites spend interceptor stock; tests.
 
-### P2-08 · Decoys — ⬜
+### P2-08 · Decoys — ✅ 2026-11-26 (Claude Code: North Korea's decoy tank; deployed by its commander power in P2-09)
 - **Needs:** P1-11
 - **Accept:** enemies see decoys as real units until close or scouted; decoys die in one hit; tests.
 

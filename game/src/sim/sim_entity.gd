@@ -37,6 +37,8 @@ var drone: SimDrone = null      ## drones only: endurance and launcher (P2-01)
 var jammer: SimJammer = null    ## jamming field and spoofing (P2-03)
 var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
 var strike: SimStrike = null    ## a missile or strike aircraft in flight (P2-07)
+var decoy_of: String = ""       ## a decoy imitating this unit id (P2-08)
+var revealed_mask: int = 0      ## decoys: bit per team that has seen through it
 var upgrades: PackedStringArray = []   ## per-unit upgrades bought for this unit (P2-05)
 var aps_charges: int = 0        ## active protection: interceptions left (P2-06)
 var aps_max: int = 0
@@ -87,6 +89,9 @@ func write_hash(h: SimHash) -> void:
 		h.add_bool(true)
 	if strike != null:
 		strike.write_hash(h)
+	if decoy_of != "":
+		h.add_string(decoy_of)
+		h.add_int(revealed_mask)
 	if not upgrades.is_empty() or aps_max != 0 or cage_hits != 0:
 		for u: String in upgrades:
 			h.add_string(u)

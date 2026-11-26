@@ -124,6 +124,7 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 	e.aps_max = def.aps_charges
 	e.aps_charges = def.aps_charges
 	e.cage_hits = def.cage_hits
+	e.decoy_of = def.decoy_of
 	if def.jam_radius > 0:
 		e.jammer = SimJammer.new()
 		e.jammer.radius = def.jam_radius
@@ -378,6 +379,7 @@ func step() -> void:
 	JammingSystem.step(self)
 	KillChainSystem.step(self)
 	StrikeSystem.step(self)
+	DecoySystem.step(self)
 	PowerSystem.step(self)
 	ConstructionSystem.step(self)
 	ProductionSystem.step(self)

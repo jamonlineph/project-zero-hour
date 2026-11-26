@@ -78,7 +78,8 @@ static func in_range(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 static func _valid_target(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 	return not t.dead and world.are_enemies(e.player_id, t.player_id) \
 			and DamageMatrix.can_target(w.targets, t.armor_class) and in_range(e, w, t) \
-			and world.can_see(e.player_id, t.x, t.y) and KillChainSystem.may_engage(world, e, w, t)
+			and world.can_see(e.player_id, t.x, t.y) and KillChainSystem.may_engage(world, e, w, t) \
+			and not DecoySystem.is_known_decoy(world, e.player_id, t)
 
 
 static func _acquire(world: SimWorld, e: SimEntity, w: SimWeapon) -> SimEntity:
@@ -92,6 +93,8 @@ static func _acquire(world: SimWorld, e: SimEntity, w: SimWeapon) -> SimEntity:
 			continue
 		if not world.can_see(e.player_id, t.x, t.y) or not KillChainSystem.may_engage(world, e, w, t):
 			continue
+		if DecoySystem.is_known_decoy(world, e.player_id, t):
+			continue   # seen through: not worth a shot
 		var structure: bool = t.armor_class == "structure"
 		var dist: int = Fx.length(t.x - e.x, t.y - e.y)
 		var better: bool = best == null

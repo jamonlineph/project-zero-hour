@@ -1,0 +1,22 @@
+{
+  "id": "kp_decoy_tank",
+  "faction": "kp",
+  "role": "deception",
+  "name": "Decoy Tank",
+  "_doc": "Inflatable decoy (P2-08). Enemies see a Main Battle Tank until they come within 15 m or scout it with a recon drone. Deployed by North Korea's decoy power (P2-09).",
+  "armor_class": "heavy_armor",
+  "status": "placeholder stats",
+  "max_hp": 1,
+  "cost": 50,
+  "speed_cm_per_s": 0,
+  "radius_cm": 300,
+  "vision_cm": 0,
+  "build_time_ms": 1000,
+  "requires": [],
+  "weapons": [],
+  "decoy_of": "kp_mbt",
+  "visual": {
+    "model": "res://assets/models/units/kp_mbt.glb",
+    "icon": "res://assets/icons/units/kp_mbt.png"
+  }
+}

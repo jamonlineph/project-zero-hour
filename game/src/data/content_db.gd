@@ -200,6 +200,9 @@ func _check_references() -> void:
 				errors.append("building %s produces unknown unit '%s'" % [b.id, p])
 		if b.free_unit != "" and not units.has(b.free_unit):
 			errors.append("building %s gives unknown unit '%s'" % [b.id, b.free_unit])
+	for u: UnitDef in units.values():
+		if u.decoy_of != "" and not units.has(u.decoy_of):
+			errors.append("unit %s imitates unknown unit '%s'" % [u.id, u.decoy_of])
 	for up: UpgradeDef in upgrades.values():
 		if up.scope == "global" and not buildings.has(up.researched_at):
 			errors.append("upgrade %s is researched at unknown building '%s'" % [up.id, up.researched_at])
@@ -536,6 +539,7 @@ func _load_unit(path: String) -> void:
 	u.spotter = bool(src.get("spotter", false))
 	u.aps_charges = int(src.get("aps_charges", 0))
 	u.cage_hits = int(src.get("cage_hits", 0))
+	u.decoy_of = str(src.get("decoy_of", ""))
 	var jam: Variant = src.get("jammer", null)
 	if jam is Dictionary:
 		u.jam_radius = Fx.from_ratio(_req_int(jam, "radius_cm", path, 1), 100)

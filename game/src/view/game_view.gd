@@ -45,6 +45,9 @@ func sync(alpha: float) -> void:
 			v.update_status(e)
 			_aim(e, v, delta)
 			_show_upgrades(e, v)
+			if e.decoy_of != "":
+				v.set_decoy_look(not world.are_enemies(local_player_id, e.player_id)
+						or DecoySystem.is_known_decoy(world, local_player_id, e))
 
 
 ## Fog of war: enemies show only where this player sees; neutral things such

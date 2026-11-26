@@ -81,6 +81,7 @@ Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from 
 2b''. Jamming (`JammingSystem`): rebuilds the list of active jammers; enemy drones inside a field lose control and drift; spoofed drones fly to their spoofed point. Guided shots into a hostile field lose lock half the time (`CombatSystem`, via `SimWorld.jam_level`).
 2b'''. Kill chain (`KillChainSystem`): rebuilds the list of active spotters (jammed or spoofed drones don't spot). `needs_spotter` weapons fire beyond their owner's own sight only at targets a spotter sees (`SimWorld.is_spotted`); guided kill-chain shots lose guidance in flight when the target stops being spotted.
 2b''''. Strikes (`StrikeSystem`): missiles and strike jets launched by powers fly as entities; on arrival they deliver their payload (missiles end, jets fly back off the map).
+2b'''''. Decoys (`DecoySystem`): enemy teams see through a decoy when one of their units comes within 15 m or a recon drone flies within 12 m; seen-through decoys are ignored by targeting.
 2c. Base and economy: `PowerSystem`, `ConstructionSystem`, `ProductionSystem`, research (`Upgrades.step`, P2-05), `GatherSystem`.
 3. Pathing: plan routes for movers that need one (`PathingSystem`, at most 8 searches per tick; group followers copy their leader's route).
 4. Movement: turn toward the current waypoint, then move along the path.

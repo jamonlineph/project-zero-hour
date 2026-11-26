@@ -53,7 +53,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Active protection | Tanks carry N charges that intercept incoming missiles or drones, then reload slowly | P2-06 | ✅ |
 | Cage armor | The first drone hits on a caged vehicle do a quarter of their damage | P2-06 | ✅ |
 | Interceptable strikes | Strategic missiles and air strikes fly visibly; air-defense sites with interceptor stock can shoot them down | P2-07 | ✅ |
-| Decoys | Inflatable decoys look real to the enemy (shown as real units) until scouted at close range | P2-08 | ⬜ |
+| Decoys | Inflatable decoys look real to the enemy (shown as real units) until scouted at close range | P2-08 | ✅ |
 
 ## Commander and strategy
 

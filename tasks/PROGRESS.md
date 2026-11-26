@@ -4,6 +4,15 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-08 Decoys (Claude Code, branch claude/phase-0-wrapup)
+- Done: decoys are units with `"decoy_of"` (the unit they imitate) and 1 hp. North Korea gets an inflatable **Decoy Tank** that uses the real tank's model. Enemies see and shoot it as a real tank until one of their units comes within 15 m or one of their recon drones flies within 12 m; from then on that team ignores it. Revealing is per team and permanent. The owner sees their decoys translucent, and so does an enemy who has seen through one. New `DecoySystem`.
+- Tests: `tools/run_tests.sh` -> 214 tests, 0 failed (new `test_decoys.gd`: data, enemies waste a shot and one hit kills, close units see through and stop shooting, recon flyover reveals, far drones don't, per-team reveal, determinism); golden replays unchanged.
+- Not verified: nothing deploys decoys in play yet (P2-09's North Korea power will).
+- Next: P2-09 commander power tree (ranks 1–3, America and North Korea), which also launches strikes and decoys.
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P2-07 Interceptable strikes (Claude Code, branch claude/phase-0-wrapup)
 - Done: missiles and strike jets are now sim entities (armor class "aircraft") defined in `game/data/strikes/` (guided rocket, heavy rocket, strike jet). `StrikeSystem.launch()` sends one in from the map edge on the launcher's side; on arrival it delivers its payload (a jet drops 4 bombs and flies home; a missile ends). Air-defense sites can shoot them down, but now carry a limited interceptor stock (4, one back every 15 s). Strikes can't be selected and don't keep a player alive for victory. The view draws them as simple missile and jet shapes at altitude; missiles dive at the end.
 - Tests: `tools/run_tests.sh` -> 208 tests, 0 failed (new `test_strikes.gd`: data, missile hits, jet bombs and leaves, air defense shoots down and spends stock, stock runs out and refills, victory, determinism); golden replays unchanged.

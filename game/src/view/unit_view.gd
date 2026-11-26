@@ -33,6 +33,8 @@ var _height: float = 2.0
 var is_wreck: bool = false
 var _upgrade_parts: Dictionary[String, Node3D] = {}   ## upg_* node name -> node (P2-05)
 var _upgrade_sig: int = -1
+var _decoy_look: bool = false
+static var _decoy_material: StandardMaterial3D
 
 
 ## Missiles and strike jets (P2-07): simple shapes in code, flying high and
@@ -160,6 +162,24 @@ func has_upgrade_part(name: String) -> bool:
 
 func is_upgrade_part_visible(name: String) -> bool:
 	return _upgrade_parts.has(name) and _upgrade_parts[name].visible
+
+
+## Decoys (P2-08): translucent for their owner and for enemies who have seen
+## through them; otherwise they look exactly like the real unit.
+func set_decoy_look(on: bool) -> void:
+	if on == _decoy_look or is_wreck:
+		return
+	_decoy_look = on
+	if _decoy_material == null:
+		_decoy_material = StandardMaterial3D.new()
+		_decoy_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		_decoy_material.albedo_color = Color(0.75, 0.75, 0.7, 0.45)
+	for node: Node in _model.find_children("*", "MeshInstance3D", true, false):
+		(node as MeshInstance3D).material_override = _decoy_material if on else null
+
+
+func has_decoy_look() -> bool:
+	return _decoy_look
 
 
 ## Health bar and veterancy pips; call every frame.
