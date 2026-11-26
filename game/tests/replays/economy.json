@@ -1,0 +1,108 @@
+{
+  "checkpoints": {
+    "1050": 3051284293,
+    "1200": 57696300,
+    "1350": 2459899692,
+    "150": 2322974713,
+    "1500": 1890170340,
+    "1650": 667266614,
+    "1800": 946367367,
+    "300": 1485125223,
+    "450": 4109071028,
+    "600": 97695650,
+    "750": 1240675826,
+    "900": 2895596982
+  },
+  "commands": [
+    {
+      "def_id": "us_logistics_hub",
+      "entity_ids": [
+        6
+      ],
+      "index": 0,
+      "player_id": 1,
+      "seq": 1,
+      "target_entity": 0,
+      "target_x": 3014656,
+      "target_y": 3801088,
+      "tick": 5,
+      "type": 6
+    },
+    {
+      "def_id": "ru_power_plant",
+      "entity_ids": [
+        14
+      ],
+      "index": 0,
+      "player_id": 2,
+      "seq": 1,
+      "target_entity": 0,
+      "target_x": 5898240,
+      "target_y": 1572864,
+      "tick": 5,
+      "type": 6
+    },
+    {
+      "def_id": "us_microreactor",
+      "entity_ids": [
+        6
+      ],
+      "index": 0,
+      "player_id": 1,
+      "seq": 2,
+      "target_entity": 0,
+      "target_x": 1966080,
+      "target_y": 5898240,
+      "tick": 400,
+      "type": 6
+    },
+    {
+      "def_id": "ru_barracks",
+      "entity_ids": [
+        14
+      ],
+      "index": 0,
+      "player_id": 2,
+      "seq": 2,
+      "target_entity": 0,
+      "target_x": 6291456,
+      "target_y": 5898240,
+      "tick": 400,
+      "type": 6
+    },
+    {
+      "def_id": "us_barracks",
+      "entity_ids": [
+        6
+      ],
+      "index": 0,
+      "player_id": 1,
+      "seq": 3,
+      "target_entity": 0,
+      "target_x": 2883584,
+      "target_y": 5898240,
+      "tick": 700,
+      "type": 6
+    },
+    {
+      "def_id": "ru_logistics_hub",
+      "entity_ids": [
+        14
+      ],
+      "index": 0,
+      "player_id": 2,
+      "seq": 3,
+      "target_entity": 0,
+      "target_x": 5505024,
+      "target_y": 3932160,
+      "tick": 800,
+      "type": 6
+    }
+  ],
+  "content_hash": 96138152,
+  "end_tick": 1800,
+  "format": 1,
+  "game_version": "0.0.1",
+  "scenario": "sandbox",
+  "seed": 4242
+}

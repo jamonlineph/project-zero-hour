@@ -1,0 +1,86 @@
+{
+  "checkpoints": {
+    "150": 1096576083,
+    "300": 1179843170,
+    "450": 2494779728,
+    "600": 1652980803,
+    "750": 2491428697,
+    "900": 1409918075
+  },
+  "commands": [
+    {
+      "def_id": "",
+      "entity_ids": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "index": 0,
+      "player_id": 1,
+      "seq": 1,
+      "target_entity": 0,
+      "target_x": 3932160,
+      "target_y": 4194304,
+      "tick": 10,
+      "type": 1
+    },
+    {
+      "def_id": "",
+      "entity_ids": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "index": 0,
+      "player_id": 1,
+      "seq": 2,
+      "target_entity": 0,
+      "target_x": 2621440,
+      "target_y": 7208960,
+      "tick": 300,
+      "type": 1
+    },
+    {
+      "def_id": "",
+      "entity_ids": [
+        8
+      ],
+      "index": 0,
+      "player_id": 1,
+      "seq": 3,
+      "target_entity": 0,
+      "target_x": 0,
+      "target_y": 0,
+      "tick": 360,
+      "type": 2
+    },
+    {
+      "def_id": "",
+      "entity_ids": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "index": 0,
+      "player_id": 1,
+      "seq": 4,
+      "target_entity": 0,
+      "target_x": 1310720,
+      "target_y": 5505024,
+      "tick": 600,
+      "type": 1
+    }
+  ],
+  "content_hash": 96138152,
+  "end_tick": 900,
+  "format": 1,
+  "game_version": "0.0.1",
+  "scenario": "sandbox",
+  "seed": 4242
+}

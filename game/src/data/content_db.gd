@@ -10,6 +10,8 @@ extends RefCounted
 
 const INDEX_PATH: String = "res://data/index.json"
 
+var _hasher: SimHash = null
+
 var units: Dictionary[String, UnitDef] = {}
 var buildings: Dictionary[String, BuildingDef] = {}
 var weapons: Dictionary[String, WeaponDef] = {}
@@ -17,6 +19,9 @@ var maps: Dictionary[String, MapDef] = {}
 var scenarios: Dictionary[String, Dictionary] = {}   ## raw scenario data, see MatchSetup
 var damage_matrix: DamageMatrix = DamageMatrix.new()
 var rules: SimRules = SimRules.new()
+## Hash of every content file's text, in load order. Replays and multiplayer
+## refuse to mix different content (P1-20).
+var content_hash: int = 0
 var errors: PackedStringArray = []
 
 
@@ -31,6 +36,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	damage_matrix = DamageMatrix.new()
 	rules = SimRules.new()
 	errors.clear()
+	_hasher = SimHash.new()
 	var index: Variant = _read_json(index_path)
 	if not index is Dictionary:
 		errors.append("%s: expected a JSON object" % index_path)
@@ -51,6 +57,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	for path: Variant in (index as Dictionary).get("scenarios", []):
 		_load_scenario(str(path))
 	_check_references()
+	content_hash = _hasher.value
 	return errors.is_empty()
 
 
@@ -394,7 +401,11 @@ func _read_json(path: String) -> Variant:
 		errors.append("%s: file not found" % path)
 		return null
 	var json := JSON.new()
-	var err: Error = json.parse(FileAccess.get_file_as_string(path))
+	var text: String = FileAccess.get_file_as_string(path)
+	if _hasher != null:
+		_hasher.add_string(path)
+		_hasher.add_string(text)
+	var err: Error = json.parse(text)
 	if err != OK:
 		errors.append("%s:%d: %s" % [path, json.get_error_line(), json.get_error_message()])
 		return null

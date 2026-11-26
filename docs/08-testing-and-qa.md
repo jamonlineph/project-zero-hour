@@ -7,6 +7,7 @@
 | Unit tests | `game/tests/unit/test_*.gd` | Fixed-point math, RNG, commands, movement, content loading |
 | Determinism tests | `game/tests/unit/test_determinism.gd` | Same seed + commands → identical state hash every tick; command order inside a tick doesn't matter |
 | Smoke test | `game/tests/smoke_main.gd` | The real main scene loads headless; units use their Blender models with team colors; selecting and ordering a move works; no errors are logged |
+| Golden replays | `game/tests/replays/*.json`, checked by `test_replays.gd` | Recorded matches replay to identical state hashes. After an intended change to sim rules or game data, run `tools/regen_golden_replays.sh` and say why in the commit |
 | Repo checks | `tools/check_repo.py` | Every asset has provenance; no banned file types; no huge files |
 
 How the test runner behaves:
@@ -18,7 +19,6 @@ How the test runner behaves:
 
 | Task | Adds |
 |---|---|
-| P1-20 | **Golden replays**: `game/tests/replays/*.json` (seed, map, command log, expected hash at given ticks). The runner replays each one and compares hashes. When a sim rule changes on purpose, regenerate them with the tool the task provides and explain why in the commit |
 | P1-33 | **Performance harness**: a headless scene that spawns N units and records sim milliseconds per tick. CI fails if the budget regresses by more than 20% |
 | P1-31 | **AI-vs-AI matches**: headless full matches between AI players. They catch crashes and stalemates, and feed balance numbers in Phase 4 |
 | P1-37 | **Cross-device determinism**: a debug menu entry plays a golden replay on a phone and shows the final hash, which must equal the desktop value |

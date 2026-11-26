@@ -293,7 +293,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Do:** default rule (all buildings and builders destroyed), plus match-end events and an end screen.
 - **Accept:** tests for both outcomes and for simultaneous elimination.
 
-### P1-20 · Replays and golden replay tests — ⬜
+### P1-20 · Replays and golden replay tests — ✅ 2026-11-26 (Claude Code: F9 saves a replay; playback UI comes with P1-32)
 - **Needs:** P1-08
 - **Do:**
   - Replay file format: game version, content hash, seed, map, players, command log.
@@ -302,7 +302,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - A regeneration tool.
 - **Accept:** 3 golden replays pass; documented in `docs/08-testing-and-qa.md`.
 
-### P1-21 · Lockstep scheduler (local) — ⬜
+### P1-21 · Lockstep scheduler (local) — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P1-20
 - **Do:**
   - Refactor `SimRunner`: commands collect into per-tick batches per player, and tick T runs only when every player's batch for T exists (local players and AI fill theirs immediately).

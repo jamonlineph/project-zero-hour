@@ -57,6 +57,7 @@ This file is the single source of truth for every AI agent working in this repo:
 | Repo checks (provenance, banned files) | `python3 tools/check_repo.py` |
 | Rebuild placeholder art | `tools/build_assets.sh` (set `BLENDER=/path/to/blender`). Options: `--only ID ...`, `--no-icons`, `--sheets` |
 | Re-import assets after adding files | `godot --headless --path game --import` |
+| Regenerate golden replays (only after an intended change to sim rules or data; say why in the commit) | `tools/regen_golden_replays.sh` |
 | Run the game | `godot --path game`, or open `game/project.godot` and press F5 |
 
 ## 7. Definition of done (every task)

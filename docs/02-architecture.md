@@ -95,7 +95,7 @@ Keep this list in sync with the code whenever you add a system.
 - The sim **validates** every command. It ignores entities that don't exist or don't belong to the player, and orders the player isn't allowed to give.
 - Commands **serialize** with `to_dict()` and `from_dict()` for replays and networking. Every number is an int.
 
-## 4. Replays and lockstep multiplayer (designed now, built in P1-20/21 and P3)
+## 4. Replays and lockstep multiplayer (replays and the local scheduler built in P1-20/21; networking in P3)
 
 - **Replay file:** game version, content hash, seed, map, players, and the command log. Playing it back runs the same sim.
 - **Lockstep:** each client sends its commands for tick `T + delay`.

@@ -39,8 +39,11 @@ func _ready() -> void:
 	runner.name = "SimRunner"
 	runner.world = world
 	runner.local_player_id = LOCAL_PLAYER
+	runner.scenario_id = SCENARIO_ID
+	runner.seed_value = SEED
 	runner.process_priority = -10   # step the sim before the view reads it
 	add_child(runner)
+	runner.start()
 
 	game_view = GameView.new()
 	game_view.name = "GameView"
@@ -65,6 +68,14 @@ func _ready() -> void:
 	selection.setup(runner, game_view, rts_camera, hud.selection_box, LOCAL_PLAYER)
 	selection.selection_changed.connect(hud.on_selection_changed)
 	add_child(selection)
+
+
+## F9 saves the match so far as a replay in user://replays/.
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_F9:
+		var path: String = "user://replays/replay_%d.json" % Time.get_unix_time_from_system()
+		var err: Error = runner.make_replay().save(path)
+		print("Replay saved to %s (%s)" % [ProjectSettings.globalize_path(path), error_string(err)])
 
 
 func _process(_delta: float) -> void:
