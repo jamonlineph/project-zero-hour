@@ -1,4 +1,4 @@
-"""Shared helpers for Signal Front's Blender asset scripts.
+"""Shared helpers for Project Zero Hour's Blender asset scripts.
 
 Conventions (see docs/04-art-pipeline.md):
 - 1 Blender unit = 1 meter. Ground is z = 0, the origin is the footprint center.

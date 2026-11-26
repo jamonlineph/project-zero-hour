@@ -63,7 +63,7 @@ func test_weapons_load_and_attach_to_units() -> void:
 
 func test_damage_kills_and_removes_at_end_of_tick() -> void:
 	var world := _world()
-	var id: int = _spawn(world, "ru_motor_rifle_squad", 2, 50, 50)
+	var id: int = _spawn(world, "kp_infantry_squad", 2, 50, 50)
 	var e: SimEntity = world.get_entity(id)
 	world.apply_damage(e, 10_000, "small_arms", 0)
 	assert_true(e.dead)
@@ -77,7 +77,7 @@ func test_damage_kills_and_removes_at_end_of_tick() -> void:
 func test_units_in_range_fire_and_respect_reload() -> void:
 	var world := _world()
 	_spawn(world, "us_mbt", 1, 50, 50)
-	_spawn(world, "ru_mbt", 2, 90, 50)      # 40 m: in range of both cannons
+	_spawn(world, "kp_mbt", 2, 90, 50)      # 40 m: in range of both cannons
 	var shots: int = _count_events(world, 60, "fired")
 	# Two tanks, about 3 s reload each, over 4 s: 2 shots each at most.
 	assert_true(shots >= 2 and shots <= 4, "%d shots in 4 s" % shots)
@@ -86,14 +86,14 @@ func test_units_in_range_fire_and_respect_reload() -> void:
 func test_units_out_of_range_do_not_fire() -> void:
 	var world := _world()
 	_spawn(world, "us_mbt", 1, 20, 50)
-	_spawn(world, "ru_mbt", 2, 150, 50)
+	_spawn(world, "kp_mbt", 2, 150, 50)
 	assert_eq(_count_events(world, 60, "fired"), 0)
 
 
 func test_tanks_fight_to_the_death() -> void:
 	var world := _world()
 	var a: int = _spawn(world, "us_mbt", 1, 50, 50)
-	var b: int = _spawn(world, "ru_mbt", 2, 90, 50)
+	var b: int = _spawn(world, "kp_mbt", 2, 90, 50)
 	var died: int = _count_events(world, 15 * 60, "died")
 	assert_eq(died, 1, "exactly one tank should die")
 	assert_true(world.entities.has(a) != world.entities.has(b))
@@ -101,7 +101,7 @@ func test_tanks_fight_to_the_death() -> void:
 
 func test_rifles_barely_scratch_tanks() -> void:
 	var world := _world()
-	var tank: int = _spawn(world, "ru_mbt", 2, 60, 50)
+	var tank: int = _spawn(world, "kp_mbt", 2, 60, 50)
 	_spawn(world, "us_rifle_squad", 1, 40, 50)
 	world.get_entity(tank).weapons.clear()   # disarm the tank to isolate the rifles
 	_run(world, 15 * 10)
@@ -115,10 +115,10 @@ func test_splash_hits_enemies_only_and_respects_min_range() -> void:
 	var shooter: int = _spawn(world, "us_rifle_squad", 1, 20, 50)
 	world.get_entity(shooter).weapons = [SimWeapon.from_def(mortar)] as Array[SimWeapon]
 	world.get_entity(shooter).vision = Fx.from_int(100)   # mortars need someone to see far
-	var e1: int = _spawn(world, "ru_motor_rifle_squad", 2, 70, 50)
-	var e2: int = _spawn(world, "ru_motor_rifle_squad", 2, 72, 52)
+	var e1: int = _spawn(world, "kp_infantry_squad", 2, 70, 50)
+	var e2: int = _spawn(world, "kp_infantry_squad", 2, 72, 52)
 	var friend: int = _spawn(world, "us_rifle_squad", 1, 71, 48)
-	var too_close: int = _spawn(world, "ru_motor_rifle_squad", 2, 24, 50)   # inside min range
+	var too_close: int = _spawn(world, "kp_infantry_squad", 2, 24, 50)   # inside min range
 	world.get_entity(e1).weapons.clear()
 	world.get_entity(e2).weapons.clear()
 	world.get_entity(too_close).weapons.clear()
@@ -135,7 +135,7 @@ func test_projectiles_take_time_to_arrive() -> void:
 	var shooter: int = _spawn(world, "us_rifle_squad", 1, 20, 50)
 	world.get_entity(shooter).weapons = [SimWeapon.from_def(_content().get_weapon("test_mortar"))] as Array[SimWeapon]
 	world.get_entity(shooter).vision = Fx.from_int(100)
-	var target: int = _spawn(world, "ru_motor_rifle_squad", 2, 80, 50)
+	var target: int = _spawn(world, "kp_infantry_squad", 2, 80, 50)
 	world.get_entity(target).weapons.clear()
 	var fired_at: int = -1
 	var hit_at: int = -1
@@ -154,7 +154,7 @@ func test_projectiles_take_time_to_arrive() -> void:
 func test_attack_order_chases_and_kills() -> void:
 	var world := _world()
 	var hunter: int = _spawn(world, "us_mbt", 1, 20, 50)
-	var prey: int = _spawn(world, "ru_motor_rifle_squad", 2, 150, 120)
+	var prey: int = _spawn(world, "kp_infantry_squad", 2, 150, 120)
 	world.get_entity(prey).weapons.clear()
 	# A friendly spotter near the prey shares its vision with the hunter.
 	var spotter: int = _spawn(world, "us_rifle_squad", 1, 160, 140)
@@ -171,7 +171,7 @@ func test_attack_order_chases_and_kills() -> void:
 func test_attack_move_stops_to_fight_then_continues() -> void:
 	var world := _world()
 	var tank: int = _spawn(world, "us_mbt", 1, 10, 50)
-	var blocker: int = _spawn(world, "ru_motor_rifle_squad", 2, 80, 50)
+	var blocker: int = _spawn(world, "kp_infantry_squad", 2, 80, 50)
 	world.get_entity(blocker).weapons.clear()
 	_command(world, SimCommand.make_attack_move([tank], Fx.from_int(180), Fx.from_int(50)))
 	var paused_seen: bool = false
@@ -190,7 +190,7 @@ func test_hold_position_never_moves() -> void:
 	var world := _world()
 	var tank: int = _spawn(world, "us_mbt", 1, 20, 50)
 	_command(world, SimCommand.make_hold([tank]))
-	var prey: int = _spawn(world, "ru_mbt", 2, 120, 50)
+	var prey: int = _spawn(world, "kp_mbt", 2, 120, 50)
 	_command(world, SimCommand.make_attack_move([prey], Fx.from_int(40), Fx.from_int(50)), 2)
 	_run(world, 15 * 30)
 	var t: SimEntity = world.get_entity(tank)
@@ -215,8 +215,8 @@ func test_battles_are_deterministic() -> void:
 		for i: int in 4:
 			_spawn(world, "us_mbt", 1, 20, 30 + i * 10)
 			_spawn(world, "us_rifle_squad", 1, 15, 35 + i * 10)
-			_spawn(world, "ru_mbt", 2, 120, 30 + i * 10)
-			_spawn(world, "ru_motor_rifle_squad", 2, 125, 35 + i * 10)
+			_spawn(world, "kp_mbt", 2, 120, 30 + i * 10)
+			_spawn(world, "kp_infantry_squad", 2, 125, 35 + i * 10)
 		var blue: Array[int] = []
 		var red: Array[int] = []
 		for id: int in world.entity_ids:

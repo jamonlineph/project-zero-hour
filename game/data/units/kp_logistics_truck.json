@@ -1,0 +1,26 @@
+{
+  "id": "kp_logistics_truck",
+  "faction": "kp",
+  "role": "gatherer",
+  "name": "Logistics Truck",
+  "armor_class": "light_vehicle",
+  "status": "placeholder stats",
+  "max_hp": 650,
+  "cost": 600,
+  "speed_cm_per_s": 600,
+  "turn_rate_deg_per_s": 120,
+  "radius_cm": 220,
+  "vision_cm": 3500,
+  "build_time_ms": 8000,
+  "requires": [],
+  "gatherer": {
+    "capacity": 300,
+    "load_ms": 3000,
+    "unload_ms": 2000
+  },
+  "weapons": [],
+  "visual": {
+    "model": "res://assets/models/units/kp_logistics_truck.glb",
+    "icon": "res://assets/icons/units/kp_logistics_truck.png"
+  }
+}

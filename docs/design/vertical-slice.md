@@ -1,6 +1,6 @@
-# Vertical slice (Phase 2): United States vs Russia
+# Vertical slice (Phase 2): America vs North Korea
 
-**Goal:** one matchup that feels like the finished game, played on a phone and a Googlebook. US vs Russia shows the core 2026 duel best: precision and drones against jamming and artillery.
+**Goal:** one matchup that feels like the finished game, played on a phone and a Googlebook. America vs North Korea shows the core 2026 duel best: precision, sensors and drones against massed artillery, jamming and fortifications.
 
 ## Scope
 
@@ -25,16 +25,16 @@ Speeds in cm/s; ranges in meters; reload in seconds; build time in seconds.
 | `us_rocket_artillery` | Artillery | 1,300 | 450 | light_vehicle | 700 | high_explosive 220 (splash 6 m), 160 m, 10 s | Kill chain; shoot and scoot |
 | `us_laser_cuas` | Counter-drone | 900 | 450 | light_vehicle | 650 | counter_drone 60, 50 m, 0.5 s | Drones only |
 | `us_recon_drone` | Recon drone | 300 | 60 | drone | 1,600 | — | Spotter; endurance 90 s |
-| `ru_engineer` | Builder | 900 | 650 | light_vehicle | 550 | — | Also digs trenches |
-| `ru_logistics_truck` | Gatherer | 600 | 650 | light_vehicle | 600 | — | Armored |
-| `ru_motor_rifle_squad` | Basic infantry | 200 | 220 | infantry | 360 | small_arms 10, 30 m, 1.0 s | |
-| `ru_at_team` | Anti-tank infantry | 350 | 200 | infantry | 330 | anti_tank 130, 50 m, 4.5 s | |
-| `ru_ifv` | Armored transport | 700 | 650 | light_vehicle | 750 | autocannon 30, 40 m, 1.0 s | Carries 1 squad |
-| `ru_mbt` | Main battle tank | 850 | 1,100 | heavy_armor | 700 | anti_tank 150, 45 m, 3.2 s | Cage armor: first 2 drone hits do 25% |
-| `ru_howitzer` | Artillery | 1,100 | 500 | heavy_armor | 500 | high_explosive 180 (splash 8 m), 140 m, 7 s | Counter-battery radar synergy |
-| `ru_ew_vehicle` | Counter-drone | 1,000 | 550 | light_vehicle | 550 | — | Jamming field, 40 m radius |
-| `ru_recon_drone` | Recon drone | 250 | 50 | drone | 1,400 | — | Spotter; endurance 120 s |
-| `ru_loitering_team` | Strike drones | 600 | 180 | infantry | 340 | Launches a loitering drone: anti_tank 200, 200 m, 25 s | Drone can be jammed |
+| `kp_engineer` | Builder | 900 | 650 | light_vehicle | 550 | — | Also digs trenches |
+| `kp_logistics_truck` | Gatherer | 600 | 650 | light_vehicle | 600 | — | Armored |
+| `kp_infantry_squad` | Basic infantry (cheap, mass) | 200 | 220 | infantry | 360 | small_arms 10, 30 m, 1.0 s | |
+| `kp_at_team` | Anti-tank infantry | 350 | 200 | infantry | 330 | anti_tank 130, 50 m, 4.5 s | |
+| `kp_ifv` | Armored transport | 700 | 650 | light_vehicle | 750 | autocannon 30, 40 m, 1.0 s | Carries 1 squad |
+| `kp_mbt` | Main battle tank | 850 | 1,100 | heavy_armor | 700 | anti_tank 150, 45 m, 3.2 s | Cage armor: first 2 drone hits do 25% |
+| `kp_howitzer` | Artillery | 1,100 | 500 | heavy_armor | 500 | high_explosive 180 (splash 8 m), 140 m, 7 s | Counter-battery radar synergy |
+| `kp_ew_vehicle` | Counter-drone | 1,000 | 550 | light_vehicle | 550 | — | Jamming field, 40 m radius |
+| `kp_recon_drone` | Recon drone | 250 | 50 | drone | 1,400 | — | Spotter; endurance 120 s |
+| `kp_loitering_team` | Strike drones | 600 | 180 | infantry | 340 | Launches a loitering drone: anti_tank 200, 200 m, 25 s | Drone can be jammed |
 
 ## Buildings
 
@@ -42,14 +42,14 @@ Power is listed as produced (+) or used (−).
 
 | ID | Cost | HP | Power | Notes |
 |---|---|---|---|---|
-| `us_command_hq` / `ru_command_hq` | — (start) | 5,000 | +5 | Builds the builder |
-| `us_microreactor` / `ru_power_plant` | 800 | 1,200 | +10 | |
-| `us_barracks` / `ru_barracks` | 500 | 1,500 | −1 | Infantry |
-| `us_logistics_hub` / `ru_logistics_hub` | 1,500 | 1,800 | −1 | Drop-off; comes with 1 free gatherer |
-| `us_vehicle_depot` / `ru_vehicle_plant` | 2,000 | 2,500 | −2 | Vehicles |
-| `us_drone_center` / `ru_drone_launch_site` | 1,200 | 1,400 | −2 | Drones and loitering teams |
-| `us_bunker` / `ru_trench_line` | 600 / 150 | 1,500 / 400 | 0 | Garrisonable (P3); trenches built by the engineer |
-| `us_sam_site` / `ru_sam_site` | 1,000 | 1,100 | −3 | Air defense, intercepts strikes |
+| `us_command_hq` / `kp_command_hq` | — (start) | 5,000 | +5 | Builds the builder |
+| `us_microreactor` / `kp_power_plant` | 800 | 1,200 | +10 | |
+| `us_barracks` / `kp_barracks` | 500 | 1,500 | −1 | Infantry |
+| `us_logistics_hub` / `kp_logistics_hub` | 1,500 | 1,800 | −1 | Drop-off; comes with 1 free gatherer |
+| `us_vehicle_depot` / `kp_vehicle_plant` | 2,000 | 2,500 | −2 | Vehicles |
+| `us_drone_center` / `kp_drone_launch_site` | 1,200 | 1,400 | −2 | Drones and loitering teams |
+| `us_bunker` / `kp_trench_line` | 600 / 150 | 1,500 / 400 | 0 | Garrisonable (P3); trenches built by the engineer |
+| `us_sam_site` / `kp_sam_site` | 1,000 | 1,100 | −3 | Air defense, intercepts strikes |
 
 ## Exit check
 

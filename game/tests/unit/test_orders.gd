@@ -57,7 +57,7 @@ func test_patrol_goes_back_and_forth() -> void:
 func test_patrol_stops_to_fight() -> void:
 	var w := _world()
 	var tank: int = _spawn(w, "us_mbt", 1, 20, 100)
-	var enemy: int = _spawn(w, "ru_motor_rifle_squad", 2, 60, 105)
+	var enemy: int = _spawn(w, "kp_infantry_squad", 2, 60, 105)
 	_command(w, SimCommand.make_patrol([tank], Fx.from_int(120), Fx.from_int(100)))
 	for i: int in 300:
 		w.step()
@@ -85,8 +85,8 @@ func test_guard_attacks_enemies_near_the_ward_only() -> void:
 	var w := _world()
 	var ward: int = _spawn(w, "us_logistics_truck", 1, 60, 60)
 	var guard: int = _spawn(w, "us_mbt", 1, 55, 60)
-	var near: int = _spawn(w, "ru_motor_rifle_squad", 2, 75, 70)    # ~18 m from the ward
-	var far: int = _spawn(w, "ru_motor_rifle_squad", 2, 60, 150)    # 90 m away
+	var near: int = _spawn(w, "kp_infantry_squad", 2, 75, 70)    # ~18 m from the ward
+	var far: int = _spawn(w, "kp_infantry_squad", 2, 60, 150)    # 90 m away
 	_command(w, SimCommand.make_guard([guard], ward))
 	for i: int in 300:
 		w.step()
@@ -112,7 +112,7 @@ func test_guard_ends_when_the_ward_dies() -> void:
 func test_cannot_guard_an_enemy() -> void:
 	var w := _world()
 	var guard: int = _spawn(w, "us_mbt", 1, 55, 60)
-	var enemy: int = _spawn(w, "ru_mbt", 2, 70, 60)
+	var enemy: int = _spawn(w, "kp_mbt", 2, 70, 60)
 	_command(w, SimCommand.make_guard([guard], enemy))
 	w.step()
 	assert_true(w.get_entity(guard).order != SimEntity.Order.GUARD)
@@ -135,8 +135,8 @@ func _guard_and_patrol_hash() -> int:
 	var b: int = _spawn(w, "us_mbt", 1, 24, 104)
 	var ward: int = _spawn(w, "us_logistics_truck", 1, 30, 30)
 	var g: int = _spawn(w, "us_ifv", 1, 26, 30)
-	_spawn(w, "ru_motor_rifle_squad", 2, 70, 100)
-	_spawn(w, "ru_motor_rifle_squad", 2, 40, 45)
+	_spawn(w, "kp_infantry_squad", 2, 70, 100)
+	_spawn(w, "kp_infantry_squad", 2, 40, 45)
 	_command(w, SimCommand.make_patrol([a, b], Fx.from_int(110), Fx.from_int(100)))
 	_command(w, SimCommand.make_guard([g], ward), 1)
 	for i: int in 400:

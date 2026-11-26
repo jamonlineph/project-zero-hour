@@ -4,7 +4,7 @@ extends RefCounted
 ## Built by ContentDb from res://data/units/<id>.json. Treat it as read-only.
 
 var id: String = ""
-var faction: String = ""        ## "us", "cn", "ru" or "irr" (Irregulars)
+var faction: String = ""        ## "us" (America), "ae" (UAE), "kp" (North Korea) or "eu" (EU)
 var role: String = ""           ## see docs/design/units-and-buildings.md
 var name: String = ""           ## generic display name (localization keys come later)
 var armor_class: String = ""    ## see docs/design/combat.md

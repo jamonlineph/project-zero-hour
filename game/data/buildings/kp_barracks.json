@@ -1,0 +1,27 @@
+{
+  "id": "kp_barracks",
+  "faction": "kp",
+  "name": "Barracks",
+  "armor_class": "structure",
+  "status": "placeholder stats",
+  "max_hp": 1500,
+  "cost": 500,
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "build_time_ms": 12000,
+  "power": -1,
+  "vision_cm": 5000,
+  "requires": [
+    "kp_power_plant"
+  ],
+  "produces": [
+    "kp_infantry_squad",
+    "kp_at_team"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/kp_barracks.glb",
+    "icon": "res://assets/icons/buildings/kp_barracks.png"
+  }
+}

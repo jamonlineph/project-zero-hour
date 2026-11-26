@@ -2,7 +2,7 @@
 
 ## Elevator pitch
 
-**Signal Front** is a fast base-building real-time strategy game set in 2026. You build a base, gather supplies, climb a tech tree and earn commander powers, then fight a war where:
+**Project Zero Hour** is a fast base-building real-time strategy game set in 2026. You build a base, gather supplies, climb a tech tree and earn commander powers, then fight a war where:
 - drones fill the sky,
 - jammers blind them,
 - every long-range strike needs a spotter.
@@ -40,10 +40,10 @@ The rosters in [design/units-and-buildings.md](design/units-and-buildings.md) ar
 ## What 1.0 contains
 
 **Factions:** four.
-- United States and partners
-- China
-- Russia
-- the **Irregulars**, a fictional private-military network
+- America
+- the United Arab Emirates
+- North Korea
+- the European Union
 
 **Per faction:** about 15–20 units and 12 buildings, commander ranks 1–5 with powers, and one superweapon.
 
@@ -74,4 +74,4 @@ The rosters in [design/units-and-buildings.md](design/units-and-buildings.md) ar
 
 ## Name
 
-"Signal Front" is a working codename. The final name is picked after a trademark search (backlog P0-10), before any public release.
+"Project Zero Hour" is the owner's chosen name (2026-11-26; it was the codename "Signal Front" before). A trademark and store-name check (backlog P0-10) still comes before any store release; see Q-1 in `tasks/QUESTIONS.md`.

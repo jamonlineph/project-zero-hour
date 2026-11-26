@@ -75,11 +75,11 @@ func _economy(world: SimWorld) -> Array[SimCommand]:
 	var eng2: Array[int] = _ids(world, 2, func(e: SimEntity) -> bool: return e.builder != null)
 	return [
 		_at(SimCommand.make_build(eng1, "us_logistics_hub", Fx.from_int(46), Fx.from_int(58)), 5, 1),
-		_at(SimCommand.make_build(eng2, "ru_power_plant", Fx.from_int(90), Fx.from_int(24)), 5, 2),
+		_at(SimCommand.make_build(eng2, "kp_power_plant", Fx.from_int(90), Fx.from_int(24)), 5, 2),
 		_at(SimCommand.make_build(eng1, "us_microreactor", Fx.from_int(30), Fx.from_int(90)), 400, 1),
-		_at(SimCommand.make_build(eng2, "ru_barracks", Fx.from_int(96), Fx.from_int(90)), 400, 2),
+		_at(SimCommand.make_build(eng2, "kp_barracks", Fx.from_int(96), Fx.from_int(90)), 400, 2),
 		_at(SimCommand.make_build(eng1, "us_barracks", Fx.from_int(44), Fx.from_int(90)), 700, 1),
-		_at(SimCommand.make_build(eng2, "ru_logistics_hub", Fx.from_int(84), Fx.from_int(60)), 800, 2),
+		_at(SimCommand.make_build(eng2, "kp_logistics_hub", Fx.from_int(84), Fx.from_int(60)), 800, 2),
 	]
 
 

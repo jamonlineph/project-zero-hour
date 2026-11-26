@@ -1,0 +1,22 @@
+{
+  "id": "kp_infantry_squad",
+  "faction": "kp",
+  "role": "basic_infantry",
+  "name": "Infantry Squad",
+  "armor_class": "infantry",
+  "status": "placeholder stats",
+  "max_hp": 220,
+  "cost": 200,
+  "speed_cm_per_s": 360,
+  "radius_cm": 150,
+  "vision_cm": 4000,
+  "build_time_ms": 6000,
+  "requires": [],
+  "weapons": [
+    "assault_rifles"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/kp_infantry_squad.glb",
+    "icon": "res://assets/icons/units/kp_infantry_squad.png"
+  }
+}

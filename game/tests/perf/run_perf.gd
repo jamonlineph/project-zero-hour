@@ -100,8 +100,8 @@ func _compare(results: Dictionary) -> int:
 ## Two armies attack-move into each other on an open 256 m map.
 func _battle_world(per_side: int) -> SimWorld:
 	var world := _empty_world(256)
-	var mix: Array[Array] = [["us_rifle_squad", "ru_motor_rifle_squad", 40], ["us_at_team", "ru_at_team", 20],
-			["us_mbt", "ru_mbt", 25], ["us_ifv", "ru_ifv", 15]]
+	var mix: Array[Array] = [["us_rifle_squad", "kp_infantry_squad", 40], ["us_at_team", "kp_at_team", 20],
+			["us_mbt", "kp_mbt", 25], ["us_ifv", "kp_ifv", 15]]
 	for side: int in [1, 2]:
 		var ids: Array[int] = []
 		var x0: int = 30 if side == 1 else 226

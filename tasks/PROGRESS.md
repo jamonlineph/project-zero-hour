@@ -4,6 +4,19 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: Owner decisions applied: name, factions, art direction (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **Name:** the game is now **Project Zero Hour** everywhere (menu, project, Android package `io.github.jamonlineph.projectzerohour`, build file names, docs, credits). A trademark and store-name check (P0-10) is still required before any store release, because "Zero Hour" is also the name of the game this one is inspired by (see Q-1).
+  - **Factions:** America (`us`), the UAE (`ae`), North Korea (`kp`) and the EU (`eu`) replace the China, Russia and Irregulars drafts. New faction designs, rosters, buildings, superweapons and power trees in `docs/design/`. The Russia slice roster became North Korea's (`ru_*` ids renamed to `kp_*`, models and icons rebuilt with the new palette), so the vertical slice is **America vs North Korea**. The UAE and the EU are designed and scheduled for Phase 3 (P3-02, P3-12).
+  - **Art direction:** "classic 2000s military RTS look" in `docs/04-art-pipeline.md`, with the originality boundary spelled out (nothing traced or recreated from other games).
+  - Golden replays and the determinism-check hash were regenerated, because unit ids are part of the state hash. Behavior did not change; only the ids did.
+- Tests: `tools/run_tests.sh` -> 153 tests, 0 failed; `python3 tools/check_repo.py` -> ok.
+- Not verified: the in-game menu title on a real screen.
+- Next: same as before: device checks (owner), then Phase 2.
+- For the owner: Q-2, Q-4, Q-5 and Q-7 are still open. The determinism check's expected value changed with the ids: the phone should now show the hash in `game/data/determinism_check.json`.
+
+---
+
 ## 2026-11-26: P1-36 and P1-37 code parts (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P1-36:** the project falls back to the OpenGL (Compatibility) renderer on devices without Vulkan (`rendering_device/fallback_to_opengl3`). Settings has a quality preset (Low: 67% resolution, no shadows, 30 fps; Medium; High). On first run, devices on the fallback renderer or with under about 4.5 GB of memory start on Low.

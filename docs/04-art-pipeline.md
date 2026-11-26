@@ -17,20 +17,27 @@ Units and buildings are low-poly 3D models, so the camera can zoom and rotate an
 
 `tools/build_assets.sh` does all of this headless (see [blender/README.md](../blender/README.md)).
 
-## Art direction: clean stylized realism
+## Art direction: classic 2000s military RTS look
 
-- **Readable silhouettes** at RTS zoom. Exaggerate guns, turrets and rotors by about 20–40%, and infantry by about 30%.
-- **Muted military bodies with strong team-color panels.** Each model has a `team_color` material on parts visible from above: turret sides, roofs, vests, the band around buildings.
-- **Simple surfaces:** flat colors or small gradient textures with baked ambient occlusion. Avoid noisy detail that turns to mush on a phone.
+The owner's direction (2026-11-26): the game should feel like the military RTS games of the early 2000s. In practice that means:
+
+- **Sunlit, high-contrast battlefields:** warm daylight, clear shadows, saturated but believable terrain colors (sand, scrub, farmland, concrete). Every unit pops against the ground.
+- **Chunky, readable military hardware:** semi-realistic vehicles with slightly oversized guns, turrets, wheels and rotors (about 20–40%), and infantry about 30% larger than real scale. Recognizable at a glance from the 3/4 top-down camera.
+- **Strong team colors** on large, top-facing panels (`team_color` material): turret sides, roofs, vests, the band around buildings.
+- **Detailed but clean surfaces:** panel lines, hatches and stowage modeled or painted large enough to read on a phone; baked ambient occlusion; no noisy micro-detail.
+- **Big, punchy effects:** bright muzzle flashes, chunky explosions, lingering smoke and dark wreck hulks (P1-28 effects already follow this).
 - **One key light from the top left** in icons, to match the in-game sun direction.
+
+**Originality boundary (golden rule 1 in AGENTS.md):** this is a look and feel shared by a whole genre, not a copy of any one game. Never trace, recreate or "modernize" models, textures, icons, portraits, UI layouts, logos, fonts or faction insignia from *Command & Conquer: Generals / Zero Hour* or any other game, and never use their files as references in AI image prompts. Units are designed from real-world 2026 hardware (the "X-class" references) and our own sketches.
+
 - **Faction looks:**
 
 | Faction | Shapes | Colors |
 |---|---|---|
-| US | Angular, sensor domes, antennas | Sand and olive |
-| China | Smooth slab armor | Grey-green with subtle digital pattern |
-| Russia | Boxy, cages and add-on armor | Dark green |
-| Irregulars | Mismatched panels, improvised mounts | Tan, rust and civilian colors |
+| America | Angular, sensor domes, antennas | Sand and olive |
+| UAE | Clean modern wheeled vehicles, smooth panels | Desert sand and pale grey |
+| North Korea | Boxy, older hulls with add-on armor and cages | Dark olive green |
+| EU | Crisp modern tracked vehicles, sharp edges | Grey-green |
 
 ## Conventions (scripts and humans both follow these)
 

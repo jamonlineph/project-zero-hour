@@ -20,7 +20,7 @@
 
 ## Power trees (first draft, original)
 
-### United States
+### America
 
 | Tier | Options |
 |---|---|
@@ -28,29 +28,29 @@
 | Rank 3 | Drone-wingman patrol (2 unmanned jets guard an area for 60 s) · Cyberattack (enemy minimap and radar off for 30 s) · Unlock: special recon team |
 | Rank 5 | Stealth-bomber glide-bomb strike (line of 6 bombs; interceptable) · Unlock: self-driving logistics upgrade |
 
-### China
+### North Korea
 
 | Tier | Options |
 |---|---|
-| Rank 1 | Satellite recon pass · Mobilization (infantry half price for 60 s) |
-| Rank 3 | Micro-drone swarm strike (30 micro-drones attack an area) · Air-defense surge (+25% air-defense range for 60 s) · Unlock: swarm controller |
-| Rank 5 | Cruise missile salvo (8 missiles; interceptable) · Unlock: exoskeleton upgrade |
+| Rank 1 | Recon drone sweep (a drone flies a path revealing the ground) · Reserve call-up (3 free infantry squads at the HQ) |
+| Rank 3 | Rocket barrage (24 unguided heavy rockets on an area) · GPS jamming (enemy guided weapons scatter in an area for 20 s) · Unlock: artillery spotter officer |
+| Rank 5 | Decoy deployment (6 decoy tanks at a point) · Unlock: hardened gun position |
 
-### Russia
-
-| Tier | Options |
-|---|---|
-| Rank 1 | Recon drone sweep (a drone flies a path revealing the ground) · Reserve call-up (3 free squads at the HQ) |
-| Rank 3 | Glide-bomb strike (2 heavy bombs from off-map; interceptable) · Drone spoofing (area, 10 s) · Unlock: electronic-warfare officer |
-| Rank 5 | Decoy deployment (6 decoy tanks at a point) · Unlock: cage armor upgrade |
-
-### Irregulars
+### UAE
 
 | Tier | Options |
 |---|---|
-| Rank 1 | Commercial satellite photo (reveals an area, but with a 5 s delay) · FPV swarm (10 FPV drones at a point) |
-| Rank 3 | Hired air strike (an off-map jet makes one pass; interceptable) · Decoy convoy · Unlock: drone ace |
-| Rank 5 | Smuggled tank (a refurbished tank delivered to the HQ) · Unlock: fiber-optic drone upgrade |
+| Rank 1 | Satellite recon pass · Emergency procurement (the next off-map order arrives in half the time) |
+| Rank 3 | Drone swarm strike (24 small drones attack an area) · Laser shield (air-defense sites in an area also shoot down drones and shells for 30 s) · Unlock: presidential guard detachment |
+| Rank 5 | Stand-off missile strike (2 jets fire 4 missiles; interceptable) · Unlock: sovereign fund cap doubled |
+
+### EU
+
+| Tier | Options |
+|---|---|
+| Rank 1 | Air policing patrol (2 fighters guard an area for 45 s) · Field repair (vehicles in an area repair over 15 s) |
+| Rank 3 | Coalition artillery strike (an off-map battery fires 12 precision shells) · Cyber defense (your units ignore jamming and spoofing for 30 s) · Unlock: second doctrine unit |
+| Rank 5 | Stealth cruise strike (4 low-flying missiles at one target; interceptable) · Unlock: interoperability bonus doubled |
 
 ## Superweapons (P3-03)
 

@@ -37,7 +37,7 @@ Every file under `game/assets/` has a row in `ASSET_MANIFEST.csv`:
 | Column | Meaning |
 |---|---|
 | `path` | Repo-relative path |
-| `author` | Person, group, or "Signal Front contributors" |
+| `author` | Person, group, or "Project Zero Hour contributors" |
 | `source` | Where it came from: script name, URL, `.blend` path |
 | `license` | `CC-BY-SA-4.0`, `CC-BY-4.0`, `CC0-1.0` or `OFL-1.1` |
 | `generated_by` | `script`, `human`, `ai:<tool name>`, or `third-party` |
@@ -60,7 +60,7 @@ Note: purely AI-generated material may not be protected by copyright in some cou
 
 ## Real-world content
 
-**Real nations are fine:** the United States, China and Russia appear as factions.
+**Real nations are fine:** America, the United Arab Emirates, North Korea and the European Union appear as factions. Their flags, emblems and leaders do not; team colors mark the sides.
 
 **Keep these out:**
 - real terrorist organizations
@@ -69,7 +69,7 @@ Note: purely AI-generated material may not be protected by copyright in some cou
 - war crimes or attacks on civilians
 - weapons of mass destruction
 
-The Irregulars faction is fictional.
+Story and missions are a fictional 2026 crisis, not a real war.
 
 **Weapon names in the game:**
 - Use generic names ("Main Battle Tank", "Guided Rocket Artillery") or invented designations.

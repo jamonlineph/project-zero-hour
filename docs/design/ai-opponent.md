@@ -32,10 +32,10 @@ The AI is an ordinary player. It sees the world through the same fog-of-war rule
 ## Personalities (for Gauntlet and variety)
 
 Each personality is a JSON preset: build order, unit preferences, aggression and timings. Examples:
-- **Artillery Grinder:** Russia, turtles and shells.
-- **Drone Swarmer:** China, mass drones.
-- **Precision Raider:** United States, kill-chain strikes on the economy.
-- **Contract Hunter:** Irregulars, fast and objective-focused.
+- **Artillery Grinder:** North Korea, turtles and shells.
+- **Drone Swarmer:** UAE, swarm drones and raids.
+- **Precision Raider:** America, kill-chain strikes on the economy.
+- **Shield Wall:** EU, layered air defense and armored pushes.
 
 ## Roadmap
 

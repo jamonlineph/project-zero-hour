@@ -8,7 +8,7 @@ Durations assume one owner plus AI agents working most days, with volunteer or c
 |---|---|---|---|
 | 0: Foundations | Repo, plan, skeleton, pipelines, first Android build | 2–4 weeks | Sandbox runs on an Android phone, a Googlebook and desktop; CI green |
 | 1: Core RTS systems | Every core mechanic working with placeholder art | 4–6 months | A full 1v1 skirmish against a basic AI, start to victory, on a phone |
-| 2: Vertical slice | One polished matchup: US vs Russia | 4–6 months | A fun 15-minute match on phone and Googlebook; closed test on Google Play |
+| 2: Vertical slice | One polished matchup: America vs North Korea | 4–6 months | A fun 15-minute match on phone and Googlebook; closed test on Google Play |
 | 3: Production | All four factions, maps, multiplayer, map editor | 9–12 months | Open beta on Play, F-Droid and GitHub |
 | 4: Polish | Balance, performance, accessibility, campaign | 3–6 months | Release candidate passes the launch checklist |
 | 5: Launch and live | 1.0 release, patches, community content | ongoing | — |
@@ -67,7 +67,7 @@ Build every system the game needs, using Blender placeholder models.
 - 30 fps or better with 300 units.
 - No desyncs in replay tests.
 
-## Phase 2: Vertical slice (US vs Russia)
+## Phase 2: Vertical slice (America vs North Korea)
 
 Make one matchup feel like the real game.
 
@@ -95,7 +95,7 @@ Make one matchup feel like the real game.
 ## Phase 3: Production
 
 **Factions and content:**
-- Complete rosters for the United States and Russia, then China, then the Irregulars.
+- Complete rosters for America and North Korea, then the UAE, then the EU.
 - Air units and airbases, garrisons and transports, stealth.
 - Superweapons, ranks 4–5, neutral buildings.
 - 8–12 maps.
@@ -133,6 +133,6 @@ Open beta.
 
 These come from least to most painful:
 1. Ship the campaign after 1.0.
-2. Ship 1.0 with three factions and release the Irregulars as the first update.
+2. Ship 1.0 with three factions and release the EU as the first update.
 3. Cut sub-faction variants until after 1.0.
 4. Cut 4-player maps; keep 1v1 and 2v2.

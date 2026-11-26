@@ -14,9 +14,9 @@
     {
       "id": 2,
       "team": 2,
-      "faction": "ru",
+      "faction": "kp",
       "credits": 10000,
-      "ai": "ru_default"
+      "ai": "kp_default"
     }
   ],
   "spawns": [
@@ -39,20 +39,20 @@
       "y_m": 46
     },
     {
-      "def": "ru_command_hq",
+      "def": "kp_command_hq",
       "player": 2,
       "x_m": 108,
       "y_m": 46
     },
     {
-      "def": "ru_engineer",
+      "def": "kp_engineer",
       "player": 2,
       "x_m": 96,
       "y_m": 40,
       "facing_deg": 180
     },
     {
-      "def": "ru_logistics_truck",
+      "def": "kp_logistics_truck",
       "player": 2,
       "x_m": 96,
       "y_m": 46,

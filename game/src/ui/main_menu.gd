@@ -32,12 +32,12 @@ func _ready() -> void:
 	center.add_child(box)
 
 	var title := Label.new()
-	title.text = "SIGNAL FRONT"
+	title.text = "PROJECT ZERO HOUR"
 	title.add_theme_font_size_override("font_size", 56)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(title)
 	var sub := Label.new()
-	sub.text = "codename  -  early development build"
+	sub.text = "early development build"
 	sub.modulate = Color(1, 1, 1, 0.6)
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(sub)

@@ -17,7 +17,7 @@ func _world(credits: int = 20000) -> SimWorld:
 	var sc: Dictionary = {
 		"id": "test", "map": "sandbox", "victory": "none",
 		"players": [{"id": 1, "team": 1, "faction": "us", "credits": credits},
-			{"id": 2, "team": 2, "faction": "ru", "credits": credits}],
+			{"id": 2, "team": 2, "faction": "kp", "credits": credits}],
 		"spawns": [],
 	}
 	return MatchSetup.build_from(_content(), sc, 1)
@@ -56,9 +56,9 @@ func test_scenario_builds_the_sandbox() -> void:
 	var world: SimWorld = MatchSetup.build(_content(), "sandbox", 1)
 	assert_true(world != null)
 	assert_eq(world.get_player(1).credits, 10000)
-	assert_eq(world.get_player(2).faction, "ru")
+	assert_eq(world.get_player(2).faction, "kp")
 	assert_true(_find(world, "us_command_hq") != null, "US HQ missing")
-	assert_true(_find(world, "ru_command_hq", 2) != null, "RU HQ missing")
+	assert_true(_find(world, "kp_command_hq", 2) != null, "North Korea HQ missing")
 	var sites: int = 0
 	for id: int in world.entity_ids:
 		if world.entities[id].supply != null:
@@ -114,9 +114,9 @@ func test_cannot_build_without_money_requirements_or_room() -> void:
 	_cmd(world, SimCommand.make_build([eng], "us_microreactor", Fx.from_int(64), Fx.from_int(30)))   # on the ridge
 	world.step()
 	assert_true(_find(world, "us_microreactor") == null, "built on rock")
-	_cmd(world, SimCommand.make_build([eng], "ru_power_plant", Fx.from_int(40), Fx.from_int(60)))
+	_cmd(world, SimCommand.make_build([eng], "kp_power_plant", Fx.from_int(40), Fx.from_int(60)))
 	world.step()
-	assert_true(_find(world, "ru_power_plant") == null, "built another faction's building")
+	assert_true(_find(world, "kp_power_plant") == null, "built another faction's building")
 
 
 func test_production_queue_rally_and_cancel() -> void:
@@ -234,8 +234,8 @@ func test_base_economy_is_deterministic() -> void:
 		var world: SimWorld = MatchSetup.build(_content(), "sandbox", 7)
 		var eng: SimEntity = _find(world, "us_engineer")
 		_cmd(world, SimCommand.make_build([eng.id], "us_logistics_hub", Fx.from_int(46), Fx.from_int(56)))
-		var reng: SimEntity = _find(world, "ru_engineer", 2)
-		_cmd(world, SimCommand.make_build([reng.id], "ru_logistics_hub", Fx.from_int(84), Fx.from_int(56)), 2)
+		var reng: SimEntity = _find(world, "kp_engineer", 2)
+		_cmd(world, SimCommand.make_build([reng.id], "kp_logistics_hub", Fx.from_int(84), Fx.from_int(56)), 2)
 		_run(world, 15 * 90)
 		hashes.append(world.state_hash())
 	assert_eq(hashes[0], hashes[1])

@@ -1,4 +1,4 @@
-# Signal Front (codename)
+# Project Zero Hour
 
 [![CI](https://github.com/jamonlineph/project-zero-hour/actions/workflows/ci.yml/badge.svg)](https://github.com/jamonlineph/project-zero-hour/actions/workflows/ci.yml)
 
@@ -6,7 +6,9 @@ An open-source, modern-warfare **real-time strategy** game for **Android phones 
 
 It uses the classic 2000s base-building formula (builders, supply trucks, power, tech trees, veterancy, commander powers, superweapons) with original content built around what defines warfare in 2026: drones, electronic warfare and sensor networks.
 
-> **Status: Phase 0 (foundations).** The development sandbox runs: you can select and move units with mouse or touch, on a deterministic simulation covered by tests. The Blender pipeline makes placeholder models, icons and sprite sheets. See [tasks/PROGRESS.md](tasks/PROGRESS.md) for the latest state.
+**Factions:** America, the United Arab Emirates, North Korea and the European Union. The first playable matchup is America vs North Korea.
+
+> **Status: Phase 1 (core game) done in code; waiting on device checks.** You can play a skirmish against the computer with placeholder art on desktop or Android. See [tasks/PROGRESS.md](tasks/PROGRESS.md) for the latest state and [docs/screenshots/](docs/screenshots/) for how it looks.
 
 ## Quick start
 
@@ -45,4 +47,4 @@ An owner directs this project, and AI coding agents (Claude Code, Codex, Gemini 
 - Code: **GPL-3.0-or-later** ([LICENSE](LICENSE)).
 - Art, audio, data and other assets: **CC BY-SA 4.0** ([ASSETS_LICENSE.md](ASSETS_LICENSE.md)).
 
-This is an independent project. It is not affiliated with or endorsed by any game publisher, and it contains no content from other games.
+This is an independent fan-made project. It is not affiliated with or endorsed by Electronic Arts, the *Command & Conquer* series or any other game publisher, and it contains no content from other games.

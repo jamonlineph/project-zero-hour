@@ -1,0 +1,26 @@
+{
+  "id": "kp_logistics_hub",
+  "faction": "kp",
+  "name": "Logistics Hub",
+  "armor_class": "structure",
+  "status": "placeholder stats",
+  "max_hp": 1800,
+  "cost": 1500,
+  "footprint_cells": [
+    6,
+    5
+  ],
+  "build_time_ms": 15000,
+  "power": -1,
+  "vision_cm": 5000,
+  "requires": [
+    "kp_command_hq"
+  ],
+  "produces": [],
+  "dropoff": true,
+  "free_unit": "kp_logistics_truck",
+  "visual": {
+    "model": "res://assets/models/buildings/kp_logistics_hub.glb",
+    "icon": "res://assets/icons/buildings/kp_logistics_hub.png"
+  }
+}

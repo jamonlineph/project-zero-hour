@@ -14,10 +14,10 @@ Format:
 
 ---
 
-### Q-1 · Final game name — OPEN
+### Q-1 · Final game name — ANSWERED 2026-11-26
 - **Context:** "Signal Front" is a codename. A trademark and store search comes first (P0-10).
 - **Agent's recommendation:** let an agent shortlist names in P0-10, then pick one.
-- **Answer:**
+- **Answer:** **Project Zero Hour** (owner). Applied to the game, the docs and the Android package (`io.github.jamonlineph.projectzerohour`). Agent's note: "Zero Hour" is also the name of the *Command & Conquer: Generals* expansion this game is inspired by, so a trademark and store-name check (P0-10) must still happen before any store release, and store listings must never mention or imply that game.
 
 ### Q-2 · Confirm the licenses — OPEN
 - **Context:** ADR 0006 chose GPL-3.0-or-later for code and CC BY-SA 4.0 for assets.
@@ -27,10 +27,10 @@ Format:
 - **Agent's recommendation:** keep GPL-3.0-or-later + CC BY-SA 4.0.
 - **Answer:**
 
-### Q-3 · Three or four factions at 1.0? — OPEN
+### Q-3 · Three or four factions at 1.0? — ANSWERED 2026-11-26
 - **Context:** four factions is about 25% more art and balance work. The roadmap's scope levers allow shipping the Irregulars as the first update.
 - **Agent's recommendation:** plan for four, decide at the Phase 3 midpoint.
-- **Answer:**
+- **Answer:** Four: **America, the United Arab Emirates, North Korea and the European Union** (owner). They replace the earlier China, Russia and Irregulars drafts. The existing Russia slice roster became North Korea's (`kp_` ids), so the vertical slice is America vs North Korea. Designs: `docs/design/factions.md`.
 
 ### Q-4 · Public or private repository until launch? — OPEN
 - **Context:** public from day one attracts contributors and is honest open source. Private until the vertical slice avoids early judgement.
@@ -45,9 +45,9 @@ Format:
 - **Agent's recommendation:** free with donations until 1.0, then decide.
 - **Answer:**
 
-### Q-6 · Art direction sign-off — OPEN
+### Q-6 · Art direction sign-off — ANSWERED 2026-11-26
 - **Context:** [docs/04-art-pipeline.md](../docs/04-art-pipeline.md) proposes "clean stylized realism". The owner should approve it, or change it, before final art starts (Phase 2).
-- **Answer:**
+- **Answer:** "Same as Generals: Zero Hour" (owner). Recorded as the classic 2000s military RTS look in `docs/04-art-pipeline.md`: sunlit high-contrast battlefields, chunky readable hardware, strong team colors, big effects. Golden rule 1 still applies: the look is matched in spirit with original art; nothing from that game's models, textures, icons or UI is traced or recreated.
 
 ### Q-7 · Native code for the simulation's hot spots? — OPEN
 - **Context:** the performance harness (P1-33) measures about 9–12 ms per sim tick at 300 units on a desktop CPU, after GDScript optimizations that cut it from 34–79 ms. A mid-range phone is roughly 3× slower, and the budget there is 8 ms. The biggest costs are separation (units pushing apart), movement, vision and combat targeting. ADR 0004 allows a C++ GDExtension for hot spots only through a new ADR with your approval.

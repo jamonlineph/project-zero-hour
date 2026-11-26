@@ -1,0 +1,13 @@
+{
+  "id": "kp_loitering_munition",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "damage": 200,
+  "damage_type": "anti_tank",
+  "range_cm": 20000,
+  "reload_ms": 25000,
+  "projectile": "guided",
+  "targets": [
+    "ground"
+  ],
+  "projectile_speed_cm_per_s": 4000
+}

@@ -62,7 +62,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Power tree | Spend points on powers and unlocks per faction ([commander.md](commander.md)) | P2-09 | ⬜ |
 | Superweapon | One per faction; a countdown visible to all players; can be intercepted or destroyed | P3-03 | ⬜ |
 | Sub-faction variants | 2–3 per faction, with roster changes and bonuses | P5 | ⬜ |
-| Contracts (Irregulars) | Rotating cash bounties for map objectives | P3-12 | ⬜ |
+| Procurement and sovereign fund (UAE) | Off-map unit orders delivered by air; interest on banked credits | P3-02 | ⬜ |
 
 ## Modes and meta
 

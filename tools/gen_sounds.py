@@ -169,7 +169,7 @@ def main():
         path = os.path.join(OUT_DIR, name + ".wav")
         write_wav(path, make())
         rel = os.path.relpath(path, REPO).replace(os.sep, "/")
-        rows.append([rel, "Signal Front contributors", "tools/gen_sounds.py (procedural)",
+        rows.append([rel, "Project Zero Hour contributors", "tools/gen_sounds.py (procedural)",
                      "CC-BY-SA-4.0", "script", "placeholder"])
         print("[gen_sounds] %s" % rel)
     update_manifest(rows)

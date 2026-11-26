@@ -1,0 +1,13 @@
+{
+  "id": "kp_ifv_autocannon",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "damage": 30,
+  "damage_type": "autocannon",
+  "range_cm": 4000,
+  "reload_ms": 1000,
+  "projectile": "instant",
+  "targets": [
+    "ground",
+    "drone"
+  ]
+}

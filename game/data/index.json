@@ -8,36 +8,36 @@
     "res://data/weapons/assault_rifles.json",
     "res://data/weapons/test_mortar.json",
     "res://data/weapons/us_at_missile.json",
-    "res://data/weapons/ru_at_missile.json",
+    "res://data/weapons/kp_at_missile.json",
     "res://data/weapons/us_ifv_autocannon.json",
-    "res://data/weapons/ru_ifv_autocannon.json",
+    "res://data/weapons/kp_ifv_autocannon.json",
     "res://data/weapons/us_rocket_pod.json",
-    "res://data/weapons/ru_howitzer_152.json",
+    "res://data/weapons/kp_howitzer_152.json",
     "res://data/weapons/us_cuas_laser.json",
-    "res://data/weapons/ru_loitering_munition.json",
+    "res://data/weapons/kp_loitering_munition.json",
     "res://data/weapons/bunker_machine_gun.json",
     "res://data/weapons/sam_interceptor.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",
     "res://data/units/us_rifle_squad.json",
-    "res://data/units/ru_mbt.json",
-    "res://data/units/ru_motor_rifle_squad.json",
+    "res://data/units/kp_mbt.json",
+    "res://data/units/kp_infantry_squad.json",
     "res://data/units/us_engineer.json",
-    "res://data/units/ru_engineer.json",
+    "res://data/units/kp_engineer.json",
     "res://data/units/us_logistics_truck.json",
-    "res://data/units/ru_logistics_truck.json",
+    "res://data/units/kp_logistics_truck.json",
     "res://data/units/us_at_team.json",
     "res://data/units/us_ifv.json",
     "res://data/units/us_rocket_artillery.json",
     "res://data/units/us_laser_cuas.json",
     "res://data/units/us_recon_drone.json",
-    "res://data/units/ru_at_team.json",
-    "res://data/units/ru_ifv.json",
-    "res://data/units/ru_howitzer.json",
-    "res://data/units/ru_ew_vehicle.json",
-    "res://data/units/ru_recon_drone.json",
-    "res://data/units/ru_loitering_team.json"
+    "res://data/units/kp_at_team.json",
+    "res://data/units/kp_ifv.json",
+    "res://data/units/kp_howitzer.json",
+    "res://data/units/kp_ew_vehicle.json",
+    "res://data/units/kp_recon_drone.json",
+    "res://data/units/kp_loitering_team.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",
@@ -45,17 +45,17 @@
     "res://data/buildings/us_barracks.json",
     "res://data/buildings/us_logistics_hub.json",
     "res://data/buildings/us_vehicle_depot.json",
-    "res://data/buildings/ru_command_hq.json",
-    "res://data/buildings/ru_power_plant.json",
-    "res://data/buildings/ru_barracks.json",
-    "res://data/buildings/ru_logistics_hub.json",
-    "res://data/buildings/ru_vehicle_plant.json",
+    "res://data/buildings/kp_command_hq.json",
+    "res://data/buildings/kp_power_plant.json",
+    "res://data/buildings/kp_barracks.json",
+    "res://data/buildings/kp_logistics_hub.json",
+    "res://data/buildings/kp_vehicle_plant.json",
     "res://data/buildings/us_drone_center.json",
     "res://data/buildings/us_bunker.json",
     "res://data/buildings/us_sam_site.json",
-    "res://data/buildings/ru_drone_launch_site.json",
-    "res://data/buildings/ru_trench_line.json",
-    "res://data/buildings/ru_sam_site.json"
+    "res://data/buildings/kp_drone_launch_site.json",
+    "res://data/buildings/kp_trench_line.json",
+    "res://data/buildings/kp_sam_site.json"
   ],
   "maps": [
     "res://data/maps/sandbox/map.json"
@@ -67,6 +67,6 @@
   ],
   "ai": [
     "res://data/ai/us_default.json",
-    "res://data/ai/ru_default.json"
+    "res://data/ai/kp_default.json"
   ]
 }

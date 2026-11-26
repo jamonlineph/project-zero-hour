@@ -1,0 +1,27 @@
+{
+  "id": "kp_drone_launch_site",
+  "faction": "kp",
+  "name": "Drone Launch Site",
+  "armor_class": "structure",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 1400,
+  "cost": 1200,
+  "footprint_cells": [
+    5,
+    5
+  ],
+  "build_time_ms": 14000,
+  "power": -2,
+  "vision_cm": 5000,
+  "requires": [
+    "kp_logistics_hub"
+  ],
+  "produces": [
+    "kp_recon_drone",
+    "kp_loitering_team"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/kp_drone_launch_site.glb",
+    "icon": "res://assets/icons/buildings/kp_drone_launch_site.png"
+  }
+}

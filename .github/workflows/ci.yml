@@ -77,10 +77,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           cd build
-          zip -qr "signal-front-linux-${GITHUB_REF_NAME}.zip" linux
-          zip -qr "signal-front-windows-${GITHUB_REF_NAME}.zip" windows
-          cp android/signal-front-debug.apk "signal-front-android-debug-${GITHUB_REF_NAME}.apk"
+          zip -qr "project-zero-hour-linux-${GITHUB_REF_NAME}.zip" linux
+          zip -qr "project-zero-hour-windows-${GITHUB_REF_NAME}.zip" windows
+          cp android/project-zero-hour-debug.apk "project-zero-hour-android-debug-${GITHUB_REF_NAME}.apk"
           gh release create "$GITHUB_REF_NAME" --generate-notes --prerelease \
-            "signal-front-linux-${GITHUB_REF_NAME}.zip" \
-            "signal-front-windows-${GITHUB_REF_NAME}.zip" \
-            "signal-front-android-debug-${GITHUB_REF_NAME}.apk"
+            "project-zero-hour-linux-${GITHUB_REF_NAME}.zip" \
+            "project-zero-hour-windows-${GITHUB_REF_NAME}.zip" \
+            "project-zero-hour-android-debug-${GITHUB_REF_NAME}.apk"

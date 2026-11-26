@@ -1,0 +1,27 @@
+{
+  "id": "kp_trench_line",
+  "faction": "kp",
+  "name": "Trench Line",
+  "armor_class": "structure",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 400,
+  "cost": 150,
+  "footprint_cells": [
+    4,
+    1
+  ],
+  "build_time_ms": 6000,
+  "power": 0,
+  "vision_cm": 4000,
+  "requires": [
+    "kp_barracks"
+  ],
+  "produces": [],
+  "weapons": [
+    "bunker_machine_gun"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/kp_trench_line.glb",
+    "icon": "res://assets/icons/buildings/kp_trench_line.png"
+  }
+}

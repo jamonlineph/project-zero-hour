@@ -1,0 +1,13 @@
+{
+  "id": "kp_default",
+  "faction": "kp",
+  "_doc": "Skirmish AI preset (docs/design/ai-opponent.md). build_order lists buildings in order; repeat an id to build it again.",
+  "build_order": ["kp_power_plant", "kp_logistics_hub", "kp_barracks", "kp_vehicle_plant", "kp_power_plant", "kp_logistics_hub"],
+  "unit_mix": {"kp_mbt": 3, "kp_infantry_squad": 3},
+  "max_gatherers": 4,
+  "gatherer_unit": "kp_logistics_truck",
+  "attack_wave_size": 7,
+  "first_attack_after_s": 200,
+  "think_interval_ticks": 15,
+  "defend_radius_m": 45
+}

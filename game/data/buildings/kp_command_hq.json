@@ -1,0 +1,24 @@
+{
+  "id": "kp_command_hq",
+  "faction": "kp",
+  "name": "Command HQ",
+  "armor_class": "structure",
+  "status": "placeholder stats",
+  "max_hp": 5000,
+  "cost": 3000,
+  "footprint_cells": [
+    7,
+    6
+  ],
+  "build_time_ms": 60000,
+  "power": 5,
+  "vision_cm": 6000,
+  "requires": [],
+  "produces": [
+    "kp_engineer"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/kp_command_hq.glb",
+    "icon": "res://assets/icons/buildings/kp_command_hq.png"
+  }
+}

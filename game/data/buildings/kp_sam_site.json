@@ -1,0 +1,27 @@
+{
+  "id": "kp_sam_site",
+  "faction": "kp",
+  "name": "Long-Range Air Defense",
+  "armor_class": "structure",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 1100,
+  "cost": 1000,
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "build_time_ms": 15000,
+  "power": -3,
+  "vision_cm": 9000,
+  "requires": [
+    "kp_logistics_hub"
+  ],
+  "produces": [],
+  "weapons": [
+    "sam_interceptor"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/kp_sam_site.glb",
+    "icon": "res://assets/icons/buildings/kp_sam_site.png"
+  }
+}

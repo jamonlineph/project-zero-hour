@@ -1,84 +1,84 @@
 path,author,source,license,generated_by,notes
-game/assets/audio/sfx/ack.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/audio/sfx/artillery.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/audio/sfx/autocannon.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/audio/sfx/build_complete.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/audio/sfx/cannon.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/audio/sfx/explosion_large.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/audio/sfx/explosion_small.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/audio/sfx/laser.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/audio/sfx/missile.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/audio/sfx/rifle.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/audio/sfx/ui_click.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/ru_barracks.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_barracks)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/ru_command_hq.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_command_hq)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/ru_drone_launch_site.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_drone_launch_site)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/ru_logistics_hub.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_logistics_hub)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/ru_power_plant.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_power_plant)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/ru_sam_site.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_sam_site)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/ru_trench_line.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_trench_line)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/ru_vehicle_plant.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_vehicle_plant)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/us_barracks.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_barracks)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/us_bunker.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_bunker)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/us_command_hq.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_command_hq)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/us_drone_center.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_drone_center)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/us_logistics_hub.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_logistics_hub)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/us_microreactor.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_microreactor)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/us_sam_site.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_sam_site)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/buildings/us_vehicle_depot.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_vehicle_depot)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/ru_at_team.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_at_team)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/ru_engineer.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_engineer)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/ru_ew_vehicle.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_ew_vehicle)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/ru_howitzer.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_howitzer)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/ru_ifv.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_ifv)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/ru_logistics_truck.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_logistics_truck)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/ru_loitering_team.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_loitering_team)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/ru_mbt.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_mbt)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/ru_motor_rifle_squad.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_motor_rifle_squad)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/ru_recon_drone.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_recon_drone)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/us_at_team.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_at_team)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/us_engineer.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_engineer)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/us_ifv.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_ifv)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/us_laser_cuas.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_laser_cuas)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/us_logistics_truck.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_logistics_truck)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/us_mbt.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_mbt)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/us_recon_drone.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_recon_drone)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/us_rifle_squad.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_rifle_squad)",CC-BY-SA-4.0,script,placeholder
-game/assets/icons/units/us_rocket_artillery.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_rocket_artillery)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/ru_barracks.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_barracks)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/ru_command_hq.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_command_hq)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/ru_drone_launch_site.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_drone_launch_site)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/ru_logistics_hub.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_logistics_hub)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/ru_power_plant.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_power_plant)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/ru_sam_site.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_sam_site)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/ru_trench_line.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_trench_line)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/ru_vehicle_plant.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_vehicle_plant)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/us_barracks.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_barracks)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/us_bunker.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_bunker)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/us_command_hq.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_command_hq)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/us_drone_center.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_drone_center)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/us_logistics_hub.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_logistics_hub)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/us_microreactor.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_microreactor)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/us_sam_site.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_sam_site)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/buildings/us_vehicle_depot.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_vehicle_depot)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/ru_at_team.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_at_team)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/ru_engineer.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_engineer)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/ru_ew_vehicle.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_ew_vehicle)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/ru_howitzer.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_howitzer)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/ru_ifv.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_ifv)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/ru_logistics_truck.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_logistics_truck)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/ru_loitering_team.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_loitering_team)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/ru_mbt.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_mbt)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/ru_motor_rifle_squad.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_motor_rifle_squad)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/ru_recon_drone.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_recon_drone)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/us_at_team.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_at_team)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/us_engineer.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_engineer)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/us_ifv.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_ifv)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/us_laser_cuas.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_laser_cuas)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/us_logistics_truck.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_logistics_truck)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/us_mbt.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_mbt)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/us_recon_drone.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_recon_drone)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/us_rifle_squad.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_rifle_squad)",CC-BY-SA-4.0,script,placeholder
-game/assets/models/units/us_rocket_artillery.glb,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_rocket_artillery)",CC-BY-SA-4.0,script,placeholder
-game/assets/sprites/units/ru_mbt_8dir.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_mbt)",CC-BY-SA-4.0,script,placeholder
-game/assets/sprites/units/us_mbt_8dir.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: us_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/ack.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/artillery.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/autocannon.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/build_complete.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/cannon.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/explosion_large.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/explosion_small.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/laser.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/missile.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/rifle.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/ui_click.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/kp_barracks.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_barracks)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/kp_command_hq.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_command_hq)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/kp_drone_launch_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_drone_launch_site)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/kp_logistics_hub.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_logistics_hub)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/kp_power_plant.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_power_plant)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/kp_sam_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_sam_site)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/kp_trench_line.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_trench_line)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/kp_vehicle_plant.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_vehicle_plant)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/us_barracks.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_barracks)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/us_bunker.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_bunker)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/us_command_hq.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_command_hq)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/us_drone_center.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_drone_center)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/us_logistics_hub.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_logistics_hub)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/us_microreactor.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_microreactor)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/us_sam_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_sam_site)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/us_vehicle_depot.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_vehicle_depot)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_at_team.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_at_team)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_engineer.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_engineer)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_ew_vehicle.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_ew_vehicle)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_howitzer.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_howitzer)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_ifv.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_ifv)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_infantry_squad.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_infantry_squad)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_logistics_truck.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_logistics_truck)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_loitering_team.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_loitering_team)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_mbt.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_recon_drone.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_recon_drone)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_at_team.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_at_team)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_engineer.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_engineer)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_ifv.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_ifv)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_laser_cuas.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_laser_cuas)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_logistics_truck.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_logistics_truck)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_mbt.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_recon_drone.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_recon_drone)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_rifle_squad.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_rifle_squad)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_rocket_artillery.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_rocket_artillery)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/kp_barracks.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_barracks)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/kp_command_hq.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_command_hq)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/kp_drone_launch_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_drone_launch_site)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/kp_logistics_hub.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_logistics_hub)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/kp_power_plant.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_power_plant)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/kp_sam_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_sam_site)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/kp_trench_line.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_trench_line)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/kp_vehicle_plant.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_vehicle_plant)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/us_barracks.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_barracks)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/us_bunker.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_bunker)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/us_command_hq.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_command_hq)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/us_drone_center.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_drone_center)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/us_logistics_hub.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_logistics_hub)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/us_microreactor.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_microreactor)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/us_sam_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_sam_site)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/us_vehicle_depot.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_vehicle_depot)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_at_team.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_at_team)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_engineer.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_engineer)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_ew_vehicle.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_ew_vehicle)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_howitzer.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_howitzer)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_ifv.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_ifv)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_infantry_squad.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_infantry_squad)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_logistics_truck.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_logistics_truck)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_loitering_team.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_loitering_team)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_mbt.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_recon_drone.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_recon_drone)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_at_team.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_at_team)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_engineer.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_engineer)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_ifv.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_ifv)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_laser_cuas.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_laser_cuas)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_logistics_truck.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_logistics_truck)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_mbt.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_recon_drone.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_recon_drone)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_rifle_squad.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_rifle_squad)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_rocket_artillery.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_rocket_artillery)",CC-BY-SA-4.0,script,placeholder
+game/assets/sprites/units/kp_mbt_8dir.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_mbt)",CC-BY-SA-4.0,script,placeholder
+game/assets/sprites/units/us_mbt_8dir.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_mbt)",CC-BY-SA-4.0,script,placeholder

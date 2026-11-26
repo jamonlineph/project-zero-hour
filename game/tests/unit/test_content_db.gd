@@ -38,7 +38,7 @@ func test_units_have_sane_values() -> void:
 		assert_true(u.max_hp > 0, id)
 		assert_true(u.radius > 0, id)
 		assert_true(u.speed >= 0, id)
-		assert_true(u.faction in ["us", "cn", "ru", "irr"], "%s has unknown faction %s" % [id, u.faction])
+		assert_true(u.faction in ["us", "ae", "kp", "eu"], "%s has unknown faction %s" % [id, u.faction])
 
 
 func test_speed_converts_to_meters_per_tick() -> void:
@@ -69,13 +69,13 @@ func test_vertical_slice_roster_is_complete() -> void:
 	var units: PackedStringArray = [
 		"us_engineer", "us_logistics_truck", "us_rifle_squad", "us_at_team", "us_ifv", "us_mbt",
 		"us_rocket_artillery", "us_laser_cuas", "us_recon_drone",
-		"ru_engineer", "ru_logistics_truck", "ru_motor_rifle_squad", "ru_at_team", "ru_ifv", "ru_mbt",
-		"ru_howitzer", "ru_ew_vehicle", "ru_recon_drone", "ru_loitering_team"]
+		"kp_engineer", "kp_logistics_truck", "kp_infantry_squad", "kp_at_team", "kp_ifv", "kp_mbt",
+		"kp_howitzer", "kp_ew_vehicle", "kp_recon_drone", "kp_loitering_team"]
 	var buildings: PackedStringArray = [
 		"us_command_hq", "us_microreactor", "us_barracks", "us_logistics_hub", "us_vehicle_depot",
 		"us_drone_center", "us_bunker", "us_sam_site",
-		"ru_command_hq", "ru_power_plant", "ru_barracks", "ru_logistics_hub", "ru_vehicle_plant",
-		"ru_drone_launch_site", "ru_trench_line", "ru_sam_site"]
+		"kp_command_hq", "kp_power_plant", "kp_barracks", "kp_logistics_hub", "kp_vehicle_plant",
+		"kp_drone_launch_site", "kp_trench_line", "kp_sam_site"]
 	var db := ContentDb.new()
 	db.load_all()
 	for id: String in units:

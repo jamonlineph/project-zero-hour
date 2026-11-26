@@ -53,7 +53,7 @@ func test_cannot_target_unseen_enemies() -> void:
 	world.damage_matrix = db.damage_matrix
 	var tank: int = world.spawn_unit(db.get_unit("us_mbt"), 1, Fx.from_int(50), Fx.from_int(50))
 	world.get_entity(tank).vision = Fx.from_int(10)   # nearly blind
-	var enemy: int = world.spawn_unit(db.get_unit("ru_motor_rifle_squad"), 2, Fx.from_int(90), Fx.from_int(50))
+	var enemy: int = world.spawn_unit(db.get_unit("kp_infantry_squad"), 2, Fx.from_int(90), Fx.from_int(50))
 	world.get_entity(enemy).weapons.clear()
 	for i: int in 60:
 		world.step()

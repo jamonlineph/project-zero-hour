@@ -52,7 +52,7 @@ def parse_args():
 def manifest_row(rel_path, spec_id):
     return {
         "path": rel_path,
-        "author": "Signal Front contributors",
+        "author": "Project Zero Hour contributors",
         "source": "blender/build_assets.py (procedural, spec: %s)" % spec_id,
         "license": "CC-BY-SA-4.0",
         "generated_by": "script",

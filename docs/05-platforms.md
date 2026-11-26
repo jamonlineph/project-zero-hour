@@ -25,7 +25,7 @@
 **The easy way (no setup):** every CI run on GitHub builds a debug APK.
 1. Open the repo's **Actions** tab and click the latest green run.
 2. Under **Artifacts**, download `android-debug-apk` and unzip it.
-3. Copy `signal-front-debug.apk` to the phone or Googlebook and open it. Allow "install unknown apps" for your file manager or browser when Android asks.
+3. Copy `project-zero-hour-debug.apk` to the phone or Googlebook and open it. Allow "install unknown apps" for your file manager or browser when Android asks.
 
 Tagging a commit `v*` (for example `v0.0.1`) also attaches the APK and desktop builds to a GitHub release.
 

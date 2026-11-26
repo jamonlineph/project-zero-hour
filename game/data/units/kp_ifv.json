@@ -1,0 +1,23 @@
+{
+  "id": "kp_ifv",
+  "faction": "kp",
+  "role": "armored_transport",
+  "name": "Infantry Fighting Vehicle",
+  "armor_class": "light_vehicle",
+  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "max_hp": 650,
+  "cost": 700,
+  "speed_cm_per_s": 750,
+  "turn_rate_deg_per_s": 100,
+  "radius_cm": 280,
+  "vision_cm": 5000,
+  "build_time_ms": 12000,
+  "requires": [],
+  "weapons": [
+    "kp_ifv_autocannon"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/kp_ifv.glb",
+    "icon": "res://assets/icons/units/kp_ifv.png"
+  }
+}

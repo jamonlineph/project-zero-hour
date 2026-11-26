@@ -1,0 +1,23 @@
+{
+  "id": "kp_mbt",
+  "faction": "kp",
+  "role": "main_battle_tank",
+  "name": "Main Battle Tank",
+  "armor_class": "heavy_armor",
+  "status": "placeholder stats",
+  "max_hp": 1100,
+  "cost": 850,
+  "speed_cm_per_s": 700,
+  "turn_rate_deg_per_s": 80,
+  "radius_cm": 300,
+  "vision_cm": 4500,
+  "build_time_ms": 15000,
+  "requires": [],
+  "weapons": [
+    "tank_cannon_125"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/kp_mbt.glb",
+    "icon": "res://assets/icons/units/kp_mbt.png"
+  }
+}

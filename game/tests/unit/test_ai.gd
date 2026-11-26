@@ -24,8 +24,8 @@ func _duel(seed_value: int) -> SimRunner:
 
 func test_presets_load() -> void:
 	assert_true(_content().ai_presets.has("us_default"))
-	var ai: AiPlayer = AiPlayer.from_preset(_content(), "ru_default", 2)
-	assert_eq(ai.build_order[0], "ru_power_plant")
+	var ai: AiPlayer = AiPlayer.from_preset(_content(), "kp_default", 2)
+	assert_eq(ai.build_order[0], "kp_power_plant")
 	assert_eq(ai.first_attack_tick, 200 * SimWorld.TICK_RATE)
 
 

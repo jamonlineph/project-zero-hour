@@ -95,7 +95,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
     - app category game
   - Write exact owner steps in `docs/05-platforms.md`: install the Android SDK and JDK 17, Godot export templates, set the paths in Editor Settings, create a debug keystore.
   - No passwords or keystores in the repo.
-- **Accept:** the preset exists. An agent with the SDK installed can export a debug APK headless with `godot --headless --path game --export-debug "Android" ../build/signal-front-debug.apk`.
+- **Accept:** the preset exists. An agent with the SDK installed can export a debug APK headless with `godot --headless --path game --export-debug "Android" ../build/project-zero-hour-debug.apk`.
 
 ### P0-12 · Run on a real Android phone — ⬜ (owner + agent)
 - **Needs:** P0-11
@@ -451,7 +451,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 
 ---
 
-## Phase 2: Vertical slice (US vs Russia)
+## Phase 2: Vertical slice (America vs North Korea)
 
 ### P2-01 · Drone endurance and return to launcher — ⬜
 - **Needs:** P1-08, P1-04
@@ -505,7 +505,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P2-15
 - **Accept:** each US slice asset follows `04-art-pipeline.md`; icons rendered; manifest updated. Split into one task per asset if needed.
 
-### P2-14 · Final art: Russia slice set — ⬜
+### P2-14 · Final art: North Korea slice set — ⬜
 - **Needs:** P2-15
 - **Accept:** as P2-13.
 
@@ -541,8 +541,8 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 
 | ID | Epic |
 |---|---|
-| P3-01 | Complete US and Russia rosters ([units-and-buildings.md](../docs/design/units-and-buildings.md)) |
-| P3-02 | China faction: roster, mechanics (repeat-build discount, swarm launchers, linked air defense, navigation station), art, AI preset |
+| P3-01 | Complete America and North Korea rosters ([units-and-buildings.md](../docs/design/units-and-buildings.md)) |
+| P3-02 | UAE faction: roster, mechanics (procurement, sovereign fund, swarm drones, desert raiders), art, AI preset |
 | P3-03 | Superweapons for all factions, with countdowns and counterplay |
 | P3-04 | Aircraft and airbases (ammo, rearming, helicopters) |
 | P3-05 | Garrisoning buildings, and clearing them |
@@ -552,7 +552,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 | P3-09 | Stealth and detection |
 | P3-10 | Mines, trenches and obstacles |
 | P3-11 | Bridges (destructible, repairable) |
-| P3-12 | Irregulars faction: roster, contracts, mobile base, fiber-optic drones, art, AI preset |
+| P3-12 | EU faction: roster, battlegroup doctrines, interoperability, field repair, art, AI preset |
 | P3-13 | AI v2: all factions, hard difficulty, personalities |
 | P3-14 | LAN multiplayer (lockstep over ENet, input delay, desync reports) |
 | P3-15 | Online multiplayer via a small open-source relay server (`server/`), lobby, reconnect |

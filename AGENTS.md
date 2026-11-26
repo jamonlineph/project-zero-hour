@@ -4,7 +4,7 @@ This file is the single source of truth for every AI agent working in this repo:
 
 ## 1. The project in one paragraph
 
-**Signal Front** (codename) is an open-source 3D real-time strategy game for Android phones and tablets, Googlebook (Google's Android-based laptops), Chromebooks and PC. It uses classic base-building RTS mechanics with **original** content set in 2026: drones, jamming and sensor networks. Engine: **Godot 4.7, GDScript**. Art: **Blender 5**, exported as glTF. A human owner directs the project. Agents implement tasks from `tasks/BACKLOG.md`, and the owner reviews and merges the work.
+**Project Zero Hour** is an open-source 3D real-time strategy game for Android phones and tablets, Googlebook (Google's Android-based laptops), Chromebooks and PC. It uses classic base-building RTS mechanics with **original** content set in 2026: drones, jamming and sensor networks. Factions: **America, the UAE, North Korea and the EU** (`docs/design/factions.md`). Look: the classic 2000s military RTS style, made entirely from original art (`docs/04-art-pipeline.md`). Engine: **Godot 4.7, GDScript**. Art: **Blender 5**, exported as glTF. A human owner directs the project. Agents implement tasks from `tasks/BACKLOG.md`, and the owner reviews and merges the work.
 
 ## 2. Start of every session (in this order)
 

@@ -16,9 +16,9 @@ mkdir -p build/android build/linux build/windows
 "$GODOT" --headless --path game --import
 
 declare -A OUT=(
-  [Android]="../build/android/signal-front-debug.apk"
-  [Linux]="../build/linux/signal-front.x86_64"
-  [Windows]="../build/windows/signal-front.exe"
+  [Android]="../build/android/project-zero-hour-debug.apk"
+  [Linux]="../build/linux/project-zero-hour.x86_64"
+  [Windows]="../build/windows/project-zero-hour.exe"
 )
 for preset in "${PRESETS[@]}"; do
   echo "== Exporting $preset"

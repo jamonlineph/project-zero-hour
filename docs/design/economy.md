@@ -10,14 +10,14 @@
 - Supply sites are finite (for example 30,000 credits each) and placed by the map maker: 1 per base plus 2–4 contested.
 - A gatherer loads 300 credits in 3 s, drives to a drop-off building, and unloads in 2 s.
 - **Rule of thumb:** build the drop-off close to a supply site. The distance is the economy.
-- When sites run dry, income comes from contested sites, capturable oil fields and faction mechanics (contracts).
+- When sites run dry, income comes from contested sites, capturable oil fields and faction mechanics (the UAE's sovereign fund).
 
 | Faction | Gatherer | Twist |
 |---|---|---|
-| United States | Logistics truck | Self-driving upgrade: +25% speed, no crew to kill |
-| China | Logistics truck | Repeat-build discount applies to trucks |
-| Russia | Logistics truck | Armored: survives harassment better, but slower |
-| Irregulars | Pickup truck | Cheap and fast, but fragile. **Contracts** add income |
+| America | Logistics truck | Self-driving upgrade: +25% speed, no crew to kill |
+| UAE | Contracted truck | Cheap and fast, but unarmored. **Sovereign fund** pays interest on banked credits |
+| North Korea | Logistics truck | Armored: survives harassment better, but slower |
+| EU | Logistics truck | Repairs vehicles it drives past |
 
 ## Power (P1-16)
 
@@ -28,7 +28,7 @@ Buildings have `power` (positive = produces, negative = uses).
 | Consumption above production | Production is 50% slower; radar and powered defenses (lasers, air defense, jammers) switch off |
 | Destroying power plants | A valid strategy |
 
-The Irregulars don't use power at all. Their buildings are weaker instead.
+Every faction uses power. The UAE's solar-gas plants are cheaper but weaker; North Korea's are tougher but use more space.
 
 ## Neutral capturable buildings (P3-08)
 
@@ -43,22 +43,12 @@ Infantry capture them in 5 s if no enemy infantry contests them.
 | Solar farm | +power |
 | Cell tower | Extends the kill-chain spotting range nearby |
 
-## Contracts (Irregulars only, P3-12)
+## Sovereign fund (UAE only, P3-12)
 
-- Three contracts are on offer at any time, and the player picks one to work on.
-- Examples:
-  - "Hold the bridge for 60 s": 1,500 credits
-  - "Destroy an enemy logistics truck": 800 credits
-  - "Spot the enemy HQ": 500 credits
-- A new contract appears every 90 s. Choices come from `SimRng`, so replays stay deterministic.
+- Every minute, unspent credits earn 2% interest, up to 400 credits a minute (a rank-5 unlock doubles the cap).
+- It rewards a healthy economy without making turtling strong: the cap is reached at 20,000 banked credits.
 
-## Costs (anchors for balance)
+## Procurement (UAE only, P3-12)
 
-| Item | Cost (credits) |
-|---|---|
-| Basic infantry squad | 200–300 |
-| Gatherer | 600 |
-| Main battle tank | 850–1,100 |
-| Attack helicopter | 1,500 |
-| Air-defense site | 1,000 |
-| Superweapon | 5,000 (+ 4 min countdown) |
+- The procurement office lists a few top-tier units that can be ordered off-map at +30% cost.
+- A transport aircraft delivers them to a landing pad after 30 s. It can be shot down, and the order is lost.

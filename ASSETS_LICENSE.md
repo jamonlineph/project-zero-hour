@@ -4,7 +4,7 @@ Unless a row in `ASSET_MANIFEST.csv` says otherwise, all non-code files in this 
 
 That covers models, textures, icons, sprites, audio, music, maps, game data (`game/data/`) and documentation.
 
-**Attribution:** "Signal Front contributors", with a link to this repository. Credit individual authors as listed in `ASSET_MANIFEST.csv`.
+**Attribution:** "Project Zero Hour contributors", with a link to this repository. Credit individual authors as listed in `ASSET_MANIFEST.csv`.
 
 CC BY-SA 4.0 is one-way compatible with GPL-3.0, so these assets can ship inside the GPL-licensed game.
 
