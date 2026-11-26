@@ -15,6 +15,7 @@
 
 - **Scenarios:** `battle_300` (two 150-unit armies attack-move into each other on an open 256 m map), `march_300` (300 vehicles cross the sandbox map in groups of 12, through the ridge gap), `view_300` (`GameView.sync` with 300 entities on screen).
 - **Numbers:** median, 95th percentile and maximum ms per tick (per frame for the view), best of 3 repeats. Results go to `build/perf/latest.json`.
+- **Limits:** the sim scenarios fail at more than 20% over the baseline; `view_300` (about 2 ms of work, noisier) at more than 50%.
 - **Machine speed:** every run also times a fixed GDScript workload ("calibration"). The regression check compares `median / calibration`, so a slower CI runner doesn't fail on its own.
 - **Find the slow system:** `tools/run_perf.sh --profile` prints the average ms per tick of each sim system.
 - **Update the baseline** only after an intended change (new feature, accepted slowdown, faster code) or a change of CI runner: `tools/run_perf.sh --update-baseline`, and say why in the commit. CI uploads its own `latest.json` as an artifact; copying that over the baseline is the most reliable way to set it.

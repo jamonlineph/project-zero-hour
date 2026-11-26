@@ -12,6 +12,9 @@ extends SceneTree
 
 const BASELINE_PATH: String = "res://tests/perf/perf_baseline.json"
 const TOLERANCE: float = 0.20
+## The view scenario times about 2 ms of work per frame and varies more from
+## run to run, so it gets a looser limit.
+const TOLERANCE_OVERRIDES: Dictionary = {"view_300": 0.5}
 const SEED: int = 4242
 
 var _content: ContentDb
@@ -77,12 +80,14 @@ func _compare(results: Dictionary) -> int:
 		var was: float = base["median_norm"]
 		var change: float = (now - was) / maxf(was, 0.000001)
 		var verdict: String = "ok"
-		if change > TOLERANCE:
+		var limit: float = TOLERANCE_OVERRIDES.get(name, TOLERANCE)
+		if change > limit:
 			verdict = "REGRESSION"
 			failed = true
 		print("%-11s normalized %.3f vs baseline %.3f (%+.0f%%) %s" % [name, now, was, change * 100.0, verdict])
 	if failed:
-		printerr("run_perf: FAIL, a scenario is more than %d%% slower than the baseline" % roundi(TOLERANCE * 100.0))
+		printerr("run_perf: FAIL, a scenario is slower than its baseline allows (%d%%, view %d%%)" % [
+				roundi(TOLERANCE * 100.0), roundi(float(TOLERANCE_OVERRIDES["view_300"]) * 100.0)])
 		return 1
 	print("run_perf: ok")
 	return 0

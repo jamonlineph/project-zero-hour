@@ -1,0 +1,29 @@
+{
+  "calibration_ms": 11.945,
+  "scenarios": {
+    "battle_300": {
+      "entities": 162,
+      "max_ms": 45.633,
+      "median_ms": 9.214,
+      "median_norm": 0.7714,
+      "p95_ms": 14.301,
+      "samples": 450
+    },
+    "march_300": {
+      "entities": 304,
+      "max_ms": 26.724,
+      "median_ms": 10.733,
+      "median_norm": 0.8985,
+      "p95_ms": 13.703,
+      "samples": 450
+    },
+    "view_300": {
+      "entities": 298,
+      "max_ms": 3.221,
+      "median_ms": 1.959,
+      "median_norm": 0.164,
+      "p95_ms": 2.267,
+      "samples": 120
+    }
+  }
+}
