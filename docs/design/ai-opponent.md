@@ -42,5 +42,5 @@ Each personality is a JSON preset: build order, unit preferences, aggression and
 | Version | Task | Scope |
 |---|---|---|
 | v0 ✅ | P1-31 | Build order from `game/data/ai/*.json`, keeps a builder and trucks, fills factories with the unit mix it lacks most, defends buildings, attacks in waves. Shortcut: it knows where enemy buildings are (start positions). Code: `game/src/ai/ai_player.gd` |
-| v1 | P2-11 | Easy and normal, counter-building, uses powers |
+| v1 ✅ | P2-11 | Easy (thinks half as often, attacks later and bigger, no counters or research) and normal. Counter-building: every 3 visible enemies of an armor class add weight to the preset's `counters`. Spends commander points in `power_priority` order and aims powers (strikes at the biggest visible enemy group, reveals at the enemy base, decoys in front of its own). Researches `research` upgrades. Code: `game/src/ai/ai_strategy.gd`. Batch AI-vs-AI runs: `tests/tools/ai_matches.gd` |
 | v2 | P3-13 | All factions, hard difficulty, personalities |

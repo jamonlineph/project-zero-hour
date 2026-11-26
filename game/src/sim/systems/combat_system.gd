@@ -9,6 +9,7 @@ extends RefCounted
 ##   ACQUIRE_INTERVAL ticks (staggered by id), or right after losing one.
 ## - Weapons fire regardless of facing (turrets); units that stand still turn
 ##   toward their target.
+## - Fire is simultaneous within a tick: units killed this tick still fire.
 ## - Instant weapons hit immediately; ballistic shells fly to where the target
 ##   was; guided missiles follow it. Splash damages enemies in the radius,
 ##   falling off linearly to splash_edge_percent at the edge. Splash only hurts
@@ -22,7 +23,11 @@ const ACQUIRE_INTERVAL: int = 3
 static func step(world: SimWorld) -> void:
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
-		if e.dead or e.weapons.is_empty():
+		# Fire is simultaneous (P2-11 fairness fix): a unit killed earlier in
+		# this tick still gets its shot, so lower entity ids (the player who
+		# spawned first) don't win every trade. Dead entities are removed at
+		# the end of every tick, so "dead" here always means "died this tick".
+		if e.weapons.is_empty():
 			continue
 		# Unfinished buildings can't fire; built ones need power.
 		if e.building != null and (not e.building.built or world.get_player(e.player_id).low_power()):

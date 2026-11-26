@@ -11,13 +11,16 @@ func _content() -> ContentDb:
 	return _db
 
 
-func _duel(seed_value: int) -> SimRunner:
+func _duel(seed_value: int, levels: Array = ["normal", "normal"]) -> SimRunner:
+	var sc: Dictionary = (_content().scenarios["ai_duel"] as Dictionary).duplicate(true)
+	for i: int in 2:
+		(sc["players"] as Array)[i]["difficulty"] = levels[i]
 	var runner := SimRunner.new()
-	runner.world = MatchSetup.build(_content(), "ai_duel", seed_value)
+	runner.world = MatchSetup.build_from(_content(), sc, seed_value)
 	runner.players = [1, 2]
 	runner.local_players = []
 	runner.local_player_id = 0
-	runner.add_ai_from_scenario(_content(), _content().scenarios["ai_duel"])
+	runner.add_ai_from_scenario(_content(), sc)
 	runner.start()
 	return runner
 
@@ -71,3 +74,45 @@ func test_ai_is_deterministic() -> void:
 		hashes.append(runner.world.state_hash())
 		runner.free()
 	assert_eq(hashes[0], hashes[1])
+
+
+func test_easy_is_slower_and_attacks_later() -> void:
+	var easy: AiPlayer = AiPlayer.from_preset(_content(), "us_default", 1, "easy")
+	var normal: AiPlayer = AiPlayer.from_preset(_content(), "us_default", 1, "normal")
+	assert_true(easy.think_interval > normal.think_interval)
+	assert_true(easy.first_attack_tick > normal.first_attack_tick)
+	assert_true(easy.counters.is_empty(), "easy should not counter-build")
+	assert_false(normal.counters.is_empty())
+
+
+func test_counter_bonus_follows_what_the_ai_sees() -> void:
+	var w := SimWorld.new(3, 200, 200)
+	w.content = _content()
+	w.damage_matrix = _content().damage_matrix
+	w.rules = _content().rules
+	var ai: AiPlayer = AiPlayer.from_preset(_content(), "us_default", 1)
+	w.spawn_unit(_content().get_unit("us_rifle_squad"), 1, Fx.from_int(100), Fx.from_int(100))
+	for i: int in 6:
+		w.spawn_unit(_content().get_unit("kp_recon_drone"), 2, Fx.from_int(110 + i), Fx.from_int(100))
+	w.step()
+	var bonus: Dictionary[String, int] = AiStrategy.counter_bonus(w, ai)
+	assert_eq(bonus.get("us_laser_cuas", 0), 2, "6 visible drones should add 2 weight to the laser vehicle")
+	assert_false(bonus.has("us_at_team"), "no tanks were seen")
+
+
+func test_normal_ai_uses_powers_and_researches() -> void:
+	var runner := _duel(7)
+	var powers_used: int = 0
+	var researched: int = 0
+	for i: int in SimWorld.TICK_RATE * 60 * 8:
+		runner.try_step()
+		for ev: Dictionary in runner.world.events:
+			if ev["type"] == "power_used":
+				powers_used += 1
+			elif ev["type"] == "researched":
+				researched += 1
+		if runner.world.game_over:
+			break
+	assert_true(powers_used >= 2, "the AIs used %d commander powers in 8 minutes" % powers_used)
+	assert_true(researched >= 1, "no AI researched an upgrade")
+	runner.free()

@@ -501,9 +501,15 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P1-34
 - **Accept:** all slice units and buildings have final first-pass numbers from `vertical-slice.md` in JSON; `ContentDb` validates them.
 
-### P2-11 · Skirmish AI v1 — ⬜
+### P2-11 · Skirmish AI v1 — ✅ 2026-11-26 (Claude Code: results logged with `tests/tools/ai_matches.gd`; found a west-side advantage, see P2-11b)
 - **Needs:** P1-31, P2-09
 - **Accept:** easy and normal difficulty for America and North Korea; counter-building; uses powers; AI-vs-AI results logged.
+
+### P2-11b · Find and remove the west-side advantage — ⬜
+- **Seen (2026-11-26, `ai_matches.gd`, normal vs normal on the sandbox map):** player 1 (west) won 8 of 8 as America and 6 of 6 when the factions were swapped (North Korea west), so it is a side bias, not faction balance. Making fire simultaneous within a tick (a real fairness fix, done in P2-11) did not change it.
+- **Suspects:** the sandbox map is not mirrored (rocks, one contested supply site at x 86 instead of 88, the ridge centered at x 65); the AI's building-spot search tries east first, which is toward the front for the west player and toward the map edge for the east player; player 1's AI thinks one tick earlier.
+- **Do:** test each suspect with `godot --headless --path game --script res://tests/tools/ai_matches.gd -- 10 normal normal [swap]`; fix the cause; P2-12's mirror-fair map will be judged with the same tool.
+- **Accept:** on a mirrored map, neither side wins more than 55% of 40 runs.
 
 ### P2-12 · Map "Riverside" — ⬜
 - **Needs:** P1-30

@@ -226,3 +226,26 @@ func test_battles_are_deterministic() -> void:
 		_run(world, 15 * 40)
 		hashes.append(world.state_hash())
 	assert_eq(hashes[0], hashes[1])
+
+
+func test_fire_is_simultaneous_within_a_tick() -> void:
+	# Two identical units that can kill each other in one shot: neither may
+	# win just because its entity id is lower (P2-11 fairness fix).
+	var world := _world()
+	world.rules = _content().rules
+	var a: int = _spawn(world, "us_rifle_squad", 1, 50, 50)
+	# Targets are looked for every 3 ticks, staggered by id; two far-away
+	# fillers make b's id = a's id + 3, so both start shooting on the same tick.
+	_spawn(world, "us_rifle_squad", 1, 190, 190)
+	_spawn(world, "us_rifle_squad", 1, 190, 180)
+	var b: int = _spawn(world, "us_rifle_squad", 2, 60, 50)
+	assert_eq(b - a, 3)
+	for id: int in [a, b]:
+		var e: SimEntity = world.get_entity(id)
+		e.max_hp = 1
+		e.hp = 1
+		e.vision = Fx.from_int(40)
+	for i: int in 10:
+		world.step()
+	assert_eq(world.get_entity(a), null, "the unit with the lower id survived the exchange")
+	assert_eq(world.get_entity(b), null)

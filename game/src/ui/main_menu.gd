@@ -9,6 +9,8 @@ const MAP_ID: String = "sandbox"
 var content: ContentDb
 var faction: String = "us"
 var credits_index: int = 1
+var difficulty: String = "normal"   ## the computer opponent (P2-11)
+var _difficulty_button: Button
 var _faction_button: Button
 var _credits_button: Button
 
@@ -44,6 +46,8 @@ func _ready() -> void:
 
 	_faction_button = _button(box, "", _cycle_faction)
 	_credits_button = _button(box, "", _cycle_credits)
+	_difficulty_button = _button(box, "", _cycle_difficulty)
+	_difficulty_button.name = "Difficulty"
 	_button(box, "Start skirmish vs computer", start_skirmish).name = "StartSkirmish"
 	_button(box, "Watch computer vs computer", start_watch).name = "Watch"
 	_button(box, "Sandbox (developer test map)", start_sandbox).name = "Sandbox"
@@ -62,7 +66,7 @@ func _ready() -> void:
 
 
 func start_skirmish() -> void:
-	_start(MatchConfig.skirmish(content, MAP_ID, faction, content.skirmish_credits[credits_index]))
+	_start(MatchConfig.skirmish(content, MAP_ID, faction, content.skirmish_credits[credits_index], false, difficulty))
 
 
 func start_watch() -> void:
@@ -91,6 +95,11 @@ func _cycle_faction() -> void:
 	_refresh_labels()
 
 
+func _cycle_difficulty() -> void:
+	difficulty = "easy" if difficulty == "normal" else "normal"
+	_refresh_labels()
+
+
 func _cycle_credits() -> void:
 	credits_index = (credits_index + 1) % content.skirmish_credits.size()
 	_refresh_labels()
@@ -99,6 +108,7 @@ func _cycle_credits() -> void:
 func _refresh_labels() -> void:
 	_faction_button.text = "Your side: %s   (tap to change)" % MatchConfig.FACTIONS[faction]
 	_credits_button.text = "Starting credits: %d   (tap to change)" % content.skirmish_credits[credits_index]
+	_difficulty_button.text = "Computer: %s   (tap to change)" % difficulty.capitalize()
 
 
 func _button(parent: Control, text: String, action: Callable) -> Button:

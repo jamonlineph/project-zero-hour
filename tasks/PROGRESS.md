@@ -4,6 +4,23 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-11 Skirmish AI v1 (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **Difficulty:** easy and normal, chosen in the main menu ("Computer: Normal"). Easy thinks half as often, attacks a minute later with bigger waves, and doesn't counter-build or research.
+  - **Counter-building:** the AI counts the enemy units it can see by armor class and adds weight to its preset's `counters` (anti-tank teams against armor, IFVs against infantry, the laser or EW vehicle against drones).
+  - **Commander powers:** it spends points in `power_priority` order and aims them: strikes at the biggest visible enemy group (precision rockets only at spotted points), reveals and sweeps at the enemy base, jamming and wingmen at enemy groups, decoys in front of its own base.
+  - **Research:** it buys its preset's upgrades.
+  - Presets now build drone and air-defense buildings and field the wider slice roster. Code: `game/src/ai/ai_strategy.gd`.
+- **Fairness fix:** fire is now simultaneous within a tick: a unit killed during combat still gets its shot, so lower entity ids (the player who spawned first) don't win every even trade. A new combat test proves it.
+- **AI-vs-AI results** (`tests/tools/ai_matches.gd`, results in `build/ai/results.json`): normal vs normal, the west player won 8/8; with factions swapped, the west player still won 6/6; normal vs easy, normal won 6/6. So there is a strong **west-side bias** that is not faction balance. Logged as P2-11b with suspects (the sandbox map isn't mirrored, the AI's base layout favors the west, think order).
+- The determinism check plays an AI duel, so its hash was regenerated: the phone should show **2376107880**.
+- Tests: `tools/run_tests.sh` -> 236 tests, 0 failed (new AI tests for difficulty, counters, powers and research; simultaneous-fire combat test).
+- Not verified: how the AI feels to play against.
+- Next: P2-11b (the west-side bias), then P2-12 (map "Riverside").
+- For the owner: the determinism-check number is now 2376107880.
+
+---
+
 ## 2026-11-26: P2-10 Slice content data (Claude Code, branch claude/phase-0-wrapup)
 - Done: every America and North Korea slice unit and building carries the first-pass numbers from `docs/design/vertical-slice.md`, marked "first-pass numbers" in its data. New `test_slice_data.gd` reads the doc's tables and checks every unit (cost, hp, armor, speed, weapon type, damage, splash, range, reload) and building (cost, hp, power) against `game/data`, so the two can't drift apart. The loader now also rejects a minimum range at or above the range, a splash edge outside 0–100%, endurance on non-flyers, and units without vision (except decoys).
 - The test found one real mismatch: North Korea's infantry squad used America's rifles (12 damage instead of 10). It now has its own `kp_assault_rifles`. That changes fights, so the golden replays and the determinism-check hash were regenerated; the phone check now expects **122369364**.

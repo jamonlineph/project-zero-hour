@@ -2,12 +2,56 @@
   "id": "kp_default",
   "faction": "kp",
   "_doc": "Skirmish AI preset (docs/design/ai-opponent.md). build_order lists buildings in order; repeat an id to build it again.",
-  "build_order": ["kp_power_plant", "kp_logistics_hub", "kp_barracks", "kp_vehicle_plant", "kp_power_plant", "kp_logistics_hub"],
-  "unit_mix": {"kp_mbt": 3, "kp_infantry_squad": 3},
+  "build_order": [
+    "kp_power_plant",
+    "kp_logistics_hub",
+    "kp_barracks",
+    "kp_vehicle_plant",
+    "kp_power_plant",
+    "kp_logistics_hub",
+    "kp_drone_launch_site",
+    "kp_power_plant",
+    "kp_sam_site"
+  ],
+  "unit_mix": {
+    "kp_mbt": 3,
+    "kp_infantry_squad": 3,
+    "kp_at_team": 1,
+    "kp_ifv": 1,
+    "kp_howitzer": 1,
+    "kp_recon_drone": 1
+  },
   "max_gatherers": 4,
   "gatherer_unit": "kp_logistics_truck",
   "attack_wave_size": 7,
   "first_attack_after_s": 200,
   "think_interval_ticks": 15,
-  "defend_radius_m": 45
+  "defend_radius_m": 45,
+  "counters": {
+    "heavy_armor": [
+      "kp_at_team",
+      "kp_mbt"
+    ],
+    "infantry": [
+      "kp_ifv",
+      "kp_howitzer"
+    ],
+    "light_vehicle": [
+      "kp_mbt"
+    ],
+    "drone": [
+      "kp_ew_vehicle"
+    ]
+  },
+  "power_priority": [
+    "kp_reserve_callup",
+    "kp_drone_sweep",
+    "kp_rocket_barrage",
+    "kp_gps_jamming",
+    "kp_unlock_spotter_officer"
+  ],
+  "research": [
+    "kp_reactive_armor"
+  ],
+  "_doc_v1": "v1 (P2-11): counters add weight to listed units per 3 visible enemies of an armor class; power_priority is the order points are spent; research is the order upgrades are bought."
 }

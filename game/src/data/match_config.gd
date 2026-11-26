@@ -13,15 +13,17 @@ const FACTIONS: Dictionary = {"us": "America", "kp": "North Korea"}
 
 
 ## A 1v1 skirmish: player 1 (human, or AI when watching) against an AI.
-static func skirmish(content: ContentDb, map_id: String, faction: String, credits: int, watch_only: bool = false) -> Dictionary:
+static func skirmish(content: ContentDb, map_id: String, faction: String, credits: int, watch_only: bool = false,
+		difficulty: String = "normal") -> Dictionary:
 	var map: MapDef = content.get_map(map_id)
 	var enemy: String = "kp" if faction == "us" else "us"
 	var players: Array = [
 		{"id": 1, "team": 1, "faction": faction, "credits": credits},
-		{"id": 2, "team": 2, "faction": enemy, "credits": credits, "ai": enemy + "_default"},
+		{"id": 2, "team": 2, "faction": enemy, "credits": credits, "ai": enemy + "_default", "difficulty": difficulty},
 	]
 	if watch_only:
 		players[0]["ai"] = faction + "_default"
+		players[0]["difficulty"] = "normal"
 	var spawns: Array = []
 	for slot: int in 2:
 		var f: String = players[slot]["faction"]

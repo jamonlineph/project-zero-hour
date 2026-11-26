@@ -1,6 +1,6 @@
 class_name AiPlayer
 extends RefCounted
-## Skirmish AI v0 (P1-31). See docs/design/ai-opponent.md.
+## Skirmish AI (v0 P1-31, v1 P2-11). See docs/design/ai-opponent.md.
 ##
 ## Acts only through SimCommands, like a human, and decides only from the sim
 ## state, its preset and its own SimRng, so every machine running it makes
@@ -10,7 +10,10 @@ extends RefCounted
 ##    time, placed with a clearance ring so lanes stay open);
 ## 2. keeps up to max_gatherers trucks working;
 ## 3. keeps every factory busy with the unit mix it lacks most;
-## 4. defends buildings against visible enemies, and attacks in waves.
+## 4. defends buildings against visible enemies, and attacks in waves;
+## 5. (v1, normal) shifts production toward counters of what it sees,
+##    spends commander points and uses powers, and researches upgrades
+##    (AiStrategy). Easy thinks half as often and attacks later and bigger.
 ## Known v0 shortcuts: it knows where enemy buildings are (start positions are
 ## public in skirmish), and it never retreats.
 
@@ -24,13 +27,17 @@ var attack_wave_size: int = 6
 var first_attack_tick: int = 2700
 var think_interval: int = 15
 var defend_radius: int = 45 * Fx.ONE
+var difficulty: String = "normal"   ## "easy" or "normal"
+var counters: Dictionary[String, PackedStringArray] = {}
+var power_priority: PackedStringArray = []
+var research: PackedStringArray = []
 
 var _attacking: bool = false
 var _target_id: int = 0
 var _rally_set: Dictionary[int, bool] = {}
 
 
-static func from_preset(content: ContentDb, id: String, player: int) -> AiPlayer:
+static func from_preset(content: ContentDb, id: String, player: int, level: String = "normal") -> AiPlayer:
 	var p: Dictionary = content.ai_presets.get(id, {})
 	if p.is_empty():
 		push_error("AiPlayer: unknown preset '%s'" % id)
@@ -49,6 +56,21 @@ static func from_preset(content: ContentDb, id: String, player: int) -> AiPlayer
 	ai.first_attack_tick = int(p.get("first_attack_after_s", 180)) * SimWorld.TICK_RATE
 	ai.think_interval = maxi(1, int(p.get("think_interval_ticks", 15)))
 	ai.defend_radius = Fx.from_int(int(p.get("defend_radius_m", 45)))
+	var ctr: Dictionary = p.get("counters", {})
+	for cls: Variant in ctr:
+		ai.counters[str(cls)] = PackedStringArray(ctr[cls])
+	for pw: Variant in p.get("power_priority", []):
+		ai.power_priority.append(str(pw))
+	for r: Variant in p.get("research", []):
+		ai.research.append(str(r))
+	ai.difficulty = level
+	if level == "easy":
+		ai.think_interval *= 2
+		ai.attack_wave_size += 3
+		ai.first_attack_tick += 60 * SimWorld.TICK_RATE
+		ai.max_gatherers = maxi(2, ai.max_gatherers - 1)
+		ai.counters.clear()
+		ai.research.clear()
 	return ai
 
 
@@ -65,6 +87,9 @@ func think(world: SimWorld) -> Array[SimCommand]:
 	_gatherers(world, mine, cmds, reserve)
 	_produce(world, mine, cmds, reserve)
 	_military(world, mine, cmds)
+	AiStrategy.research(world, self, mine.buildings, reserve, cmds)
+	if difficulty != "easy" or (world.tick / think_interval) % 2 == 0:
+		AiStrategy.powers(world, self, mine.hq, mine.army, cmds)
 	return cmds
 
 
@@ -196,19 +221,23 @@ func _produce(world: SimWorld, mine: _Mine, cmds: Array[SimCommand], reserve: in
 	var counts: Dictionary[String, int] = {}
 	for e: SimEntity in mine.army:
 		counts[e.def_id] = counts.get(e.def_id, 0) + 1
+	var mix: Dictionary[String, int] = unit_mix.duplicate()
+	var bonus: Dictionary[String, int] = AiStrategy.counter_bonus(world, self)
+	for u: String in bonus:
+		mix[u] = mix.get(u, 0) + bonus[u]
 	var total_weight: int = 0
-	for u: String in unit_mix:
-		total_weight += unit_mix[u]
+	for u: String in mix:
+		total_weight += mix[u]
 	for b: SimEntity in mine.buildings:
 		if not b.building.built or b.building.queue.size() >= 2:
 			continue
 		var best: String = ""
 		var best_score: int = 0
 		for u: String in b.building.produces:
-			if not unit_mix.has(u):
+			if not mix.has(u):
 				continue
 			# How far below its share of the army this unit type is.
-			var score: int = (mine.army.size() + 1) * unit_mix[u] - counts.get(u, 0) * total_weight
+			var score: int = (mine.army.size() + 1) * mix[u] - counts.get(u, 0) * total_weight
 			if best == "" or score > best_score or (score == best_score and u < best):
 				best = u
 				best_score = score
