@@ -14,6 +14,7 @@ var _credits_button: Button
 
 
 func _ready() -> void:
+	GameSettings.current().apply(get_tree())
 	content = ContentDb.new()
 	if not content.load_all():
 		for e: String in content.errors:
@@ -46,6 +47,7 @@ func _ready() -> void:
 	_button(box, "Start skirmish vs computer", start_skirmish).name = "StartSkirmish"
 	_button(box, "Watch computer vs computer", start_watch).name = "Watch"
 	_button(box, "Sandbox (developer test map)", start_sandbox).name = "Sandbox"
+	_button(box, "Settings", open_settings).name = "Settings"
 	_button(box, "Quit", func() -> void: get_tree().quit())
 	_refresh_labels()
 
@@ -60,6 +62,13 @@ func start_watch() -> void:
 
 func start_sandbox() -> void:
 	_start(content.scenarios.get("sandbox", {}))
+
+
+func open_settings() -> SettingsMenu:
+	var menu := SettingsMenu.new()
+	menu.name = "SettingsMenu"
+	add_child(menu)
+	return menu
 
 
 func _start(scenario: Dictionary) -> void:

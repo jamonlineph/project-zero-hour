@@ -4,6 +4,15 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P1-35 Settings (Claude Code, branch claude/phase-0-wrapup)
+- Done: a Settings screen, reached from the main menu and the pause menu, with render scale, frame-rate limit (30/60/unlimited), shadows, battery saver (30 fps, lower resolution, no shadows), interface size, edge panning, key rebinding (a key already in use is swapped) and volume sliders. Every change applies at once and is saved in `user://settings.cfg` (`GameSettings`). Tests use scratch files, never the player's settings.
+- Tests: `tools/run_tests.sh` -> 129 tests, 0 failed (new `test_settings.gd`); smoke_menu opens Settings from both menus and checks that battery saver applies and is saved.
+- Not verified: how the screen looks on a phone; volume sliders do nothing until the audio buses exist (P1-29).
+- Next: P1-24 touch controls, then P1-28 effects and P1-29 audio.
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P1-23 Desktop controls (Claude Code, branch claude/phase-0-wrapup)
 - Done: control groups (Ctrl+1–9 store, 1–9 select, twice quickly centers the camera, Shift+1–9 adds), camera bookmarks (Ctrl+F5–F8 save, F5–F8 return), Space + left-drag panning for trackpads, a hover ring on the unit under the mouse (red on enemies), and cursor shapes for select, move, attack (a red crosshair drawn in code) and valid or invalid placement. The F1 help lists the new keys.
 - Tests: `tools/run_tests.sh` -> 123 tests, 0 failed (new `test_controls.gd`); smoke_main drives groups, bookmarks (real key events), Space-drag, cursor states and hover; smoke_menu ok.

@@ -17,7 +17,7 @@
 - Renderer: **Mobile** (Vulkan). Low-end devices fall back to the Compatibility (OpenGL ES 3) renderer (P1-36).
 - `textures/vram_compression/import_etc2_astc=true`, so textures compress for mobile GPUs.
 - `pointing/emulate_mouse_from_touch=false`. Touch and mouse are handled separately and explicitly.
-- Stretch mode `canvas_items` with aspect `expand`, so the UI scales with the window. A UI-scale setting comes in P1-35.
+- Stretch mode `canvas_items` with aspect `expand`, so the UI scales with the window. The Settings screen has an interface-size option (`GameSettings.ui_scale`, applied as the window's content scale).
 - Orientation: sensor landscape.
 
 ## Android export (P0-11)
@@ -69,7 +69,7 @@ Tagging a commit `v*` (for example `v0.0.1`) also attaches the APK and desktop b
 - Thermal and battery care:
   - 30/60 fps cap setting
   - render-scale setting
-  - battery-saver preset (P1-35)
+  - battery-saver preset: 30 fps, render scale 0.67 or lower, no shadows (Settings screen)
 
 ## Performance budgets
 

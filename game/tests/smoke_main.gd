@@ -18,6 +18,10 @@ var _errors := ErrorCounter.new()
 
 
 func _initialize() -> void:
+	# Never read or write the player's real settings from a test.
+	GameSettings.file_path = "user://test_settings_smoke_main.cfg"
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(GameSettings.file_path))
+	GameSettings.reset_current()
 	OS.add_logger(_errors)
 	_run.call_deferred()
 

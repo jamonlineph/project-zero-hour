@@ -17,6 +17,10 @@ var _errors := ErrorCounter.new()
 
 
 func _initialize() -> void:
+	# Never read or write the player's real settings from a test.
+	GameSettings.file_path = "user://test_settings_smoke_menu.cfg"
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(GameSettings.file_path))
+	GameSettings.reset_current()
 	OS.add_logger(_errors)
 	_run.call_deferred()
 
@@ -30,6 +34,7 @@ func _run() -> void:
 	if menu == null or not menu.has_method("start_skirmish"):
 		failures.append("the main menu did not load")
 	else:
+		failures.append_array(await _check_settings(menu))
 		menu.call("start_skirmish")
 		for i: int in 20:
 			await process_frame
@@ -53,6 +58,10 @@ func _run() -> void:
 				await process_frame
 			if runner.world.tick != tick:
 				failures.append("the game kept running while paused")
+			var pause_settings: SettingsMenu = pause.open_settings()
+			await process_frame
+			pause_settings.close()
+			await process_frame
 			pause.toggle()
 			for i: int in 30:
 				await process_frame
@@ -68,3 +77,32 @@ func _run() -> void:
 		for f: String in failures:
 			printerr("smoke_menu FAIL: ", f)
 		quit(1)
+
+
+## P1-35: the settings screen opens from the main menu, battery saver applies
+## at once and is saved, and Back closes it.
+func _check_settings(menu: Node) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var screen: SettingsMenu = menu.call("open_settings")
+	await process_frame
+	var saver: Button = screen.find_child("BatterySaver", true, false)
+	if saver == null:
+		problems.append("the settings screen has no battery saver row")
+		return problems
+	saver.pressed.emit()
+	await process_frame
+	if Engine.max_fps != GameSettings.SAVER_FPS:
+		problems.append("battery saver did not cap the frame rate (max_fps %d)" % Engine.max_fps)
+	var saved := GameSettings.new()
+	saved.load_from(GameSettings.file_path)
+	if not saved.battery_saver:
+		problems.append("battery saver was not saved to the settings file")
+	# Turn it back off so the rest of the test runs at normal speed.
+	saver = screen.find_child("BatterySaver", true, false)
+	saver.pressed.emit()
+	await process_frame
+	screen.close()
+	await process_frame
+	if is_instance_valid(screen) and screen.is_inside_tree():
+		problems.append("Back did not close the settings screen")
+	return problems

@@ -415,7 +415,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Build them and hook them into `game/data`.
 - **Accept:** all slice IDs have a model, an icon and a data file; tests pass.
 
-### P1-35 · Settings — ⬜
+### P1-35 · Settings — ✅ 2026-11-26 (Claude Code: from the main and pause menus; volumes take effect once P1-29 adds the audio buses)
 - **Do:**
   - Settings: render scale, fps cap (30/60/unlimited), shadows, UI scale, key rebinding, edge-pan toggle, battery-saver preset.
   - Saved in `user://settings.cfg`.

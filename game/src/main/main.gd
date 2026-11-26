@@ -97,6 +97,8 @@ func _ready() -> void:
 	pointer.setup(selection)
 	add_child(pointer)
 
+	GameSettings.current().apply(get_tree())
+
 	pause_menu = PauseMenu.new()
 	pause_menu.name = "PauseMenu"
 	pause_menu.setup(runner)
@@ -143,6 +145,7 @@ func _build_environment() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-50.0, -35.0, 0.0)
 	sun.shadow_enabled = true
+	sun.add_to_group("shadow_lights")   # GameSettings turns shadows on and off
 	add_child(sun)
 
 	# Terrain materials darken under the local player's fog of war (P1-27).

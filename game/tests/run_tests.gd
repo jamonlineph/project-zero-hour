@@ -24,6 +24,10 @@ class ErrorCounter extends Logger:
 
 
 func _initialize() -> void:
+	# Never read or write the player's real settings from a test.
+	GameSettings.file_path = "user://test_settings_unit.cfg"
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(GameSettings.file_path))
+	GameSettings.reset_current()
 	var errors := ErrorCounter.new()
 	OS.add_logger(errors)
 	var total: int = 0

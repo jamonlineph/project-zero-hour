@@ -34,6 +34,7 @@ func _ready() -> void:
 	box.add_child(_title)
 	_resume = _button(box, "Resume", close)
 	_button(box, "Save replay", save_replay)
+	_button(box, "Settings", open_settings)
 	_button(box, "Quit to menu", quit_to_menu)
 
 
@@ -68,6 +69,13 @@ func save_replay() -> void:
 	var path: String = "user://replays/replay_%d.json" % Time.get_unix_time_from_system()
 	var err: Error = runner.make_replay().save(path)
 	_title.text = "Replay saved" if err == OK else "Could not save (%s)" % error_string(err)
+
+
+func open_settings() -> SettingsMenu:
+	var menu := SettingsMenu.new()
+	menu.name = "SettingsMenu"
+	add_child(menu)
+	return menu
 
 
 func quit_to_menu() -> void:

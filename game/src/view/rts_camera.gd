@@ -168,6 +168,8 @@ static func _bookmark_slot(keycode: Key) -> int:
 
 
 func _edge_pan_direction() -> Vector2:
+	if not GameSettings.current().edge_pan:
+		return Vector2.ZERO
 	var vp: Viewport = get_viewport()
 	if not get_window().has_focus():
 		return Vector2.ZERO

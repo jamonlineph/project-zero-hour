@@ -22,7 +22,7 @@ Touch and mouse are equals: every action must be possible with either. The HUD l
 | Hover and cursor | The unit under the cursor gets a ring (red for enemies); the cursor shows select, move, attack or can't-build | ✅ |
 | Menu / pause | Escape, or the Menu button (top right) | ✅ |
 
-All keys are rebindable (P1-35). Tooltips show the current key.
+The keys for camera movement and unit orders can be rebound in Settings (control-group, bookmark and grid keys are fixed for now). Tooltips will show the current key.
 
 ## Touch (phones and tablets)
 
