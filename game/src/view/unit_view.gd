@@ -6,6 +6,8 @@ extends Node3D
 ## and never writes it.
 
 const RING_COLOR := Color(0.35, 1.0, 0.45)
+const HOVER_OWN_COLOR := Color(0.85, 1.0, 0.85, 0.6)
+const HOVER_ENEMY_COLOR := Color(1.0, 0.3, 0.25)
 const DRONE_HOVER_M: float = 6.0  ## drones fly; the sim keeps them on the ground plane
 const TURRET_TURN_RAD_PER_S: float = 2.5
 const BARREL_PITCH_RAD_PER_S: float = 1.0
@@ -78,7 +80,25 @@ func setup(entity: SimEntity, def: UnitDef, team_color: Color) -> void:
 
 func set_selected(selected: bool) -> void:
 	_selected = selected
+	_set_ring_color(RING_COLOR)
 	_ring.visible = selected and not is_wreck
+
+
+## Hover highlight (mouse only): a pale ring on own units, red on enemies.
+## Selection wins over hover.
+func set_hovered(hovered: bool, enemy: bool) -> void:
+	if _selected or is_wreck:
+		return
+	_set_ring_color(HOVER_ENEMY_COLOR if enemy else HOVER_OWN_COLOR)
+	_ring.visible = hovered
+
+
+func is_ring_visible() -> bool:
+	return _ring.visible
+
+
+func _set_ring_color(color: Color) -> void:
+	(_ring.material_override as StandardMaterial3D).albedo_color = color
 
 
 ## Health bar and veterancy pips; call every frame.

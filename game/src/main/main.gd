@@ -21,6 +21,7 @@ var selection: SelectionController
 var placement: PlacementController
 var pause_menu: PauseMenu
 var fog: FogOfWar
+var pointer: PointerFeedback
 var _game_over_shown: bool = false
 
 
@@ -91,6 +92,10 @@ func _ready() -> void:
 	selection.placement = placement
 	selection.hotkey_handler = hud.command_grid.handle_key
 	hud.bind_controls(selection, rts_camera, placement)
+
+	pointer = PointerFeedback.new()
+	pointer.setup(selection)
+	add_child(pointer)
 
 	pause_menu = PauseMenu.new()
 	pause_menu.name = "PauseMenu"

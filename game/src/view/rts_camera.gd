@@ -4,8 +4,10 @@ extends Node3D
 ## child orbits it at a fixed pitch.
 ##
 ## Handled here: arrow keys, zoom/rotate keys, mouse wheel, middle-mouse drag,
-## edge panning (once a real mouse moves) and trackpad gestures. Touch gestures
-## come from SelectionController through pan_screen(), zoom_by() and rotate_by().
+## Space + left-drag (trackpads without a middle button), edge panning (once a
+## real mouse moves), trackpad gestures, and camera bookmarks (Ctrl+F5–F8 to
+## save, F5–F8 to jump). Touch gestures come from SelectionController through
+## pan_screen(), zoom_by() and rotate_by().
 
 @export var pitch_degrees: float = 55.0
 @export var fov_degrees: float = 45.0
@@ -21,6 +23,9 @@ var distance: float = 40.0
 var edge_pan_enabled: bool = false
 var _bounds: Rect2 = Rect2(0, 0, 256, 256)   ## x/z rectangle the focus stays in
 var _middle_dragging: bool = false
+var _space_dragging: bool = false
+## F5–F8 -> {"position", "yaw", "distance"}
+var _bookmarks: Dictionary[int, Dictionary] = {}
 
 
 func _ready() -> void:
@@ -61,6 +66,33 @@ func zoom_by(factor: float) -> void:
 
 func rotate_by(radians: float) -> void:
 	rotation.y = wrapf(rotation.y + radians, -PI, PI)
+
+
+## True while Space is held: a left-drag then pans instead of box-selecting.
+func space_pan_held() -> bool:
+	return _space_dragging or Input.is_physical_key_pressed(KEY_SPACE)
+
+
+## Saves the current view in bookmark slot `slot` (F5–F8 use 5–8).
+func save_bookmark(slot: int) -> void:
+	_bookmarks[slot] = {"position": position, "yaw": rotation.y, "distance": distance}
+
+
+## Restores a saved view. Returns false if the slot is empty.
+func jump_to_bookmark(slot: int) -> bool:
+	if not _bookmarks.has(slot):
+		return false
+	var b: Dictionary = _bookmarks[slot]
+	position = b["position"]
+	rotation.y = b["yaw"]
+	distance = b["distance"]
+	_apply_zoom()
+	_clamp_focus()
+	return true
+
+
+func has_bookmark(slot: int) -> bool:
+	return _bookmarks.has(slot)
 
 
 ## The point on the ground plane (y = 0) under a screen position, or null.
@@ -105,14 +137,34 @@ func _unhandled_input(event: InputEvent) -> void:
 			zoom_by(1.0 / 0.9)
 		elif mb.button_index == MOUSE_BUTTON_MIDDLE:
 			_middle_dragging = mb.pressed
+		elif mb.button_index == MOUSE_BUTTON_LEFT:
+			_space_dragging = mb.pressed and space_pan_held()
 	elif event is InputEventMouseMotion:
 		edge_pan_enabled = true
-		if _middle_dragging:
+		if _middle_dragging or _space_dragging:
 			pan_screen((event as InputEventMouseMotion).relative)
+	elif event is InputEventKey and event.pressed and not event.echo:
+		var key := event as InputEventKey
+		var slot: int = _bookmark_slot(key.physical_keycode)
+		if slot != 0:
+			if key.ctrl_pressed or key.meta_pressed:
+				save_bookmark(slot)
+			else:
+				jump_to_bookmark(slot)
+			get_viewport().set_input_as_handled()
 	elif event is InputEventMagnifyGesture:
 		zoom_by(1.0 / maxf((event as InputEventMagnifyGesture).factor, 0.01))
 	elif event is InputEventPanGesture:
 		pan_screen(-(event as InputEventPanGesture).delta * 8.0)
+
+
+static func _bookmark_slot(keycode: Key) -> int:
+	match keycode:
+		KEY_F5: return 5
+		KEY_F6: return 6
+		KEY_F7: return 7
+		KEY_F8: return 8
+	return 0
 
 
 func _edge_pan_direction() -> Vector2:

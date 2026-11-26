@@ -56,6 +56,7 @@ func _run() -> void:
 				moved += 1
 		if moved == 0:
 			failures.append("no selected unit moved after a move order")
+		failures.append_array(_check_desktop_controls(main, world, selection))
 		failures.append_array(await _check_hud_build_and_produce(main, world, selection))
 		failures.append_array(await _check_attack(world, selection))
 		failures.append_array(await _check_unit_views(world, game_view, selection))
@@ -295,3 +296,103 @@ func _check_fog(main: Node, world: SimWorld, game_view: GameView) -> PackedStrin
 	if dark == 0:
 		problems.append("the whole map is lit: fog texture shows no fog anywhere")
 	return problems
+
+
+## P1-23: control groups, camera bookmarks, Space-drag panning, hover and
+## cursor states.
+func _check_desktop_controls(main: Node, world: SimWorld, selection: SelectionController) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var cam: RtsCamera = main.get("rts_camera")
+	var pointer: PointerFeedback = main.get("pointer")
+	var own: Array[int] = []
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		if e.player_id == 1 and e.mover != null and not e.weapons.is_empty():
+			own.append(id)
+	if own.size() < 2:
+		problems.append("not enough own armed units to test controls")
+		return problems
+
+	# Control groups: store, clear, recall, double tap jumps the camera.
+	selection.select_ids(own)
+	selection.groups.use_group(3, true, false, selection, 0)
+	selection.select_ids([])
+	cam.focus_on(Vector3(5, 0, 5))
+	selection.groups.use_group(3, false, false, selection, 10000)
+	if selection.selected != own:
+		problems.append("recalling group 3 selected %s, not %s" % [selection.selected, own])
+	var before: Vector3 = cam.position
+	selection.groups.use_group(3, false, false, selection, 10100)
+	var c: Vector3 = selection.groups.center(3, world)
+	if cam.position.distance_to(Vector3(c.x, 0, c.z)) > 0.5 or cam.position == before:
+		problems.append("double-tapping group 3 did not center the camera on it")
+
+	# Camera bookmarks through real key events: Ctrl+F6 saves, F6 jumps back.
+	cam.focus_on(Vector3(30, 0, 30))
+	cam._unhandled_input(_key(KEY_F6, true))
+	cam.focus_on(Vector3(80, 0, 70))
+	cam._unhandled_input(_key(KEY_F6, false))
+	if cam.position.distance_to(Vector3(30, 0, 30)) > 0.01:
+		problems.append("F6 did not return to the view saved with Ctrl+F6 (at %s)" % cam.position)
+
+	# Space + left-drag pans and does not box-select.
+	selection.select_ids([])
+	Input.parse_input_event(_key(KEY_SPACE, false))
+	Input.flush_buffered_events()
+	var start: Vector3 = cam.position
+	var press := InputEventMouseButton.new()
+	press.button_index = MOUSE_BUTTON_LEFT
+	press.pressed = true
+	press.position = Vector2(400, 300)
+	selection._unhandled_input(press)
+	cam._unhandled_input(press)
+	var drag := InputEventMouseMotion.new()
+	drag.position = Vector2(300, 250)
+	drag.relative = Vector2(-100, -50)
+	selection._unhandled_input(drag)
+	cam._unhandled_input(drag)
+	var release := press.duplicate() as InputEventMouseButton
+	release.pressed = false
+	release.position = drag.position
+	selection._unhandled_input(release)
+	cam._unhandled_input(release)
+	var space_up := _key(KEY_SPACE, false)
+	space_up.pressed = false
+	Input.parse_input_event(space_up)
+	Input.flush_buffered_events()
+	if cam.position == start:
+		problems.append("Space + drag did not pan the camera")
+	if not selection.selected.is_empty():
+		problems.append("Space + drag box-selected units")
+
+	# Cursor states and hover.
+	selection.select_ids([])
+	if pointer.state_for(0, 0) != PointerFeedback.CursorState.DEFAULT:
+		problems.append("cursor is not the default with nothing selected")
+	if pointer.state_for(own[0], 0) != PointerFeedback.CursorState.SELECT:
+		problems.append("cursor over an own unit is not the select cursor")
+	selection.select_ids(own)
+	if pointer.state_for(0, 0) != PointerFeedback.CursorState.MOVE:
+		problems.append("cursor over ground with units selected is not the move cursor")
+	if pointer.state_for(0, 99999) != PointerFeedback.CursorState.ATTACK:
+		problems.append("cursor over an enemy with armed units selected is not the attack cursor")
+	selection.select_ids([])
+	cam.focus_on(Vector3(Fx.to_float(world.get_entity(own[1]).x), 0, Fx.to_float(world.get_entity(own[1]).y)))
+	var sp: Vector2 = cam.camera.unproject_position(main.get("game_view").get_view(own[1]).global_position)
+	pointer.update_at(sp)
+	var hv: UnitView = main.get("game_view").get_view(pointer.hovered_id) if pointer.hovered_id != 0 else null
+	if hv == null or not hv.is_ring_visible():
+		problems.append("hovering an own unit shows no highlight")
+	pointer.update_at(Vector2(-500, -500))
+	if hv != null and hv.is_ring_visible():
+		problems.append("the hover highlight stayed after the mouse left")
+	return problems
+
+
+func _key(code: Key, ctrl: bool) -> InputEventKey:
+	var k := InputEventKey.new()
+	k.physical_keycode = code
+	k.keycode = code
+	k.pressed = true
+	k.ctrl_pressed = ctrl
+	return k

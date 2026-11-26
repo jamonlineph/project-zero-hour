@@ -319,7 +319,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - A death effect and a wreck.
 - **Accept:** smoke test extended; screenshot in PROGRESS from a machine with a screen.
 
-### P1-23 · Desktop controls complete — ⬜
+### P1-23 · Desktop controls complete — ✅ 2026-11-26 (Claude Code: control groups, Space+drag, bookmarks, hover and cursors; cursor images not yet seen on a screen)
 - **Do:**
   - Control groups (Ctrl+1–9, 1–9, double-tap to jump).
   - Space + drag pan.

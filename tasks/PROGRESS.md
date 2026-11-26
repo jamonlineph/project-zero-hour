@@ -4,6 +4,15 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P1-23 Desktop controls (Claude Code, branch claude/phase-0-wrapup)
+- Done: control groups (Ctrl+1–9 store, 1–9 select, twice quickly centers the camera, Shift+1–9 adds), camera bookmarks (Ctrl+F5–F8 save, F5–F8 return), Space + left-drag panning for trackpads, a hover ring on the unit under the mouse (red on enemies), and cursor shapes for select, move, attack (a red crosshair drawn in code) and valid or invalid placement. The F1 help lists the new keys.
+- Tests: `tools/run_tests.sh` -> 123 tests, 0 failed (new `test_controls.gd`); smoke_main drives groups, bookmarks (real key events), Space-drag, cursor states and hover; smoke_menu ok.
+- Not verified: how the cursors look on a real desktop.
+- Next: P1-35 settings (rebinding, render scale, fps cap), then P1-24 touch controls.
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P1-33 Performance harness (Claude Code, branch claude/phase-0-wrapup)
 - Done: `tools/run_perf.sh` runs three fixed scenarios headless (two 150-unit armies fighting; 300 vehicles marching through the sandbox ridge gap; the view syncing 300 entities) and writes `build/perf/latest.json`. CI fails when a scenario's normalized median (ms per tick ÷ a calibration workload) is more than 20% above `game/tests/perf/perf_baseline.json`. `--profile` prints ms per tick for each sim system.
 - The harness found the sim far over budget, so I optimized it without changing any result (golden replays still match bit for bit):

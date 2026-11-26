@@ -5,6 +5,8 @@ extends Node
 ##
 ## Mouse: left-click select, left-drag box select (Shift adds), right-click
 ## move (or attack, on an enemy), A then left-click attack-move, H hold, S stop.
+## Keys: Ctrl+1–9 store a control group, 1–9 recall it (twice quickly jumps
+## the camera), Shift+1–9 add it. Space + left-drag pans instead of selecting.
 ## Touch: tap your unit to select it, tap an enemy to attack it, tap ground to
 ## move the selection,
 ## one-finger drag pans, hold still then drag for box select, double-tap a unit
@@ -30,6 +32,7 @@ var attack_move_armed: bool = false
 var placement: PlacementController
 ## Command-grid hotkeys (CommandGrid.handle_key): checked before our own keys.
 var hotkey_handler: Callable
+var groups := ControlGroups.new()
 var _mouse_down: bool = false
 var _mouse_dragging: bool = false
 var _mouse_start: Vector2 = Vector2.ZERO
@@ -69,6 +72,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_on_touch(event as InputEventScreenTouch)
 	elif event is InputEventScreenDrag:
 		_on_drag(event as InputEventScreenDrag)
+	elif event is InputEventKey and groups.handle_key(event as InputEventKey, self):
+		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("cmd_stop"):
 		order_stop()
 	elif event.is_action_pressed("cmd_hold"):
@@ -182,6 +187,8 @@ func _selected_any(predicate: Callable) -> bool:
 # --- Mouse ---
 
 func _on_mouse_button(mb: InputEventMouseButton) -> void:
+	if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed and rts_camera.space_pan_held():
+		return  # Space + drag pans the camera (RtsCamera handles it)
 	if mb.button_index == MOUSE_BUTTON_LEFT:
 		if mb.pressed and attack_move_armed:
 			order_attack_move(mb.position)
@@ -324,6 +331,16 @@ func _screen_pos(entity_id: int) -> Variant:
 
 func _pick_radius_px() -> float:
 	return maxf(MIN_PICK_RADIUS_PX, get_viewport().get_visible_rect().size.y * 0.045)
+
+
+## Public picking for hover feedback: own unit (own = true) or visible enemy.
+func pick_unit(screen_pos: Vector2, own: bool) -> int:
+	return _pick_unit(screen_pos, own)
+
+
+## True if any selected entity matches `predicate`.
+func selected_any(predicate: Callable) -> bool:
+	return _selected_any(predicate)
 
 
 ## Own unit nearest to a screen position, within the pick radius, or 0.

@@ -12,13 +12,14 @@ Touch and mouse are equals: every action must be possible with either. The HUD l
 | Move | Right-click ground | ✅ |
 | Stop | S | ✅ |
 | Pan | Arrow keys, edge of screen, middle-drag, trackpad two-finger pan gesture | ✅ |
-| Pan on trackpads without a middle button | Space + drag | ⬜ P1-23 |
+| Pan on trackpads without a middle button | Space + drag | ✅ |
 | Zoom | Wheel, pinch on trackpad, = / − | ✅ |
 | Rotate camera | , and . | ✅ |
-| Attack-move / hold / guard | A / H / G | ⬜ P1-10 |
-| Control groups | Ctrl+1–9 to set, 1–9 to select, double-tap to jump | ⬜ P1-23 |
+| Attack-move / hold / guard | A / H / G (guard comes with P1-24) | ✅ A and H |
+| Control groups | Ctrl+1–9 to set, 1–9 to select, double-tap to jump, Shift+1–9 to add | ✅ |
 | Build menu hotkeys | Grid keys Q W E R / A S D F / Z X C V for the 12 slots of the open menu (Shift+key or right-click cancels one in production) | ✅ |
-| Camera bookmarks | F5–F8 | ⬜ P1-23 |
+| Camera bookmarks | Ctrl+F5–F8 to save the view, F5–F8 to return to it | ✅ |
+| Hover and cursor | The unit under the cursor gets a ring (red for enemies); the cursor shows select, move, attack or can't-build | ✅ |
 | Menu / pause | Escape, or the Menu button (top right) | ✅ |
 
 All keys are rebindable (P1-35). Tooltips show the current key.
