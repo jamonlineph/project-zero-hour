@@ -8,6 +8,8 @@ var content: ContentDb
 ## Units of other teams are only drawn where this player can see (fog of war).
 var local_player_id: int = 1
 var _views: Dictionary[int, UnitView] = {}
+var _wreck_material: StandardMaterial3D
+var wrecks_made: int = 0
 
 
 func setup(sim_world: SimWorld, content_db: ContentDb) -> void:
@@ -22,13 +24,48 @@ func sync(alpha: float) -> void:
 			_create_view(world.entities[id])
 	for id: int in _views.keys():
 		if not world.entities.has(id):
-			_views[id].queue_free()
-			_views.erase(id)
+			_remove_view(id)
+	var delta: float = get_process_delta_time() if is_inside_tree() else 0.0
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
 		var v: UnitView = _views[id]
 		v.update_from_sim(e, alpha)
 		v.visible = not world.are_enemies(local_player_id, e.player_id) or world.can_see(local_player_id, e.x, e.y)
+		if v.visible:
+			v.update_status(e)
+			_aim(e, v, delta)
+
+
+## Points turrets at the first weapon's target. Ballistic weapons raise the
+## barrel more the farther the target is.
+func _aim(e: SimEntity, v: UnitView, delta: float) -> void:
+	if not v.has_turret() or e.weapons.is_empty():
+		return
+	var w: SimWeapon = e.weapons[0]
+	var t: SimEntity = world.get_entity(w.target_id) if w.target_id != 0 else null
+	if t == null:
+		v.aim(Vector3.ZERO, false, 0.0, delta)
+		return
+	var target := Vector3(Fx.to_float(t.x), 0.0, Fx.to_float(t.y))
+	var elevation: float = 0.03
+	if w.projectile == "ballistic" and w.max_range > 0:
+		var dist: float = Vector2(Fx.to_float(t.x - e.x), Fx.to_float(t.y - e.y)).length()
+		elevation = clampf(dist / Fx.to_float(w.max_range), 0.15, 1.0) * 0.7
+	v.aim(target, true, elevation, delta)
+
+
+func _remove_view(id: int) -> void:
+	var v: UnitView = _views[id]
+	_views.erase(id)
+	if v.visible:
+		if _wreck_material == null:
+			_wreck_material = StandardMaterial3D.new()
+			_wreck_material.albedo_color = Color(0.12, 0.11, 0.1)
+			_wreck_material.roughness = 1.0
+		v.become_wreck(_wreck_material)
+		wrecks_made += 1
+	else:
+		v.queue_free()
 
 
 ## Simple placeholder effects for sim events until P1-28 adds real ones: a
@@ -37,8 +74,16 @@ func play_events(events: Array[Dictionary]) -> void:
 	for ev: Dictionary in events:
 		match ev["type"]:
 			"fired":
-				_flash(Vector3(Fx.to_float(ev["x"]), 1.5, Fx.to_float(ev["y"])), Color(1.0, 0.85, 0.4), 0.6, 0.12)
+				var shooter: UnitView = _views.get(ev["attacker"], null)
+				if shooter != null and not shooter.visible:
+					continue
+				var at := Vector3(Fx.to_float(ev["x"]), 1.5, Fx.to_float(ev["y"]))
+				if shooter != null:
+					at = shooter.muzzle_position()
+				_flash(at, Color(1.0, 0.85, 0.4), 0.6, 0.12)
 			"died":
+				if not world.can_see(local_player_id, ev["x"], ev["y"]):
+					continue
 				_flash(Vector3(Fx.to_float(ev["x"]), 1.0, Fx.to_float(ev["y"])), Color(0.3, 0.3, 0.3), 3.0, 0.8)
 
 

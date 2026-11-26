@@ -309,7 +309,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Log a state hash every 15 ticks.
 - **Accept:** tests with two simulated players and delayed batches.
 
-### P1-22 · Unit views v2 — ⬜
+### P1-22 · Unit views v2 — ✅ 2026-11-26 (Claude Code: smoke-tested headless; the screenshot from a machine with a screen is still owed, see P0-15)
 - **Needs:** P1-02, P1-07
 - **Do:**
   - Health bars (only when damaged or selected).

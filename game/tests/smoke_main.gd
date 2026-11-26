@@ -58,6 +58,7 @@ func _run() -> void:
 			failures.append("no selected unit moved after a move order")
 		failures.append_array(await _check_hud_build_and_produce(main, world, selection))
 		failures.append_array(await _check_attack(world, selection))
+		failures.append_array(await _check_unit_views(world, game_view, selection))
 
 	if _errors.count > 0:
 		failures.append("%d error(s) were logged" % _errors.count)
@@ -176,4 +177,78 @@ func _check_unit_visuals(world: SimWorld, game_view: GameView) -> PackedStringAr
 					recolored = true
 		if not recolored:
 			problems.append("%s has no team_color surface that was recolored" % def.id)
+	return problems
+
+
+## P1-22: health bars, veterancy pips, turret aiming and wrecks.
+func _check_unit_views(world: SimWorld, game_view: GameView, selection: SelectionController) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var tank: int = 0
+	var healthy: int = 0
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		var v: UnitView = game_view.get_view(id)
+		if e.player_id != 1 or v == null or e.building != null:
+			continue
+		if tank == 0 and v.has_turret():
+			tank = id
+		if healthy == 0 and e.hp == e.max_hp and v.kind != UnitView.Kind.DRONE:
+			healthy = id
+	if tank == 0 or healthy == 0:
+		problems.append("no own turreted unit or undamaged unit to check views with")
+		return problems
+
+	# Turret aiming: aim due east (+X) with a large delta, then compare the
+	# turret's real front (+Z in Godot) with the expected direction.
+	var tv: UnitView = game_view.get_view(tank)
+	tv.aim(tv.global_position + Vector3(20.0, 0.0, 0.0), true, 0.0, 100.0)
+	var front: Vector3 = tv.find_child("turret", true, false).global_basis.z
+	front.y = 0.0
+	if front.normalized().dot(Vector3.RIGHT) < 0.99:
+		problems.append("turret did not turn to face its target (front %s)" % front)
+	tv.aim(Vector3.ZERO, false, 0.0, 100.0)
+
+	# Health bar: hidden while healthy and unselected, shown when selected.
+	var hv: UnitView = game_view.get_view(healthy)
+	selection.select_ids([])
+	game_view.sync(0.0)
+	if hv.status.bar_visible():
+		problems.append("an undamaged, unselected unit shows a health bar")
+	selection.select_ids([healthy])
+	game_view.sync(0.0)
+	if not hv.status.bar_visible():
+		problems.append("a selected unit shows no health bar")
+	selection.select_ids([])
+
+	# Damaged units show a bar at the right fill.
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		var v: UnitView = game_view.get_view(id)
+		if v != null and v.visible and e.hp < e.max_hp and v.status != null:
+			game_view.sync(0.0)
+			if not v.status.bar_visible():
+				problems.append("damaged %s shows no health bar" % e.def_id)
+			elif absf(v.status.health_ratio() - float(e.hp) / float(e.max_hp)) > 0.02:
+				problems.append("health bar fill does not match hp for %s" % e.def_id)
+			break
+
+	# Veterancy pips follow the rank (the test sets the rank directly).
+	var he: SimEntity = world.get_entity(healthy)
+	var old_rank: int = he.vet_rank
+	he.vet_rank = 2
+	game_view.sync(0.0)
+	if hv.status.pip_count() != 2:
+		problems.append("rank 2 shows %d pips" % hv.status.pip_count())
+	he.vet_rank = old_rank
+	game_view.sync(0.0)
+
+	# A destroyed vehicle leaves a wreck.
+	var made: int = game_view.wrecks_made
+	world.apply_damage(world.get_entity(tank), 1000000, "anti_tank", 0)
+	for i: int in 10:
+		await process_frame
+	if world.get_entity(tank) != null:
+		problems.append("the tank survived lethal damage")
+	elif game_view.wrecks_made <= made or not is_instance_valid(tv) or not tv.is_wreck:
+		problems.append("a destroyed tank left no wreck")
 	return problems

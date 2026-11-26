@@ -96,6 +96,23 @@ def empty(name, location, parent=None):
     return obj
 
 
+def set_origin(obj, world_point):
+    """Move an object's origin (its pivot in Godot) to world_point without
+    moving its mesh or its children. Turrets and barrels need this so the
+    game can rotate them about the right point."""
+    bpy.context.view_layer.update()
+    mw = obj.matrix_world.copy()
+    local = mw.inverted() @ Vector(world_point)
+    shift = Matrix.Translation(local)
+    if obj.data is not None:
+        obj.data.transform(Matrix.Translation(-local))
+    obj.matrix_world = mw @ shift
+    # Object.children can be a stale cache in background mode, so scan instead.
+    for child in [o for o in bpy.data.objects if o.parent == obj]:
+        child.matrix_parent_inverse = Matrix.Translation(-local) @ child.matrix_parent_inverse
+    return obj
+
+
 def asset_objects():
     """Every object in the scene except cameras and lights."""
     return [o for o in bpy.context.scene.objects if o.type not in {"CAMERA", "LIGHT"}]

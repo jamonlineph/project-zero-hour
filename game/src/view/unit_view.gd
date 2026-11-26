@@ -1,17 +1,33 @@
 class_name UnitView
 extends Node3D
 ## The visual for one SimEntity: a model (the Blender .glb if it exists, or a
-## placeholder shape), team color, and a selection ring. It reads sim state and
-## never writes it.
+## placeholder shape), team color, a selection ring, a health bar with
+## veterancy pips, turret aiming, and a wreck when it dies. It reads sim state
+## and never writes it.
 
 const RING_COLOR := Color(0.35, 1.0, 0.45)
 const DRONE_HOVER_M: float = 6.0  ## drones fly; the sim keeps them on the ground plane
+const TURRET_TURN_RAD_PER_S: float = 2.5
+const BARREL_PITCH_RAD_PER_S: float = 1.0
+const WRECK_SECONDS: float = 20.0
+
+enum Kind { INFANTRY, VEHICLE, DRONE, BUILDING, SUPPLY }
 
 
 var entity_id: int = 0
 var _ring: MeshInstance3D
 var _model: Node3D
 var _static: bool = false       ## buildings and supply sites never turn
+var kind: Kind = Kind.VEHICLE
+var status: UnitStatus
+var _selected: bool = false
+var _turret: Node3D
+var _barrel: Node3D
+var _turret_rest: float = 0.0
+var _barrel_rest: float = 0.0
+var _muzzle: Node3D
+var _height: float = 2.0
+var is_wreck: bool = false
 
 
 ## Picks the right visual for any entity: unit, building or supply site.
@@ -24,14 +40,19 @@ func setup_entity(entity: SimEntity, content: ContentDb, team_color: Color) -> v
 	_static = true
 	var radius_m: float = Fx.to_float(entity.radius)
 	if entity.supply != null:
+		kind = Kind.SUPPLY
 		_model = _make_supply_crates()
 	else:
+		kind = Kind.BUILDING
 		var def: BuildingDef = content.get_building(entity.def_id) if content != null else null
 		_model = _make_building_model(def, entity, team_color)
 	add_child(_model)
 	_ring = _make_ring(radius_m * 1.3)
 	_ring.visible = false
 	add_child(_ring)
+	_find_parts()
+	if kind == Kind.BUILDING:
+		_add_status(clampf(radius_m * 1.2, 3.0, 8.0))
 	position = Vector3(Fx.to_float(entity.x), 0.0, Fx.to_float(entity.y))
 
 
@@ -41,17 +62,122 @@ func setup(entity: SimEntity, def: UnitDef, team_color: Color) -> void:
 	var radius_m: float = Fx.to_float(entity.radius)
 	_model = _make_model(def, radius_m, team_color)
 	if def != null and def.armor_class == "drone":
+		kind = Kind.DRONE
 		_model.position.y = DRONE_HOVER_M
+	elif def != null and def.is_infantry():
+		kind = Kind.INFANTRY
 	add_child(_model)
 	_ring = _make_ring(radius_m)
 	_ring.visible = false
 	add_child(_ring)
+	_find_parts()
+	_add_status(clampf(radius_m * 2.0, 1.6, 5.0))
 	position = Vector3(Fx.to_float(entity.x), 0.0, Fx.to_float(entity.y))
 	rotation.y = yaw_from_sim_angle(float(entity.facing))
 
 
 func set_selected(selected: bool) -> void:
-	_ring.visible = selected
+	_selected = selected
+	_ring.visible = selected and not is_wreck
+
+
+## Health bar and veterancy pips; call every frame.
+func update_status(e: SimEntity) -> void:
+	if status != null and not is_wreck:
+		status.refresh(e.hp, e.max_hp, e.vet_rank, _selected)
+
+
+## Turns the turret toward a world point and raises the barrel by
+## `elevation` radians. has_target = false returns both to rest.
+func aim(target: Vector3, has_target: bool, elevation: float, delta: float) -> void:
+	if is_wreck:
+		return
+	if _turret != null:
+		var want: float = _turret_rest
+		if has_target:
+			var to: Vector3 = target - global_position if is_inside_tree() else target - position
+			if Vector2(to.x, to.z).length() > 0.5:
+				want = wrapf(atan2(to.x, to.z) - rotation.y, -PI, PI)
+		_turret.rotation.y = rotate_toward(_turret.rotation.y, want, TURRET_TURN_RAD_PER_S * delta)
+	if _barrel != null:
+		var pitch: float = _barrel_rest - (elevation if has_target else 0.0)
+		_barrel.rotation.x = move_toward(_barrel.rotation.x, pitch, BARREL_PITCH_RAD_PER_S * delta)
+
+
+## World yaw the turret currently points at (the unit's yaw if it has none).
+func turret_world_yaw() -> float:
+	return wrapf(rotation.y + (_turret.rotation.y if _turret != null else 0.0), -PI, PI)
+
+
+func has_turret() -> bool:
+	return _turret != null
+
+
+## Where shots come from: the model's muzzle_0 point, or above the center.
+func muzzle_position() -> Vector3:
+	if _muzzle != null and _muzzle.is_inside_tree():
+		return _muzzle.global_position
+	return global_position + Vector3(0.0, _height * 0.6, 0.0)
+
+
+## Turns a destroyed vehicle or building into a dark wreck that sinks away;
+## infantry, drones and supply crates simply vanish. The view frees itself.
+func become_wreck(darken: Material) -> void:
+	is_wreck = true
+	_ring.visible = false
+	if status != null:
+		status.visible = false
+	if kind == Kind.INFANTRY or kind == Kind.DRONE or kind == Kind.SUPPLY:
+		var t := create_tween()
+		t.tween_property(self, "scale", Vector3(1.0, 0.05, 1.0), 0.4)
+		t.tween_callback(queue_free)
+		return
+	for node: Node in _model.find_children("*", "MeshInstance3D", true, false):
+		var mi := node as MeshInstance3D
+		mi.material_override = darken
+	# A fixed, id-based tilt so every wreck looks a little different.
+	var tilt: float = float(entity_id % 7 - 3) * 0.04
+	if kind == Kind.VEHICLE:
+		rotation.z = tilt
+		if _turret != null:
+			_turret.rotation.y += tilt * 4.0
+	var tween := create_tween()
+	tween.tween_interval(WRECK_SECONDS)
+	tween.tween_property(self, "position:y", -_height - 0.5, 3.0)
+	tween.tween_callback(queue_free)
+
+
+func _find_parts() -> void:
+	_turret = _model.find_child("turret", true, false) as Node3D
+	_barrel = _model.find_child("barrel", true, false) as Node3D
+	_muzzle = _model.find_child("muzzle_0", true, false) as Node3D
+	if _turret != null:
+		_turret_rest = _turret.rotation.y
+	if _barrel != null:
+		_barrel_rest = _barrel.rotation.x
+	_height = _model_height()
+
+
+func _add_status(width_m: float) -> void:
+	status = UnitStatus.new()
+	status.setup(width_m, _height + 0.8)
+	add_child(status)
+
+
+## Top of the model's bounding box, in this view's space.
+func _model_height() -> float:
+	var top: float = 0.0
+	for node: Node in _model.find_children("*", "MeshInstance3D", true, false):
+		var mi := node as MeshInstance3D
+		var t := Transform3D.IDENTITY
+		var n: Node = mi
+		while n != null and n != self:
+			if n is Node3D:
+				t = (n as Node3D).transform * t
+			n = n.get_parent()
+		var box: AABB = t * mi.get_aabb()
+		top = maxf(top, box.end.y)
+	return top if top > 0.0 else 2.0
 
 
 ## Moves the node between the previous and current tick positions.

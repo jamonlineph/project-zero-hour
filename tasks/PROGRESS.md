@@ -4,6 +4,15 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P1-22 Unit views v2 (Claude Code, branch claude/phase-0-wrapup)
+- Done: health bars (shown when damaged or selected; green, yellow, red), veterancy pips, turrets that turn toward their target and barrels that rise for artillery, shots that flash at the model's `muzzle_0`, and wrecks: destroyed vehicles and buildings turn dark, stay 20 s and sink away; infantry and drones vanish. Death flashes in the fog are no longer drawn. Blender models now have `turret`/`barrel` pivots (rocket pods, the laser mount and SAM launchers too), and all 35 assets were rebuilt.
+- Tests: `tools/run_tests.sh` -> 118 tests, 0 failed; smoke_main (now also checks turret aim, health bar rules, pips and wrecks) ok; smoke_menu ok.
+- Not verified: no screenshot yet, because this machine has no screen. Bar sizes and colors may need tuning once someone looks (P0-15).
+- Next: P1-27 fog rendering, then P1-33 performance harness.
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P1-04b to P1-34 (Claude Code, branch claude/phase-0-wrapup)
 
 **Done:**

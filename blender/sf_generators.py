@@ -4,9 +4,13 @@ These build clean, readable grey-box models from simple shapes so the game
 has something to show before final art exists. Final art replaces them
 (docs/04-art-pipeline.md). Every generator gets (spec, palette) and builds
 objects in the current scene. Models face -Y (the front), with z = 0 as ground.
+
+Parts the game animates are named "turret" (turns about its vertical axis)
+and "barrel" (tilts up and down), with origins set at their pivots. A
+negative X rotation raises the front (-Y) of a part.
 """
 
-from sf_common import TEAM_MATERIAL, box, cylinder, empty, get_material, sphere
+from sf_common import TEAM_MATERIAL, box, cylinder, empty, get_material, set_origin, sphere
 
 
 def _materials(spec, palette):
@@ -64,6 +68,10 @@ def tracked(spec, palette):
             box(f"cage_bar_{i}", (t_w * 1.2, 0.05, 0.05), (0, t_y + sy * t_l * 0.6, cage_z), m["metal"], turret)
         for i, (sx, sy) in enumerate(((-1, -1), (1, -1), (-1, 1), (1, 1))):
             box(f"cage_post_{i}", (0.05, 0.05, 0.55), (sx * t_w * 0.6, t_y + sy * t_l * 0.6, cage_z - 0.27), m["metal"], turret)
+    # Pivots last, once every part hangs off the turret and barrel.
+    set_origin(turret, (0, t_y, hull_top))
+    if barrel_len > 0:
+        set_origin(barrel, (0, barrel_y + barrel_len / 2, hull_top + t_h * 0.55))
 
 
 def wheeled(spec, palette):
@@ -92,19 +100,26 @@ def wheeled(spec, palette):
             box(f"crate_{i}", (width * 0.7, length * 0.18, height * 0.3), (0, length * (0.0 + i * 0.2), body_z + height * 0.6), m["metal"], body)
     elif cargo == "launcher":
         launcher = box("launcher", (width * 0.8, length * 0.55, height * 0.35), (0, length * 0.15, body_z + height * 0.75), m["metal"], body)
-        launcher.rotation_euler = (0.35, 0, 0)
+        set_origin(launcher, (0, length * 0.42, body_z + height * 0.6))
+        launcher.rotation_euler = (-0.35, 0, 0)
     elif cargo == "pods":
         # Two rocket pods on a turntable, raised toward the front.
-        table = cylinder("turntable", width * 0.3, 0.2, (0, length * 0.2, body_z + height * 0.55), m["metal"], parent=body)
+        table = cylinder("turret", width * 0.3, 0.2, (0, length * 0.2, body_z + height * 0.55), m["metal"], parent=body)
+        pods = box("barrel", (width * 0.06, length * 0.4, 0.1), (0, length * 0.2, body_z + height * 0.68), m["metal"], table)
         for i, sx in enumerate((-1, 1)):
-            pod = box(f"pod_{i}", (width * 0.38, length * 0.42, height * 0.3), (sx * width * 0.2, length * 0.2, body_z + height * 0.8), m["accent"], table)
-            pod.rotation_euler = (0.45, 0, 0)
-            empty(f"muzzle_{i}", (sx * width * 0.2, length * 0.0, body_z + height * 0.95), parent=pod)
+            box(f"pod_{i}", (width * 0.38, length * 0.42, height * 0.3), (sx * width * 0.2, length * 0.2, body_z + height * 0.8), m["accent"], pods)
+            empty(f"muzzle_{i}", (sx * width * 0.2, length * 0.0, body_z + height * 0.8), parent=pods)
+        set_origin(table, (0, length * 0.2, body_z + height * 0.55))
+        set_origin(pods, (0, length * 0.38, body_z + height * 0.68))
+        pods.rotation_euler = (-0.45, 0, 0)
     elif cargo == "laser":
-        mount = cylinder("laser_mount", width * 0.25, 0.3, (0, length * 0.2, body_z + height * 0.6), m["metal"], parent=body)
-        head = box("laser_head", (width * 0.35, width * 0.35, width * 0.3), (0, length * 0.2, body_z + height * 0.6 + width * 0.2), m["accent"], mount)
-        cylinder("laser_lens", width * 0.1, 0.1, (0, length * 0.2 - width * 0.2, body_z + height * 0.6 + width * 0.2), m["glass"], axis="Y", parent=head)
-        empty("muzzle_0", (0, length * 0.2 - width * 0.26, body_z + height * 0.6 + width * 0.2), parent=head)
+        head_z = body_z + height * 0.6 + width * 0.2
+        mount = cylinder("turret", width * 0.25, 0.3, (0, length * 0.2, body_z + height * 0.6), m["metal"], parent=body)
+        head = box("barrel", (width * 0.35, width * 0.35, width * 0.3), (0, length * 0.2, head_z), m["accent"], mount)
+        cylinder("laser_lens", width * 0.1, 0.1, (0, length * 0.2 - width * 0.2, head_z), m["glass"], axis="Y", parent=head)
+        empty("muzzle_0", (0, length * 0.2 - width * 0.26, head_z), parent=head)
+        set_origin(mount, (0, length * 0.2, body_z + height * 0.45))
+        set_origin(head, (0, length * 0.2, head_z))
     elif cargo == "ew":
         shelter = box("ew_shelter", (width * 0.88, length * 0.55, height * 0.55), (0, length * 0.16, body_z + height * 0.67), m["accent"], body)
         for i, (sx, h) in enumerate(((-1, 2.4), (1, 1.8), (0, 3.0))):
@@ -203,6 +218,7 @@ def _bunker(spec, m, w, d, h):
     base = box("base", (w, d, 0.3), (0, 0, 0.15), m["metal"])
     main = box("main", (w * 0.85, d * 0.8, h), (0, d * 0.05, 0.3 + h / 2), m["body"], base)
     slope = box("slope", (w * 0.85, d * 0.3, h * 0.6), (0, -d * 0.3, 0.3 + h * 0.3), m["accent"], main)
+    set_origin(slope, (0, -d * 0.3, 0.3 + h * 0.3))
     slope.rotation_euler = (-0.5, 0, 0)
     box("slit", (w * 0.5, 0.1, h * 0.12), (0, -d * 0.36, 0.3 + h * 0.72), m["dark"], main)
     box("team_band", (w * 0.87, d * 0.4, h * 0.12), (0, d * 0.25, 0.3 + h * 0.9), m["team"], main)
@@ -223,13 +239,15 @@ def _trench(spec, m, w, d, h):
 def _sam(spec, m, w, d, h):
     """Air-defense site: slab, turntable, an angled launcher box and a radar."""
     base = box("base", (w, d, 0.3), (0, 0, 0.15), m["metal"])
-    table = cylinder("turntable", min(w, d) * 0.3, 0.4, (0, d * 0.05, 0.5), m["accent"], segments=16, parent=base)
-    rack = box("launcher_rack", (w * 0.5, d * 0.55, h * 0.45), (0, d * 0.05, 0.7 + h * 0.3), m["body"], table)
-    rack.rotation_euler = (0.6, 0, 0)
+    table = cylinder("turret", min(w, d) * 0.3, 0.4, (0, d * 0.05, 0.5), m["accent"], segments=16, parent=base)
+    rack = box("barrel", (w * 0.5, d * 0.55, h * 0.45), (0, d * 0.05, 0.7 + h * 0.3), m["body"], table)
     for i, (sx, sz) in enumerate(((-1, -1), (1, -1), (-1, 1), (1, 1))):
         cylinder(f"tube_{i}", w * 0.08, 0.1, (sx * w * 0.12, -d * 0.24, 0.7 + h * 0.3 + sz * h * 0.1), m["dark"], axis="Y", parent=rack)
         empty(f"muzzle_{i}", (sx * w * 0.12, -d * 0.26, 0.7 + h * 0.3 + sz * h * 0.1), parent=rack)
     box("team_band", (w * 0.52, d * 0.1, h * 0.1), (0, d * 0.3, 0.7 + h * 0.4), m["team"], rack)
+    set_origin(table, (0, d * 0.05, 0.3))
+    set_origin(rack, (0, d * 0.05, 0.7 + h * 0.3))
+    rack.rotation_euler = (-0.6, 0, 0)
     cylinder("radar_mast", 0.08, h * 0.8, (w * 0.4, d * 0.38, 0.3 + h * 0.4), m["metal"], parent=base)
     box("radar_panel", (w * 0.25, 0.08, h * 0.3), (w * 0.4, d * 0.36, 0.3 + h * 0.85), m["dark"], base)
 
@@ -244,6 +262,7 @@ def _extras(spec, m, parent, width, length, top):
         box("dozer_blade", (width * 1.05, 0.25, top * 0.55), (0, -length / 2 - 0.3, top * 0.3), m["metal"], parent)
     if "crane" in extras:
         boom = box("crane_boom", (0.3, length * 0.6, 0.3), (width * 0.2, length * 0.05, top + 0.9), m["accent"], parent)
+        set_origin(boom, (width * 0.2, length * 0.3, top + 0.6))
         boom.rotation_euler = (-0.35, 0, 0)
         box("crane_base", (0.8, 0.8, 0.6), (width * 0.2, length * 0.3, top + 0.3), m["accent"], parent)
     if "antennas" in extras:
