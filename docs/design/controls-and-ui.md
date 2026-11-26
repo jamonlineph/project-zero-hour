@@ -17,7 +17,7 @@ Touch and mouse are equals: every action must be possible with either. The HUD l
 | Rotate camera | , and . | ✅ |
 | Attack-move / hold / guard | A / H / G | ⬜ P1-10 |
 | Control groups | Ctrl+1–9 to set, 1–9 to select, double-tap to jump | ⬜ P1-23 |
-| Build menu hotkeys | Grid keys Q W E R / A S D F / Z X C V for the 12 slots of the open menu | ⬜ P1-25 |
+| Build menu hotkeys | Grid keys Q W E R / A S D F / Z X C V for the 12 slots of the open menu (Shift+key or right-click cancels one in production) | ✅ |
 | Camera bookmarks | F5–F8 | ⬜ P1-23 |
 | Menu / pause | Escape | ⬜ P1-32 |
 

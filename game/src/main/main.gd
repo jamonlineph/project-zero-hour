@@ -18,6 +18,7 @@ var game_view: GameView
 var rts_camera: RtsCamera
 var hud: Hud
 var selection: SelectionController
+var placement: PlacementController
 
 
 func _ready() -> void:
@@ -75,9 +76,20 @@ func _ready() -> void:
 	selection.selection_changed.connect(hud.on_selection_changed)
 	add_child(selection)
 
+	placement = PlacementController.new()
+	placement.name = "Placement"
+	add_child(placement)
+	placement.setup(runner, rts_camera, selection)
+	selection.placement = placement
+	selection.hotkey_handler = hud.command_grid.handle_key
+	hud.bind_controls(selection, rts_camera, placement)
+
 
 ## F9 saves the match so far as a replay in user://replays/.
 func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_help"):
+		hud.toggle_help()
+		return
 	if event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_F9:
 		var path: String = "user://replays/replay_%d.json" % Time.get_unix_time_from_system()
 		var err: Error = runner.make_replay().save(path)

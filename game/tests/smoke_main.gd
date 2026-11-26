@@ -56,6 +56,7 @@ func _run() -> void:
 				moved += 1
 		if moved == 0:
 			failures.append("no selected unit moved after a move order")
+		failures.append_array(await _check_hud_build_and_produce(main, world, selection))
 		failures.append_array(await _check_attack(world, selection))
 
 	if _errors.count > 0:
@@ -68,6 +69,62 @@ func _run() -> void:
 		for f: String in failures:
 			printerr("smoke_main FAIL: ", f)
 		quit(1)
+
+
+## Uses the HUD like a player: build a power plant through the build menu
+## and placement, then queue a unit from the HQ's production grid.
+func _check_hud_build_and_produce(main: Node, world: SimWorld, selection: SelectionController) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var hud: Hud = main.get("hud")
+	var placement: PlacementController = main.get("placement")
+	var engineer: int = 0
+	var hq: int = 0
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		if e.player_id == 1 and e.builder != null and engineer == 0:
+			engineer = id
+		if e.player_id == 1 and e.def_id.ends_with("_command_hq"):
+			hq = id
+	selection.select_ids([engineer])
+	if hud.command_grid.entry_count() == 0:
+		problems.append("selecting an engineer showed no build menu")
+		return problems
+	var power_slot: int = -1
+	var player: SimPlayer = world.get_player(1)
+	var i: int = 0
+	for def: BuildingDef in world.content.buildings.values():
+		if def.faction == player.faction:
+			if def.power > 0 and power_slot < 0:
+				power_slot = i
+			i += 1
+	hud.command_grid.activate(power_slot)
+	if not placement.active:
+		problems.append("the build button did not start placement")
+		return problems
+	placement.set_ground_point(Fx.from_int(40), Fx.from_int(80))
+	if not placement.valid:
+		problems.append("placement at (40, 80) m was refused")
+		placement.cancel()
+		return problems
+	var credits_before: int = player.credits
+	placement.confirm()
+	for f: int in 30:
+		await process_frame
+	if player.credits >= credits_before:
+		problems.append("confirming placement did not start construction")
+	selection.select_ids([hq])
+	var queued_before: int = world.get_entity(hq).building.queue.size()
+	hud.command_grid.activate(0)
+	for f: int in 30:
+		await process_frame
+	var b: SimBuilding = world.get_entity(hq).building
+	var made: bool = b.queue.size() > queued_before or b.queue_progress > 0
+	for id: int in world.entity_ids:
+		if world.entities[id].def_id == "us_engineer" and id != engineer:
+			made = true
+	if not made:
+		problems.append("the production button did not queue a unit")
+	return problems
 
 
 ## Attack-moves the player's units toward the enemy and waits for damage.

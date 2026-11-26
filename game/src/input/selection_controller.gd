@@ -26,6 +26,10 @@ var selected: Array[int] = []
 
 ## True after pressing A: the next left-click is an attack-move target.
 var attack_move_armed: bool = false
+## Building placement gets every pointer event first while it is active.
+var placement: PlacementController
+## Command-grid hotkeys (CommandGrid.handle_key): checked before our own keys.
+var hotkey_handler: Callable
 var _mouse_down: bool = false
 var _mouse_dragging: bool = false
 var _mouse_start: Vector2 = Vector2.ZERO
@@ -53,6 +57,10 @@ func _process(_delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if placement != null and placement.handle_input(event):
+		return
+	if hotkey_handler.is_valid() and hotkey_handler.call(event):
+		return
 	if event is InputEventMouseButton:
 		_on_mouse_button(event as InputEventMouseButton)
 	elif event is InputEventMouseMotion:
@@ -67,16 +75,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		order_hold()
 	elif event.is_action_pressed("cmd_attack_move") and not selected.is_empty():
 		attack_move_armed = true
-	elif event.is_action_pressed("debug_build_power"):
-		debug_build(["microreactor", "power_plant", "power_station"], get_viewport().get_mouse_position())
-	elif event.is_action_pressed("debug_build_barracks"):
-		debug_build(["barracks"], get_viewport().get_mouse_position())
-	elif event.is_action_pressed("debug_build_hub"):
-		debug_build(["logistics_hub"], get_viewport().get_mouse_position())
-	elif event.is_action_pressed("debug_build_vehicles"):
-		debug_build(["vehicle_depot", "vehicle_plant", "vehicle_factory"], get_viewport().get_mouse_position())
-	elif event.is_action_pressed("debug_produce"):
-		debug_produce()
+
 
 
 # --- Public actions (also used by tests and, later, HUD buttons) ---
@@ -170,34 +169,6 @@ func order_at(screen_pos: Vector2) -> void:
 			game_view.show_move_marker(point)
 		return
 	order_move(screen_pos)
-
-
-## Places a building of the player's faction whose id ends with one of the
-## suffixes, centered under the cursor, using the selected builders.
-func debug_build(suffixes: PackedStringArray, screen_pos: Vector2) -> void:
-	var world: SimWorld = runner.world
-	if world.content == null:
-		return
-	var faction: String = world.get_player(local_player_id).faction
-	var building_id: String = ""
-	for suffix: String in suffixes:
-		if world.content.get_building(faction + "_" + suffix) != null:
-			building_id = faction + "_" + suffix
-			break
-	var ground: Variant = rts_camera.screen_to_ground(screen_pos)
-	if building_id == "" or ground == null or selected.is_empty():
-		return
-	var point: Vector3 = ground
-	runner.submit(SimCommand.make_build(selected, building_id, Fx.from_float(point.x), Fx.from_float(point.z)))
-
-
-## Queues the first unit each selected building can make.
-func debug_produce() -> void:
-	var world: SimWorld = runner.world
-	for id: int in selected:
-		var e: SimEntity = world.get_entity(id)
-		if e != null and e.building != null and not e.building.produces.is_empty():
-			runner.submit(SimCommand.make_produce(id, e.building.produces[0]))
 
 
 func _selected_any(predicate: Callable) -> bool:
@@ -299,6 +270,9 @@ func _on_drag(sd: InputEventScreenDrag) -> void:
 
 
 func _tap(pos: Vector2) -> void:
+	if attack_move_armed:
+		order_attack_move(pos)
+		return
 	var hit: int = _pick_own_unit(pos)
 	if hit != 0:
 		select_ids([hit])

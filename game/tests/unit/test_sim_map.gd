@@ -81,14 +81,16 @@ func test_sandbox_map_loads_with_its_obstacles() -> void:
 
 
 func test_sandbox_units_do_not_start_inside_rocks() -> void:
-	var main: Node = (load("res://scenes/main.tscn") as PackedScene).instantiate()
-	# _ready builds everything; we only need the world, then free the scene.
-	main._ready()
-	var world: SimWorld = main.get("world")
+	var db := ContentDb.new()
+	db.load_all()
+	for scenario_id: String in db.scenarios:
+		_check_scenario_spawns(MatchSetup.build(db, scenario_id, 1), scenario_id)
+
+
+func _check_scenario_spawns(world: SimWorld, scenario_id: String) -> void:
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
 		if e.mover == null:
 			continue   # buildings and supply sites occupy their own cells
 		var c: Vector2i = world.map.cell_of(e.x, e.y)
-		assert_true(world.map.is_passable(c.x, c.y), "unit %d starts on a blocked cell" % id)
-	main.free()
+		assert_true(world.map.is_passable(c.x, c.y), "%s: unit %d starts on a blocked cell" % [scenario_id, id])

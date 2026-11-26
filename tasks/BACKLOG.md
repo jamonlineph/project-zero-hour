@@ -243,7 +243,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Targeting only hits visible enemies (except kill-chain rules later).
 - **Accept:** tests for visibility, shared allied vision and the targeting restriction; determinism test.
 
-### P1-12 · Buildings and construction — ✅ 2026-11-26 (Claude Code: debug keys N/B/L/V place buildings until P1-26)
+### P1-12 · Buildings and construction — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P1-03, P1-07
 - **Do:**
   - `game/data/buildings/*.json`. A builder component.
@@ -252,7 +252,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Sell for a 50% refund. Repair.
 - **Accept:** tests for each rule. Sandbox: the player can build a barracks with the engineer, using a temporary debug key until P1-26.
 
-### P1-13 · Production queues and rally points — ✅ 2026-11-26 (Claude Code: debug key P queues a unit until the HUD)
+### P1-13 · Production queues and rally points — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P1-12
 - **Do:** queue up to 9 items, build time from data, cancel with a refund, rally point command, units spawn at the exit cell.
 - **Accept:** tests for queue order, timing, cancel and rally.
@@ -336,7 +336,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Deselect button.
 - **Accept:** on a phone, every action in the touch table works; documented in PROGRESS.
 
-### P1-25 · HUD v1 — ⬜
+### P1-25 · HUD v1 — ✅ 2026-11-26 (Claude Code: not yet checked on a real screen; phone tabs/collapsing come with P1-24)
 - **Needs:** P1-13, P1-15, P1-16
 - **Do:**
   - Credits, power and rank bar.
@@ -347,7 +347,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - The phone, tablet and laptop layouts from `controls-and-ui.md`.
 - **Accept:** works at 1280×720, 2400×1080 (phone) and in a resized window.
 
-### P1-26 · Building placement UI — ⬜
+### P1-26 · Building placement UI — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P1-12, P1-25
 - **Do:** a ghost preview with valid/invalid tint. On touch: place the ghost, drag to adjust, then confirm or cancel buttons.
 - **Accept:** works with mouse and touch; tests for the validity rules (sim side).
