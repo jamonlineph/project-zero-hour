@@ -44,6 +44,7 @@ func sync(alpha: float) -> void:
 		if v.visible:
 			v.update_status(e)
 			_aim(e, v, delta)
+			_show_upgrades(e, v)
 
 
 ## Fog of war: enemies show only where this player sees; neutral things such
@@ -52,6 +53,22 @@ func is_shown(e: SimEntity) -> bool:
 	if e.player_id == 0:
 		return world.vision.is_explored(world.team_of(local_player_id), e.x, e.y)
 	return not world.are_enemies(local_player_id, e.player_id) or world.can_see(local_player_id, e.x, e.y)
+
+
+## Upgrade parts on the model (P2-05): per-unit kits plus researched upgrades.
+func _show_upgrades(e: SimEntity, v: UnitView) -> void:
+	if e.player_id == 0 or content == null:
+		return
+	var player_ups: PackedStringArray = world.get_player(e.player_id).upgrades
+	var sig: int = e.upgrades.size() * 1000 + player_ups.size()
+	var parts := PackedStringArray()
+	if sig > 0:
+		for list: PackedStringArray in [e.upgrades, player_ups]:
+			for up_id: String in list:
+				var def: UpgradeDef = content.get_upgrade(up_id)
+				if def != null and def.attachment != "" and def.applies(e.def_id):
+					parts.append(def.attachment)
+	v.update_upgrades(parts, sig)
 
 
 ## Points turrets at the first weapon's target. Ballistic weapons raise the

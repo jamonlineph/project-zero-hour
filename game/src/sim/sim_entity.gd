@@ -36,6 +36,10 @@ var supply: SimSupply = null    ## supply sites only
 var drone: SimDrone = null      ## drones only: endurance and launcher (P2-01)
 var jammer: SimJammer = null    ## jamming field and spoofing (P2-03)
 var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
+var upgrades: PackedStringArray = []   ## per-unit upgrades bought for this unit (P2-05)
+var aps_charges: int = 0        ## active protection: interceptions left (P2-06)
+var aps_max: int = 0
+var cage_hits: int = 0          ## cage armor: drone hits it still softens (P2-06)
 
 var order: Order = Order.IDLE
 var order_target_id: int = 0    ## ATTACK: the entity to destroy; GUARD: the entity to protect
@@ -79,6 +83,12 @@ func write_hash(h: SimHash) -> void:
 		jammer.write_hash(h)
 	if spotter:
 		h.add_bool(true)
+	if not upgrades.is_empty() or aps_max != 0 or cage_hits != 0:
+		for u: String in upgrades:
+			h.add_string(u)
+		h.add_int(aps_charges)
+		h.add_int(aps_max)
+		h.add_int(cage_hits)
 	if mover != null:
 		mover.write_hash(h)
 	else:

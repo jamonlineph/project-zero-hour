@@ -56,22 +56,37 @@ def tracked(spec, palette):
         empty("muzzle_0", (0, barrel_y - barrel_len / 2, hull_top + t_h * 0.55), parent=barrel)
     _turret_extras(spec, m, turret, t_w, t_l, t_h, t_y, hull_top)
     if spec.get("aps"):
-        # Active protection launchers on the turret corners.
-        for i, (sx, sy) in enumerate(((-1, -1), (1, -1), (-1, 1), (1, 1))):
-            box(f"aps_{i}", (0.25, 0.25, 0.18), (sx * t_w * 0.45, t_y + sy * t_l * 0.4, hull_top + t_h + 0.09), m["metal"], turret)
+        _aps_parts(m, turret, "", t_w, t_l, t_h, t_y, hull_top)
     if spec.get("cage"):
-        # Anti-drone cage: a frame of thin bars above the turret.
-        cage_z = hull_top + t_h + 0.55
-        for i, sx in enumerate((-1, 1)):
-            box(f"cage_rail_{i}", (0.05, t_l * 1.3, 0.05), (sx * t_w * 0.6, t_y, cage_z), m["metal"], turret)
-        for i, sy in enumerate((-1, 0, 1)):
-            box(f"cage_bar_{i}", (t_w * 1.2, 0.05, 0.05), (0, t_y + sy * t_l * 0.6, cage_z), m["metal"], turret)
-        for i, (sx, sy) in enumerate(((-1, -1), (1, -1), (-1, 1), (1, 1))):
-            box(f"cage_post_{i}", (0.05, 0.05, 0.55), (sx * t_w * 0.6, t_y + sy * t_l * 0.6, cage_z - 0.27), m["metal"], turret)
+        _cage_parts(m, turret, "", t_w, t_l, t_h, t_y, hull_top)
+    # Upgrade attachments (P2-05): hidden in the game until the upgrade is owned.
+    for part in spec.get("upgrade_parts", []):
+        holder = empty("upg_" + part, (0, t_y, hull_top + t_h), parent=turret)
+        if part == "aps":
+            _aps_parts(m, holder, "upg_", t_w, t_l, t_h, t_y, hull_top)
+        elif part == "cage":
+            _cage_parts(m, holder, "upg_", t_w, t_l, t_h, t_y, hull_top)
     # Pivots last, once every part hangs off the turret and barrel.
     set_origin(turret, (0, t_y, hull_top))
     if barrel_len > 0:
         set_origin(barrel, (0, barrel_y + barrel_len / 2, hull_top + t_h * 0.55))
+
+
+def _aps_parts(m, parent, prefix, t_w, t_l, t_h, t_y, hull_top):
+    """Active protection launchers on the turret corners."""
+    for i, (sx, sy) in enumerate(((-1, -1), (1, -1), (-1, 1), (1, 1))):
+        box(f"{prefix}aps_{i}", (0.25, 0.25, 0.18), (sx * t_w * 0.45, t_y + sy * t_l * 0.4, hull_top + t_h + 0.09), m["metal"], parent)
+
+
+def _cage_parts(m, parent, prefix, t_w, t_l, t_h, t_y, hull_top):
+    """Anti-drone cage: a frame of thin bars above the turret."""
+    cage_z = hull_top + t_h + 0.55
+    for i, sx in enumerate((-1, 1)):
+        box(f"{prefix}cage_rail_{i}", (0.05, t_l * 1.3, 0.05), (sx * t_w * 0.6, t_y, cage_z), m["metal"], parent)
+    for i, sy in enumerate((-1, 0, 1)):
+        box(f"{prefix}cage_bar_{i}", (t_w * 1.2, 0.05, 0.05), (0, t_y + sy * t_l * 0.6, cage_z), m["metal"], parent)
+    for i, (sx, sy) in enumerate(((-1, -1), (1, -1), (-1, 1), (1, 1))):
+        box(f"{prefix}cage_post_{i}", (0.05, 0.05, 0.55), (sx * t_w * 0.6, t_y + sy * t_l * 0.6, cage_z - 0.27), m["metal"], parent)
 
 
 def wheeled(spec, palette):

@@ -1,0 +1,19 @@
+{
+  "id": "kp_ifv_cage_kit",
+  "_doc": "Per vehicle: softens the first two drone hits (works with P2-06).",
+  "faction": "kp",
+  "name": "Cage Armor Kit",
+  "scope": "unit",
+  "cost": 150,
+  "requires": [
+    "kp_vehicle_plant"
+  ],
+  "requires_rank": 1,
+  "applies_to": [
+    "kp_ifv"
+  ],
+  "effects": {
+    "cage_hits": 2
+  },
+  "attachment": "upg_cage"
+}

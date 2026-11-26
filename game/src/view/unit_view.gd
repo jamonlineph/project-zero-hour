@@ -30,6 +30,8 @@ var _barrel_rest: float = 0.0
 var _muzzle: Node3D
 var _height: float = 2.0
 var is_wreck: bool = false
+var _upgrade_parts: Dictionary[String, Node3D] = {}   ## upg_* node name -> node (P2-05)
+var _upgrade_sig: int = -1
 
 
 ## Picks the right visual for any entity: unit, building or supply site.
@@ -103,6 +105,24 @@ func _set_ring_color(color: Color) -> void:
 	(_ring.material_override as StandardMaterial3D).albedo_color = color
 
 
+## Shows the model's upg_* parts for the upgrades this unit has (P2-05).
+## `signature` changes whenever the owned upgrades might have.
+func update_upgrades(attachments: PackedStringArray, signature: int) -> void:
+	if signature == _upgrade_sig or _upgrade_parts.is_empty():
+		return
+	_upgrade_sig = signature
+	for name: String in _upgrade_parts:
+		_upgrade_parts[name].visible = attachments.has(name)
+
+
+func has_upgrade_part(name: String) -> bool:
+	return _upgrade_parts.has(name)
+
+
+func is_upgrade_part_visible(name: String) -> bool:
+	return _upgrade_parts.has(name) and _upgrade_parts[name].visible
+
+
 ## Health bar and veterancy pips; call every frame.
 func update_status(e: SimEntity) -> void:
 	if status != null and not is_wreck:
@@ -170,6 +190,10 @@ func become_wreck(darken: Material) -> void:
 
 
 func _find_parts() -> void:
+	# Upgrade attachments (P2-05): nodes named upg_* stay hidden until owned.
+	for node: Node in _model.find_children("upg_*", "Node3D", true, false):
+		_upgrade_parts[str(node.name)] = node as Node3D
+		(node as Node3D).visible = false
 	_turret = _model.find_child("turret", true, false) as Node3D
 	_barrel = _model.find_child("barrel", true, false) as Node3D
 	_muzzle = _model.find_child("muzzle_0", true, false) as Node3D

@@ -16,7 +16,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Production | Per-building queues (up to 9, paid up front), rally points, cancel with full refund | P1-13 | ✅ |
 | Tech tree | Units and buildings list `requires` building ids (checked in the sim; references validated at load). Rank requirements: P2-09 | P1-14 | ✅ |
 | Sell and repair | Sell for 50% (scaled by health); builders repair 1%/s for half the price per 100% | P1-12 | ✅ |
-| Upgrades | Global (all units of a type) and per-unit, bought at buildings. Upgrades show on the model | P2-05 | ⬜ |
+| Upgrades | Global (researched at a building, applies to all matching units, now and later) and per-unit kits. Upgrades show on the model (`upg_*` nodes) | P2-05 | ✅ |
 
 ## Combat
 

@@ -170,7 +170,8 @@ func refresh_commands() -> void:
 			continue
 		builders = builders or e.builder != null
 		units = units or e.mover != null
-		if producer == null and e.building != null and e.building.built and not e.building.produces.is_empty():
+		if producer == null and e.building != null and e.building.built \
+				and (not e.building.produces.is_empty() or not world.content.upgrades_at(e.def_id).is_empty()):
 			producer = e
 	if builders:
 		entries = _build_menu(world)
@@ -178,13 +179,18 @@ func refresh_commands() -> void:
 		entries = _unit_orders()
 	elif producer != null:
 		entries = _production_menu(world, producer)
+		entries.append_array(UpgradeMenu.research_entries(_runner, _selection.local_player_id, producer))
 	command_grid.set_entries(entries)
 
 
 func _unit_orders() -> Array[Dictionary]:
 	var none: Dictionary = {"label": "", "enabled": false}
+	# Top row: per-unit upgrade kits for the selection (P2-05).
+	var top: Array[Dictionary] = UpgradeMenu.kit_entries(_runner, _selection.local_player_id, _selection.selected, 4)
+	while top.size() < 4:
+		top.append(none)
 	return [
-		none, none, none, none,
+		top[0], top[1], top[2], top[3],
 		{"label": "Attack-move", "tooltip": "Then tap or click the target point", "action": func() -> void: _selection.attack_move_armed = true},
 		{"label": "Stop", "action": _selection.order_stop},
 		{"label": "Hold", "action": _selection.order_hold},
@@ -288,6 +294,9 @@ func _on_ticked(tick: int) -> void:
 	# Hashing every tick is wasteful; once per second is enough for a debug line.
 	if tick % SimWorld.TICK_RATE == 0:
 		_last_hash = _runner.world.state_hash()
+		# Research progress, cooldowns and credits change over time.
+		if _selection != null and not _selection.selected.is_empty():
+			refresh_commands()
 
 
 func _process(delta: float) -> void:

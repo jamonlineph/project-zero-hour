@@ -64,6 +64,7 @@ func _run() -> void:
 		failures.append_array(_check_desktop_controls(main, world, selection))
 		failures.append_array(await _check_touch_controls(main, world, selection))
 		failures.append_array(await _check_spoof_button(main, world, selection))
+		failures.append_array(await _check_upgrades(main, world, selection))
 		failures.append_array(await _check_hud_build_and_produce(main, world, selection))
 		failures.append_array(await _check_attack(world, selection))
 		if game_view.effects == null or game_view.effects.played == 0:
@@ -588,5 +589,50 @@ func _check_spoof_button(main: Node, world: SimWorld, selection: SelectionContro
 		await process_frame
 	if world.get_entity(id).jammer.spoof_ready_tick <= 0:
 		problems.append("clicking after Spoof did not spoof (cooldown never started)")
+	selection.select_ids([])
+	return problems
+
+
+## P2-05: a depot offers research, an IFV offers its kit, and buying the kit
+## shows its part on the model (the test spawns what it needs).
+func _check_upgrades(main: Node, world: SimWorld, selection: SelectionController) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var hud: Hud = main.get("hud")
+	var gv: GameView = main.get("game_view")
+	world.get_player(1).credits += 5000
+	var depot: int = world.spawn_building(world.content.get_building("us_vehicle_depot"), 1, 4, 40, true)
+	var ifv: int = world.spawn_unit(world.content.get_unit("us_ifv"), 1, Fx.from_int(30), Fx.from_int(110))
+	for i: int in 5:
+		await process_frame
+	if depot == 0:
+		problems.append("could not place a vehicle depot for the upgrade check")
+		return problems
+	selection.select_ids([depot])
+	var labels: String = ""
+	for e: Dictionary in hud.command_grid._entries:
+		labels += str(e.get("label", "")) + "|"
+	if not labels.contains("Composite Armor"):
+		problems.append("the vehicle depot offers no research (%s)" % labels)
+	var view: UnitView = gv.get_view(ifv)
+	if view == null or not view.has_upgrade_part("upg_aps"):
+		problems.append("the IFV model has no upg_aps part")
+		return problems
+	if view.is_upgrade_part_visible("upg_aps"):
+		problems.append("the APS kit shows before it was bought")
+	selection.select_ids([ifv])
+	var slot: int = -1
+	for i: int in hud.command_grid._entries.size():
+		if str(hud.command_grid._entries[i].get("label", "")).begins_with("Active Protection Kit"):
+			slot = i
+	if slot < 0:
+		problems.append("a selected IFV offers no Active Protection Kit")
+		return problems
+	hud.command_grid.activate(slot)
+	for i: int in 15:
+		await process_frame
+	if world.get_entity(ifv).aps_charges != 2:
+		problems.append("buying the kit did not give the IFV its charges")
+	if not view.is_upgrade_part_visible("upg_aps"):
+		problems.append("the APS kit did not appear on the model")
 	selection.select_ids([])
 	return problems

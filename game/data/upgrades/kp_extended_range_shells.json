@@ -1,0 +1,17 @@
+{
+  "id": "kp_extended_range_shells",
+  "faction": "kp",
+  "name": "Extended-Range Shells",
+  "scope": "global",
+  "cost": 1500,
+  "research_time_ms": 45000,
+  "researched_at": "kp_vehicle_plant",
+  "requires": [],
+  "requires_rank": 1,
+  "applies_to": [
+    "kp_howitzer"
+  ],
+  "effects": {
+    "range_percent": 15
+  }
+}

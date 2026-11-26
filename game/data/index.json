@@ -70,5 +70,13 @@
   "ai": [
     "res://data/ai/us_default.json",
     "res://data/ai/kp_default.json"
+  ],
+  "upgrades": [
+    "res://data/upgrades/us_self_driving_trucks.json",
+    "res://data/upgrades/us_composite_armor.json",
+    "res://data/upgrades/us_ifv_aps_kit.json",
+    "res://data/upgrades/kp_reactive_armor.json",
+    "res://data/upgrades/kp_extended_range_shells.json",
+    "res://data/upgrades/kp_ifv_cage_kit.json"
   ]
 }

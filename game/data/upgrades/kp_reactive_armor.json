@@ -1,0 +1,18 @@
+{
+  "id": "kp_reactive_armor",
+  "faction": "kp",
+  "name": "Reactive Armor",
+  "scope": "global",
+  "cost": 1200,
+  "research_time_ms": 45000,
+  "researched_at": "kp_vehicle_plant",
+  "requires": [],
+  "requires_rank": 1,
+  "applies_to": [
+    "kp_mbt",
+    "kp_ifv"
+  ],
+  "effects": {
+    "max_hp_percent": 15
+  }
+}

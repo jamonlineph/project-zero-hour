@@ -21,6 +21,8 @@ var queue_progress: int = 0     ## ticks spent on queue[0]
 var has_rally: bool = false
 var rally_x: int = 0            ## fixed-point meters
 var rally_y: int = 0
+var research_id: String = ""   ## upgrade being researched here (P2-05)
+var research_progress: int = 0
 
 
 func write_hash(h_: SimHash) -> void:
@@ -40,3 +42,6 @@ func write_hash(h_: SimHash) -> void:
 	h_.add_bool(has_rally)
 	h_.add_int(rally_x)
 	h_.add_int(rally_y)
+	if research_id != "":   # only then, so older replays hash as before
+		h_.add_string(research_id)
+		h_.add_int(research_progress)

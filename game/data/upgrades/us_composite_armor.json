@@ -1,0 +1,18 @@
+{
+  "id": "us_composite_armor",
+  "faction": "us",
+  "name": "Composite Armor",
+  "scope": "global",
+  "cost": 1500,
+  "research_time_ms": 45000,
+  "researched_at": "us_vehicle_depot",
+  "requires": [],
+  "requires_rank": 1,
+  "applies_to": [
+    "us_mbt",
+    "us_ifv"
+  ],
+  "effects": {
+    "max_hp_percent": 15
+  }
+}

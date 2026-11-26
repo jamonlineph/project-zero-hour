@@ -11,6 +11,7 @@ var power_used: int = 0
 var xp: int = 0                 ## commander XP (P1-18)
 var rank: int = 1               ## commander rank 1..5 (P1-18)
 var defeated: bool = false      ## P1-19
+var upgrades: PackedStringArray = []   ## researched global upgrades, in order (P2-05)
 
 
 func low_power() -> bool:
@@ -27,3 +28,6 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(xp)
 	h.add_int(rank)
 	h.add_bool(defeated)
+	if not upgrades.is_empty():   # only then, so older replays hash as before
+		for u: String in upgrades:
+			h.add_string(u)

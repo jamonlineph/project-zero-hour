@@ -471,7 +471,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P1-11
 - **Accept:** `needs_spotter` weapons fire beyond their own vision only at spotted targets; losing the spotter breaks guided shots; tests.
 
-### P2-05 · Upgrades system — ⬜
+### P2-05 · Upgrades system — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P1-14
 - **Accept:** global and per-unit upgrades from data; models show upgrade attachments by node name; tests.
 

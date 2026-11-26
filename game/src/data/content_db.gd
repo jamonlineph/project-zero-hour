@@ -20,6 +20,7 @@ var scenarios: Dictionary[String, Dictionary] = {}   ## raw scenario data, see M
 var ai_presets: Dictionary[String, Dictionary] = {}  ## raw AI presets, see AiPlayer
 ## The cross-device determinism check (P1-37); see data/determinism_check.json.
 var determinism_check: Dictionary = {}
+var upgrades: Dictionary[String, UpgradeDef] = {}
 ## Skirmish setup data from rules.json (see MatchConfig).
 var start_kit: Array = []
 var skirmish_credits: PackedInt32Array = [10000]
@@ -41,6 +42,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	scenarios.clear()
 	ai_presets.clear()
 	determinism_check = {}
+	upgrades.clear()
 	damage_matrix = DamageMatrix.new()
 	rules = SimRules.new()
 	errors.clear()
@@ -62,6 +64,8 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 		_load_building(str(path))
 	for path: Variant in (index as Dictionary).get("maps", []):
 		_load_map(str(path))
+	for path: Variant in (index as Dictionary).get("upgrades", []):
+		_load_upgrade(str(path))
 	var check_path: String = str((index as Dictionary).get("determinism_check", ""))
 	if check_path != "":
 		var check: Variant = _read_json(check_path)
@@ -192,6 +196,15 @@ func _check_references() -> void:
 				errors.append("building %s produces unknown unit '%s'" % [b.id, p])
 		if b.free_unit != "" and not units.has(b.free_unit):
 			errors.append("building %s gives unknown unit '%s'" % [b.id, b.free_unit])
+	for up: UpgradeDef in upgrades.values():
+		if up.scope == "global" and not buildings.has(up.researched_at):
+			errors.append("upgrade %s is researched at unknown building '%s'" % [up.id, up.researched_at])
+		for r: String in up.requires:
+			if not buildings.has(r):
+				errors.append("upgrade %s requires unknown building '%s'" % [up.id, r])
+		for a: String in up.applies_to:
+			if not units.has(a):
+				errors.append("upgrade %s applies to unknown unit '%s'" % [up.id, a])
 	for id: String in scenarios:
 		var sc: Dictionary = scenarios[id]
 		if not maps.has(str(sc.get("map", ""))):
@@ -392,6 +405,56 @@ func _load_heights(m: MapDef, file: String, scale_cm: int, path: String) -> void
 		m.heights_cm[i] = (v * scale_cm) / 65535
 		if _hasher != null:
 			_hasher.add_int(v)
+
+
+func get_upgrade(id: String) -> UpgradeDef:
+	return upgrades.get(id, null)
+
+
+## Upgrades researched at `building_id`, in id order.
+func upgrades_at(building_id: String) -> Array[UpgradeDef]:
+	var out: Array[UpgradeDef] = []
+	var ids: Array = upgrades.keys()
+	ids.sort()
+	for id: String in ids:
+		if upgrades[id].researched_at == building_id:
+			out.append(upgrades[id])
+	return out
+
+
+func _load_upgrade(path: String) -> void:
+	var parsed: Variant = _read_json(path)
+	if not parsed is Dictionary:
+		errors.append("%s: expected a JSON object" % path)
+		return
+	var src: Dictionary = parsed
+	var u := UpgradeDef.new()
+	u.id = _req_string(src, "id", path)
+	u.faction = _req_string(src, "faction", path)
+	u.name = _req_string(src, "name", path)
+	u.scope = str(src.get("scope", "global"))
+	if not u.scope in ["global", "unit"]:
+		errors.append("%s: scope must be global or unit" % path)
+	u.cost = _req_int(src, "cost", path, 0)
+	if u.scope == "global":
+		u.research_ticks = _ms_to_ticks(_req_int(src, "research_time_ms", path, 1))
+		u.researched_at = _req_string(src, "researched_at", path)
+	u.requires = _string_list(src, "requires", path)
+	u.requires_rank = int(src.get("requires_rank", 1))
+	u.applies_to = _string_list(src, "applies_to", path)
+	var fx: Variant = src.get("effects", {})
+	if fx is Dictionary:
+		for k: Variant in fx:
+			if not UpgradeDef.EFFECT_KEYS.has(str(k)):
+				errors.append("%s: unknown effect '%s'" % [path, str(k)])
+			else:
+				u.effects[str(k)] = int(fx[k])
+	u.attachment = str(src.get("attachment", ""))
+	if u.attachment != "" and not u.attachment.begins_with("upg_"):
+		errors.append("%s: attachment node names start with upg_" % path)
+	if path.get_file().get_basename() != u.id:
+		errors.append("%s: file name must match id '%s'" % [path, u.id])
+	upgrades[u.id] = u
 
 
 func _load_unit(path: String) -> void:

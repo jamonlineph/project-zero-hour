@@ -1,0 +1,18 @@
+{
+  "id": "us_self_driving_trucks",
+  "_doc": "Commander rank-5 unlock (docs/design/commander.md): trucks drive themselves, faster.",
+  "faction": "us",
+  "name": "Self-Driving Logistics",
+  "scope": "global",
+  "cost": 1000,
+  "research_time_ms": 30000,
+  "researched_at": "us_logistics_hub",
+  "requires": [],
+  "requires_rank": 5,
+  "applies_to": [
+    "us_logistics_truck"
+  ],
+  "effects": {
+    "speed_percent": 25
+  }
+}

@@ -140,6 +140,7 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 		e.gatherer.unload_ticks = def.gather_unload_ticks
 	entities[e.id] = e
 	entity_ids.append(e.id)
+	Upgrades.apply_global(self, e)
 	return e.id
 
 
@@ -364,6 +365,7 @@ func step() -> void:
 	PowerSystem.step(self)
 	ConstructionSystem.step(self)
 	ProductionSystem.step(self)
+	Upgrades.step(self)
 	GatherSystem.step(self)
 	PathingSystem.step(self)
 	MovementSystem.step(self)
@@ -576,6 +578,8 @@ func _apply_commands() -> void:
 			SimCommand.Type.BUILD, SimCommand.Type.PRODUCE, SimCommand.Type.CANCEL, \
 					SimCommand.Type.RALLY, SimCommand.Type.GATHER, SimCommand.Type.SELL, SimCommand.Type.REPAIR:
 				BaseCommands.apply(self, c)
+			SimCommand.Type.RESEARCH, SimCommand.Type.UPGRADE_UNIT:
+				Upgrades.apply_command(self, c)
 			SimCommand.Type.GUARD, SimCommand.Type.PATROL, SimCommand.Type.SPOOF:
 				UnitCommands.apply(self, c)
 			_:

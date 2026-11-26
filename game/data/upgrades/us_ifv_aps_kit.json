@@ -1,0 +1,19 @@
+{
+  "id": "us_ifv_aps_kit",
+  "_doc": "Per vehicle: two interceptor charges against missiles and drones (works with P2-06).",
+  "faction": "us",
+  "name": "Active Protection Kit",
+  "scope": "unit",
+  "cost": 300,
+  "requires": [
+    "us_vehicle_depot"
+  ],
+  "requires_rank": 1,
+  "applies_to": [
+    "us_ifv"
+  ],
+  "effects": {
+    "aps_charges": 2
+  },
+  "attachment": "upg_aps"
+}

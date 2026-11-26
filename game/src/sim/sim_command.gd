@@ -6,7 +6,7 @@ extends RefCounted
 enum Type {
 	MOVE = 1, STOP = 2, ATTACK = 3, ATTACK_MOVE = 4, HOLD = 5,
 	BUILD = 6, PRODUCE = 7, CANCEL = 8, RALLY = 9, GATHER = 10, SELL = 11, REPAIR = 12,
-	GUARD = 13, PATROL = 14, SPOOF = 15,
+	GUARD = 13, PATROL = 14, SPOOF = 15, RESEARCH = 16, UPGRADE_UNIT = 17,
 }
 
 var tick: int = 0               ## tick on which the command is applied
@@ -72,6 +72,24 @@ static func make_patrol(ids: Array[int], tx: int, ty: int) -> SimCommand:
 static func make_spoof(ids: Array[int], tx: int, ty: int) -> SimCommand:
 	var c := make_move(ids, tx, ty)
 	c.type = Type.SPOOF
+	return c
+
+
+## Start researching a global upgrade at one of the player's buildings (P2-05).
+static func make_research(building_id: int, upgrade_id: String) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.RESEARCH
+	c.target_entity = building_id
+	c.def_id = upgrade_id
+	return c
+
+
+## Buy a per-unit upgrade for every unit in `ids` it applies to (P2-05).
+static func make_upgrade_unit(ids: Array[int], upgrade_id: String) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.UPGRADE_UNIT
+	c.entity_ids = ids.duplicate()
+	c.def_id = upgrade_id
 	return c
 
 

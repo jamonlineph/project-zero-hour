@@ -4,6 +4,18 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-05 Upgrades system (Claude Code, branch claude/phase-0-wrapup)
+- Done: upgrades are data (`game/data/upgrades/`). **Global** upgrades are researched at a building (costs credits, takes time, half speed on low power) and apply to every matching unit, existing and future. **Per-unit kits** are bought for selected units. Effects: speed, health, damage, range and vision percentages, plus active-protection charges and cage hits (used by P2-06). Requirements: buildings, commander rank, faction. Six slice upgrades:
+  - America: Self-Driving Logistics (rank 5), Composite Armor, and an Active Protection Kit for the IFV.
+  - North Korea: Reactive Armor, Extended-Range Shells, and a Cage Armor Kit for the IFV.
+- Controls and view: a selected building shows its research buttons (with progress), and selected units show kit buttons in the top row of the grid. Model parts named `upg_*` stay hidden until owned; the two IFVs were rebuilt with kit parts.
+- Tests: `tools/run_tests.sh` -> 193 tests, 0 failed (new `test_upgrades.gd`: loading, research time, cost and effects on old and new units, rules, low power, kits per unit, building requirement, range, round trip, determinism); smoke_main buys a kit through the grid and checks the part appears.
+- Not verified: balance and button text length on phones.
+- Next: P2-06 active protection and cage armor.
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P2-04 Kill chain (Claude Code, branch claude/phase-0-wrapup)
 - Done: America's rocket artillery now fires guided rockets that need a spotter: beyond its own 40 m sight it only fires at targets a friendly spotter (the recon drone, for now) can see. A tank seeing the target isn't enough. If the spotter dies, is jammed or is spoofed, rockets already in the air lose guidance and fly to the last known point. New `spotter` (units) and `needs_spotter` (weapons) data fields and a `KillChainSystem`.
 - Fixed along the way: jammed drones were drifting at full speed (a new drift point every time they reached the last one); they now drift one 2 m step a second and hover in between.
