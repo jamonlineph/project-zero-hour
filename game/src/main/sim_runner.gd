@@ -27,6 +27,8 @@ var input_delay: int = 1
 var paused: bool = false
 ## For saving a replay: what this match was built from.
 var scenario_id: String = ""
+## The full scenario (menu-made skirmishes aren't files, so replays embed it).
+var scenario_data: Dictionary = {}
 var seed_value: int = 0
 ## Every command that went into the world, in order.
 var command_log: Array[Dictionary] = []
@@ -125,6 +127,7 @@ func try_step() -> bool:
 func make_replay() -> Replay:
 	var r := Replay.new()
 	r.scenario_id = scenario_id
+	r.scenario_data = scenario_data
 	r.seed_value = seed_value
 	r.content_hash = world.content.content_hash if world.content != null else 0
 	r.commands = command_log.duplicate()

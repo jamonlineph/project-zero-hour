@@ -11,6 +11,9 @@ extends CanvasLayer
 const HELP_TEXT := "Mouse: click/drag select, right-click move/attack/gather/repair (or set rally with only buildings selected), A+click attack-move, S stop, H hold, grid keys Q-W-E-R / A-S-D-F / Z-X-C-V, wheel zoom, middle-drag or arrows pan, , . rotate, F9 save replay, F1 hide help\nTouch: tap select, tap enemy attack, tap ground move, drag pan, hold then drag box-select, double-tap select type, pinch zoom/rotate, use the grid buttons"
 const REFRESH_SEC: float = 0.25
 
+## The Menu button (top right) was pressed: open the pause menu.
+signal menu_requested
+
 var selection_box: SelectionBox
 var command_grid: CommandGrid
 var minimap: Minimap
@@ -48,7 +51,7 @@ func _ready() -> void:
 	_debug.add_theme_font_size_override("font_size", 11)
 	_debug.modulate = Color(1, 1, 1, 0.6)
 	_debug.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	_debug.position.y = 34
+	_debug.position.y = 52
 	add_child(_debug)
 
 	_help = Label.new()
@@ -90,6 +93,16 @@ func _ready() -> void:
 	_place_buttons.add_child(cancel)
 	_place_buttons.visible = false
 	add_child(_place_buttons)
+
+	var menu := Button.new()
+	menu.name = "MenuButton"
+	menu.text = "Menu"
+	menu.custom_minimum_size = Vector2(90, 44)
+	menu.focus_mode = Control.FOCUS_NONE
+	menu.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	menu.position = Vector2(-100, 4)
+	menu.pressed.connect(func() -> void: menu_requested.emit())
+	add_child(menu)
 
 	_banner = Label.new()
 	_banner.name = "Banner"

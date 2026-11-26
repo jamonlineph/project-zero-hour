@@ -16,6 +16,8 @@
     [76, 86, 3, 3],
     [10, 30, 6, 3]
   ],
+  "_starts_doc": "Start positions [x_m, y_m] for skirmish: where each player's HQ goes.",
+  "start_positions_m": [[20, 46], [108, 46]],
   "_supply_doc": "Supply sites [x_m, y_m, credits]: one per base plus two contested.",
   "supply_sites_m": [
     [40, 40, 30000],

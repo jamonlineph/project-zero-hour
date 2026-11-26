@@ -9,7 +9,7 @@ config_version=5
 
 config/name="Signal Front"
 config/description="Open-source modern-warfare RTS (codename). See README.md at the repo root."
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/menu.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 

@@ -8,6 +8,8 @@ const FORMAT: int = 1
 const GAME_VERSION: String = "0.0.1"
 
 var scenario_id: String = ""
+## Embedded scenario for matches made in the menu; empty = look up scenario_id.
+var scenario_data: Dictionary = {}
 var seed_value: int = 0
 var content_hash: int = 0
 var commands: Array[Dictionary] = []      ## SimCommand.to_dict() entries
@@ -22,7 +24,7 @@ func to_dict() -> Dictionary:
 	return {
 		"format": FORMAT, "game_version": GAME_VERSION, "scenario": scenario_id,
 		"seed": seed_value, "content_hash": content_hash, "end_tick": end_tick,
-		"commands": commands, "checkpoints": cp,
+		"commands": commands, "checkpoints": cp, "scenario_data": scenario_data,
 	}
 
 
@@ -32,6 +34,7 @@ static func from_dict(d: Dictionary) -> Replay:
 	r.seed_value = int(d.get("seed", 0))
 	r.content_hash = int(d.get("content_hash", 0))
 	r.end_tick = int(d.get("end_tick", 0))
+	r.scenario_data = d.get("scenario_data", {})
 	for c: Variant in d.get("commands", []):
 		r.commands.append(c as Dictionary)
 	var cp: Dictionary = d.get("checkpoints", {})
@@ -59,7 +62,7 @@ static func load_file(path: String) -> Replay:
 ## Rebuilds the match and plays every command. Returns the world at end_tick
 ## (or null if the scenario can't be built).
 func play(content: ContentDb) -> SimWorld:
-	var world: SimWorld = MatchSetup.build(content, scenario_id, seed_value)
+	var world: SimWorld = _build(content)
 	if world == null:
 		return null
 	for d: Dictionary in commands:
@@ -79,7 +82,7 @@ func verify(content: ContentDb, strict_content: bool = true) -> PackedStringArra
 	if strict_content and content.content_hash != content_hash:
 		problems.append("content differs from the recording (game data changed); regenerate golden replays if this was intended")
 		return problems
-	var world: SimWorld = MatchSetup.build(content, scenario_id, seed_value)
+	var world: SimWorld = _build(content)
 	if world == null:
 		problems.append("scenario '%s' could not be built" % scenario_id)
 		return problems
@@ -91,3 +94,9 @@ func verify(content: ContentDb, strict_content: bool = true) -> PackedStringArra
 			problems.append("desync at tick %d: expected %08x, got %08x" % [world.tick, checkpoints[world.tick], world.state_hash()])
 			return problems
 	return problems
+
+
+func _build(content: ContentDb) -> SimWorld:
+	if not scenario_data.is_empty():
+		return MatchSetup.build_from(content, scenario_data, seed_value)
+	return MatchSetup.build(content, scenario_id, seed_value)

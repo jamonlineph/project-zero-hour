@@ -11,6 +11,8 @@ var height_m: int = 0
 var obstacles_m: Array[PackedInt32Array] = []
 ## Each supply site is [x_m, y_m, amount]: a finite stock of credits.
 var supply_sites: Array[PackedInt32Array] = []
+## Skirmish start positions [x_m, y_m], one per player slot.
+var start_positions: Array[Vector2i] = []
 
 
 ## Builds the sim grid for this map.

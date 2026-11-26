@@ -12,7 +12,7 @@ It uses the classic 2000s base-building formula (builders, supply trucks, power,
 
 1. Install **Godot 4.7.x** (the standard build, not .NET) from <https://godotengine.org/download> and **Blender 5.x** from <https://www.blender.org/download/> (tested with 5.3).
 2. Clone this repository.
-3. Open `game/project.godot` in Godot and press **F5** to run the sandbox.
+3. Open `game/project.godot` in Godot and press **F5**. The menu lets you play a skirmish against the computer, watch two computer players, or open the developer sandbox.
 4. Run the tests: `tools/run_tests.sh` (Windows: `tools\run_tests.ps1`). If Godot isn't on your PATH, set `GODOT` to its full path first.
 5. Rebuild the placeholder art: `tools/build_assets.sh` (Windows: `tools\build_assets.ps1`). Set `BLENDER` to Blender's full path if needed.
 

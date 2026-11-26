@@ -1,7 +1,7 @@
 extends Node3D
-## Development sandbox: loads content, creates a SimWorld, spawns a few units
-## per side, and wires the runner, view, camera, input and HUD together.
-## P1-32 replaces this with a real menu and match setup (tasks/BACKLOG.md).
+## The match scene: loads content, builds the SimWorld from the scenario the
+## menu chose (MatchConfig.pending), or from --scenario=<id> on the command
+## line, or the sandbox, and wires the runner, view, camera, input and HUD.
 
 ## Default scenario; override with: godot --path game -- --scenario=skirmish_vs_ai
 const DEFAULT_SCENARIO: String = "sandbox"
@@ -19,6 +19,8 @@ var rts_camera: RtsCamera
 var hud: Hud
 var selection: SelectionController
 var placement: PlacementController
+var pause_menu: PauseMenu
+var _game_over_shown: bool = false
 
 
 func _ready() -> void:
@@ -30,11 +32,15 @@ func _ready() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--scenario="):
 			scenario_id = arg.trim_prefix("--scenario=")
-	world = MatchSetup.build(content, scenario_id, SEED)
+	var scenario: Dictionary = MatchConfig.pending if not MatchConfig.pending.is_empty() \
+		else content.scenarios.get(scenario_id, {})
+	MatchConfig.pending = {}
+	scenario_id = str(scenario.get("id", scenario_id))
+	world = MatchSetup.build_from(content, scenario, SEED) if not scenario.is_empty() else null
 	if world == null:
 		push_error("Sandbox: scenario '%s' failed to load; using an empty map" % scenario_id)
 		world = SimWorld.new(SEED, 128, 128)
-	map_def = content.get_map(str(content.scenarios.get(scenario_id, {}).get("map", "")))
+	map_def = content.get_map(str(scenario.get("map", "")))
 	if map_def == null:
 		map_def = MapDef.new()
 		map_def.width_m = 128
@@ -49,7 +55,8 @@ func _ready() -> void:
 	runner.seed_value = SEED
 	runner.process_priority = -10   # step the sim before the view reads it
 	add_child(runner)
-	runner.add_ai_from_scenario(content, content.scenarios.get(scenario_id, {}))
+	runner.add_ai_from_scenario(content, scenario)
+	runner.scenario_data = scenario
 	runner.start()
 
 	game_view = GameView.new()
@@ -84,11 +91,20 @@ func _ready() -> void:
 	selection.hotkey_handler = hud.command_grid.handle_key
 	hud.bind_controls(selection, rts_camera, placement)
 
+	pause_menu = PauseMenu.new()
+	pause_menu.name = "PauseMenu"
+	pause_menu.setup(runner)
+	hud.add_child(pause_menu)
+	hud.menu_requested.connect(pause_menu.toggle)
+
 
 ## F9 saves the match so far as a replay in user://replays/.
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_help"):
 		hud.toggle_help()
+		return
+	if event is InputEventKey and event.pressed and (event as InputEventKey).keycode == KEY_ESCAPE and not placement.active:
+		pause_menu.toggle()
 		return
 	if event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_F9:
 		var path: String = "user://replays/replay_%d.json" % Time.get_unix_time_from_system()
@@ -98,6 +114,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	game_view.sync(runner.alpha)
+	if world.game_over and not _game_over_shown:
+		_game_over_shown = true
+		var my_team: int = world.team_of(LOCAL_PLAYER)
+		pause_menu.open_game_over("Draw" if world.winner_team == 0 else ("Victory" if world.winner_team == my_team else "Defeat"))
 	game_view.play_events(runner.pending_events)
 	runner.pending_events.clear()
 

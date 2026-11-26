@@ -19,7 +19,7 @@ Touch and mouse are equals: every action must be possible with either. The HUD l
 | Control groups | Ctrl+1–9 to set, 1–9 to select, double-tap to jump | ⬜ P1-23 |
 | Build menu hotkeys | Grid keys Q W E R / A S D F / Z X C V for the 12 slots of the open menu (Shift+key or right-click cancels one in production) | ✅ |
 | Camera bookmarks | F5–F8 | ⬜ P1-23 |
-| Menu / pause | Escape | ⬜ P1-32 |
+| Menu / pause | Escape, or the Menu button (top right) | ✅ |
 
 All keys are rebindable (P1-35). Tooltips show the current key.
 

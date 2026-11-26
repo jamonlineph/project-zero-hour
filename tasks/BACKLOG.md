@@ -390,7 +390,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Gather, produce and attack in waves.
 - **Accept:** a headless AI-vs-AI match reaches victory within 30 minutes of game time, with no errors, deterministically.
 
-### P1-32 · Main menu, skirmish setup, pause — ⬜
+### P1-32 · Main menu, skirmish setup, pause — ✅ 2026-11-26 (Claude Code: one map and normal AI for now; more choices arrive with P2-11/P2-12)
 - **Do:** scene flow: menu → setup (faction, color, AI, map, credits) → match → end screen → menu. Pause menu.
 - **Accept:** smoke test drives the flow headless.
 

@@ -18,6 +18,9 @@ var weapons: Dictionary[String, WeaponDef] = {}
 var maps: Dictionary[String, MapDef] = {}
 var scenarios: Dictionary[String, Dictionary] = {}   ## raw scenario data, see MatchSetup
 var ai_presets: Dictionary[String, Dictionary] = {}  ## raw AI presets, see AiPlayer
+## Skirmish setup data from rules.json (see MatchConfig).
+var start_kit: Array = []
+var skirmish_credits: PackedInt32Array = [10000]
 var damage_matrix: DamageMatrix = DamageMatrix.new()
 var rules: SimRules = SimRules.new()
 ## Hash of every content file's text, in load order. Replays and multiplayer
@@ -217,6 +220,9 @@ func _load_rules(path: String) -> void:
 	rules.self_repair_percent_per_2s = _req_int(src, "veterancy_self_repair_percent_per_2s", path, 0)
 	rules.commander_rank_xp = _int_list(src, "commander_rank_xp", path, 5)
 	rules.building_kill_xp_percent = _req_int(src, "building_kill_xp_percent", path, 0)
+	start_kit = src.get("start_kit", [])
+	if src.has("skirmish_credits"):
+		skirmish_credits = _int_list(src, "skirmish_credits", path, (src["skirmish_credits"] as Array).size())
 
 
 func _int_list(d: Dictionary, key: String, path: String, size: int) -> PackedInt32Array:
@@ -325,6 +331,11 @@ func _load_map(path: String) -> void:
 				errors.append("%s: obstacle %d needs a positive size" % [path, i])
 			else:
 				m.obstacles_m.append(rect)
+	for start: Variant in src.get("start_positions_m", []):
+		if start is Array and (start as Array).size() == 2:
+			m.start_positions.append(Vector2i(int(start[0]), int(start[1])))
+		else:
+			errors.append("%s: start positions must be [x_m, y_m]" % path)
 	for site: Variant in src.get("supply_sites_m", []):
 		if site is Array and (site as Array).size() == 3:
 			m.supply_sites.append(PackedInt32Array([int(site[0]), int(site[1]), int(site[2])]))

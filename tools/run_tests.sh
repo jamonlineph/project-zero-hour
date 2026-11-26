@@ -19,4 +19,7 @@ echo "== Unit tests"
 echo "== Smoke test (main scene)"
 "$GODOT" --headless --path game --script res://tests/smoke_main.gd
 
+echo "== Smoke test (menus)"
+"$GODOT" --headless --path game --script res://tests/smoke_menu.gd
+
 echo "== All tests passed"
