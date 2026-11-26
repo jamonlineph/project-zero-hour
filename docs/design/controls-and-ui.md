@@ -21,6 +21,7 @@ Touch and mouse are equals: every action must be possible with either. The HUD l
 | Camera bookmarks | Ctrl+F5–F8 to save the view, F5–F8 to return to it | ✅ |
 | Hover and cursor | The unit under the cursor gets a ring (red for enemies); the cursor shows select, move, attack or can't-build | ✅ |
 | Menu / pause | Escape, or the Menu button (top right) | ✅ |
+| Commander powers | "Commander" button (top center) opens the power tree; chosen powers get a button on the power bar next to it. Targeted powers then need a click on the map; right-click cancels | ✅ |
 
 The keys for camera movement and unit orders can be rebound in Settings (control-group, bookmark and grid keys are fixed for now). Tooltips will show the current key.
 

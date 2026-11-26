@@ -68,7 +68,7 @@ func state_for(own_under: int, enemy_under: int) -> CursorState:
 	var armed: bool = selection.selected_any(func(e: SimEntity) -> bool: return not e.weapons.is_empty())
 	if selection.attack_move_armed:
 		return CursorState.ATTACK
-	if selection.spoof_armed:
+	if selection.spoof_armed or selection.power_armed != "":
 		return CursorState.ATTACK
 	if selection.patrol_armed:
 		return CursorState.MOVE

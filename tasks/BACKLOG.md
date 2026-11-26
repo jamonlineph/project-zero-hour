@@ -489,11 +489,11 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 
 ### P2-09a · Commander powers in the sim — ✅ 2026-11-26 (Claude Code: power data, points, every rank 1–3 power for America and North Korea, plus North Korea's rank-5 decoys)
 
-### P2-09b · Power bar and commander tree UI — ⬜
+### P2-09b · Power bar and commander tree UI — ✅ 2026-11-26 (Claude Code: the bar may crowd the F1 help text on small screens; P2-17 UI pass)
 - **Needs:** P2-09a
 - **Accept:** a power bar (mouse and touch) with cooldowns; a commander panel to spend points; targeted powers aim with a click or tap; the minimap goes dark while blinded by a cyberattack.
 
-### P2-09 · Commander power tree (ranks 1–3, America and North Korea) — 🔄 split into P2-09a and P2-09b
+### P2-09 · Commander power tree (ranks 1–3, America and North Korea) — ✅ 2026-11-26 (done as P2-09a and P2-09b)
 - **Needs:** P1-18, P2-07
 - **Accept:** a tree from data; spend points; power bar UI (mouse and touch); every rank 1–3 power from `commander.md` works; tests.
 

@@ -18,6 +18,7 @@ var selection_box: SelectionBox
 var command_grid: CommandGrid
 var minimap: Minimap
 var touch_bar: TouchBar
+var power_bar: PowerBar
 var _runner: SimRunner
 var _selection: SelectionController
 var _camera: RtsCamera
@@ -130,6 +131,9 @@ func bind_controls(selection: SelectionController, cam: RtsCamera, placement: Pl
 	touch_bar = TouchBar.new()
 	add_child(touch_bar)
 	touch_bar.setup(selection)
+	power_bar = PowerBar.new()
+	add_child(power_bar)
+	power_bar.setup(_runner, selection, selection.local_player_id)
 	selection.long_pressed.connect(open_radial)
 	refresh_commands()
 
@@ -329,6 +333,8 @@ func _layout() -> void:
 	minimap.position = Vector2(margin, view.y - minimap.size.y - margin)
 	if touch_bar != null:
 		touch_bar.position = Vector2(margin, minimap.position.y - TouchBar.BUTTON_SIZE.y - 8.0)
+	if power_bar != null:
+		power_bar.position = Vector2((view.x - power_bar.get_combined_minimum_size().x) * 0.5, 40.0)
 	var grid_size: Vector2 = command_grid.get_combined_minimum_size()
 	command_grid.position = Vector2(view.x - grid_size.x - margin, view.y - grid_size.y - margin)
 	_place_buttons.position = Vector2(view.x - grid_size.x - margin, command_grid.position.y - 60.0)

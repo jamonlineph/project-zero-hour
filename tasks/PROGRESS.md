@@ -4,6 +4,15 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-09b Power bar and commander tree UI (Claude Code, branch claude/phase-0-wrapup)
+- Done: a power bar under the top bar. Its "Commander" button shows unspent points and opens the commander panel (the faction's tree grouped by rank, with Choose buttons). Each chosen power gets a button with its cooldown; targeted powers wait for a click or tap on the map (crosshair cursor), others fire at once. While an enemy cyberattack is on, the minimap shows "SIGNAL LOST". Works with mouse and touch.
+- Tests: `tools/run_tests.sh` -> 229 tests, 0 failed; smoke_main chooses a power in the panel, uses it from the bar with a map click, checks the cooldown, and checks the blinded minimap. Checked on a real render: the bar sits clear of the top bar.
+- Not verified: on a phone; with many powers the bar can reach the F1 help text (P2-17 UI pass).
+- Next: P2-10 slice content data, then P2-11 skirmish AI v1 (it should use powers).
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P2-09a Commander powers in the sim (Claude Code, branch claude/phase-0-wrapup)
 - Done: commander powers are data (`game/data/powers/`). Rank gives points (rank N = N powers); a power's tier is the rank needed to choose it. New commands CHOOSE_POWER and USE_POWER with cooldowns. Powers:
   - America: Satellite Recon Pass (reveals 35 m for 20 s and counts as a kill-chain spotter), Precision Rocket Strike (3 guided rockets, only at a spotted point), Drone-Wingman Patrol (2 armed jets patrol for 60 s), Cyberattack (enemies "blinded" for 30 s), and an unlock for the Special Recon Team.

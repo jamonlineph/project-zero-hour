@@ -18,6 +18,8 @@
 - Some tree entries **unlock units or upgrades** instead of powers. For example, the elite unit unlocks at rank 3.
 - Powers that create aircraft or missiles create real sim entities that can be intercepted (P2-07).
 
+In the game (P2-09): powers are data in `game/data/powers/`; the Commander button opens the tree, and chosen powers appear on the power bar. A satellite pass also counts as a kill-chain spotter. Powers that need a target point are used with a click or tap on the map after pressing their button.
+
 ## Power trees (first draft, original)
 
 ### America

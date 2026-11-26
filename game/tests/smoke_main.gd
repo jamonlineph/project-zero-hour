@@ -65,6 +65,7 @@ func _run() -> void:
 		failures.append_array(await _check_touch_controls(main, world, selection))
 		failures.append_array(await _check_spoof_button(main, world, selection))
 		failures.append_array(await _check_upgrades(main, world, selection))
+		failures.append_array(await _check_powers(main, world, selection))
 		failures.append_array(await _check_hud_build_and_produce(main, world, selection))
 		failures.append_array(await _check_attack(world, selection))
 		if game_view.effects == null or game_view.effects.played == 0:
@@ -635,4 +636,57 @@ func _check_upgrades(main: Node, world: SimWorld, selection: SelectionController
 	if not view.is_upgrade_part_visible("upg_aps"):
 		problems.append("the APS kit did not appear on the model")
 	selection.select_ids([])
+	return problems
+
+
+## P2-09b: choose a power in the commander panel, use it from the power bar
+## (targeted: then click the map), and the minimap goes dark when blinded.
+func _check_powers(main: Node, world: SimWorld, selection: SelectionController) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var hud: Hud = main.get("hud")
+	var bar: PowerBar = hud.power_bar
+	if bar == null:
+		problems.append("the HUD has no power bar")
+		return problems
+	var player: SimPlayer = world.get_player(1)
+	player.rank = 3   # test shortcut: enough points for two powers
+	var panel: CommanderPanel = bar.open_commander()
+	await process_frame
+	var choose: Button = panel.find_child("Choose_us_satellite_pass", true, false)
+	if choose == null or choose.disabled:
+		problems.append("the commander panel has no usable Choose button for the satellite pass")
+		return problems
+	choose.pressed.emit()
+	for i: int in 10:
+		await process_frame
+	if not player.powers.has("us_satellite_pass"):
+		problems.append("choosing in the commander panel did not choose the power")
+		return problems
+	panel.queue_free()
+	bar.refresh()
+	var button: Button = bar.power_button("us_satellite_pass")
+	if button == null:
+		problems.append("the chosen power has no button on the power bar")
+		return problems
+	button.pressed.emit()
+	if selection.power_armed != "us_satellite_pass":
+		problems.append("a targeted power did not wait for a map point")
+	var center: Vector2 = main.get_viewport().get_visible_rect().size * 0.5
+	selection.handle_armed_click(center)
+	for i: int in 10:
+		await process_frame
+	var sensors: int = 0
+	for id: int in world.entity_ids:
+		if world.entities[id].sensor:
+			sensors += 1
+	if sensors == 0:
+		problems.append("clicking the map after the power button did not use the power")
+	bar.refresh()
+	if not bar.power_button("us_satellite_pass").disabled:
+		problems.append("the power button is not cooling down after use")
+	var minimap: Minimap = hud.minimap
+	player.blinded_until = world.tick + 60
+	if not minimap.is_blinded():
+		problems.append("the minimap is not blinded during a cyberattack")
+	player.blinded_until = 0
 	return problems

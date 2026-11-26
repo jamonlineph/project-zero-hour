@@ -60,6 +60,11 @@ func _gui_input(event: InputEvent) -> void:
 
 
 ## Minimap position (pixels) -> ground point (meters).
+## True while an enemy cyberattack has knocked out this player's map (P2-09).
+func is_blinded() -> bool:
+	return world != null and world.tick < world.get_player(local_player_id).blinded_until
+
+
 func minimap_to_ground(pos: Vector2) -> Vector3:
 	var w_m: float = Fx.to_float(world.map_width)
 	var h_m: float = Fx.to_float(world.map_height)
@@ -75,6 +80,12 @@ func _draw() -> void:
 		return
 	var rect := Rect2(Vector2.ZERO, size)
 	draw_rect(rect, BG)
+	if is_blinded():
+		# Enemy cyberattack (P2-09): no map, no radar.
+		draw_string(ThemeDB.fallback_font, Vector2(rect.size.x * 0.5 - 52.0, rect.size.y * 0.5),
+				"SIGNAL LOST", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color(1.0, 0.35, 0.3))
+		draw_rect(rect, Color(1, 1, 1, 0.6), false, 1.0)
+		return
 	if _terrain != null:
 		draw_texture_rect(_terrain, rect, false)
 	for id: int in world.entity_ids:

@@ -33,6 +33,8 @@ var patrol_armed: bool = false
 var guard_armed: bool = false
 ## After the Spoof button: the next click or tap is where to spoof drones (P2-03).
 var spoof_armed: bool = false
+## A targeted commander power waiting for its point (P2-09b), or "".
+var power_armed: String = ""
 ## Building placement gets every pointer event first while it is active.
 var placement: PlacementController
 ## Command-grid hotkeys (CommandGrid.handle_key): checked before our own keys.
@@ -130,6 +132,13 @@ func handle_armed_click(screen_pos: Vector2) -> bool:
 	if patrol_armed:
 		order_patrol(screen_pos)
 		return true
+	if power_armed != "":
+		var power: String = power_armed
+		power_armed = ""
+		var at: Variant = rts_camera.screen_to_ground(screen_pos)
+		if at != null:
+			runner.submit(SimCommand.make_use_power(power, Fx.from_float((at as Vector3).x), Fx.from_float((at as Vector3).z)))
+		return true
 	if spoof_armed:
 		spoof_armed = false
 		var ground: Variant = rts_camera.screen_to_ground(screen_pos)
@@ -151,6 +160,7 @@ func disarm() -> void:
 	patrol_armed = false
 	guard_armed = false
 	spoof_armed = false
+	power_armed = ""
 
 
 ## Patrol between where the units are and the ground point there.
@@ -278,7 +288,7 @@ func _on_mouse_button(mb: InputEventMouseButton) -> void:
 				elif not mb.shift_pressed:
 					select_ids([])
 	elif mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
-		if attack_move_armed or patrol_armed or guard_armed or spoof_armed:
+		if attack_move_armed or patrol_armed or guard_armed or spoof_armed or power_armed != "":
 			disarm()   # right-click cancels a pending order
 			return
 		order_at(mb.position)
