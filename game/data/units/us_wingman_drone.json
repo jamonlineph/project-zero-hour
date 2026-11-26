@@ -1,0 +1,24 @@
+{
+  "id": "us_wingman_drone",
+  "faction": "us",
+  "role": "wingman",
+  "name": "Wingman Drone",
+  "_doc": "Unmanned jet from the drone-wingman patrol power (P2-09); leaves after 60 s.",
+  "armor_class": "aircraft",
+  "flying": true,
+  "status": "placeholder stats",
+  "max_hp": 300,
+  "cost": 0,
+  "speed_cm_per_s": 2400,
+  "radius_cm": 250,
+  "vision_cm": 5000,
+  "build_time_ms": 1000,
+  "requires": [],
+  "weapons": [
+    "wingman_cannon"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/us_wingman_drone.glb",
+    "icon": "res://assets/icons/units/us_wingman_drone.png"
+  }
+}

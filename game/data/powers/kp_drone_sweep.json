@@ -1,0 +1,11 @@
+{
+  "id": "kp_drone_sweep",
+  "faction": "kp",
+  "name": "Recon Drone Sweep",
+  "tier": 1,
+  "kind": "drone_sweep",
+  "description": "A drone flies across the map through the chosen point, revealing the ground below.",
+  "cooldown_s": 120,
+  "radius_cm": 3000,
+  "duration_s": 30
+}

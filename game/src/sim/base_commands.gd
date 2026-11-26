@@ -77,6 +77,8 @@ static func _produce(world: SimWorld, c: SimCommand) -> void:
 	var player: SimPlayer = world.get_player(c.player_id)
 	if def == null or player.credits < def.cost or not world.has_requirements(c.player_id, def.requires):
 		return
+	if def.requires_unlock != "" and not player.powers.has(def.requires_unlock):
+		return   # a commander unlock is needed first (P2-09)
 	player.credits -= def.cost
 	b.building.queue.append(def.id)
 

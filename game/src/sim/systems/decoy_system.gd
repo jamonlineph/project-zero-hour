@@ -19,14 +19,15 @@ static func step(world: SimWorld) -> void:
 		if d.dead or d.decoy_of == "":
 			continue
 		for t: SimEntity in world.query_enemies(d.player_id, d.x, d.y, REVEAL_RANGE):
-			if t.dead or t.strike != null:
-				continue
+			if t.dead or t.strike != null or (t.sensor and t.mover == null):
+				continue   # strikes and fixed sensors (satellite passes) don't scout decoys
 			var team: int = world.team_of(t.player_id)
 			if revealed_to(d, team):
 				continue
-			var reach: int = FLYOVER_RANGE if t.drone != null else REVEAL_RANGE
-			if t.drone != null and not t.spotter:
-				continue   # only recon drones scout decoys from the air
+			var flyer: bool = t.drone != null or t.sensor
+			var reach: int = FLYOVER_RANGE if flyer else REVEAL_RANGE
+			if flyer and not t.spotter:
+				continue   # only recon drones (and drone sweeps) scout decoys from the air
 			if Fx.length_sq(t.x - d.x, t.y - d.y) <= reach * reach:
 				d.revealed_mask |= 1 << team
 				world.events.append({"type": "decoy_revealed", "id": d.id, "team": team})

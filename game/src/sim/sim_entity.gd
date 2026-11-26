@@ -39,6 +39,8 @@ var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
 var strike: SimStrike = null    ## a missile or strike aircraft in flight (P2-07)
 var decoy_of: String = ""       ## a decoy imitating this unit id (P2-08)
 var revealed_mask: int = 0      ## decoys: bit per team that has seen through it
+var sensor: bool = false        ## temporary vision/jamming marker from a power (P2-09): untargetable
+var ttl: int = 0                ## ticks left for temporary entities; 0 = permanent
 var upgrades: PackedStringArray = []   ## per-unit upgrades bought for this unit (P2-05)
 var aps_charges: int = 0        ## active protection: interceptions left (P2-06)
 var aps_max: int = 0
@@ -89,6 +91,9 @@ func write_hash(h: SimHash) -> void:
 		h.add_bool(true)
 	if strike != null:
 		strike.write_hash(h)
+	if sensor or ttl != 0:
+		h.add_bool(sensor)
+		h.add_int(ttl)
 	if decoy_of != "":
 		h.add_string(decoy_of)
 		h.add_int(revealed_mask)

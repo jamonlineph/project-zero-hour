@@ -22,7 +22,7 @@ static func step(world: SimWorld) -> void:
 	var assets: Dictionary[int, int] = {}
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
-		if e.dead or e.player_id == 0 or e.strike != null:   # strikes in flight don't keep a player alive
+		if e.dead or e.player_id == 0 or e.strike != null or e.sensor or e.ttl > 0:   # strikes in flight don't keep a player alive
 			continue
 		var counts: bool = world.victory_rule == "units" or e.building != null or e.builder != null
 		if counts:

@@ -1,0 +1,25 @@
+{
+  "id": "kp_spotter_officer",
+  "faction": "kp",
+  "role": "elite_spotter",
+  "name": "Artillery Spotter Officer",
+  "_doc": "Commander rank-3 unlock (P2-09). Spots targets; the artillery accuracy bonus comes later.",
+  "armor_class": "infantry",
+  "status": "placeholder stats",
+  "max_hp": 160,
+  "cost": 700,
+  "speed_cm_per_s": 380,
+  "radius_cm": 140,
+  "vision_cm": 6500,
+  "build_time_ms": 12000,
+  "requires": [],
+  "requires_unlock": "kp_unlock_spotter_officer",
+  "spotter": true,
+  "weapons": [
+    "assault_rifles"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/kp_spotter_officer.glb",
+    "icon": "res://assets/icons/units/kp_spotter_officer.png"
+  }
+}

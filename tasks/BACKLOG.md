@@ -487,7 +487,13 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P1-11
 - **Accept:** enemies see decoys as real units until close or scouted; decoys die in one hit; tests.
 
-### P2-09 · Commander power tree (ranks 1–3, America and North Korea) — ⬜
+### P2-09a · Commander powers in the sim — ✅ 2026-11-26 (Claude Code: power data, points, every rank 1–3 power for America and North Korea, plus North Korea's rank-5 decoys)
+
+### P2-09b · Power bar and commander tree UI — ⬜
+- **Needs:** P2-09a
+- **Accept:** a power bar (mouse and touch) with cooldowns; a commander panel to spend points; targeted powers aim with a click or tap; the minimap goes dark while blinded by a cyberattack.
+
+### P2-09 · Commander power tree (ranks 1–3, America and North Korea) — 🔄 split into P2-09a and P2-09b
 - **Needs:** P1-18, P2-07
 - **Accept:** a tree from data; spend points; power bar UI (mouse and touch); every rank 1–3 power from `commander.md` works; tests.
 

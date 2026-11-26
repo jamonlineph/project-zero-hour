@@ -1,0 +1,10 @@
+{
+  "id": "us_cyberattack",
+  "faction": "us",
+  "name": "Cyberattack",
+  "tier": 3,
+  "kind": "cyber",
+  "description": "Enemy minimap and radar go dark for 30 s.",
+  "cooldown_s": 240,
+  "duration_s": 30
+}

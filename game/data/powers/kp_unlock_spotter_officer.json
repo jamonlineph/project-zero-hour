@@ -1,0 +1,9 @@
+{
+  "id": "kp_unlock_spotter_officer",
+  "faction": "kp",
+  "name": "Unlock: Artillery Spotter Officer",
+  "tier": 3,
+  "kind": "unlock",
+  "description": "Barracks can train the artillery spotter officer.",
+  "unit": "kp_spotter_officer"
+}

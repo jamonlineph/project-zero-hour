@@ -37,6 +37,27 @@ var _decoy_look: bool = false
 static var _decoy_material: StandardMaterial3D
 
 
+## Power sensors (P2-09): no model, just a faint ring for the revealed or
+## jammed area.
+func _setup_sensor(entity: SimEntity) -> void:
+	entity_id = entity.id
+	name = "Sensor_%d" % entity.id
+	kind = Kind.STRIKE   # moves like a flyer; never selected
+	_model = Node3D.new()
+	_model.name = "Placeholder"
+	add_child(_model)
+	if entity.jammer != null:
+		add_child(_make_field_ring(Fx.to_float(entity.jammer.radius)))
+	elif entity.vision > 0 and entity.mover == null:
+		var ring := _make_field_ring(Fx.to_float(entity.vision))
+		(ring.material_override as StandardMaterial3D).albedo_color = Color(0.4, 0.75, 1.0, 0.35)
+		add_child(ring)
+	_ring = _make_ring(1.0)
+	_ring.visible = false
+	add_child(_ring)
+	position = Vector3(Fx.to_float(entity.x), 0.0, Fx.to_float(entity.y))
+
+
 ## Missiles and strike jets (P2-07): simple shapes in code, flying high and
 ## diving onto the aim point at the end.
 func _setup_strike(entity: SimEntity, team_color: Color) -> void:
@@ -76,6 +97,9 @@ func _setup_strike(entity: SimEntity, team_color: Color) -> void:
 func setup_entity(entity: SimEntity, content: ContentDb, team_color: Color) -> void:
 	if entity.strike != null:
 		_setup_strike(entity, team_color)
+		return
+	if entity.sensor:
+		_setup_sensor(entity)
 		return
 	if entity.building == null and entity.supply == null:
 		setup(entity, content.get_unit(entity.def_id) if content != null else null, team_color)

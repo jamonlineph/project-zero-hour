@@ -1,0 +1,11 @@
+{
+  "id": "kp_gps_jamming",
+  "faction": "kp",
+  "name": "GPS Jamming",
+  "tier": 3,
+  "kind": "jam_area",
+  "description": "Enemy guided weapons and drones in an area are jammed for 20 s.",
+  "cooldown_s": 180,
+  "radius_cm": 4000,
+  "duration_s": 20
+}

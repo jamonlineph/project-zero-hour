@@ -1,0 +1,11 @@
+{
+  "id": "kp_decoy_deployment",
+  "faction": "kp",
+  "name": "Decoy Deployment",
+  "tier": 5,
+  "kind": "decoys",
+  "description": "6 decoy tanks appear at a point.",
+  "cooldown_s": 180,
+  "unit": "kp_decoy_tank",
+  "count": 6
+}

@@ -1,0 +1,25 @@
+{
+  "id": "us_recon_team",
+  "faction": "us",
+  "role": "elite_recon",
+  "name": "Special Recon Team",
+  "_doc": "Commander rank-3 unlock (P2-09). Spots targets for kill-chain weapons; limit and stealth come later.",
+  "armor_class": "infantry",
+  "status": "placeholder stats",
+  "max_hp": 220,
+  "cost": 900,
+  "speed_cm_per_s": 400,
+  "radius_cm": 140,
+  "vision_cm": 7000,
+  "build_time_ms": 15000,
+  "requires": [],
+  "requires_unlock": "us_unlock_recon_team",
+  "spotter": true,
+  "weapons": [
+    "assault_rifles"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/us_recon_team.glb",
+    "icon": "res://assets/icons/units/us_recon_team.png"
+  }
+}

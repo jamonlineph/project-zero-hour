@@ -18,7 +18,8 @@
     "res://data/weapons/bunker_machine_gun.json",
     "res://data/weapons/sam_interceptor.json",
     "res://data/weapons/hpm_emitter.json",
-    "res://data/weapons/cuas_airburst_gun.json"
+    "res://data/weapons/cuas_airburst_gun.json",
+    "res://data/weapons/wingman_cannon.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",
@@ -40,7 +41,10 @@
     "res://data/units/kp_ew_vehicle.json",
     "res://data/units/kp_recon_drone.json",
     "res://data/units/kp_loitering_team.json",
-    "res://data/units/kp_decoy_tank.json"
+    "res://data/units/kp_decoy_tank.json",
+    "res://data/units/us_wingman_drone.json",
+    "res://data/units/us_recon_team.json",
+    "res://data/units/kp_spotter_officer.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",
@@ -84,5 +88,18 @@
     "res://data/strikes/guided_rocket.json",
     "res://data/strikes/heavy_rocket.json",
     "res://data/strikes/strike_jet.json"
+  ],
+  "powers": [
+    "res://data/powers/us_satellite_pass.json",
+    "res://data/powers/us_precision_rockets.json",
+    "res://data/powers/us_wingman_patrol.json",
+    "res://data/powers/us_cyberattack.json",
+    "res://data/powers/us_unlock_recon_team.json",
+    "res://data/powers/kp_drone_sweep.json",
+    "res://data/powers/kp_reserve_callup.json",
+    "res://data/powers/kp_rocket_barrage.json",
+    "res://data/powers/kp_gps_jamming.json",
+    "res://data/powers/kp_unlock_spotter_officer.json",
+    "res://data/powers/kp_decoy_deployment.json"
   ]
 }

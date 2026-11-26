@@ -22,6 +22,7 @@ var ai_presets: Dictionary[String, Dictionary] = {}  ## raw AI presets, see AiPl
 var determinism_check: Dictionary = {}
 var upgrades: Dictionary[String, UpgradeDef] = {}
 var strikes: Dictionary[String, StrikeDef] = {}
+var powers: Dictionary[String, PowerDef] = {}
 ## Skirmish setup data from rules.json (see MatchConfig).
 var start_kit: Array = []
 var skirmish_credits: PackedInt32Array = [10000]
@@ -45,6 +46,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	determinism_check = {}
 	upgrades.clear()
 	strikes.clear()
+	powers.clear()
 	damage_matrix = DamageMatrix.new()
 	rules = SimRules.new()
 	errors.clear()
@@ -70,6 +72,8 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 		_load_upgrade(str(path))
 	for path: Variant in (index as Dictionary).get("strikes", []):
 		_load_strike(str(path))
+	for path: Variant in (index as Dictionary).get("powers", []):
+		_load_power(str(path))
 	var check_path: String = str((index as Dictionary).get("determinism_check", ""))
 	if check_path != "":
 		var check: Variant = _read_json(check_path)
@@ -203,6 +207,14 @@ func _check_references() -> void:
 	for u: UnitDef in units.values():
 		if u.decoy_of != "" and not units.has(u.decoy_of):
 			errors.append("unit %s imitates unknown unit '%s'" % [u.id, u.decoy_of])
+	for p: PowerDef in powers.values():
+		if p.strike_id != "" and not strikes.has(p.strike_id):
+			errors.append("power %s launches unknown strike '%s'" % [p.id, p.strike_id])
+		if p.unit_id != "" and not units.has(p.unit_id):
+			errors.append("power %s uses unknown unit '%s'" % [p.id, p.unit_id])
+	for u: UnitDef in units.values():
+		if u.requires_unlock != "" and not powers.has(u.requires_unlock):
+			errors.append("unit %s requires unknown power '%s'" % [u.id, u.requires_unlock])
 	for up: UpgradeDef in upgrades.values():
 		if up.scope == "global" and not buildings.has(up.researched_at):
 			errors.append("upgrade %s is researched at unknown building '%s'" % [up.id, up.researched_at])
@@ -418,6 +430,49 @@ func _load_heights(m: MapDef, file: String, scale_cm: int, path: String) -> void
 			_hasher.add_int(v)
 
 
+func get_power(id: String) -> PowerDef:
+	return powers.get(id, null)
+
+
+## A faction's power tree, by tier then id.
+func powers_for(faction: String) -> Array[PowerDef]:
+	var out: Array[PowerDef] = []
+	for p: PowerDef in powers.values():
+		if p.faction == faction:
+			out.append(p)
+	out.sort_custom(func(a: PowerDef, b: PowerDef) -> bool:
+		return a.tier < b.tier or (a.tier == b.tier and a.id < b.id))
+	return out
+
+
+func _load_power(path: String) -> void:
+	var parsed: Variant = _read_json(path)
+	if not parsed is Dictionary:
+		errors.append("%s: expected a JSON object" % path)
+		return
+	var src: Dictionary = parsed
+	var p := PowerDef.new()
+	p.id = _req_string(src, "id", path)
+	p.faction = _req_string(src, "faction", path)
+	p.name = _req_string(src, "name", path)
+	p.description = str(src.get("description", ""))
+	p.tier = _req_int(src, "tier", path, 1)
+	p.kind = _req_string(src, "kind", path)
+	if not PowerDef.KINDS.has(p.kind):
+		errors.append("%s: unknown kind '%s'" % [path, p.kind])
+	p.targeted = bool(src.get("targeted", not p.kind in ["reinforce", "cyber", "unlock"]))
+	p.cooldown_ticks = int(src.get("cooldown_s", 0)) * SimWorld.TICK_RATE
+	p.radius = Fx.from_ratio(int(src.get("radius_cm", 0)), 100)
+	p.duration_ticks = int(src.get("duration_s", 0)) * SimWorld.TICK_RATE
+	p.count = int(src.get("count", 1))
+	p.strike_id = str(src.get("strike", ""))
+	p.unit_id = str(src.get("unit", ""))
+	p.needs_spotted = bool(src.get("needs_spotted", false))
+	if path.get_file().get_basename() != p.id:
+		errors.append("%s: file name must match id '%s'" % [path, p.id])
+	powers[p.id] = p
+
+
 func get_strike(id: String) -> StrikeDef:
 	return strikes.get(id, null)
 
@@ -540,6 +595,7 @@ func _load_unit(path: String) -> void:
 	u.aps_charges = int(src.get("aps_charges", 0))
 	u.cage_hits = int(src.get("cage_hits", 0))
 	u.decoy_of = str(src.get("decoy_of", ""))
+	u.requires_unlock = str(src.get("requires_unlock", ""))
 	var jam: Variant = src.get("jammer", null)
 	if jam is Dictionary:
 		u.jam_radius = Fx.from_ratio(_req_int(jam, "radius_cm", path, 1), 100)

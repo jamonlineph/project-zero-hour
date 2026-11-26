@@ -42,6 +42,9 @@
     {"category": "buildings", "archetype": "building", "id": "us_bunker", "faction": "us", "style": "bunker", "width": 6.0, "depth": 6.0, "height": 2.4, "tri_budget": 1500},
     {"category": "buildings", "archetype": "building", "id": "kp_trench_line", "faction": "kp", "style": "trench", "width": 8.0, "depth": 2.0, "height": 0.9, "tri_budget": 1500},
     {"category": "buildings", "archetype": "building", "id": "us_sam_site", "faction": "us", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.5, "tri_budget": 2500},
-    {"category": "buildings", "archetype": "building", "id": "kp_sam_site", "faction": "kp", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.5, "tri_budget": 2500}
+    {"category": "buildings", "archetype": "building", "id": "kp_sam_site", "faction": "kp", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.5, "tri_budget": 2500},
+    {"id": "us_wingman_drone", "category": "units", "archetype": "drone", "faction": "us", "size": 4.0, "wing": true, "tri_budget": 800},
+    {"id": "us_recon_team", "category": "units", "archetype": "infantry", "faction": "us", "figures": 2, "tri_budget": 1800},
+    {"id": "kp_spotter_officer", "category": "units", "archetype": "infantry", "faction": "kp", "figures": 1, "tri_budget": 1000}
   ]
 }

@@ -1,0 +1,12 @@
+{
+  "id": "us_wingman_patrol",
+  "faction": "us",
+  "name": "Drone-Wingman Patrol",
+  "tier": 3,
+  "kind": "wingmen",
+  "description": "2 unmanned jets patrol an area for 60 s.",
+  "cooldown_s": 240,
+  "unit": "us_wingman_drone",
+  "count": 2,
+  "duration_s": 60
+}

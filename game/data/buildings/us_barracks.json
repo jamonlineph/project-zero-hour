@@ -18,7 +18,8 @@
   ],
   "produces": [
     "us_rifle_squad",
-    "us_at_team"
+    "us_at_team",
+    "us_recon_team"
   ],
   "visual": {
     "model": "res://assets/models/buildings/us_barracks.glb",

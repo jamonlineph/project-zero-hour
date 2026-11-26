@@ -18,7 +18,8 @@
   ],
   "produces": [
     "kp_infantry_squad",
-    "kp_at_team"
+    "kp_at_team",
+    "kp_spotter_officer"
   ],
   "visual": {
     "model": "res://assets/models/buildings/kp_barracks.glb",

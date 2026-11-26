@@ -1,0 +1,14 @@
+{
+  "id": "wingman_cannon",
+  "status": "placeholder stats (P2-09)",
+  "damage": 22,
+  "damage_type": "autocannon",
+  "range_cm": 3500,
+  "reload_ms": 400,
+  "projectile": "instant",
+  "targets": [
+    "ground",
+    "air",
+    "drone"
+  ]
+}

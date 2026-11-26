@@ -1,0 +1,12 @@
+{
+  "id": "us_precision_rockets",
+  "faction": "us",
+  "name": "Precision Rocket Strike",
+  "tier": 1,
+  "kind": "strike",
+  "description": "3 guided rockets on a spotted point. Air defense can shoot them down.",
+  "cooldown_s": 180,
+  "strike": "guided_rocket",
+  "count": 3,
+  "needs_spotted": true
+}

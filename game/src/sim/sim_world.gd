@@ -380,6 +380,7 @@ func step() -> void:
 	KillChainSystem.step(self)
 	StrikeSystem.step(self)
 	DecoySystem.step(self)
+	CommanderPowers.expire(self)
 	PowerSystem.step(self)
 	ConstructionSystem.step(self)
 	ProductionSystem.step(self)
@@ -598,6 +599,8 @@ func _apply_commands() -> void:
 			SimCommand.Type.BUILD, SimCommand.Type.PRODUCE, SimCommand.Type.CANCEL, \
 					SimCommand.Type.RALLY, SimCommand.Type.GATHER, SimCommand.Type.SELL, SimCommand.Type.REPAIR:
 				BaseCommands.apply(self, c)
+			SimCommand.Type.CHOOSE_POWER, SimCommand.Type.USE_POWER:
+				CommanderPowers.apply_command(self, c)
 			SimCommand.Type.RESEARCH, SimCommand.Type.UPGRADE_UNIT:
 				Upgrades.apply_command(self, c)
 			SimCommand.Type.GUARD, SimCommand.Type.PATROL, SimCommand.Type.SPOOF:

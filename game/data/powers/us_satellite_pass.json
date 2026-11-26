@@ -1,0 +1,11 @@
+{
+  "id": "us_satellite_pass",
+  "faction": "us",
+  "name": "Satellite Recon Pass",
+  "tier": 1,
+  "kind": "reveal",
+  "description": "Reveal an area for 20 s; it also counts as a spotter for the kill chain.",
+  "cooldown_s": 120,
+  "radius_cm": 3500,
+  "duration_s": 20
+}

@@ -1,0 +1,9 @@
+{
+  "id": "us_unlock_recon_team",
+  "faction": "us",
+  "name": "Unlock: Special Recon Team",
+  "tier": 3,
+  "kind": "unlock",
+  "description": "Barracks can train the special recon team, a long-sighted spotter.",
+  "unit": "us_recon_team"
+}

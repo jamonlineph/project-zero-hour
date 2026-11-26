@@ -1,0 +1,11 @@
+{
+  "id": "kp_reserve_callup",
+  "faction": "kp",
+  "name": "Reserve Call-Up",
+  "tier": 1,
+  "kind": "reinforce",
+  "description": "3 free infantry squads at the HQ.",
+  "cooldown_s": 180,
+  "unit": "kp_infantry_squad",
+  "count": 3
+}

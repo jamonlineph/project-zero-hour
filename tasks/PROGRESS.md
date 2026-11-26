@@ -4,6 +4,18 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-09a Commander powers in the sim (Claude Code, branch claude/phase-0-wrapup)
+- Done: commander powers are data (`game/data/powers/`). Rank gives points (rank N = N powers); a power's tier is the rank needed to choose it. New commands CHOOSE_POWER and USE_POWER with cooldowns. Powers:
+  - America: Satellite Recon Pass (reveals 35 m for 20 s and counts as a kill-chain spotter), Precision Rocket Strike (3 guided rockets, only at a spotted point), Drone-Wingman Patrol (2 armed jets patrol for 60 s), Cyberattack (enemies "blinded" for 30 s), and an unlock for the Special Recon Team.
+  - North Korea: Recon Drone Sweep (a drone crosses the map through the point), Reserve Call-Up (3 free squads at the HQ), Rocket Barrage (24 scattered heavy rockets, interceptable), GPS Jamming (a 40 m jamming zone for 20 s), an unlock for the Artillery Spotter Officer, and the rank-5 Decoy Deployment (6 decoy tanks).
+  - Powers build ordinary entities: strikes, units, and short-lived untargetable "sensors" for reveals, sweeps and jamming. Timed entities expire on their own.
+  - Three new units with placeholder models: Wingman Drone, Special Recon Team and Artillery Spotter Officer. The two officers/teams are spotters and need their unlock before barracks can train them.
+- Tests: `tools/run_tests.sh` -> 229 tests, 0 failed (new `test_powers.gd` covers every power, points, tiers, cooldowns, unlocks and determinism); golden replays unchanged.
+- Not verified: there is no power bar yet, so players can't use powers in a match. That is P2-09b, next.
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P2-08 Decoys (Claude Code, branch claude/phase-0-wrapup)
 - Done: decoys are units with `"decoy_of"` (the unit they imitate) and 1 hp. North Korea gets an inflatable **Decoy Tank** that uses the real tank's model. Enemies see and shoot it as a real tank until one of their units comes within 15 m or one of their recon drones flies within 12 m; from then on that team ignores it. Revealing is per team and permanent. The owner sees their decoys translucent, and so does an enemy who has seen through one. New `DecoySystem`.
 - Tests: `tools/run_tests.sh` -> 214 tests, 0 failed (new `test_decoys.gd`: data, enemies waste a shot and one hit kills, close units see through and stop shooting, recon flyover reveals, far drones don't, per-team reveal, determinism); golden replays unchanged.

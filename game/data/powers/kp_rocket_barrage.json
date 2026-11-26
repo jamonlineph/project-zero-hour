@@ -1,0 +1,11 @@
+{
+  "id": "kp_rocket_barrage",
+  "faction": "kp",
+  "name": "Rocket Barrage",
+  "tier": 3,
+  "kind": "strike",
+  "description": "24 unguided heavy rockets scatter over an area.",
+  "cooldown_s": 240,
+  "strike": "heavy_rocket",
+  "count": 24
+}

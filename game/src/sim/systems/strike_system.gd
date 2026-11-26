@@ -14,7 +14,7 @@ extends RefCounted
 static func launch(world: SimWorld, def: StrikeDef, player_id: int, x: int, y: int) -> int:
 	if def == null:
 		return 0
-	var from_x: int = _home_edge(world, player_id)
+	var from_x: int = home_edge(world, player_id)
 	var e := SimEntity.new()
 	e.id = world.claim_entity_id()
 	e.player_id = player_id
@@ -87,7 +87,7 @@ static func _deliver(world: SimWorld, e: SimEntity, def: StrikeDef) -> void:
 
 ## The map edge on the launching player's side: the side nearer their first
 ## building (their base), else the west edge.
-static func _home_edge(world: SimWorld, player_id: int) -> int:
+static func home_edge(world: SimWorld, player_id: int) -> int:
 	for id: int in world.entity_ids:
 		var b: SimEntity = world.entities[id]
 		if b.player_id == player_id and b.building != null and not b.dead:
