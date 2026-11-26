@@ -12,6 +12,8 @@
 
 ## Units (first-pass numbers; tune in playtests)
 
+`game/tests/unit/test_slice_data.gd` checks that `game/data` matches these tables (cost, hp, armor, speed, weapon; building cost, hp, power). When balancing, change both in the same commit.
+
 Speeds in cm/s; ranges in meters; reload in seconds; build time in seconds.
 
 | ID | Role | Cost | HP | Armor | Speed | Weapon (type, damage, range, reload) | Notes |

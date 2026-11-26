@@ -4,6 +4,16 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-10 Slice content data (Claude Code, branch claude/phase-0-wrapup)
+- Done: every America and North Korea slice unit and building carries the first-pass numbers from `docs/design/vertical-slice.md`, marked "first-pass numbers" in its data. New `test_slice_data.gd` reads the doc's tables and checks every unit (cost, hp, armor, speed, weapon type, damage, splash, range, reload) and building (cost, hp, power) against `game/data`, so the two can't drift apart. The loader now also rejects a minimum range at or above the range, a splash edge outside 0–100%, endurance on non-flyers, and units without vision (except decoys).
+- The test found one real mismatch: North Korea's infantry squad used America's rifles (12 damage instead of 10). It now has its own `kp_assault_rifles`. That changes fights, so the golden replays and the determinism-check hash were regenerated; the phone check now expects **122369364**.
+- Tests: `tools/run_tests.sh` -> 232 tests, 0 failed.
+- Not verified: balance (that's for playtests).
+- Next: P2-11 skirmish AI v1.
+- For the owner: the determinism-check number changed to 122369364.
+
+---
+
 ## 2026-11-26: P2-09b Power bar and commander tree UI (Claude Code, branch claude/phase-0-wrapup)
 - Done: a power bar under the top bar. Its "Commander" button shows unspent points and opens the commander panel (the faction's tree grouped by rank, with Choose buttons). Each chosen power gets a button with its cooldown; targeted powers wait for a click or tap on the map (crosshair cursor), others fire at once. While an enemy cyberattack is on, the minimap shows "SIGNAL LOST". Works with mouse and touch.
 - Tests: `tools/run_tests.sh` -> 229 tests, 0 failed; smoke_main chooses a power in the panel, uses it from the bar with a map click, checks the cooldown, and checks the blinded minimap. Checked on a real render: the bar sits clear of the top bar.

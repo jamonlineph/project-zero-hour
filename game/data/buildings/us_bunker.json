@@ -3,7 +3,7 @@
   "faction": "us",
   "name": "Hardened Bunker",
   "armor_class": "structure",
-  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 1500,
   "cost": 600,
   "footprint_cells": [

@@ -4,7 +4,7 @@
   "role": "strike_drone",
   "name": "Loitering Munition Team",
   "armor_class": "infantry",
-  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 180,
   "cost": 600,
   "speed_cm_per_s": 340,

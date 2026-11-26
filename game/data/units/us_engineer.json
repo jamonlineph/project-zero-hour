@@ -4,7 +4,7 @@
   "role": "builder",
   "name": "Armored Engineer Vehicle",
   "armor_class": "light_vehicle",
-  "status": "placeholder stats",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 600,
   "cost": 1000,
   "speed_cm_per_s": 600,

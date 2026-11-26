@@ -4,7 +4,7 @@
   "role": "artillery",
   "name": "Self-Propelled Howitzer",
   "armor_class": "heavy_armor",
-  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 500,
   "cost": 1100,
   "speed_cm_per_s": 500,

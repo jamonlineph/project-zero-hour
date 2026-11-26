@@ -497,7 +497,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P1-18, P2-07
 - **Accept:** a tree from data; spend points; power bar UI (mouse and touch); every rank 1–3 power from `commander.md` works; tests.
 
-### P2-10 · Slice content data — ⬜
+### P2-10 · Slice content data — ✅ 2026-11-26 (Claude Code: a test keeps data and doc in sync)
 - **Needs:** P1-34
 - **Accept:** all slice units and buildings have final first-pass numbers from `vertical-slice.md` in JSON; `ContentDb` validates them.
 

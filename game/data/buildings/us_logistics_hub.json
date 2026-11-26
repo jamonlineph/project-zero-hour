@@ -3,7 +3,7 @@
   "faction": "us",
   "name": "Logistics Hub",
   "armor_class": "structure",
-  "status": "placeholder stats",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 1800,
   "cost": 1500,
   "footprint_cells": [

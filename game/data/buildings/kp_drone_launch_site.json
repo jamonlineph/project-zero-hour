@@ -3,7 +3,7 @@
   "faction": "kp",
   "name": "Drone Launch Site",
   "armor_class": "structure",
-  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 1400,
   "cost": 1200,
   "footprint_cells": [

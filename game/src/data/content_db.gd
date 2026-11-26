@@ -341,6 +341,10 @@ func _load_weapon(path: String) -> void:
 		w.cone_half = (cone_deg * Fx.ANGLE_FULL) / 720
 		if w.projectile != "instant":
 			errors.append("%s: cone_deg needs an instant weapon" % path)
+	if w.min_range >= w.max_range:
+		errors.append("%s: min_range_cm must be below range_cm" % path)
+	if w.splash_edge_percent < 0 or w.splash_edge_percent > 100:
+		errors.append("%s: splash_edge_percent must be 0-100" % path)
 	var targets: Variant = src.get("targets", ["ground"])
 	w.targets = PackedStringArray()
 	for t: Variant in targets:
@@ -626,6 +630,10 @@ func _load_unit(path: String) -> void:
 		u.icon_path = str((visual as Dictionary).get("icon", ""))
 	else:
 		errors.append("%s: 'visual' must be an object" % path)
+	if u.endurance_ticks > 0 and not u.flying:
+		errors.append("%s: endurance_s only makes sense for flying units" % path)
+	if u.vision <= 0 and u.decoy_of == "":
+		errors.append("%s: vision_cm must be positive" % path)
 	if path.get_file().get_basename() != u.id:
 		errors.append("%s: file name must match id '%s'" % [path, u.id])
 	if units.has(u.id):

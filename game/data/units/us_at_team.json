@@ -4,7 +4,7 @@
   "role": "anti_tank_infantry",
   "name": "Top-Attack Missile Team",
   "armor_class": "infantry",
-  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 200,
   "cost": 400,
   "speed_cm_per_s": 340,

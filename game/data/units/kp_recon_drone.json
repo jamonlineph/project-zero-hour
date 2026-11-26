@@ -4,7 +4,7 @@
   "role": "recon_drone",
   "name": "Recon Drone",
   "armor_class": "drone",
-  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 50,
   "cost": 250,
   "speed_cm_per_s": 1400,

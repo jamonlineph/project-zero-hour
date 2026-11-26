@@ -4,7 +4,7 @@
   "role": "artillery",
   "name": "Guided Rocket Artillery",
   "armor_class": "light_vehicle",
-  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 450,
   "cost": 1300,
   "speed_cm_per_s": 700,

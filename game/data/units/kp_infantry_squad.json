@@ -4,7 +4,7 @@
   "role": "basic_infantry",
   "name": "Infantry Squad",
   "armor_class": "infantry",
-  "status": "placeholder stats",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 220,
   "cost": 200,
   "speed_cm_per_s": 360,
@@ -13,7 +13,7 @@
   "build_time_ms": 6000,
   "requires": [],
   "weapons": [
-    "assault_rifles"
+    "kp_assault_rifles"
   ],
   "visual": {
     "model": "res://assets/models/units/kp_infantry_squad.glb",

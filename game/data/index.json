@@ -19,7 +19,8 @@
     "res://data/weapons/sam_interceptor.json",
     "res://data/weapons/hpm_emitter.json",
     "res://data/weapons/cuas_airburst_gun.json",
-    "res://data/weapons/wingman_cannon.json"
+    "res://data/weapons/wingman_cannon.json",
+    "res://data/weapons/kp_assault_rifles.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",

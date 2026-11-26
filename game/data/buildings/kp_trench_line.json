@@ -3,7 +3,7 @@
   "faction": "kp",
   "name": "Trench Line",
   "armor_class": "structure",
-  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 400,
   "cost": 150,
   "footprint_cells": [

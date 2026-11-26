@@ -4,7 +4,7 @@
   "role": "basic_infantry",
   "name": "Rifle Squad",
   "armor_class": "infantry",
-  "status": "placeholder stats",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 240,
   "cost": 250,
   "speed_cm_per_s": 380,

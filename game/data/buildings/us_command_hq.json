@@ -3,7 +3,7 @@
   "faction": "us",
   "name": "Command HQ",
   "armor_class": "structure",
-  "status": "placeholder stats",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 5000,
   "cost": 3000,
   "footprint_cells": [

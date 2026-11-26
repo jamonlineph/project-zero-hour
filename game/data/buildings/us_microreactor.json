@@ -3,7 +3,7 @@
   "faction": "us",
   "name": "Microreactor",
   "armor_class": "structure",
-  "status": "placeholder stats",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 1200,
   "cost": 800,
   "footprint_cells": [

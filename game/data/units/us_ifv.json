@@ -4,7 +4,7 @@
   "role": "armored_transport",
   "name": "Infantry Fighting Vehicle",
   "armor_class": "light_vehicle",
-  "status": "placeholder stats (docs/design/vertical-slice.md)",
+  "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 700,
   "cost": 800,
   "speed_cm_per_s": 800,
