@@ -121,6 +121,9 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 		e.drone.endurance = def.endurance_ticks
 		e.drone.fiber_optic = def.fiber_optic
 	e.spotter = def.spotter
+	e.aps_max = def.aps_charges
+	e.aps_charges = def.aps_charges
+	e.cage_hits = def.cage_hits
 	if def.jam_radius > 0:
 		e.jammer = SimJammer.new()
 		e.jammer.radius = def.jam_radius
@@ -374,6 +377,7 @@ func step() -> void:
 		vision.update(self)
 	_rebuild_index()
 	CombatSystem.step(self)
+	ProtectionSystem.step(self)
 	VeterancySystem.step(self)
 	VictorySystem.step(self)
 	_remove_dead()
@@ -388,9 +392,10 @@ func next_projectile_id() -> int:
 ## Deals damage after armor (damage matrix, then the target's veterancy) and
 ## grants XP to the attacker and its player. Returns the damage dealt. An
 ## entity reaching 0 hp is marked dead and removed at the end of the tick.
-func apply_damage(target: SimEntity, amount: int, damage_type: String, attacker_id: int) -> int:
+func apply_damage(target: SimEntity, amount: int, damage_type: String, attacker_id: int, drone_hit: bool = false) -> int:
 	if target.dead:
 		return 0
+	amount = ProtectionSystem.cage(target, amount, drone_hit)   # P2-06
 	var raw: int = damage_matrix.apply(amount, damage_type, target.armor_class)
 	if raw > 0:
 		raw = maxi(1, (raw * (100 - rules.veterancy_armor_bonus[target.vet_rank])) / 100)

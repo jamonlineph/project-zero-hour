@@ -21,6 +21,8 @@ var splash_radius: int = 0
 var splash_edge_percent: int = 50
 var weapon_id: String = ""
 var needs_spotter: bool = false       ## kill-chain shot (not hashed: follows weapon_id)
+var drone_hit: bool = false           ## a drone attack: cage armor softens it (follows weapon_id)
+var aps_checked: bool = false         ## active protection already fired at it (P2-06)
 var targets: PackedStringArray = []   ## splash only hurts what the weapon can target (not hashed: follows weapon_id)
 
 
@@ -38,3 +40,5 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(damage)
 	h.add_string(damage_type)
 	h.add_int(splash_radius)
+	if aps_checked:   # only then, so older replays hash as before
+		h.add_bool(true)

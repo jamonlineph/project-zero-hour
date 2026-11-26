@@ -16,6 +16,7 @@
   "weapons": [
     "tank_cannon_120"
   ],
+  "aps_charges": 2,
   "visual": {
     "model": "res://assets/models/units/us_mbt.glb",
     "icon": "res://assets/icons/units/us_mbt.png"

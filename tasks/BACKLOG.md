@@ -475,7 +475,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P1-14
 - **Accept:** global and per-unit upgrades from data; models show upgrade attachments by node name; tests.
 
-### P2-06 · Active protection and cage armor — ⬜
+### P2-06 · Active protection and cage armor — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P2-05
 - **Accept:** charges, interception chance, reload; cage reduces drone damage for the first N hits; tests.
 

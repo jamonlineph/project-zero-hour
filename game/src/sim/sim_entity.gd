@@ -39,6 +39,7 @@ var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
 var upgrades: PackedStringArray = []   ## per-unit upgrades bought for this unit (P2-05)
 var aps_charges: int = 0        ## active protection: interceptions left (P2-06)
 var aps_max: int = 0
+var aps_reload: int = 0         ## ticks toward the next charge
 var cage_hits: int = 0          ## cage armor: drone hits it still softens (P2-06)
 
 var order: Order = Order.IDLE
@@ -88,6 +89,7 @@ func write_hash(h: SimHash) -> void:
 			h.add_string(u)
 		h.add_int(aps_charges)
 		h.add_int(aps_max)
+		h.add_int(aps_reload)
 		h.add_int(cage_hits)
 	if mover != null:
 		mover.write_hash(h)

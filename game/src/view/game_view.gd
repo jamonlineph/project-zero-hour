@@ -144,6 +144,16 @@ func play_events(events: Array[Dictionary]) -> void:
 					effects.play(CombatEffects.Kind.DEATH, at, big)
 					effects.play(CombatEffects.Kind.SMOKE, at, big)
 					sounds.play_at("explosion_large", at)
+			"intercepted", "intercept_failed":
+				# Active protection firing (P2-06).
+				if not world.can_see(local_player_id, ev["x"], ev["y"]):
+					continue
+				var at := Vector3(Fx.to_float(ev["x"]), 0.0, Fx.to_float(ev["y"]))
+				at.y = _ground(at.x, at.z) + 2.0
+				effects.play(CombatEffects.Kind.MUZZLE, at, 1.5)
+				if ev["type"] == "intercepted":
+					effects.play(CombatEffects.Kind.EXPLOSION, at, 0.5)
+				sounds.play_at("autocannon", at)
 			"built":
 				if int(ev["player"]) == local_player_id:
 					sounds.play_ui("build_complete")

@@ -16,6 +16,7 @@
   "weapons": [
     "tank_cannon_125"
   ],
+  "cage_hits": 2,
   "visual": {
     "model": "res://assets/models/units/kp_mbt.glb",
     "icon": "res://assets/icons/units/kp_mbt.png"

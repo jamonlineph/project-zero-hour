@@ -120,7 +120,7 @@ static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> 
 			_cone(world, e, w, t, damage)
 			return
 		_impact(world, e.player_id, e.id, t.id, t.x, t.y, damage, w.damage_type,
-				w.splash_radius, w.splash_edge_percent, w.targets)
+				w.splash_radius, w.splash_edge_percent, w.targets, w.drone_attack or e.drone != null)
 		return
 	var p := SimProjectile.new()
 	p.id = world.next_projectile_id()
@@ -142,6 +142,7 @@ static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> 
 	p.weapon_id = w.def_id
 	p.targets = w.targets
 	p.needs_spotter = w.needs_spotter
+	p.drone_hit = w.drone_attack or e.drone != null
 	# Jamming (P2-03): a guided shot at a target inside a hostile field loses
 	# its lock half the time and flies to a scattered point instead.
 	if p.guided and world.jam_level(e.player_id, t.x, t.y) > 0 and world.rng.chance(1, 2):
@@ -161,6 +162,8 @@ static func _step_projectiles(world: SimWorld) -> void:
 		p.prev_x = p.x
 		p.prev_y = p.y
 		KillChainSystem.check_guidance(world, p)
+		if ProtectionSystem.try_intercept(world, p):
+			continue   # shot down by active protection
 		if p.guided:
 			var t: SimEntity = world.get_entity(p.target_id)
 			if t != null and not t.dead:
@@ -177,7 +180,7 @@ static func _step_projectiles(world: SimWorld) -> void:
 		p.x = p.dest_x
 		p.y = p.dest_y
 		_impact(world, p.player_id, p.attacker_id, p.target_id, p.x, p.y, p.damage, p.damage_type,
-				p.splash_radius, p.splash_edge_percent, p.targets)
+				p.splash_radius, p.splash_edge_percent, p.targets, p.drone_hit)
 	world.projectiles = still_flying
 
 
@@ -185,12 +188,12 @@ static func _step_projectiles(world: SimWorld) -> void:
 ## and only if it is still there; with splash, every enemy in the radius is.
 static func _impact(world: SimWorld, player_id: int, attacker_id: int, target_id: int, x: int, y: int,
 		damage: int, damage_type: String, splash_radius: int, edge_percent: int,
-		targets: PackedStringArray) -> void:
+		targets: PackedStringArray, drone_hit: bool = false) -> void:
 	world.events.append({"type": "hit", "x": x, "y": y, "damage_type": damage_type, "radius": splash_radius})
 	if splash_radius <= 0:
 		var t: SimEntity = world.get_entity(target_id)
 		if t != null and not t.dead and Fx.length(t.x - x, t.y - y) <= t.radius + Fx.ONE / 2:
-			world.apply_damage(t, damage, damage_type, attacker_id)
+			world.apply_damage(t, damage, damage_type, attacker_id, drone_hit)
 		return
 	for t: SimEntity in world.query_radius(x, y, splash_radius + SimWorld.MAX_UNIT_RADIUS):
 		if t.dead or not world.are_enemies(player_id, t.player_id):
@@ -201,7 +204,7 @@ static func _impact(world: SimWorld, player_id: int, attacker_id: int, target_id
 		if dist > splash_radius:
 			continue
 		var percent: int = 100 - ((100 - edge_percent) * dist) / splash_radius
-		world.apply_damage(t, (damage * percent) / 100, damage_type, attacker_id)
+		world.apply_damage(t, (damage * percent) / 100, damage_type, attacker_id, drone_hit)
 
 
 ## Cone hit (P2-02): every visible enemy the weapon can target, in range and
@@ -220,7 +223,7 @@ static func _cone(world: SimWorld, e: SimEntity, w: SimWeapon, aimed: SimEntity,
 		hits.append(t)
 	hits.sort_custom(func(a: SimEntity, b: SimEntity) -> bool: return a.id < b.id)
 	for t: SimEntity in hits:
-		world.apply_damage(t, damage, w.damage_type, e.id)
+		world.apply_damage(t, damage, w.damage_type, e.id, e.drone != null)
 
 
 ## A spoofed drone fires only at the target spoofing gave it, friend or foe.

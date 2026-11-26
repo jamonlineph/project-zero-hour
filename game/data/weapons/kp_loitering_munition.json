@@ -9,5 +9,6 @@
   "targets": [
     "ground"
   ],
-  "projectile_speed_cm_per_s": 4000
+  "projectile_speed_cm_per_s": 4000,
+  "drone_attack": true
 }

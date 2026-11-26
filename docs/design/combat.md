@@ -80,5 +80,6 @@ Thresholds scale with the unit's cost: 1×, 2× and 4× its cost in XP.
 | Jammer data | Units (and later buildings) with `"jammer": {radius_cm, strength, spoof_radius_cm, spoof_range_cm, spoof_cooldown_s}`. North Korea's EW vehicle: 40 m field, spoofs a 25 m area up to 70 m away every 30 s. Jammed drones hover, drift and can't fire; guided shots into the field lose lock 50% of the time and scatter 4–10 m |
 | Drone endurance | Every drone has `endurance_s`. At 20% it returns to its launcher if one exists; at 0 it crashes |
 | Active protection | `aps_charges` intercept incoming `anti_tank` guided missiles and drones with 90% success. One charge reloads every 20 s |
+| Cage armor | `cage_hits`: the first hits from drones (`drone_attack` weapons such as loitering munitions, or any weapon fired by a drone unit) do 25% damage. America's tank has 2 APS charges; North Korea's has 2 cage hits; IFVs get them from kits (P2-05) |
 | Interception | Strategic missiles and strike aircraft are entities with hp. Air-defense sites spend interceptors (stock + reload) to shoot them down |
 | Decoys | Shown to enemies as the real unit type until an enemy unit comes within 15 m or a recon drone flies over. Decoys die in one hit |

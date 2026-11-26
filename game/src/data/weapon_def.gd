@@ -19,3 +19,5 @@ var targets: PackedStringArray = ["ground"]
 var cone_half: int = 0
 ## Kill chain (P2-04): beyond the owner's own sight, fire only at spotted targets.
 var needs_spotter: bool = false
+## A drone attack (loitering munitions, FPV drones): cage armor softens it (P2-06).
+var drone_attack: bool = false

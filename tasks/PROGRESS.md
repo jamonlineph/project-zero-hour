@@ -4,6 +4,16 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-06 Active protection and cage armor (Claude Code, branch claude/phase-0-wrapup)
+- Done: America's tank carries 2 active-protection charges. When a guided anti-tank missile or loitering munition comes within 12 m, a charge fires and destroys it 90% of the time (`SimRng`); charges reload one every 20 s. North Korea's tank has cage armor: the first 2 drone hits (loitering munitions, or anything fired by a drone) do 25% damage. The IFV kits from P2-05 use the same rules. Interceptions flash and make a sound. New `ProtectionSystem` (recharge after combat), `drone_attack` weapon field, `aps_charges` and `cage_hits` unit fields.
+- Golden replays and the determinism-check hash were regenerated: tanks now carry protection state, which is part of the state hash. Fights in those replays use only cannons and rifles, which active protection ignores, so the outcomes are the same. The phone determinism check now expects **4002681017**.
+- Tests: `tools/run_tests.sh` -> 201 tests, 0 failed (new `test_protection.gd`: data, about 90% interceptions with one charge each, no charges no interception, reload, unguided shots ignored, cage only on the first drone hits, loitering munitions count as drone hits, IFV kit, determinism).
+- Not verified: balance.
+- Next: P2-07 interceptable strikes.
+- For the owner: the determinism-check number for the phone test changed to 4002681017.
+
+---
+
 ## 2026-11-26: P2-05 Upgrades system (Claude Code, branch claude/phase-0-wrapup)
 - Done: upgrades are data (`game/data/upgrades/`). **Global** upgrades are researched at a building (costs credits, takes time, half speed on low power) and apply to every matching unit, existing and future. **Per-unit kits** are bought for selected units. Effects: speed, health, damage, range and vision percentages, plus active-protection charges and cage hits (used by P2-06). Requirements: buildings, commander rank, faction. Six slice upgrades:
   - America: Self-Driving Logistics (rank 5), Composite Armor, and an Active Protection Kit for the IFV.
