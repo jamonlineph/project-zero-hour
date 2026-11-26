@@ -21,3 +21,6 @@ var cone_half: int = 0
 var needs_spotter: bool = false
 ## A drone attack (loitering munitions, FPV drones): cage armor softens it (P2-06).
 var drone_attack: bool = false
+## Interceptor stock (P2-07): shots before it must restock; 0 = unlimited.
+var stock: int = 0
+var restock_ticks: int = 0

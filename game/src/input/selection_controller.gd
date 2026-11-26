@@ -298,7 +298,8 @@ func _on_mouse_motion(mm: InputEventMouseMotion) -> void:
 func _own_ids() -> Array[int]:
 	var ids: Array[int] = []
 	for id: int in runner.world.entity_ids:
-		if runner.world.entities[id].player_id == local_player_id:
+		var e: SimEntity = runner.world.entities[id]
+		if e.player_id == local_player_id and e.strike == null:   # strikes can't be selected
 			ids.append(id)
 	return ids
 
@@ -335,7 +336,7 @@ func _pick_unit(screen_pos: Vector2, own: bool) -> int:
 	var world: SimWorld = runner.world
 	return _pick(screen_pos, func(e: SimEntity) -> bool:
 		if own:
-			return e.player_id == local_player_id
+			return e.player_id == local_player_id and e.strike == null
 		return world.are_enemies(local_player_id, e.player_id) and world.can_see(local_player_id, e.x, e.y))
 
 

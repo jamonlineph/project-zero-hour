@@ -36,6 +36,11 @@ static func step(world: SimWorld) -> void:
 		for w: SimWeapon in e.weapons:
 			if w.cooldown > 0:
 				w.cooldown -= 1
+			if w.stock_max > 0 and w.stock < w.stock_max:
+				w.restock_progress += 1
+				if w.restock_progress >= w.restock_ticks:
+					w.restock_progress = 0
+					w.stock += 1
 			var t: SimEntity = world.get_entity(w.target_id) if w.target_id != 0 else null
 			var lost: bool = false
 			if t != null and not _valid_target(world, e, w, t):
@@ -51,7 +56,9 @@ static func step(world: SimWorld) -> void:
 			if t == null or not in_range(e, w, t):
 				continue
 			_face(e, t)
-			if w.cooldown == 0:
+			if w.cooldown == 0 and (w.stock_max == 0 or w.stock > 0):
+				if w.stock_max > 0:
+					w.stock -= 1
 				_fire(world, e, w, t)
 	_step_projectiles(world)
 
@@ -182,6 +189,13 @@ static func _step_projectiles(world: SimWorld) -> void:
 		_impact(world, p.player_id, p.attacker_id, p.target_id, p.x, p.y, p.damage, p.damage_type,
 				p.splash_radius, p.splash_edge_percent, p.targets, p.drone_hit)
 	world.projectiles = still_flying
+
+
+## Public entry for strikes and powers (P2-07): same as a weapon impact.
+static func impact(world: SimWorld, player_id: int, attacker_id: int, target_id: int, x: int, y: int,
+		damage: int, damage_type: String, splash_radius: int, edge_percent: int,
+		targets: PackedStringArray) -> void:
+	_impact(world, player_id, attacker_id, target_id, x, y, damage, damage_type, splash_radius, edge_percent, targets)
 
 
 ## Applies a hit at (x, y). Without splash, only the intended target is hurt,

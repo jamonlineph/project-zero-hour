@@ -1,0 +1,18 @@
+{
+  "id": "heavy_rocket",
+  "name": "Heavy Rocket",
+  "kind": "missile",
+  "_doc": "Unguided barrage rocket: scatters around the aim point.",
+  "max_hp": 40,
+  "speed_cm_per_s": 8000,
+  "radius_cm": 60,
+  "vision_cm": 0,
+  "payload": {
+    "damage": 160,
+    "damage_type": "high_explosive",
+    "splash_radius_cm": 700,
+    "splash_edge_percent": 40,
+    "count": 1,
+    "spread_cm": 2000
+  }
+}

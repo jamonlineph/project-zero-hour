@@ -78,5 +78,10 @@
     "res://data/upgrades/kp_reactive_armor.json",
     "res://data/upgrades/kp_extended_range_shells.json",
     "res://data/upgrades/kp_ifv_cage_kit.json"
+  ],
+  "strikes": [
+    "res://data/strikes/guided_rocket.json",
+    "res://data/strikes/heavy_rocket.json",
+    "res://data/strikes/strike_jet.json"
   ]
 }

@@ -17,6 +17,10 @@ var targets: PackedStringArray = []
 var cone_half: int = 0           ## binary angle units; 0 = single target (P2-02)
 var needs_spotter: bool = false  ## kill chain (P2-04)
 var drone_attack: bool = false   ## cage armor softens it (P2-06)
+var stock_max: int = 0           ## interceptor stock (P2-07); 0 = unlimited
+var stock: int = 0
+var restock_ticks: int = 0
+var restock_progress: int = 0
 
 var cooldown: int = 0           ## ticks until it can fire again
 var target_id: int = 0          ## entity id, 0 = none
@@ -38,6 +42,9 @@ static func from_def(def: WeaponDef) -> SimWeapon:
 	w.cone_half = def.cone_half
 	w.needs_spotter = def.needs_spotter
 	w.drone_attack = def.drone_attack
+	w.stock_max = def.stock
+	w.stock = def.stock
+	w.restock_ticks = def.restock_ticks
 	return w
 
 
@@ -45,3 +52,6 @@ func write_hash(h: SimHash) -> void:
 	h.add_string(def_id)
 	h.add_int(cooldown)
 	h.add_int(target_id)
+	if stock_max > 0:   # only then, so older replays hash as before
+		h.add_int(stock)
+		h.add_int(restock_progress)

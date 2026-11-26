@@ -4,6 +4,15 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-07 Interceptable strikes (Claude Code, branch claude/phase-0-wrapup)
+- Done: missiles and strike jets are now sim entities (armor class "aircraft") defined in `game/data/strikes/` (guided rocket, heavy rocket, strike jet). `StrikeSystem.launch()` sends one in from the map edge on the launcher's side; on arrival it delivers its payload (a jet drops 4 bombs and flies home; a missile ends). Air-defense sites can shoot them down, but now carry a limited interceptor stock (4, one back every 15 s). Strikes can't be selected and don't keep a player alive for victory. The view draws them as simple missile and jet shapes at altitude; missiles dive at the end.
+- Tests: `tools/run_tests.sh` -> 208 tests, 0 failed (new `test_strikes.gd`: data, missile hits, jet bombs and leaves, air defense shoots down and spends stock, stock runs out and refills, victory, determinism); golden replays unchanged.
+- Not verified: nothing launches strikes in play yet; the commander powers in P2-09 will.
+- Next: P2-08 decoys, then P2-09 commander powers.
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P2-06 Active protection and cage armor (Claude Code, branch claude/phase-0-wrapup)
 - Done: America's tank carries 2 active-protection charges. When a guided anti-tank missile or loitering munition comes within 12 m, a charge fires and destroys it 90% of the time (`SimRng`); charges reload one every 20 s. North Korea's tank has cage armor: the first 2 drone hits (loitering munitions, or anything fired by a drone) do 25% damage. The IFV kits from P2-05 use the same rules. Interceptions flash and make a sound. New `ProtectionSystem` (recharge after combat), `drone_attack` weapon field, `aps_charges` and `cage_hits` unit fields.
 - Golden replays and the determinism-check hash were regenerated: tanks now carry protection state, which is part of the state hash. Fights in those replays use only cannons and rifles, which active protection ignores, so the outcomes are the same. The phone determinism check now expects **4002681017**.

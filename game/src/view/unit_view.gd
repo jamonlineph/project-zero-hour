@@ -9,11 +9,12 @@ const RING_COLOR := Color(0.35, 1.0, 0.45)
 const HOVER_OWN_COLOR := Color(0.85, 1.0, 0.85, 0.6)
 const HOVER_ENEMY_COLOR := Color(1.0, 0.3, 0.25)
 const DRONE_HOVER_M: float = 6.0  ## drones fly; the sim keeps them on the ground plane
+const STRIKE_ALTITUDE_M: float = 18.0   ## missiles and jets (P2-07)
 const TURRET_TURN_RAD_PER_S: float = 2.5
 const BARREL_PITCH_RAD_PER_S: float = 1.0
 const WRECK_SECONDS: float = 20.0
 
-enum Kind { INFANTRY, VEHICLE, DRONE, BUILDING, SUPPLY }
+enum Kind { INFANTRY, VEHICLE, DRONE, BUILDING, SUPPLY, STRIKE }
 
 
 var entity_id: int = 0
@@ -34,8 +35,46 @@ var _upgrade_parts: Dictionary[String, Node3D] = {}   ## upg_* node name -> node
 var _upgrade_sig: int = -1
 
 
+## Missiles and strike jets (P2-07): simple shapes in code, flying high and
+## diving onto the aim point at the end.
+func _setup_strike(entity: SimEntity, team_color: Color) -> void:
+	entity_id = entity.id
+	name = "Strike_%d" % entity.id
+	kind = Kind.STRIKE
+	var holder := Node3D.new()
+	holder.name = "Placeholder"
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color(0.55, 0.56, 0.55)
+	var body := MeshInstance3D.new()
+	var box := BoxMesh.new()
+	box.size = Vector3(0.5, 0.5, 3.2) if not entity.strike.aircraft else Vector3(1.4, 0.8, 7.0)
+	body.mesh = box
+	body.material_override = mat
+	holder.add_child(body)
+	if entity.strike.aircraft:
+		var wing := MeshInstance3D.new()
+		var wbox := BoxMesh.new()
+		wbox.size = Vector3(8.0, 0.2, 2.2)
+		wing.mesh = wbox
+		var wmat := StandardMaterial3D.new()
+		wmat.albedo_color = team_color
+		wing.material_override = wmat
+		holder.add_child(wing)
+	_model = holder
+	_model.position.y = STRIKE_ALTITUDE_M
+	add_child(_model)
+	_ring = _make_ring(1.0)
+	_ring.visible = false
+	add_child(_ring)
+	position = Vector3(Fx.to_float(entity.x), 0.0, Fx.to_float(entity.y))
+	rotation.y = yaw_from_sim_angle(float(entity.facing))
+
+
 ## Picks the right visual for any entity: unit, building or supply site.
 func setup_entity(entity: SimEntity, content: ContentDb, team_color: Color) -> void:
+	if entity.strike != null:
+		_setup_strike(entity, team_color)
+		return
 	if entity.building == null and entity.supply == null:
 		setup(entity, content.get_unit(entity.def_id) if content != null else null, team_color)
 		return
@@ -235,6 +274,10 @@ func update_from_sim(e: SimEntity, alpha: float) -> void:
 			var done: float = 1.0 if e.building.built else float(e.building.progress) / float(maxi(1, e.building.total))
 			_model.scale = Vector3(1.0, 0.15 + 0.85 * done, 1.0)
 		return
+	if kind == Kind.STRIKE and e.strike != null and not e.strike.aircraft:
+		# Missiles dive over their last 40 m.
+		var left: float = Fx.to_float(Fx.length(e.strike.dest_x - e.x, e.strike.dest_y - e.y))
+		_model.position.y = STRIKE_ALTITUDE_M * clampf(left / 40.0, 0.05, 1.0)
 	if kind == Kind.DRONE and e.drone != null:
 		# Docked drones settle onto their launcher; airborne ones hover.
 		var want: float = 1.0 if e.drone.docked else DRONE_HOVER_M

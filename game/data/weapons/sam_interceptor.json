@@ -10,5 +10,7 @@
     "air",
     "drone"
   ],
-  "projectile_speed_cm_per_s": 12000
+  "projectile_speed_cm_per_s": 12000,
+  "stock": 4,
+  "restock_s": 15
 }

@@ -175,6 +175,18 @@ func jam_level(victim_player: int, x: int, y: int) -> int:
 	return level
 
 
+## Reserves the next entity id (for systems that build entities themselves).
+func claim_entity_id() -> int:
+	_next_id += 1
+	return _next_id - 1
+
+
+## Adds an entity built outside spawn_unit/spawn_building (strikes, P2-07).
+func add_entity(e: SimEntity) -> void:
+	entities[e.id] = e
+	entity_ids.append(e.id)
+
+
 func get_entity(id: int) -> SimEntity:
 	return entities.get(id, null)
 
@@ -365,6 +377,7 @@ func step() -> void:
 	DroneSystem.step(self)
 	JammingSystem.step(self)
 	KillChainSystem.step(self)
+	StrikeSystem.step(self)
 	PowerSystem.step(self)
 	ConstructionSystem.step(self)
 	ProductionSystem.step(self)

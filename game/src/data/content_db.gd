@@ -21,6 +21,7 @@ var ai_presets: Dictionary[String, Dictionary] = {}  ## raw AI presets, see AiPl
 ## The cross-device determinism check (P1-37); see data/determinism_check.json.
 var determinism_check: Dictionary = {}
 var upgrades: Dictionary[String, UpgradeDef] = {}
+var strikes: Dictionary[String, StrikeDef] = {}
 ## Skirmish setup data from rules.json (see MatchConfig).
 var start_kit: Array = []
 var skirmish_credits: PackedInt32Array = [10000]
@@ -43,6 +44,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	ai_presets.clear()
 	determinism_check = {}
 	upgrades.clear()
+	strikes.clear()
 	damage_matrix = DamageMatrix.new()
 	rules = SimRules.new()
 	errors.clear()
@@ -66,6 +68,8 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 		_load_map(str(path))
 	for path: Variant in (index as Dictionary).get("upgrades", []):
 		_load_upgrade(str(path))
+	for path: Variant in (index as Dictionary).get("strikes", []):
+		_load_strike(str(path))
 	var check_path: String = str((index as Dictionary).get("determinism_check", ""))
 	if check_path != "":
 		var check: Variant = _read_json(check_path)
@@ -314,6 +318,9 @@ func _load_weapon(path: String) -> void:
 		w.splash_edge_percent = _req_int(src, "splash_edge_percent", path, 0)
 	w.needs_spotter = bool(src.get("needs_spotter", false))
 	w.drone_attack = bool(src.get("drone_attack", false))
+	if src.has("stock"):
+		w.stock = _req_int(src, "stock", path, 1)
+		w.restock_ticks = _req_int(src, "restock_s", path, 1) * SimWorld.TICK_RATE
 	if src.has("cone_deg"):
 		var cone_deg: int = _req_int(src, "cone_deg", path, 1)
 		w.cone_half = (cone_deg * Fx.ANGLE_FULL) / 720
@@ -406,6 +413,43 @@ func _load_heights(m: MapDef, file: String, scale_cm: int, path: String) -> void
 		m.heights_cm[i] = (v * scale_cm) / 65535
 		if _hasher != null:
 			_hasher.add_int(v)
+
+
+func get_strike(id: String) -> StrikeDef:
+	return strikes.get(id, null)
+
+
+func _load_strike(path: String) -> void:
+	var parsed: Variant = _read_json(path)
+	if not parsed is Dictionary:
+		errors.append("%s: expected a JSON object" % path)
+		return
+	var src: Dictionary = parsed
+	var s := StrikeDef.new()
+	s.id = _req_string(src, "id", path)
+	s.name = _req_string(src, "name", path)
+	s.kind = str(src.get("kind", "missile"))
+	if not s.kind in ["missile", "aircraft"]:
+		errors.append("%s: kind must be missile or aircraft" % path)
+	s.max_hp = _req_int(src, "max_hp", path, 1)
+	s.speed = Fx.from_ratio(_req_int(src, "speed_cm_per_s", path, 1), 100 * SimWorld.TICK_RATE)
+	s.radius = Fx.from_ratio(int(src.get("radius_cm", 100)), 100)
+	s.vision = Fx.from_ratio(int(src.get("vision_cm", 0)), 100)
+	var pl: Variant = src.get("payload", {})
+	if pl is Dictionary:
+		s.damage = _req_int(pl, "damage", path, 0)
+		s.damage_type = _req_string(pl, "damage_type", path)
+		if not damage_matrix.has_damage_type(s.damage_type):
+			errors.append("%s: damage_type '%s' is not in the damage matrix" % [path, s.damage_type])
+		s.splash_radius = Fx.from_ratio(int(pl.get("splash_radius_cm", 0)), 100)
+		s.splash_edge_percent = int(pl.get("splash_edge_percent", 50))
+		s.count = maxi(1, int(pl.get("count", 1)))
+		s.spread = Fx.from_ratio(int(pl.get("spread_cm", 0)), 100)
+	else:
+		errors.append("%s: 'payload' must be an object" % path)
+	if path.get_file().get_basename() != s.id:
+		errors.append("%s: file name must match id '%s'" % [path, s.id])
+	strikes[s.id] = s
 
 
 func get_upgrade(id: String) -> UpgradeDef:

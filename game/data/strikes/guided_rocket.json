@@ -1,0 +1,18 @@
+{
+  "id": "guided_rocket",
+  "name": "Guided Rocket",
+  "kind": "missile",
+  "_doc": "Precision rocket for commander powers (P2-09).",
+  "max_hp": 60,
+  "speed_cm_per_s": 7000,
+  "radius_cm": 60,
+  "vision_cm": 1500,
+  "payload": {
+    "damage": 260,
+    "damage_type": "high_explosive",
+    "splash_radius_cm": 500,
+    "splash_edge_percent": 40,
+    "count": 1,
+    "spread_cm": 0
+  }
+}

@@ -82,4 +82,5 @@ Thresholds scale with the unit's cost: 1×, 2× and 4× its cost in XP.
 | Active protection | `aps_charges` intercept incoming `anti_tank` guided missiles and drones with 90% success. One charge reloads every 20 s |
 | Cage armor | `cage_hits`: the first hits from drones (`drone_attack` weapons such as loitering munitions, or any weapon fired by a drone unit) do 25% damage. America's tank has 2 APS charges; North Korea's has 2 cage hits; IFVs get them from kits (P2-05) |
 | Interception | Strategic missiles and strike aircraft are entities with hp. Air-defense sites spend interceptors (stock + reload) to shoot them down |
+| Strikes (data) | `game/data/strikes/<id>.json`: `kind` (missile or aircraft), `max_hp`, `speed_cm_per_s`, and a `payload` (`damage`, `damage_type`, splash, `count` impacts scattered within `spread_cm`). They fly in from the map edge on the launcher's side. Weapons with `stock` (interceptors) fire at most that many shots, regaining one every `restock_s` |
 | Decoys | Shown to enemies as the real unit type until an enemy unit comes within 15 m or a recon drone flies over. Decoys die in one hit |

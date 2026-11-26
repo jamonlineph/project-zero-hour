@@ -479,7 +479,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P2-05
 - **Accept:** charges, interception chance, reload; cage reduces drone damage for the first N hits; tests.
 
-### P2-07 · Interceptable strikes — ⬜
+### P2-07 · Interceptable strikes — ✅ 2026-11-26 (Claude Code: strikes are launched by commander powers in P2-09)
 - **Needs:** P1-08
 - **Accept:** missiles and strike aircraft are entities; air-defense sites spend interceptor stock; tests.
 
