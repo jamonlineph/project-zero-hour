@@ -11,7 +11,10 @@ extends RefCounted
 ##   toward their target.
 ## - Instant weapons hit immediately; ballistic shells fly to where the target
 ##   was; guided missiles follow it. Splash damages enemies in the radius,
-##   falling off linearly to splash_edge_percent at the edge.
+##   falling off linearly to splash_edge_percent at the edge. Splash only hurts
+##   what the weapon can target (artillery doesn't hit drones overhead; P2-02).
+## - Cone weapons (cone_half > 0, microwave emitters) hit every visible enemy
+##   they can target inside the cone toward the target and within range.
 
 const ACQUIRE_INTERVAL: int = 3
 
@@ -107,8 +110,11 @@ static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> 
 	world.events.append({"type": "fired", "attacker": e.id, "weapon": w.def_id,
 			"x": e.x, "y": e.y, "tx": t.x, "ty": t.y})
 	if w.projectile == "instant":
+		if w.cone_half > 0:
+			_cone(world, e, w, t, damage)
+			return
 		_impact(world, e.player_id, e.id, t.id, t.x, t.y, damage, w.damage_type,
-				w.splash_radius, w.splash_edge_percent)
+				w.splash_radius, w.splash_edge_percent, w.targets)
 		return
 	var p := SimProjectile.new()
 	p.id = world.next_projectile_id()
@@ -128,6 +134,7 @@ static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> 
 	p.splash_radius = w.splash_radius
 	p.splash_edge_percent = w.splash_edge_percent
 	p.weapon_id = w.def_id
+	p.targets = w.targets
 	world.projectiles.append(p)
 
 
@@ -152,14 +159,15 @@ static func _step_projectiles(world: SimWorld) -> void:
 		p.x = p.dest_x
 		p.y = p.dest_y
 		_impact(world, p.player_id, p.attacker_id, p.target_id, p.x, p.y, p.damage, p.damage_type,
-				p.splash_radius, p.splash_edge_percent)
+				p.splash_radius, p.splash_edge_percent, p.targets)
 	world.projectiles = still_flying
 
 
 ## Applies a hit at (x, y). Without splash, only the intended target is hurt,
 ## and only if it is still there; with splash, every enemy in the radius is.
 static func _impact(world: SimWorld, player_id: int, attacker_id: int, target_id: int, x: int, y: int,
-		damage: int, damage_type: String, splash_radius: int, edge_percent: int) -> void:
+		damage: int, damage_type: String, splash_radius: int, edge_percent: int,
+		targets: PackedStringArray) -> void:
 	world.events.append({"type": "hit", "x": x, "y": y, "damage_type": damage_type, "radius": splash_radius})
 	if splash_radius <= 0:
 		var t: SimEntity = world.get_entity(target_id)
@@ -169,8 +177,29 @@ static func _impact(world: SimWorld, player_id: int, attacker_id: int, target_id
 	for t: SimEntity in world.query_radius(x, y, splash_radius + SimWorld.MAX_UNIT_RADIUS):
 		if t.dead or not world.are_enemies(player_id, t.player_id):
 			continue
+		if not targets.is_empty() and not DamageMatrix.can_target(targets, t.armor_class):
+			continue
 		var dist: int = maxi(0, Fx.length(t.x - x, t.y - y) - t.radius)
 		if dist > splash_radius:
 			continue
 		var percent: int = 100 - ((100 - edge_percent) * dist) / splash_radius
 		world.apply_damage(t, (damage * percent) / 100, damage_type, attacker_id)
+
+
+## Cone hit (P2-02): every visible enemy the weapon can target, in range and
+## within cone_half of the direction to the aimed target, in id order.
+static func _cone(world: SimWorld, e: SimEntity, w: SimWeapon, aimed: SimEntity, damage: int) -> void:
+	var heading: int = Fx.atan2_a(aimed.y - e.y, aimed.x - e.x)
+	world.events.append({"type": "hit", "x": aimed.x, "y": aimed.y, "damage_type": w.damage_type, "radius": 0})
+	var hits: Array[SimEntity] = []
+	for t: SimEntity in world.query_enemies(e.player_id, e.x, e.y, w.max_range + SimWorld.MAX_UNIT_RADIUS):
+		if t.dead or not DamageMatrix.can_target(w.targets, t.armor_class) or not in_range(e, w, t):
+			continue
+		if not world.can_see(e.player_id, t.x, t.y):
+			continue
+		if t.id != aimed.id and absi(Fx.angle_diff(heading, Fx.atan2_a(t.y - e.y, t.x - e.x))) > w.cone_half:
+			continue
+		hits.append(t)
+	hits.sort_custom(func(a: SimEntity, b: SimEntity) -> bool: return a.id < b.id)
+	for t: SimEntity in hits:
+		world.apply_damage(t, damage, w.damage_type, e.id)

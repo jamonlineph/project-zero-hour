@@ -14,6 +14,7 @@ var projectile_speed: int = 0   ## fixed-point meters per tick
 var splash_radius: int = 0
 var splash_edge_percent: int = 50
 var targets: PackedStringArray = []
+var cone_half: int = 0           ## binary angle units; 0 = single target (P2-02)
 
 var cooldown: int = 0           ## ticks until it can fire again
 var target_id: int = 0          ## entity id, 0 = none
@@ -32,6 +33,7 @@ static func from_def(def: WeaponDef) -> SimWeapon:
 	w.splash_radius = def.splash_radius
 	w.splash_edge_percent = def.splash_edge_percent
 	w.targets = def.targets.duplicate()
+	w.cone_half = def.cone_half
 	return w
 
 

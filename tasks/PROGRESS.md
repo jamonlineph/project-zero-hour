@@ -4,6 +4,15 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-02 Counter-drone weapons (Claude Code, branch claude/phase-0-wrapup)
+- Done: three counter-drone weapon kinds. The laser (America's laser vehicle) is a single-target, drone-only weapon drawn as a cyan beam. A new `cone_deg` field makes microwave emitters (`hpm_emitter`) hit every drone inside a cone. An airburst gun (`cuas_airburst_gun`) uses splash against drone groups. Splash now only hurts what a weapon can target, so artillery no longer damages drones flying over its impact point. The microwave and the gun are weapon data for the Phase 3 rosters (UAE, EU); no slice unit carries them yet.
+- Tests: `tools/run_tests.sh` -> 166 tests, 0 failed (new `test_counter_drone.gd`); golden replays unchanged.
+- Not verified: balance.
+- Next: P2-03 jamming fields and spoofing (North Korea's jamming vehicle).
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P2-01 Drone flight, endurance and return (Claude Code, branch claude/phase-0-wrapup)
 - Done: Phase 2 started at the owner's request. Drones now fly: they take a straight line over rocks and cliffs and don't push or get pushed by ground units. Each drone has an endurance (America's recon drone 90 s, North Korea's 120 s). At 20% it flies back to the building that made it, ignoring other orders, and recharges there (full in 10 s); docked drones settle onto the pad in the view. Without a launcher, a drone crashes when its endurance runs out. New `SimDrone` component and `DroneSystem` (after `OrderSystem`). Drone state is hashed only for drones, so the golden replays still match.
 - Tests: `tools/run_tests.sh` -> 161 tests, 0 failed (new `test_drones.gd`: data, straight flight over a wall, no pushing, crash, return and recharge, returning drones ignore orders, produced drones remember their launcher, determinism).

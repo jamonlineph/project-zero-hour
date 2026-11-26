@@ -1,0 +1,11 @@
+{
+  "id": "hpm_emitter",
+  "status": "placeholder stats (P2-02; for Phase 3 counter-drone vehicles)",
+  "damage": 40,
+  "damage_type": "counter_drone",
+  "range_cm": 3000,
+  "reload_ms": 2000,
+  "projectile": "instant",
+  "cone_deg": 40,
+  "targets": ["drone"]
+}

@@ -16,7 +16,9 @@
     "res://data/weapons/us_cuas_laser.json",
     "res://data/weapons/kp_loitering_munition.json",
     "res://data/weapons/bunker_machine_gun.json",
-    "res://data/weapons/sam_interceptor.json"
+    "res://data/weapons/sam_interceptor.json",
+    "res://data/weapons/hpm_emitter.json",
+    "res://data/weapons/cuas_airburst_gun.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",

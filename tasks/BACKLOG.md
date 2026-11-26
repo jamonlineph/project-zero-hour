@@ -459,7 +459,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P1-08, P1-04
 - **Accept:** drones have `endurance_s`, return at 20%, and crash at 0; tests.
 
-### P2-02 · Counter-drone weapons — ⬜
+### P2-02 · Counter-drone weapons — ✅ 2026-11-26 (Claude Code: microwave and airburst gun exist as weapon data for the Phase 3 rosters)
 - **Needs:** P2-01
 - **Accept:** laser (single target, unlimited ammo), microwave (cone area) and gun variants follow `combat.md`; tests.
 

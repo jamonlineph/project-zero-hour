@@ -14,3 +14,6 @@ var projectile_speed: int = 0      ## fixed-point meters per tick (0 for instant
 var splash_radius: int = 0         ## fixed-point meters (0 = single target)
 var splash_edge_percent: int = 50  ## damage at the edge of the splash, percent
 var targets: PackedStringArray = ["ground"]
+## Cone weapons (microwave, P2-02): half the cone's width in binary angle
+## units; every valid target inside the cone and range is hit. 0 = single target.
+var cone_half: int = 0

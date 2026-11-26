@@ -45,7 +45,8 @@ These go into `game/data/damage_matrix.json` in P1-09.
 | `reload_ms` | Time between shots |
 | `projectile` | `instant`, `ballistic`, `guided` or `drone` |
 | `projectile_speed_cm_per_s` | Projectile speed |
-| `splash_radius_cm`, `splash_falloff` | Area damage |
+| `splash_radius_cm`, `splash_edge_percent` | Area damage. Splash only hurts what the weapon can `target` (artillery doesn't hit drones overhead) |
+| `cone_deg` | Cone weapons (microwave emitters): every valid target inside a cone of this width toward the aimed target is hit. Instant weapons only |
 | `targets` | Which armor classes it can target, e.g. `["ground"]`, `["air"]`, `["drone"]` |
 | `needs_spotter` | Kill-chain weapons (P2-04) |
 | `guided` | Affected by jamming (P2-03) |

@@ -14,6 +14,8 @@ enum Kind { MUZZLE, EXPLOSION, SMOKE, DEATH }
 const POOL_SIZES: Dictionary = {Kind.MUZZLE: 32, Kind.EXPLOSION: 48, Kind.SMOKE: 24, Kind.DEATH: 16}
 const TRACER_POOL: int = 32
 const TRACER_SECONDS: float = 0.09
+const TRACER_COLOR := Color(1.0, 0.85, 0.45)
+const LASER_COLOR := Color(0.35, 0.9, 1.0)   ## counter-drone lasers and microwave
 
 var _pools: Dictionary[int, Array] = {}
 var _next: Dictionary[int, int] = {}
@@ -56,7 +58,7 @@ func play(kind: Kind, at: Vector3, size: float = 1.0) -> void:
 
 
 ## A short bright streak from a muzzle to the target.
-func tracer(from: Vector3, to: Vector3) -> void:
+func tracer(from: Vector3, to: Vector3, color: Color = TRACER_COLOR) -> void:
 	var length: float = from.distance_to(to)
 	if length < 0.5:
 		return
@@ -67,7 +69,7 @@ func tracer(from: Vector3, to: Vector3) -> void:
 	t.scale = Vector3(1.0, 1.0, length)
 	t.visible = true
 	var mat := t.material_override as StandardMaterial3D
-	mat.albedo_color.a = 1.0
+	mat.albedo_color = Color(color, 1.0)
 	var tween := t.create_tween()
 	tween.tween_property(mat, "albedo_color:a", 0.0, TRACER_SECONDS)
 	tween.tween_callback(func() -> void: t.visible = false)

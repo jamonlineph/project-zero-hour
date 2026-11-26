@@ -299,6 +299,11 @@ func _load_weapon(path: String) -> void:
 		w.splash_radius = Fx.from_ratio(_req_int(src, "splash_radius_cm", path, 0), 100)
 	if src.has("splash_edge_percent"):
 		w.splash_edge_percent = _req_int(src, "splash_edge_percent", path, 0)
+	if src.has("cone_deg"):
+		var cone_deg: int = _req_int(src, "cone_deg", path, 1)
+		w.cone_half = (cone_deg * Fx.ANGLE_FULL) / 720
+		if w.projectile != "instant":
+			errors.append("%s: cone_deg needs an instant weapon" % path)
 	var targets: Variant = src.get("targets", ["ground"])
 	w.targets = PackedStringArray()
 	for t: Variant in targets:

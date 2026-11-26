@@ -100,7 +100,10 @@ func play_events(events: Array[Dictionary]) -> void:
 				if weapon == null or weapon.projectile == "instant":
 					var tx: float = Fx.to_float(ev["tx"])
 					var tz: float = Fx.to_float(ev["ty"])
-					effects.tracer(from, Vector3(tx, _ground(tx, tz) + 1.0, tz))
+					var beam: bool = weapon != null and weapon.damage_type == "counter_drone"
+					var aim_y: float = UnitView.DRONE_HOVER_M if beam else 1.0
+					effects.tracer(from, Vector3(tx, _ground(tx, tz) + aim_y, tz),
+							CombatEffects.LASER_COLOR if beam else CombatEffects.TRACER_COLOR)
 				sounds.play_at(GameSounds.weapon_sound(weapon), from)
 			"hit":
 				if not world.can_see(local_player_id, ev["x"], ev["y"]):

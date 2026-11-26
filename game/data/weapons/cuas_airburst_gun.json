@@ -1,0 +1,12 @@
+{
+  "id": "cuas_airburst_gun",
+  "status": "placeholder stats (P2-02; for Phase 3 counter-drone vehicles)",
+  "damage": 18,
+  "damage_type": "autocannon",
+  "range_cm": 3500,
+  "reload_ms": 300,
+  "projectile": "instant",
+  "splash_radius_cm": 300,
+  "splash_edge_percent": 50,
+  "targets": ["drone"]
+}
