@@ -382,7 +382,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - The sandbox loads it.
 - **Accept:** tests for the loader; the view terrain matches sim heights.
 
-### P1-31 · Skirmish AI v0 — ⬜
+### P1-31 · Skirmish AI v0 — ✅ 2026-11-26 (Claude Code: AI duel ends at about 5:00 game time; play it with `godot --path game -- --scenario=skirmish_vs_ai`)
 - **Needs:** P1-13, P1-15, P1-10
 - **Do:**
   - AI player in the sim using `SimRng` and commands only.

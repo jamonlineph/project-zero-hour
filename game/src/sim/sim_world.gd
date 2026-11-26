@@ -177,6 +177,23 @@ func spawn_building(def: BuildingDef, player_id: int, cx: int, cy: int, built: b
 	return e.id
 
 
+## True if the footprint at `origin` is open terrain with no building on it and
+## no unit standing on it (a unit there would be trapped).
+func can_place(def: BuildingDef, origin: Vector2i) -> bool:
+	for y: int in range(origin.y, origin.y + def.footprint_h):
+		for x: int in range(origin.x, origin.x + def.footprint_w):
+			if not map.is_passable(x, y):
+				return false
+	for id: int in entity_ids:
+		var u: SimEntity = entities[id]
+		if u.mover == null:
+			continue
+		var cell: Vector2i = map.cell_of(u.x, u.y)
+		if cell.x >= origin.x and cell.y >= origin.y and cell.x < origin.x + def.footprint_w and cell.y < origin.y + def.footprint_h:
+			return false
+	return true
+
+
 ## Footprint origin that centers a building on the point (fixed-point meters).
 static func footprint_origin(def: BuildingDef, x: int, y: int) -> Vector2i:
 	return Vector2i(SimMap.cell_coord(x) - def.footprint_w / 2, SimMap.cell_coord(y) - def.footprint_h / 2)

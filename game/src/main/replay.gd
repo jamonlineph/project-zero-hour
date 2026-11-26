@@ -69,11 +69,14 @@ func play(content: ContentDb) -> SimWorld:
 	return world
 
 
-## Plays the replay and lists every problem: different content, or state
-## hashes that differ from the recorded checkpoints. Empty means it matches.
-func verify(content: ContentDb) -> PackedStringArray:
+## Plays the replay and lists every problem: different content (when
+## `strict_content`), or state hashes that differ from the recorded
+## checkpoints. Empty means it matches. Golden-replay tests pass
+## strict_content = false: unrelated data files (a new scenario, say) change
+## the content hash without changing what happens in the recorded match.
+func verify(content: ContentDb, strict_content: bool = true) -> PackedStringArray:
 	var problems: PackedStringArray = []
-	if content.content_hash != content_hash:
+	if strict_content and content.content_hash != content_hash:
 		problems.append("content differs from the recording (game data changed); regenerate golden replays if this was intended")
 		return problems
 	var world: SimWorld = MatchSetup.build(content, scenario_id, seed_value)

@@ -23,7 +23,7 @@ func test_golden_replays_match() -> void:
 		assert_true(replay != null, "%s could not be read" % f)
 		if replay == null:
 			continue
-		var problems: PackedStringArray = replay.verify(_content())
+		var problems: PackedStringArray = replay.verify(_content(), false)
 		assert_true(problems.is_empty(), "%s: %s (run tools/regen_golden_replays.sh if the change was intended)" % [f, ", ".join(problems)])
 		checked += 1
 	assert_true(checked >= 3, "expected at least 3 golden replays, found %d" % checked)

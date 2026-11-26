@@ -33,6 +33,7 @@
 | `src/view/` | `GameView`, `UnitView`, `RtsCamera`, `TeamColors`, effects | Yes, read-only access to the sim |
 | `src/input/` | `InputActions`, `SelectionController` (and later build placement, hotkeys) | Yes; produces commands |
 | `src/ui/` | HUD, menus, overlays | Yes |
+| `src/ai/` | Skirmish AI: reads the sim, issues SimCommands through the runner | **No** (same rules as the sim: it runs on every machine) |
 | `data/` | JSON content plus `index.json` | — |
 | `assets/` | `.glb` models, `.png` icons and sprites, audio (provenance lives in the root `ASSET_MANIFEST.csv`) | — |
 | `tests/` | `run_tests.gd`, `smoke_main.gd`, `unit/test_*.gd` | Tests may use anything |

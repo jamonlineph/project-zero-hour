@@ -41,6 +41,6 @@ Each personality is a JSON preset: build order, unit preferences, aggression and
 
 | Version | Task | Scope |
 |---|---|---|
-| v0 | P1-31 | Scripted build order, gather, produce, attack in waves |
+| v0 ✅ | P1-31 | Build order from `game/data/ai/*.json`, keeps a builder and trucks, fills factories with the unit mix it lacks most, defends buildings, attacks in waves. Shortcut: it knows where enemy buildings are (start positions). Code: `game/src/ai/ai_player.gd` |
 | v1 | P2-11 | Easy and normal, counter-building, uses powers |
 | v2 | P3-13 | All factions, hard difficulty, personalities |

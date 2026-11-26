@@ -17,6 +17,7 @@ var buildings: Dictionary[String, BuildingDef] = {}
 var weapons: Dictionary[String, WeaponDef] = {}
 var maps: Dictionary[String, MapDef] = {}
 var scenarios: Dictionary[String, Dictionary] = {}   ## raw scenario data, see MatchSetup
+var ai_presets: Dictionary[String, Dictionary] = {}  ## raw AI presets, see AiPlayer
 var damage_matrix: DamageMatrix = DamageMatrix.new()
 var rules: SimRules = SimRules.new()
 ## Hash of every content file's text, in load order. Replays and multiplayer
@@ -33,6 +34,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	weapons.clear()
 	maps.clear()
 	scenarios.clear()
+	ai_presets.clear()
 	damage_matrix = DamageMatrix.new()
 	rules = SimRules.new()
 	errors.clear()
@@ -56,6 +58,8 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 		_load_map(str(path))
 	for path: Variant in (index as Dictionary).get("scenarios", []):
 		_load_scenario(str(path))
+	for path: Variant in (index as Dictionary).get("ai", []):
+		_load_ai_preset(str(path))
 	_check_references()
 	content_hash = _hasher.value
 	return errors.is_empty()
@@ -140,6 +144,24 @@ func _load_scenario(path: String) -> void:
 	if path.get_file().get_basename() != id:
 		errors.append("%s: file name must match id '%s'" % [path, id])
 	scenarios[id] = src
+
+
+func _load_ai_preset(path: String) -> void:
+	var parsed: Variant = _read_json(path)
+	if not parsed is Dictionary:
+		errors.append("%s: expected a JSON object" % path)
+		return
+	var src: Dictionary = parsed
+	var id: String = _req_string(src, "id", path)
+	for b: Variant in src.get("build_order", []):
+		if not buildings.has(str(b)):
+			errors.append("%s: build_order has unknown building '%s'" % [path, str(b)])
+	for u: Variant in (src.get("unit_mix", {}) as Dictionary):
+		if not units.has(str(u)):
+			errors.append("%s: unit_mix has unknown unit '%s'" % [path, str(u)])
+	if path.get_file().get_basename() != id:
+		errors.append("%s: file name must match id '%s'" % [path, id])
+	ai_presets[id] = src
 
 
 ## Every id one file mentions must exist in another.

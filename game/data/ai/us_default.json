@@ -1,0 +1,13 @@
+{
+  "id": "us_default",
+  "faction": "us",
+  "_doc": "Skirmish AI preset (docs/design/ai-opponent.md). build_order lists buildings in order; repeat an id to build it again.",
+  "build_order": ["us_microreactor", "us_logistics_hub", "us_barracks", "us_vehicle_depot", "us_microreactor", "us_logistics_hub"],
+  "unit_mix": {"us_mbt": 3, "us_rifle_squad": 2},
+  "max_gatherers": 4,
+  "gatherer_unit": "us_logistics_truck",
+  "attack_wave_size": 6,
+  "first_attack_after_s": 180,
+  "think_interval_ticks": 15,
+  "defend_radius_m": 45
+}

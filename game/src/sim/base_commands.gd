@@ -47,14 +47,8 @@ static func _build(world: SimWorld, c: SimCommand) -> void:
 	if not world.has_requirements(c.player_id, def.requires):
 		return
 	var origin: Vector2i = SimWorld.footprint_origin(def, c.target_x, c.target_y)
-	# Units standing on the footprint would be trapped: refuse the spot.
-	for id: int in world.entity_ids:
-		var u: SimEntity = world.entities[id]
-		if u.mover == null:
-			continue
-		var cell: Vector2i = world.map.cell_of(u.x, u.y)
-		if cell.x >= origin.x and cell.y >= origin.y and cell.x < origin.x + def.footprint_w and cell.y < origin.y + def.footprint_h:
-			return
+	if not world.can_place(def, origin):
+		return
 	var id: int = world.spawn_building(def, c.player_id, origin.x, origin.y, false)
 	if id == 0:
 		return

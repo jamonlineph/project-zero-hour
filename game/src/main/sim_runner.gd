@@ -21,6 +21,8 @@ var local_player_id: int = 1
 var players: Array[int] = []
 ## Players whose batches this machine fills itself (the human, AI players).
 var local_players: Array[int] = []
+## AI controllers by player id; each must also be in local_players.
+var ai_players: Dictionary[int, AiPlayer] = {}
 var input_delay: int = 1
 var paused: bool = false
 ## For saving a replay: what this match was built from.
@@ -53,6 +55,24 @@ func start() -> void:
 		for p: int in players:
 			_store(p, t, [])
 	_started = true
+
+
+## Adds AI players for every scenario player that has an "ai" preset.
+func add_ai_from_scenario(content: ContentDb, scenario: Dictionary) -> void:
+	for p: Variant in scenario.get("players", []):
+		var pd: Dictionary = p
+		var preset: String = str(pd.get("ai", ""))
+		if preset == "":
+			continue
+		var pid: int = int(pd.get("id", 0))
+		var ai: AiPlayer = AiPlayer.from_preset(content, preset, pid)
+		if ai == null:
+			continue
+		ai_players[pid] = ai
+		if not players.has(pid):
+			players.append(pid)
+		if not local_players.has(pid):
+			local_players.append(pid)
 
 
 ## Queues a command from the local player. It joins the next batch, which
@@ -139,7 +159,13 @@ func _seal_local_batches() -> void:
 		if _batches.has(t) and (_batches[t] as Dictionary).has(p):
 			continue
 		var cmds: Array[SimCommand] = []
-		if p == local_player_id:
+		if ai_players.has(p):
+			var seq: int = 0
+			for c: SimCommand in ai_players[p].think(world):
+				seq += 1
+				c.seq = seq
+				cmds.append(c)
+		elif p == local_player_id:
 			for c: SimCommand in _outbox:
 				c.tick = t
 				cmds.append(c)

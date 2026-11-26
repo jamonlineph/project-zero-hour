@@ -3,13 +3,15 @@ extends Node3D
 ## per side, and wires the runner, view, camera, input and HUD together.
 ## P1-32 replaces this with a real menu and match setup (tasks/BACKLOG.md).
 
-const SCENARIO_ID: String = "sandbox"
+## Default scenario; override with: godot --path game -- --scenario=skirmish_vs_ai
+const DEFAULT_SCENARIO: String = "sandbox"
 const LOCAL_PLAYER: int = 1
 const ENEMY_PLAYER: int = 2
 const SEED: int = 20261125
 
 var content: ContentDb
 var map_def: MapDef
+var scenario_id: String = DEFAULT_SCENARIO
 var world: SimWorld
 var runner: SimRunner
 var game_view: GameView
@@ -24,11 +26,14 @@ func _ready() -> void:
 	if not content.load_all():
 		for message: String in content.errors:
 			push_error(message)
-	world = MatchSetup.build(content, SCENARIO_ID, SEED)
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--scenario="):
+			scenario_id = arg.trim_prefix("--scenario=")
+	world = MatchSetup.build(content, scenario_id, SEED)
 	if world == null:
-		push_error("Sandbox: scenario '%s' failed to load; using an empty map" % SCENARIO_ID)
+		push_error("Sandbox: scenario '%s' failed to load; using an empty map" % scenario_id)
 		world = SimWorld.new(SEED, 128, 128)
-	map_def = content.get_map(str(content.scenarios.get(SCENARIO_ID, {}).get("map", "")))
+	map_def = content.get_map(str(content.scenarios.get(scenario_id, {}).get("map", "")))
 	if map_def == null:
 		map_def = MapDef.new()
 		map_def.width_m = 128
@@ -39,10 +44,11 @@ func _ready() -> void:
 	runner.name = "SimRunner"
 	runner.world = world
 	runner.local_player_id = LOCAL_PLAYER
-	runner.scenario_id = SCENARIO_ID
+	runner.scenario_id = scenario_id
 	runner.seed_value = SEED
 	runner.process_priority = -10   # step the sim before the view reads it
 	add_child(runner)
+	runner.add_ai_from_scenario(content, content.scenarios.get(scenario_id, {}))
 	runner.start()
 
 	game_view = GameView.new()

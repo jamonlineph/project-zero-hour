@@ -33,6 +33,12 @@
     "res://data/maps/sandbox.json"
   ],
   "scenarios": [
-    "res://data/scenarios/sandbox.json"
+    "res://data/scenarios/sandbox.json",
+    "res://data/scenarios/ai_duel.json",
+    "res://data/scenarios/skirmish_vs_ai.json"
+  ],
+  "ai": [
+    "res://data/ai/us_default.json",
+    "res://data/ai/ru_default.json"
   ]
 }
