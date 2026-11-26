@@ -115,10 +115,12 @@ Keep this list in sync with the code whenever you add a system.
 - **`UnitView`:**
   - Loads the `.glb` from the unit's data. If the model doesn't exist yet, it falls back to a placeholder shape.
   - Recolors materials named `team_color`.
-  - Turns to face its movement (view-only; sim facing arrives with P1-02).
+  - Draws the sim facing, interpolated between ticks.
+  - Health bar (when damaged or selected) and veterancy pips (`UnitStatus`).
+  - Turret and barrel aiming through named nodes (`turret`, `barrel`); shots flash at `muzzle_0`.
+  - Destroyed vehicles and buildings leave a dark wreck that sinks away after 20 s.
+- **Fog of war (`FogOfWar`):** copies the local team's visible and explored layers into a small texture (one texel per 8 m vision cell). Terrain materials made by `FogOfWar.make_material()` darken under it. Enemy views are hidden outside vision; neutral entities appear once their ground is explored.
 - **Later:**
-  - Health bars and veterancy pips.
-  - Turret and barrel aiming through named nodes (`turret`, `barrel`, `muzzle_0`).
   - Effects through pooled particles.
   - `MultiMeshInstance3D` for infantry and drones when counts are high.
   - Imported LODs (automatic) and distance-based impostor sprites if needed for low-end phones.

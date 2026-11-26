@@ -352,7 +352,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Do:** a ghost preview with valid/invalid tint. On touch: place the ghost, drag to adjust, then confirm or cancel buttons.
 - **Accept:** works with mouse and touch; tests for the validity rules (sim side).
 
-### P1-27 · Fog rendering — ⬜
+### P1-27 · Fog rendering — ✅ 2026-11-26 (Claude Code: terrain shader plus minimap; smoke test checks hidden enemies and the fog texture)
 - **Needs:** P1-11
 - **Do:**
   - Feed the visibility grid to a texture and a terrain shader: black for unexplored, darkened for explored.

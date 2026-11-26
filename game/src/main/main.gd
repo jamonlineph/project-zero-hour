@@ -20,6 +20,7 @@ var hud: Hud
 var selection: SelectionController
 var placement: PlacementController
 var pause_menu: PauseMenu
+var fog: FogOfWar
 var _game_over_shown: bool = false
 
 
@@ -139,11 +140,16 @@ func _build_environment() -> void:
 	sun.shadow_enabled = true
 	add_child(sun)
 
+	# Terrain materials darken under the local player's fog of war (P1-27).
+	fog = FogOfWar.new()
+	fog.setup(world, LOCAL_PLAYER)
+	add_child(fog)
+
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(map_def.width_m, map_def.height_m)
-	var ground_mat := StandardMaterial3D.new()
-	ground_mat.albedo_color = Color(0.36, 0.42, 0.28)
-	ground_mat.roughness = 1.0
+	plane.subdivide_width = 1
+	plane.subdivide_depth = 1
+	var ground_mat: ShaderMaterial = fog.make_material(Color(0.36, 0.42, 0.28))
 	var ground := MeshInstance3D.new()
 	ground.name = "Ground"
 	ground.mesh = plane
@@ -156,8 +162,7 @@ func _build_environment() -> void:
 	# fine here (never in the sim).
 	var rng := RandomNumberGenerator.new()
 	rng.seed = SEED
-	var rock_mat := StandardMaterial3D.new()
-	rock_mat.albedo_color = Color(0.45, 0.43, 0.40)
+	var rock_mat: ShaderMaterial = fog.make_material(Color(0.45, 0.43, 0.40))
 	for o: PackedInt32Array in map_def.obstacles_m:
 		var rock := MeshInstance3D.new()
 		var box := BoxMesh.new()

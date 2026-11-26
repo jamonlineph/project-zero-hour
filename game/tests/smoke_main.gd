@@ -59,6 +59,7 @@ func _run() -> void:
 		failures.append_array(await _check_hud_build_and_produce(main, world, selection))
 		failures.append_array(await _check_attack(world, selection))
 		failures.append_array(await _check_unit_views(world, game_view, selection))
+		failures.append_array(_check_fog(main, world, game_view))
 
 	if _errors.count > 0:
 		failures.append("%d error(s) were logged" % _errors.count)
@@ -251,4 +252,46 @@ func _check_unit_views(world: SimWorld, game_view: GameView, selection: Selectio
 		problems.append("the tank survived lethal damage")
 	elif game_view.wrecks_made <= made or not is_instance_valid(tv) or not tv.is_wreck:
 		problems.append("a destroyed tank left no wreck")
+	return problems
+
+
+## P1-27: enemy views are hidden outside vision and the terrain fog texture
+## matches the sim's vision grid.
+func _check_fog(main: Node, world: SimWorld, game_view: GameView) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var fog: FogOfWar = main.get("fog")
+	if fog == null:
+		problems.append("the match scene has no fog of war")
+		return problems
+	fog.refresh()
+	game_view.sync(0.0)
+	var team: int = world.team_of(1)
+	var hidden: int = 0
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		var v: UnitView = game_view.get_view(id)
+		if v == null or not world.are_enemies(1, e.player_id):
+			continue
+		var seen: bool = world.can_see(1, e.x, e.y)
+		if v.visible != seen:
+			problems.append("enemy %s is %s although it is %s" % [e.def_id,
+					"drawn" if v.visible else "hidden", "seen" if seen else "not seen"])
+		if not seen:
+			hidden += 1
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		if e.player_id == 1:
+			var want: int = FogOfWar.VISIBLE if world.vision.is_visible(team, e.x, e.y) else FogOfWar.EXPLORED
+			var got: int = fog.value_at(Fx.to_float(e.x), Fx.to_float(e.y))
+			if got != want:
+				problems.append("fog texture is %d under own %s (want %d)" % [got, e.def_id, want])
+			break
+	# Somewhere on the map should still be unexplored or remembered.
+	var dark: int = 0
+	for cy: int in world.vision.rows:
+		for cx: int in world.vision.cols:
+			if fog.value_at(cx * 8.0 + 4.0, cy * 8.0 + 4.0) != FogOfWar.VISIBLE:
+				dark += 1
+	if dark == 0:
+		problems.append("the whole map is lit: fog texture shows no fog anywhere")
 	return problems

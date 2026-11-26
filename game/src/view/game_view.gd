@@ -30,10 +30,18 @@ func sync(alpha: float) -> void:
 		var e: SimEntity = world.entities[id]
 		var v: UnitView = _views[id]
 		v.update_from_sim(e, alpha)
-		v.visible = not world.are_enemies(local_player_id, e.player_id) or world.can_see(local_player_id, e.x, e.y)
+		v.visible = is_shown(e)
 		if v.visible:
 			v.update_status(e)
 			_aim(e, v, delta)
+
+
+## Fog of war: enemies show only where this player sees; neutral things such
+## as supply sites show once their ground has been explored.
+func is_shown(e: SimEntity) -> bool:
+	if e.player_id == 0:
+		return world.vision.is_explored(world.team_of(local_player_id), e.x, e.y)
+	return not world.are_enemies(local_player_id, e.player_id) or world.can_see(local_player_id, e.x, e.y)
 
 
 ## Points turrets at the first weapon's target. Ballistic weapons raise the
