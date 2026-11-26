@@ -467,7 +467,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P2-01
 - **Accept:** fields affect drones and guided weapons as specified; fiber-optic immunity; spoofing uses `SimRng`; tests, including determinism.
 
-### P2-04 · Kill chain — ⬜
+### P2-04 · Kill chain — ✅ 2026-11-26 (Claude Code: recon drones spot; sniper and recon teams and satellite passes join when they exist)
 - **Needs:** P1-11
 - **Accept:** `needs_spotter` weapons fire beyond their own vision only at spotted targets; losing the spotter breaks guided shots; tests.
 

@@ -12,6 +12,7 @@
   "vision_cm": 7000,
   "build_time_ms": 6000,
   "endurance_s": 90,
+  "spotter": true,
   "requires": [],
   "weapons": [],
   "visual": {

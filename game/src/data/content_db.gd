@@ -299,6 +299,7 @@ func _load_weapon(path: String) -> void:
 		w.splash_radius = Fx.from_ratio(_req_int(src, "splash_radius_cm", path, 0), 100)
 	if src.has("splash_edge_percent"):
 		w.splash_edge_percent = _req_int(src, "splash_edge_percent", path, 0)
+	w.needs_spotter = bool(src.get("needs_spotter", false))
 	if src.has("cone_deg"):
 		var cone_deg: int = _req_int(src, "cone_deg", path, 1)
 		w.cone_half = (cone_deg * Fx.ANGLE_FULL) / 720
@@ -424,6 +425,7 @@ func _load_unit(path: String) -> void:
 	u.builder = bool(src.get("builder", false))
 	u.flying = bool(src.get("flying", u.armor_class == "drone"))
 	u.fiber_optic = bool(src.get("fiber_optic", false))
+	u.spotter = bool(src.get("spotter", false))
 	var jam: Variant = src.get("jammer", null)
 	if jam is Dictionary:
 		u.jam_radius = Fx.from_ratio(_req_int(jam, "radius_cm", path, 1), 100)

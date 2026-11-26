@@ -31,7 +31,8 @@ func test_weapon_sounds_follow_the_weapon() -> void:
 	var db := ContentDb.new()
 	assert_true(db.load_all())
 	assert_eq(GameSounds.weapon_sound(db.get_weapon("tank_cannon_120")), "cannon")
-	assert_eq(GameSounds.weapon_sound(db.get_weapon("us_rocket_pod")), "artillery")
+	assert_eq(GameSounds.weapon_sound(db.get_weapon("us_rocket_pod")), "missile")   # guided rockets since P2-04
+	assert_eq(GameSounds.weapon_sound(db.get_weapon("kp_howitzer_152")), "artillery")
 	assert_eq(GameSounds.weapon_sound(db.get_weapon("us_at_missile")), "missile")
 	assert_eq(GameSounds.weapon_sound(db.get_weapon("us_cuas_laser")), "laser")
 	assert_eq(GameSounds.weapon_sound(null), "rifle")

@@ -22,6 +22,7 @@ var gatherer: bool = false      ## collects supply
 var flying: bool = false        ## flies over terrain (default: armor class "drone")
 var endurance_ticks: int = 0    ## drones: flight time on a full charge (data: endurance_s); 0 = unlimited
 var fiber_optic: bool = false   ## drones: immune to jamming and spoofing
+var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
 ## Jammer (data: "jammer": {radius_cm, strength, spoof_radius_cm, spoof_range_cm, spoof_cooldown_s}).
 var jam_radius: int = 0
 var jam_strength: int = 0

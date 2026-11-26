@@ -4,6 +4,16 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P2-04 Kill chain (Claude Code, branch claude/phase-0-wrapup)
+- Done: America's rocket artillery now fires guided rockets that need a spotter: beyond its own 40 m sight it only fires at targets a friendly spotter (the recon drone, for now) can see. A tank seeing the target isn't enough. If the spotter dies, is jammed or is spoofed, rockets already in the air lose guidance and fly to the last known point. New `spotter` (units) and `needs_spotter` (weapons) data fields and a `KillChainSystem`.
+- Fixed along the way: jammed drones were drifting at full speed (a new drift point every time they reached the last one); they now drift one 2 m step a second and hover in between.
+- Tests: `tools/run_tests.sh` -> 184 tests, 0 failed (new `test_kill_chain.gd`: data, no spotter no fire, spotted targets hit at 100 m, own sight needs no spotter, jammed spotters don't count, guidance lost when the spotter dies, determinism). The audio test now expects the missile sound for the guided rocket pod.
+- Not verified: balance; there is no UI hint yet showing which targets are spotted (a P2-17 UI pass item).
+- Next: P2-05 upgrades system.
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P2-03 Jamming fields and spoofing (Claude Code, branch claude/phase-0-wrapup)
 - Done: North Korea's EW vehicle now projects a 40 m jamming field (shown as a purple ring). Enemy drones inside lose control: they hover and drift, can't fire, ignore orders, and crash if their endurance runs out before they drift clear. Guided missiles fired at targets inside a hostile field lose lock half the time and scatter 4–10 m (deterministic `SimRng`). Fiber-optic drones are immune. The vehicle's **Spoof** button (then click a point up to 70 m away, every 30 s) sends enemy drones in a 25 m area to random points for 5 s; armed ones attack a random nearby entity, which can be their own side. New `SimJammer` component, `JammingSystem`, and a `SPOOF` command. Jammer state is hashed only where it exists, so golden replays still match.
 - Tests: `tools/run_tests.sh` -> 177 tests, 0 failed (new `test_jamming.gd`: data, loss of control, own side and range, crash, no firing, fiber-optic immunity, about half of guided shots lose lock, unguided unaffected, spoof radius, range and cooldown, spoofed friendly fire, determinism, command round trip); smoke_main checks the Spoof button end to end.

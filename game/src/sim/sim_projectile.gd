@@ -20,6 +20,7 @@ var damage_type: String = ""
 var splash_radius: int = 0
 var splash_edge_percent: int = 50
 var weapon_id: String = ""
+var needs_spotter: bool = false       ## kill-chain shot (not hashed: follows weapon_id)
 var targets: PackedStringArray = []   ## splash only hurts what the weapon can target (not hashed: follows weapon_id)
 
 

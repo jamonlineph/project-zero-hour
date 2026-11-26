@@ -41,6 +41,8 @@ var player_team: Dictionary[int, int] = {}
 var projectiles: Array[SimProjectile] = []   ## in creation order
 ## Jammers that are on this tick (rebuilt by JammingSystem; derived, not hashed).
 var active_jammers: Array[SimEntity] = []
+## Spotters that can mark targets this tick (KillChainSystem; derived, not hashed).
+var active_spotters: Array[SimEntity] = []
 ## What happened this tick, for the view and audio (not part of the state hash).
 ## Dictionaries with a "type": "fired", "hit" or "died".
 var events: Array[Dictionary] = []
@@ -118,6 +120,7 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 		e.drone.endurance_max = def.endurance_ticks
 		e.drone.endurance = def.endurance_ticks
 		e.drone.fiber_optic = def.fiber_optic
+	e.spotter = def.spotter
 	if def.jam_radius > 0:
 		e.jammer = SimJammer.new()
 		e.jammer.radius = def.jam_radius
@@ -138,6 +141,19 @@ func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -
 	entities[e.id] = e
 	entity_ids.append(e.id)
 	return e.id
+
+
+## True if a spotter on `player_id`'s team sees (x, y) this tick (P2-04).
+func is_spotted(player_id: int, x: int, y: int) -> bool:
+	var team: int = team_of(player_id)
+	for sp: SimEntity in active_spotters:
+		if team_of(sp.player_id) != team:
+			continue
+		var dx: int = x - sp.x
+		var dy: int = y - sp.y
+		if dx * dx + dy * dy <= sp.vision * sp.vision:
+			return true
+	return false
 
 
 ## Strongest hostile jamming field covering (x, y) for `victim_player`'s
@@ -344,6 +360,7 @@ func step() -> void:
 	OrderSystem.step(self)
 	DroneSystem.step(self)
 	JammingSystem.step(self)
+	KillChainSystem.step(self)
 	PowerSystem.step(self)
 	ConstructionSystem.step(self)
 	ProductionSystem.step(self)

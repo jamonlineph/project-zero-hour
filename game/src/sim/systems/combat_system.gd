@@ -71,7 +71,7 @@ static func in_range(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 static func _valid_target(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 	return not t.dead and world.are_enemies(e.player_id, t.player_id) \
 			and DamageMatrix.can_target(w.targets, t.armor_class) and in_range(e, w, t) \
-			and world.can_see(e.player_id, t.x, t.y)
+			and world.can_see(e.player_id, t.x, t.y) and KillChainSystem.may_engage(world, e, w, t)
 
 
 static func _acquire(world: SimWorld, e: SimEntity, w: SimWeapon) -> SimEntity:
@@ -83,7 +83,7 @@ static func _acquire(world: SimWorld, e: SimEntity, w: SimWeapon) -> SimEntity:
 			continue
 		if not DamageMatrix.can_target(w.targets, t.armor_class) or not in_range(e, w, t):
 			continue
-		if not world.can_see(e.player_id, t.x, t.y):
+		if not world.can_see(e.player_id, t.x, t.y) or not KillChainSystem.may_engage(world, e, w, t):
 			continue
 		var structure: bool = t.armor_class == "structure"
 		var dist: int = Fx.length(t.x - e.x, t.y - e.y)
@@ -141,6 +141,7 @@ static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> 
 	p.splash_edge_percent = w.splash_edge_percent
 	p.weapon_id = w.def_id
 	p.targets = w.targets
+	p.needs_spotter = w.needs_spotter
 	# Jamming (P2-03): a guided shot at a target inside a hostile field loses
 	# its lock half the time and flies to a scattered point instead.
 	if p.guided and world.jam_level(e.player_id, t.x, t.y) > 0 and world.rng.chance(1, 2):
@@ -159,6 +160,7 @@ static func _step_projectiles(world: SimWorld) -> void:
 	for p: SimProjectile in world.projectiles:
 		p.prev_x = p.x
 		p.prev_y = p.y
+		KillChainSystem.check_guidance(world, p)
 		if p.guided:
 			var t: SimEntity = world.get_entity(p.target_id)
 			if t != null and not t.dead:

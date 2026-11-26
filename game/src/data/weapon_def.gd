@@ -17,3 +17,5 @@ var targets: PackedStringArray = ["ground"]
 ## Cone weapons (microwave, P2-02): half the cone's width in binary angle
 ## units; every valid target inside the cone and range is hit. 0 = single target.
 var cone_half: int = 0
+## Kill chain (P2-04): beyond the owner's own sight, fire only at spotted targets.
+var needs_spotter: bool = false
