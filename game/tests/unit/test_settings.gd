@@ -87,3 +87,22 @@ func test_apply_changes_engine_and_input_map() -> void:
 	GameSettings.new().apply(tree)
 	Engine.max_fps = old_fps
 	tree.root.scaling_3d_scale = old_scale
+
+
+func test_quality_presets() -> void:
+	var s := GameSettings.new()
+	s.apply_preset("low")
+	assert_eq(s.preset_name(), "low")
+	assert_false(s.shadows)
+	assert_eq(s.fps_cap, 30)
+	s.apply_preset("high")
+	assert_eq(s.preset_name(), "high")
+	s.render_scale = 0.5
+	assert_eq(s.preset_name(), "custom")
+
+
+func test_low_end_detection() -> void:
+	assert_true(GameSettings.is_low_end("gl_compatibility", 8 * 1024 * 1024 * 1024))
+	assert_true(GameSettings.is_low_end("mobile", 3 * 1024 * 1024 * 1024))
+	assert_false(GameSettings.is_low_end("mobile", 8 * 1024 * 1024 * 1024))
+	assert_false(GameSettings.is_low_end("forward_plus", -1), "unknown memory is not low end")

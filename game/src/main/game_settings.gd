@@ -11,6 +11,14 @@ const FPS_CHOICES: Array[int] = [30, 60, 0]          ## 0 = unlimited
 const RENDER_SCALES: Array[float] = [0.5, 0.67, 0.75, 0.85, 1.0]
 const UI_SCALES: Array[float] = [0.75, 0.9, 1.0, 1.15, 1.3, 1.5]
 const BUSES: Array[String] = ["Master", "Music", "SFX", "UI", "Voice"]
+## Quality presets (P1-36): render scale, shadows, frame-rate limit.
+const PRESETS: Dictionary = {
+	"low": {"render_scale": 0.67, "shadows": false, "fps_cap": 30},
+	"medium": {"render_scale": 0.85, "shadows": true, "fps_cap": 60},
+	"high": {"render_scale": 1.0, "shadows": true, "fps_cap": 60},
+}
+## Devices with less memory than this start on the low preset.
+const LOW_END_MEMORY_BYTES: int = 4500 * 1024 * 1024
 ## Battery saver forces these, whatever the other settings say.
 const SAVER_FPS: int = 30
 const SAVER_RENDER_SCALE: float = 0.67
@@ -34,8 +42,38 @@ var bindings: Dictionary[String, int] = {}
 static func current() -> GameSettings:
 	if _current == null:
 		_current = GameSettings.new()
-		_current.load_from(file_path)
+		if FileAccess.file_exists(file_path):
+			_current.load_from(file_path)
+		else:
+			# First run: pick a preset that suits the device (P1-36).
+			var mem: Dictionary = OS.get_memory_info()
+			var low: bool = is_low_end(RenderingServer.get_current_rendering_method(), int(mem.get("physical", -1)))
+			_current.apply_preset("low" if low else "high")
 	return _current
+
+
+## True for devices that should start on the low preset: no Vulkan (the game
+## fell back to the Compatibility renderer) or little memory (-1 = unknown).
+static func is_low_end(rendering_method: String, physical_bytes: int) -> bool:
+	if rendering_method == "gl_compatibility":
+		return true
+	return physical_bytes > 0 and physical_bytes < LOW_END_MEMORY_BYTES
+
+
+func apply_preset(preset: String) -> void:
+	var p: Dictionary = PRESETS.get(preset, PRESETS["high"])
+	render_scale = p["render_scale"]
+	shadows = p["shadows"]
+	fps_cap = p["fps_cap"]
+
+
+## The preset the current values match, or "custom".
+func preset_name() -> String:
+	for name: String in PRESETS:
+		var p: Dictionary = PRESETS[name]
+		if is_equal_approx(render_scale, p["render_scale"]) and shadows == p["shadows"] and fps_cap == p["fps_cap"]:
+			return name
+	return "custom"
 
 
 ## The values actually used once battery saver is taken into account.

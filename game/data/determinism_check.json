@@ -1,0 +1,7 @@
+{
+  "_doc": "Cross-device determinism check (P1-37): Settings > Developer > Run determinism check plays this AI-vs-AI scenario for `ticks` ticks and compares the final state hash with expected_hash (computed on a desktop x86 machine). A phone (ARM) must get the same hash. Regenerate with tools/regen_golden_replays.sh after an intended sim change.",
+  "scenario": "ai_duel",
+  "seed": 7,
+  "ticks": 1800,
+  "expected_hash": 2876121879
+}

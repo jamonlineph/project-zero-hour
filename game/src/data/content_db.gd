@@ -18,6 +18,8 @@ var weapons: Dictionary[String, WeaponDef] = {}
 var maps: Dictionary[String, MapDef] = {}
 var scenarios: Dictionary[String, Dictionary] = {}   ## raw scenario data, see MatchSetup
 var ai_presets: Dictionary[String, Dictionary] = {}  ## raw AI presets, see AiPlayer
+## The cross-device determinism check (P1-37); see data/determinism_check.json.
+var determinism_check: Dictionary = {}
 ## Skirmish setup data from rules.json (see MatchConfig).
 var start_kit: Array = []
 var skirmish_credits: PackedInt32Array = [10000]
@@ -38,6 +40,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	maps.clear()
 	scenarios.clear()
 	ai_presets.clear()
+	determinism_check = {}
 	damage_matrix = DamageMatrix.new()
 	rules = SimRules.new()
 	errors.clear()
@@ -59,6 +62,13 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 		_load_building(str(path))
 	for path: Variant in (index as Dictionary).get("maps", []):
 		_load_map(str(path))
+	var check_path: String = str((index as Dictionary).get("determinism_check", ""))
+	if check_path != "":
+		var check: Variant = _read_json(check_path)
+		if check is Dictionary:
+			determinism_check = check
+		else:
+			errors.append("%s: expected a JSON object" % check_path)
 	for path: Variant in (index as Dictionary).get("scenarios", []):
 		_load_scenario(str(path))
 	for path: Variant in (index as Dictionary).get("ai", []):

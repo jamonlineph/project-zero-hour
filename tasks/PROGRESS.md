@@ -4,6 +4,20 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P1-36 and P1-37 code parts (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P1-36:** the project falls back to the OpenGL (Compatibility) renderer on devices without Vulkan (`rendering_device/fallback_to_opengl3`). Settings has a quality preset (Low: 67% resolution, no shadows, 30 fps; Medium; High). On first run, devices on the fallback renderer or with under about 4.5 GB of memory start on Low.
+  - **P1-37:** Settings > Developer > "Determinism check" plays a fixed AI-vs-AI match (`data/determinism_check.json`: ai_duel, seed 7, 1,800 ticks) and shows whether its final state hash equals the desktop's (2876121879). A unit test keeps the stored hash honest; `tools/regen_golden_replays.sh` updates it with the golden replays.
+- Tests: `tools/run_tests.sh` -> 153 tests, 0 failed; smoke_menu runs the in-game determinism check and gets "Match".
+- Not verified, and how the owner can finish both tasks:
+  1. Install the debug APK from the latest CI run (Actions > newest run > artifact "android-debug-apk") on a phone.
+  2. Open Settings > Developer > Determinism check > Run. "Match: 2876121879" means P1-37 passes; write the phone model and result in PROGRESS. "MISMATCH" means the sim differs on ARM; open an issue with the number shown.
+  3. On a low-end phone, play a skirmish for 5 minutes on the Low preset and note whether it stays smooth (30 fps or better). That is P1-36's check.
+- Next: P0-12, P0-13 and P0-15 device checks (owner), then P1-EXIT. Device-free Phase 2 work can start meanwhile.
+- For the owner: the device steps above, plus Q-1 to Q-7.
+
+---
+
 ## 2026-11-26: P1-24b Guard and patrol orders (Claude Code, branch claude/phase-0-wrapup)
 - Done: two new sim orders and commands. PATROL attack-moves to the far end and back, forever; each unit patrols between its own start and the place it reached, and stops to fight on the way. GUARD keeps armed units within 6 m of an own or allied unit or building, attacks the nearest visible enemy within 25 m of it (chasing only inside that radius), and ends when the ward dies. Controls: G then click (or the Guard button) to guard; the Patrol button then click; radial menu "Patrol here" and "Guard this"; right-click cancels a pending order. The patrol's far end only enters the state hash while a unit patrols, so golden replays recorded earlier still match.
 - Tests: `tools/run_tests.sh` -> 150 tests, 0 failed (new `test_orders.gd`: back and forth, fights on the way, guard follows, guard attacks only near its ward, ends when the ward dies, can't guard an enemy, command round trip, determinism); smoke_main orders a guard and a patrol through the real click path.

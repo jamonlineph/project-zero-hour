@@ -6,3 +6,4 @@ cd "$(dirname "$0")/.."
 GODOT="${GODOT:-godot}"
 "$GODOT" --headless --path game --import >/dev/null
 "$GODOT" --headless --path game --script res://tests/tools/make_golden_replays.gd
+"$GODOT" --headless --path game --script res://tests/tools/update_determinism_check.gd

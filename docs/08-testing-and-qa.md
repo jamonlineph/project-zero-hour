@@ -46,7 +46,7 @@ xvfb-run -a -s "-screen 0 1280x720x24" godot --rendering-driver opengl3 --path g
 | Task | Adds |
 |---|---|
 | P1-31 | **AI-vs-AI matches**: headless full matches between AI players. They catch crashes and stalemates, and feed balance numbers in Phase 4 |
-| P1-37 | **Cross-device determinism**: a debug menu entry plays a golden replay on a phone and shows the final hash, which must equal the desktop value |
+| P1-37 | **Cross-device determinism**: Settings > Developer > Determinism check plays the match in `data/determinism_check.json` and shows whether its final hash equals the desktop value (code done; needs a phone run) |
 
 ## Manual test checklist (each phase exit)
 

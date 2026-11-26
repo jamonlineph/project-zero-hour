@@ -101,6 +101,14 @@ func _check_settings(menu: Node) -> PackedStringArray:
 	saver = screen.find_child("BatterySaver", true, false)
 	saver.pressed.emit()
 	await process_frame
+	# P1-37: the in-game determinism check runs and matches the stored hash.
+	(screen.find_child("DeterminismCheck", true, false) as Button).pressed.emit()
+	for i: int in 400:
+		await process_frame
+		if screen.determinism_result() != "":
+			break
+	if not screen.determinism_result().begins_with("Match"):
+		problems.append("the determinism check did not match: '%s'" % screen.determinism_result())
 	screen.close()
 	await process_frame
 	if is_instance_valid(screen) and screen.is_inside_tree():

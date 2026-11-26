@@ -1,6 +1,7 @@
 {
   "rules": "res://data/rules.json",
   "damage_matrix": "res://data/damage_matrix.json",
+  "determinism_check": "res://data/determinism_check.json",
   "weapons": [
     "res://data/weapons/tank_cannon_120.json",
     "res://data/weapons/tank_cannon_125.json",

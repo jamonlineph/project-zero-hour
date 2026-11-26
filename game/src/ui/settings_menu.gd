@@ -18,6 +18,8 @@ var settings: GameSettings
 var _rows: VBoxContainer
 var _waiting_action: String = ""
 var _buttons: Dictionary[String, Button] = {}
+var _check: DeterminismCheck
+var _check_result: String = ""
 
 
 func _ready() -> void:
@@ -63,6 +65,10 @@ func _build_rows() -> void:
 		c.queue_free()
 	_buttons.clear()
 	_header("Display")
+	_cycle("Quality preset", settings.preset_name().capitalize(), func() -> void:
+		var order: Array[String] = ["low", "medium", "high"]
+		var i: int = order.find(settings.preset_name())
+		settings.apply_preset(order[(i + 1) % order.size()])).name = "QualityPreset"
 	_cycle("Render scale", "%d%%" % roundi(settings.render_scale * 100.0), func() -> void:
 		settings.render_scale = _next(GameSettings.RENDER_SCALES, settings.render_scale))
 	_cycle("Frame rate limit", "Unlimited" if settings.fps_cap == 0 else "%d fps" % settings.fps_cap, func() -> void:
@@ -84,6 +90,11 @@ func _build_rows() -> void:
 	_header("Sound")
 	for bus: String in GameSettings.BUSES:
 		_slider(bus, bus)
+	_header("Developer")
+	var check_label: String = "Run" if _check == null else "Running %d%%" % roundi(_check.progress() * 100.0)
+	if _check_result != "":
+		check_label = _check_result
+	_cycle("Determinism check (compare a phone with a desktop)", check_label, start_determinism_check).name = "DeterminismCheck"
 
 
 ## A row: label on the left, a button on the right that runs `action`, then
@@ -138,6 +149,36 @@ func _changed() -> void:
 	settings.apply(get_tree())
 	settings.save()
 	_build_rows.call_deferred()
+
+
+## P1-37: plays the fixed AI match from data/determinism_check.json a few
+## hundred ticks per frame and shows whether its final hash matches.
+func start_determinism_check() -> void:
+	if _check != null:
+		return
+	var content := ContentDb.new()
+	if not content.load_all() or content.determinism_check.is_empty():
+		_check_result = "Content failed to load"
+		return
+	_check_result = ""
+	_check = DeterminismCheck.new(content)
+
+
+func determinism_result() -> String:
+	return _check_result
+
+
+func _process(_delta: float) -> void:
+	if _check == null:
+		return
+	if _check.advance(60):
+		var ok: bool = _check.matches()
+		_check_result = ("Match: %d" if ok else "MISMATCH: %d (desktop %d)") % ([_check.result] if ok else [_check.result, _check.expected])
+		print("Determinism check: ", _check_result)
+		_check = null
+		_build_rows()
+	elif Engine.get_process_frames() % 15 == 0:
+		_build_rows()
 
 
 func _wait_for_key(action: String) -> void:

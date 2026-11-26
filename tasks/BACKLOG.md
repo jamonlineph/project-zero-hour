@@ -434,14 +434,14 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Saved in `user://settings.cfg`.
 - **Accept:** settings persist and apply live.
 
-### P1-36 · Low-end renderer fallback — ⬜
+### P1-36 · Low-end renderer fallback — ⛔ code done 2026-11-26 (Claude Code); waiting on a low-end phone test (owner)
 - **Do:**
   - Detect weak or Vulkan-less devices and use the Compatibility renderer.
   - A low-quality preset.
   - Test on a low-end phone.
 - **Accept:** runs at 30 fps or better on the low-end test device.
 
-### P1-37 · Cross-device determinism check — ⬜
+### P1-37 · Cross-device determinism check — ⛔ code done 2026-11-26 (Claude Code); waiting on a phone run (owner, P0-12)
 - **Needs:** P1-20, P0-12
 - **Do:** a debug menu entry plays a golden replay and shows the final hash. Compare a phone (ARM) with a desktop (x86).
 - **Accept:** identical hashes, recorded in PROGRESS.
