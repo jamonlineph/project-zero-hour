@@ -21,6 +21,8 @@ var target_y: int = 0
 var needs_path: bool = false        ## waiting for PathingSystem to plan a route
 var path: Array[Vector2i] = []      ## waypoints in fixed-point meters; last = destination
 var path_index: int = 0             ## waypoint currently being driven to
+## Entity id whose path this mover reuses (group orders), or 0 to plan its own.
+var follow_leader: int = 0
 
 
 ## Sets a new destination and asks for a path to it.
@@ -29,6 +31,7 @@ func order_move(tx: int, ty: int) -> void:
 	target_y = ty
 	has_target = true
 	needs_path = true
+	follow_leader = 0
 	path.clear()
 	path_index = 0
 
@@ -36,6 +39,7 @@ func order_move(tx: int, ty: int) -> void:
 func stop() -> void:
 	has_target = false
 	needs_path = false
+	follow_leader = 0
 	path.clear()
 	path_index = 0
 
@@ -47,6 +51,7 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(target_x)
 	h.add_int(target_y)
 	h.add_bool(needs_path)
+	h.add_int(follow_leader)
 	h.add_int(path_index)
 	h.add_int(path.size())
 	for p: Vector2i in path:

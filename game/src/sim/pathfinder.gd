@@ -28,6 +28,7 @@ const _INDEX_MASK: int = (1 << _INDEX_BITS) - 1
 const _H_MASK: int = (1 << _INDEX_BITS) - 1
 
 var last_expansions: int = 0   ## cells expanded by the latest search (for tests/profiling)
+var searches_run: int = 0      ## total find_path calls (for tests/profiling)
 var _map: SimMap
 var _offset: PackedInt32Array = PackedInt32Array()   ## padded-index step per direction
 var _gen: int = 0
@@ -74,6 +75,7 @@ func _init(map: SimMap) -> void:
 ## the start. The last waypoint is the exact target when its cell is reachable,
 ## otherwise the center of the reachable cell closest to it. Never empty.
 func find_path(sx: int, sy: int, tx: int, ty: int) -> Array[Vector2i]:
+	searches_run += 1
 	var start: Vector2i = _clamp_cell(_map.cell_of(sx, sy))
 	var goal: Vector2i = _clamp_cell(_map.cell_of(tx, ty))
 	var goal_ok: bool = _map.is_passable(goal.x, goal.y)
@@ -167,6 +169,27 @@ func _search(start: Vector2i, goal: Vector2i) -> int:
 				_push(_key(ng + (hn * HEURISTIC_NUM) / HEURISTIC_DEN, hn, ni))
 	last_expansions = expansions
 	return best
+
+
+## True if a unit could drive straight between two fixed-point positions.
+func has_line_of_sight(ax: int, ay: int, bx: int, by: int) -> bool:
+	var a: Vector2i = _clamp_cell(_map.cell_of(ax, ay))
+	var b: Vector2i = _clamp_cell(_map.cell_of(bx, by))
+	if not _map.is_passable(b.x, b.y):
+		return false
+	return _line_of_sight(_map.padded_index(a.x, a.y), _map.padded_index(b.x, b.y))
+
+
+## (x, y) if its cell is open, else the center of the nearest open cell (or
+## (x, y) unchanged if nothing is open nearby). Fixed-point in and out.
+func nearest_open_point(x: int, y: int) -> Vector2i:
+	var c: Vector2i = _clamp_cell(_map.cell_of(x, y))
+	if _map.is_passable(c.x, c.y):
+		return Vector2i(x, y)
+	var open: Vector2i = _nearest_passable(c, NEAREST_RADIUS)
+	if open.x < 0:
+		return Vector2i(x, y)
+	return SimMap.cell_center(open.x, open.y)
 
 
 ## Jump Point Search (P1-04b): A* that only stops at "jump points", the cells

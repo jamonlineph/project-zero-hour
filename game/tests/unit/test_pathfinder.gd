@@ -122,10 +122,13 @@ func test_group_orders_are_spread_over_ticks() -> void:
 	var ids: Array[int] = []
 	for i: int in 20:
 		ids.append(world.spawn_unit(_def(), 1, Fx.from_int(5 + i * 3), Fx.from_int(5)))
-	var c := SimCommand.make_move(ids, Fx.from_int(50), Fx.from_int(80))
-	c.player_id = 1
-	c.tick = 0
-	world.queue_command(c)
+	# Separate orders (not one group order), so every unit plans its own path.
+	for i: int in ids.size():
+		var c := SimCommand.make_move([ids[i]], Fx.from_int(10 + i * 4), Fx.from_int(80))
+		c.player_id = 1
+		c.seq = i + 1
+		c.tick = 0
+		world.queue_command(c)
 	world.step()
 	var waiting: int = 0
 	for id: int in ids:

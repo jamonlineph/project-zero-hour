@@ -192,7 +192,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - A tick with 3 typical searches stays under 2 ms on desktop.
   - Numbers are recorded in PROGRESS.
 
-### P1-05 · Group movement — ⬜
+### P1-05 · Group movement — ✅ 2026-11-26 (Claude Code: leader path shared by followers; layout kept within 12 m, grid otherwise; no flow field needed yet)
 - **Needs:** P1-04
 - **Do:**
   - Groups keep their relative layout: one path for the group, slot offsets.
@@ -200,7 +200,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Large groups (more than 12) may use a flow field.
 - **Accept:** tests show units end in distinct slots near the target and don't stack.
 
-### P1-06 · Separation and collision — ⬜
+### P1-06 · Separation and collision — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P1-04
 - **Do:**
   - A deterministic separation pass using a spatial hash; pairs processed in sorted id order.

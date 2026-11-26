@@ -93,6 +93,7 @@ func step() -> void:
 	# document the order in docs/02-architecture.md.
 	PathingSystem.step(self)
 	MovementSystem.step(self)
+	SeparationSystem.step(self)
 	tick += 1
 
 
@@ -131,19 +132,49 @@ func _command_before(a: SimCommand, b: SimCommand) -> bool:
 	return a.seq < b.seq
 
 
+## Groups closer together than this keep their layout at the destination;
+## more spread-out groups form a grid there instead.
+const KEEP_LAYOUT_RADIUS: int = 12 * Fx.ONE
+
+
+## A move order. One unit near the group's center (the leader) plans a path;
+## the others reuse it (see PathingSystem) and end in their own slot.
 func _apply_move(c: SimCommand) -> void:
 	var movers: Array[SimEntity] = _owned_movers(c)
 	if movers.is_empty():
 		return
-	var spacing: int = 0
+	var n: int = movers.size()
+	var cx: int = 0
+	var cy: int = 0
 	for e: SimEntity in movers:
-		spacing = maxi(spacing, e.radius * 2 + Fx.from_ratio(1, 2))
-	var offsets: Array[Vector2i] = Formation.grid_offsets(movers.size(), spacing)
-	for i: int in movers.size():
+		cx += e.x
+		cy += e.y
+	cx /= n
+	cy /= n
+	var spread: int = 0
+	var leader: SimEntity = movers[0]
+	var leader_dist: int = -1
+	for e: SimEntity in movers:
+		var d: int = Fx.length(e.x - cx, e.y - cy)
+		spread = maxi(spread, d)
+		if leader_dist < 0 or d < leader_dist:
+			leader = e
+			leader_dist = d
+	var offsets: Array[Vector2i] = []
+	if spread <= KEEP_LAYOUT_RADIUS:
+		for e: SimEntity in movers:
+			offsets.append(Vector2i(e.x - cx, e.y - cy))
+	else:
+		var spacing: int = 0
+		for e: SimEntity in movers:
+			spacing = maxi(spacing, e.radius * 2 + Fx.from_ratio(1, 2))
+		offsets = Formation.grid_offsets(n, spacing)
+	for i: int in n:
 		var e: SimEntity = movers[i]
 		e.mover.order_move(
 			clampi(c.target_x + offsets[i].x, 0, map_width),
 			clampi(c.target_y + offsets[i].y, 0, map_height))
+		e.mover.follow_leader = 0 if e == leader or n == 1 else leader.id
 
 
 func _apply_stop(c: SimCommand) -> void:
