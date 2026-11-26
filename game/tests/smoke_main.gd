@@ -56,6 +56,7 @@ func _run() -> void:
 				moved += 1
 		if moved == 0:
 			failures.append("no selected unit moved after a move order")
+		failures.append_array(await _check_attack(world, selection))
 
 	if _errors.count > 0:
 		failures.append("%d error(s) were logged" % _errors.count)
@@ -67,6 +68,28 @@ func _run() -> void:
 		for f: String in failures:
 			printerr("smoke_main FAIL: ", f)
 		quit(1)
+
+
+## Orders the player's units to attack an enemy and waits for damage.
+func _check_attack(world: SimWorld, selection: SelectionController) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var target_id: int = 0
+	for id: int in world.entity_ids:
+		if world.entities[id].player_id == 2:
+			target_id = id
+			break
+	if target_id == 0:
+		problems.append("no enemy unit to attack")
+		return problems
+	selection.box_select(Rect2(Vector2(-10000, -10000), Vector2(20000, 20000)))
+	selection.order_attack(target_id)
+	for i: int in 1200:
+		await process_frame
+		var t: SimEntity = world.get_entity(target_id)
+		if t == null or t.hp < t.max_hp:
+			return problems
+	problems.append("an attack order dealt no damage within 1200 frames")
+	return problems
 
 
 ## Units whose data names an existing .glb must show that model (not the

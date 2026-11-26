@@ -1,0 +1,10 @@
+{
+  "id": "tank_cannon_125",
+  "status": "placeholder stats",
+  "damage": 150,
+  "damage_type": "anti_tank",
+  "range_cm": 4500,
+  "reload_ms": 3200,
+  "projectile": "instant",
+  "targets": ["ground"]
+}

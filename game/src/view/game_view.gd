@@ -26,6 +26,36 @@ func sync(alpha: float) -> void:
 		_views[id].update_from_sim(world.entities[id], alpha)
 
 
+## Simple placeholder effects for sim events until P1-28 adds real ones: a
+## brief flash where a weapon fires and a puff where something dies.
+func play_events(events: Array[Dictionary]) -> void:
+	for ev: Dictionary in events:
+		match ev["type"]:
+			"fired":
+				_flash(Vector3(Fx.to_float(ev["x"]), 1.5, Fx.to_float(ev["y"])), Color(1.0, 0.85, 0.4), 0.6, 0.12)
+			"died":
+				_flash(Vector3(Fx.to_float(ev["x"]), 1.0, Fx.to_float(ev["y"])), Color(0.3, 0.3, 0.3), 3.0, 0.8)
+
+
+func _flash(at: Vector3, color: Color, size: float, seconds: float) -> void:
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.albedo_color = color
+	var sphere := SphereMesh.new()
+	sphere.radius = size * 0.5
+	sphere.height = size
+	var mi := MeshInstance3D.new()
+	mi.mesh = sphere
+	mi.material_override = mat
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	mi.position = at
+	add_child(mi)
+	var tween := mi.create_tween()
+	tween.tween_property(mat, "albedo_color:a", 0.0, seconds)
+	tween.tween_callback(mi.queue_free)
+
+
 func get_view(entity_id: int) -> UnitView:
 	return _views.get(entity_id, null)
 

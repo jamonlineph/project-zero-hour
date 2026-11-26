@@ -9,6 +9,9 @@
   "cost": 200,
   "speed_cm_per_s": 360,
   "radius_cm": 150,
+  "weapons": [
+    "assault_rifles"
+  ],
   "visual": {
     "model": "res://assets/models/units/ru_motor_rifle_squad.glb",
     "icon": "res://assets/icons/units/ru_motor_rifle_squad.png"

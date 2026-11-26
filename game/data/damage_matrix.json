@@ -1,0 +1,13 @@
+{
+  "_doc": "Percent of a weapon's damage dealt to each armor class. Columns follow armor_classes. Starting values from docs/design/combat.md; tune in playtests.",
+  "armor_classes": ["infantry", "light_vehicle", "heavy_armor", "aircraft", "drone", "structure"],
+  "damage_types": {
+    "small_arms":     [100,  30,   5,  10,  60,  10],
+    "autocannon":     [ 70, 100,  20,  60, 100,  30],
+    "anti_tank":      [ 25, 100, 100,   0,   0,  60],
+    "high_explosive": [100,  70,  35,   0,  20, 100],
+    "anti_air":       [  0,   0,   0, 100,  80,   0],
+    "counter_drone":  [  0,   0,   0,  10, 150,   0],
+    "thermobaric":    [150,  60,  20,   0,   0,  80]
+  }
+}

@@ -11,7 +11,9 @@ extends RefCounted
 const INDEX_PATH: String = "res://data/index.json"
 
 var units: Dictionary[String, UnitDef] = {}
+var weapons: Dictionary[String, WeaponDef] = {}
 var maps: Dictionary[String, MapDef] = {}
+var damage_matrix: DamageMatrix = DamageMatrix.new()
 var errors: PackedStringArray = []
 
 
@@ -19,12 +21,19 @@ var errors: PackedStringArray = []
 ## the messages are in `errors`.
 func load_all(index_path: String = INDEX_PATH) -> bool:
 	units.clear()
+	weapons.clear()
 	maps.clear()
+	damage_matrix = DamageMatrix.new()
 	errors.clear()
 	var index: Variant = _read_json(index_path)
 	if not index is Dictionary:
 		errors.append("%s: expected a JSON object" % index_path)
 		return false
+	# Order matters: units refer to weapons; weapons refer to damage types.
+	if (index as Dictionary).has("damage_matrix"):
+		_load_damage_matrix(str(index["damage_matrix"]))
+	for path: Variant in (index as Dictionary).get("weapons", []):
+		_load_weapon(str(path))
 	for path: Variant in (index as Dictionary).get("units", []):
 		_load_unit(str(path))
 	for path: Variant in (index as Dictionary).get("maps", []):
@@ -38,6 +47,73 @@ func get_unit(id: String) -> UnitDef:
 
 func get_map(id: String) -> MapDef:
 	return maps.get(id, null)
+
+
+func get_weapon(id: String) -> WeaponDef:
+	return weapons.get(id, null)
+
+
+func _load_damage_matrix(path: String) -> void:
+	var parsed: Variant = _read_json(path)
+	if not parsed is Dictionary:
+		errors.append("%s: expected a JSON object" % path)
+		return
+	var src: Dictionary = parsed
+	var classes: Variant = src.get("armor_classes", [])
+	var types: Variant = src.get("damage_types", {})
+	if not classes is Array or (classes as Array).is_empty() or not types is Dictionary:
+		errors.append("%s: needs 'armor_classes' (list) and 'damage_types' (object)" % path)
+		return
+	for c: Variant in classes:
+		damage_matrix.armor_classes.append(str(c))
+	for damage_type: Variant in types:
+		var row: Variant = types[damage_type]
+		if not row is Array or (row as Array).size() != damage_matrix.armor_classes.size():
+			errors.append("%s: '%s' needs one percent per armor class" % [path, damage_type])
+			continue
+		for i: int in damage_matrix.armor_classes.size():
+			var v: Variant = row[i]
+			if not (v is float or v is int) or float(v) != floorf(float(v)) or float(v) < 0.0:
+				errors.append("%s: '%s' has an invalid percent" % [path, damage_type])
+				break
+			damage_matrix.set_percent(str(damage_type), damage_matrix.armor_classes[i], int(v))
+
+
+func _load_weapon(path: String) -> void:
+	var parsed: Variant = _read_json(path)
+	if not parsed is Dictionary:
+		errors.append("%s: expected a JSON object" % path)
+		return
+	var src: Dictionary = parsed
+	var w := WeaponDef.new()
+	w.id = _req_string(src, "id", path)
+	w.damage = _req_int(src, "damage", path, 0)
+	w.damage_type = _req_string(src, "damage_type", path)
+	if not damage_matrix.has_damage_type(w.damage_type):
+		errors.append("%s: damage_type '%s' is not in the damage matrix" % [path, w.damage_type])
+	w.max_range = Fx.from_ratio(_req_int(src, "range_cm", path, 1), 100)
+	if src.has("min_range_cm"):
+		w.min_range = Fx.from_ratio(_req_int(src, "min_range_cm", path, 0), 100)
+	var reload_ms: int = _req_int(src, "reload_ms", path, 1)
+	w.reload_ticks = maxi(1, (reload_ms * SimWorld.TICK_RATE + 999) / 1000)
+	w.projectile = str(src.get("projectile", "instant"))
+	if not w.projectile in ["instant", "ballistic", "guided"]:
+		errors.append("%s: projectile must be instant, ballistic or guided" % path)
+	if w.projectile != "instant":
+		w.projectile_speed = maxi(1, Fx.from_ratio(_req_int(src, "projectile_speed_cm_per_s", path, 1), 100 * SimWorld.TICK_RATE))
+	if src.has("splash_radius_cm"):
+		w.splash_radius = Fx.from_ratio(_req_int(src, "splash_radius_cm", path, 0), 100)
+	if src.has("splash_edge_percent"):
+		w.splash_edge_percent = _req_int(src, "splash_edge_percent", path, 0)
+	var targets: Variant = src.get("targets", ["ground"])
+	w.targets = PackedStringArray()
+	for t: Variant in targets:
+		if not DamageMatrix.TARGET_CATEGORIES.has(str(t)):
+			errors.append("%s: unknown target category '%s'" % [path, str(t)])
+		w.targets.append(str(t))
+	if path.get_file().get_basename() != w.id:
+		errors.append("%s: file name must match id '%s'" % [path, w.id])
+	weapons[w.id] = w
 
 
 func _load_map(path: String) -> void:
@@ -99,6 +175,14 @@ func _load_unit(path: String) -> void:
 			# Round up so slow turners never get a turn rate of 0.
 			var per_tick: int = (deg_per_s * Fx.ANGLE_FULL + 360 * SimWorld.TICK_RATE - 1) / (360 * SimWorld.TICK_RATE)
 			u.turn_rate = mini(per_tick, Fx.ANGLE_FULL)
+	if damage_matrix.armor_classes.size() > 0 and not damage_matrix.armor_classes.has(u.armor_class):
+		errors.append("%s: armor_class '%s' is not in the damage matrix" % [path, u.armor_class])
+	for weapon_id: Variant in src.get("weapons", []):
+		var w: WeaponDef = get_weapon(str(weapon_id))
+		if w == null:
+			errors.append("%s: unknown weapon '%s'" % [path, str(weapon_id)])
+		else:
+			u.weapons.append(w)
 	var visual: Variant = src.get("visual", {})
 	if visual is Dictionary:
 		u.model_path = str((visual as Dictionary).get("model", ""))

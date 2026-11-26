@@ -1,0 +1,10 @@
+{
+  "id": "assault_rifles",
+  "status": "placeholder stats",
+  "damage": 12,
+  "damage_type": "small_arms",
+  "range_cm": 3000,
+  "reload_ms": 1000,
+  "projectile": "instant",
+  "targets": ["ground", "drone"]
+}

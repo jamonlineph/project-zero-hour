@@ -1,0 +1,14 @@
+{
+  "id": "test_mortar",
+  "status": "used by tests for ballistic projectiles and splash; not on any unit yet",
+  "damage": 100,
+  "damage_type": "high_explosive",
+  "range_cm": 8000,
+  "min_range_cm": 1500,
+  "reload_ms": 4000,
+  "projectile": "ballistic",
+  "projectile_speed_cm_per_s": 4000,
+  "splash_radius_cm": 600,
+  "splash_edge_percent": 50,
+  "targets": ["ground"]
+}

@@ -16,6 +16,9 @@ var paused: bool = false
 var command_log: Array[Dictionary] = []
 ## Progress into the current tick (0..1), for view interpolation.
 var alpha: float = 0.0
+## Sim events ("fired", "hit", "died") from every tick stepped since the view
+## last drained them. The view and audio consume these (P1-22, P1-28, P1-29).
+var pending_events: Array[Dictionary] = []
 var _accumulator: float = 0.0
 var _seq: int = 0
 
@@ -37,6 +40,7 @@ func _process(delta: float) -> void:
 	var steps: int = 0
 	while _accumulator >= tick_sec and steps < MAX_STEPS_PER_FRAME:
 		world.step()
+		pending_events.append_array(world.events)
 		_accumulator -= tick_sec
 		steps += 1
 		ticked.emit(world.tick)

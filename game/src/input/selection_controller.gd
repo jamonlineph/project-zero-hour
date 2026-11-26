@@ -4,8 +4,9 @@ extends Node
 ## SimCommands. Selection is local UI state; only commands reach the sim.
 ##
 ## Mouse: left-click select, left-drag box select (Shift adds), right-click
-## move, S stop.
-## Touch: tap your unit to select it, tap ground to move the selection,
+## move (or attack, on an enemy), A then left-click attack-move, H hold, S stop.
+## Touch: tap your unit to select it, tap an enemy to attack it, tap ground to
+## move the selection,
 ## one-finger drag pans, hold still then drag for box select, double-tap a unit
 ## to select all of that type on screen, two fingers zoom, rotate and pan.
 ## See docs/design/controls-and-ui.md.
@@ -23,6 +24,8 @@ var box_overlay: SelectionBox
 var local_player_id: int = 1
 var selected: Array[int] = []
 
+## True after pressing A: the next left-click is an attack-move target.
+var attack_move_armed: bool = false
 var _mouse_down: bool = false
 var _mouse_dragging: bool = false
 var _mouse_start: Vector2 = Vector2.ZERO
@@ -60,6 +63,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_on_drag(event as InputEventScreenDrag)
 	elif event.is_action_pressed("cmd_stop"):
 		order_stop()
+	elif event.is_action_pressed("cmd_hold"):
+		order_hold()
+	elif event.is_action_pressed("cmd_attack_move") and not selected.is_empty():
+		attack_move_armed = true
 
 
 # --- Public actions (also used by tests and, later, HUD buttons) ---
@@ -101,10 +108,46 @@ func order_stop() -> void:
 		runner.submit(SimCommand.make_stop(selected))
 
 
+func order_hold() -> void:
+	if not selected.is_empty():
+		runner.submit(SimCommand.make_hold(selected))
+
+
+func order_attack(target_id: int) -> void:
+	if not selected.is_empty():
+		runner.submit(SimCommand.make_attack(selected, target_id))
+
+
+## Attack-move: drive to the ground point, fighting anything met on the way.
+func order_attack_move(screen_pos: Vector2) -> void:
+	attack_move_armed = false
+	if selected.is_empty():
+		return
+	var ground: Variant = rts_camera.screen_to_ground(screen_pos)
+	if ground == null:
+		return
+	var point: Vector3 = ground
+	runner.submit(SimCommand.make_attack_move(selected, Fx.from_float(point.x), Fx.from_float(point.z)))
+	game_view.show_move_marker(point)
+
+
+## Right-click / tap on a point: attack an enemy there, otherwise move.
+func order_at(screen_pos: Vector2) -> void:
+	var enemy: int = _pick_unit(screen_pos, false)
+	if enemy != 0:
+		order_attack(enemy)
+	else:
+		order_move(screen_pos)
+
+
 # --- Mouse ---
 
 func _on_mouse_button(mb: InputEventMouseButton) -> void:
 	if mb.button_index == MOUSE_BUTTON_LEFT:
+		if mb.pressed and attack_move_armed:
+			order_attack_move(mb.position)
+			_mouse_down = false
+			return
 		if mb.pressed:
 			_mouse_down = true
 			_mouse_dragging = false
@@ -123,7 +166,8 @@ func _on_mouse_button(mb: InputEventMouseButton) -> void:
 				elif not mb.shift_pressed:
 					select_ids([])
 	elif mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
-		order_move(mb.position)
+		attack_move_armed = false
+		order_at(mb.position)
 
 
 func _on_mouse_motion(mm: InputEventMouseMotion) -> void:
@@ -191,7 +235,7 @@ func _tap(pos: Vector2) -> void:
 	if hit != 0:
 		select_ids([hit])
 	elif not selected.is_empty():
-		order_move(pos)
+		order_at(pos)
 
 
 func _begin_pinch() -> void:
@@ -242,9 +286,17 @@ func _pick_radius_px() -> float:
 
 ## Own unit nearest to a screen position, within the pick radius, or 0.
 func _pick_own_unit(screen_pos: Vector2) -> int:
+	return _pick_unit(screen_pos, true)
+
+
+## Nearest own (own = true) or enemy (own = false) unit within the pick radius.
+func _pick_unit(screen_pos: Vector2, own: bool) -> int:
 	var best_id: int = 0
 	var best_dist: float = _pick_radius_px()
-	for id: int in _own_ids():
+	for id: int in runner.world.entity_ids:
+		var owner_id: int = runner.world.entities[id].player_id
+		if (owner_id == local_player_id) != own or (not own and owner_id == 0):
+			continue
 		var sp: Variant = _screen_pos(id)
 		if sp == null:
 			continue

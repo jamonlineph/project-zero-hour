@@ -10,6 +10,9 @@
   "speed_cm_per_s": 750,
   "turn_rate_deg_per_s": 90,
   "radius_cm": 320,
+  "weapons": [
+    "tank_cannon_120"
+  ],
   "visual": {
     "model": "res://assets/models/units/us_mbt.glb",
     "icon": "res://assets/icons/units/us_mbt.png"

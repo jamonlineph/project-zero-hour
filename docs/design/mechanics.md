@@ -27,10 +27,10 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Turning | Units turn at `turn_rate` (data: `turn_rate_deg_per_s`, missing = instant); they creep at 25% speed until facing within 22.5° of their heading | P1-02 | ✅ |
 | Pathfinding | Grid A* (8 directions, no corner cutting, deterministic tie-breaks, weighted heuristic), line-of-sight smoothing, nearest reachable spot for blocked goals. Flow fields for big groups come in P1-05; speed-up in P1-04b | P1-04 | ✅ (speed: P1-04b) |
 | Avoidance | Units push apart deterministically; moving units nudge idle ones aside; rocks and buildings block pushes | P1-06 | ✅ |
-| Health and death | hp, death, removal, wreck props | P1-07 | ⬜ |
-| Weapons | Range, reload, projectile or instant, splash, min range, anti-air/ground flags | P1-08 | ⬜ |
-| Damage types × armor classes | Damage multiplier table ([combat.md](combat.md)) | P1-09 | ⬜ |
-| Attack orders | Attack unit, attack-move, stop, hold position, guard | P1-10 | ⬜ |
+| Health and death | hp, death at 0, removal at the end of the tick, `died` events (wrecks come with P1-22) | P1-07 | ✅ |
+| Weapons | Range, reload, instant / ballistic / guided projectiles, splash (enemies only), min range, target categories | P1-08 | ✅ |
+| Damage types × armor classes | Damage multiplier table (`game/data/damage_matrix.json`, [combat.md](combat.md)) | P1-09 | ✅ |
+| Attack orders | Attack unit, attack-move, stop, hold position (guard later) | P1-10 | ✅ |
 | Vision and fog of war | Per-player visibility grid; black shroud never seen; grey fog previously seen | P1-11 | ⬜ |
 | Veterancy | Three ranks earned from kills: +damage, +armor, self-repair at the top rank | P1-17 | ⬜ |
 | Garrisoning | Infantry enter buildings and fire from them; flame/thermobaric weapons clear them | P3-05 | ⬜ |

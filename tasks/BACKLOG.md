@@ -208,14 +208,14 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Moving units nudge idle allies aside.
 - **Accept:** tests: two units never overlap by more than 10% of their radius after 30 ticks; determinism test.
 
-### P1-07 · Health, damage and death — ⬜
+### P1-07 · Health, damage and death — ✅ 2026-11-26 (Claude Code)
 - **Do:**
   - `SimWorld.apply_damage()`. Units die at hp ≤ 0 and are removed at the end of the tick.
   - `world.events` per tick (`died`, `fired`, `hit`) for the view and audio. The view must not mutate them.
   - Wreck props live in the view only.
 - **Accept:** tests for death, removal order and events; the view removes dead units (smoke test extended).
 
-### P1-08 · Weapons v1 — ⬜
+### P1-08 · Weapons v1 — ✅ 2026-11-26 (Claude Code: splash hits enemies only; weapons act as turrets)
 - **Needs:** P1-07, P1-09
 - **Do:**
   - `game/data/weapons/*.json` (fields in [docs/design/combat.md](../docs/design/combat.md)) and a `SimWeapon` component.
@@ -224,11 +224,11 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Instant-hit and projectile entities (ballistic, guided) with travel time and splash.
 - **Accept:** tests for range, reload, splash falloff, a target dying mid-flight, and determinism.
 
-### P1-09 · Damage matrix and armor classes — ⬜
+### P1-09 · Damage matrix and armor classes — ✅ 2026-11-26 (Claude Code)
 - **Do:** `game/data/damage_matrix.json` with the values from `combat.md`. The loader validates that every pair exists. Damage goes through the matrix.
 - **Accept:** tests for several pairs, and for a missing pair producing an error.
 
-### P1-10 · Attack orders — ⬜
+### P1-10 · Attack orders — ✅ 2026-11-26 (Claude Code: attack, attack-move, hold, stop; guard and the touch command bar moved to P1-24)
 - **Needs:** P1-08
 - **Do:**
   - Commands: attack target, attack-move, hold position, guard.

@@ -16,6 +16,8 @@ const BINDINGS: Dictionary = {
 	"cam_zoom_in": [KEY_EQUAL],
 	"cam_zoom_out": [KEY_MINUS],
 	"cmd_stop": [KEY_S],
+	"cmd_attack_move": [KEY_A],
+	"cmd_hold": [KEY_H],
 }
 
 

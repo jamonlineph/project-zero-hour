@@ -1,0 +1,172 @@
+class_name CombatSystem
+extends RefCounted
+## Weapons: targeting, reloading, firing, projectiles and impacts (P1-08).
+##
+## - Targets: enemies (another non-neutral player) whose armor class the weapon
+##   can hit, within range (center distance minus the target's radius) and
+##   outside min range. Best target = units before structures, then nearest,
+##   then lowest id. Units without a target look for one every
+##   ACQUIRE_INTERVAL ticks (staggered by id), or right after losing one.
+## - Weapons fire regardless of facing (turrets); units that stand still turn
+##   toward their target.
+## - Instant weapons hit immediately; ballistic shells fly to where the target
+##   was; guided missiles follow it. Splash damages enemies in the radius,
+##   falling off linearly to splash_edge_percent at the edge.
+
+const ACQUIRE_INTERVAL: int = 3
+
+
+static func step(world: SimWorld) -> void:
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		if e.dead or e.weapons.is_empty():
+			continue
+		for w: SimWeapon in e.weapons:
+			if w.cooldown > 0:
+				w.cooldown -= 1
+			var t: SimEntity = world.get_entity(w.target_id) if w.target_id != 0 else null
+			var lost: bool = false
+			if t != null and not _valid_target(e, w, t):
+				# An ATTACK order keeps its target while chasing it out of range.
+				var chasing: bool = e.order == SimEntity.Order.ATTACK and e.order_target_id == t.id and not t.dead
+				if not chasing:
+					t = null
+					w.target_id = 0
+					lost = true
+			if t == null and (lost or (world.tick + e.id) % ACQUIRE_INTERVAL == 0):
+				t = _acquire(world, e, w)
+				w.target_id = t.id if t != null else 0
+			if t == null or not in_range(e, w, t):
+				continue
+			_face(e, t)
+			if w.cooldown == 0:
+				_fire(world, e, w, t)
+	_step_projectiles(world)
+
+
+## True if `t` is close enough for `w` (center distance minus target radius).
+static func in_range(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
+	var dx: int = t.x - e.x
+	var dy: int = t.y - e.y
+	var reach: int = w.max_range + t.radius
+	if absi(dx) > reach or absi(dy) > reach:
+		return false
+	var dist: int = Fx.length(dx, dy)
+	return dist <= reach and dist >= w.min_range
+
+
+static func _valid_target(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
+	return not t.dead and _is_enemy(e.player_id, t.player_id) \
+			and DamageMatrix.can_target(w.targets, t.armor_class) and in_range(e, w, t)
+
+
+static func _is_enemy(player_a: int, player_b: int) -> bool:
+	return player_a != player_b and player_b != 0
+
+
+static func _acquire(world: SimWorld, e: SimEntity, w: SimWeapon) -> SimEntity:
+	var best: SimEntity = null
+	var best_structure: bool = true
+	var best_dist: int = 0
+	for t: SimEntity in world.query_radius(e.x, e.y, w.max_range + SimWorld.MAX_UNIT_RADIUS):
+		if t.dead or not _is_enemy(e.player_id, t.player_id):
+			continue
+		if not DamageMatrix.can_target(w.targets, t.armor_class) or not in_range(e, w, t):
+			continue
+		var structure: bool = t.armor_class == "structure"
+		var dist: int = Fx.length(t.x - e.x, t.y - e.y)
+		var better: bool = best == null
+		if not better:
+			if structure != best_structure:
+				better = not structure
+			elif dist != best_dist:
+				better = dist < best_dist
+			else:
+				better = t.id < best.id
+		if better:
+			best = t
+			best_structure = structure
+			best_dist = dist
+	return best
+
+
+static func _face(e: SimEntity, t: SimEntity) -> void:
+	if e.mover == null or (e.mover.has_target and not e.mover.paused):
+		return
+	var heading: int = Fx.atan2_a(t.y - e.y, t.x - e.x)
+	var turn: int = clampi(Fx.angle_diff(e.facing, heading), -e.mover.turn_rate, e.mover.turn_rate)
+	e.facing = Fx.wrap_angle(e.facing + turn)
+
+
+static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> void:
+	w.cooldown = w.reload_ticks
+	world.events.append({"type": "fired", "attacker": e.id, "weapon": w.def_id,
+			"x": e.x, "y": e.y, "tx": t.x, "ty": t.y})
+	if w.projectile == "instant":
+		_impact(world, e.player_id, e.id, t.id, t.x, t.y, w.damage, w.damage_type,
+				w.splash_radius, w.splash_edge_percent)
+		return
+	var p := SimProjectile.new()
+	p.id = world.next_projectile_id()
+	p.player_id = e.player_id
+	p.attacker_id = e.id
+	p.target_id = t.id
+	p.guided = w.projectile == "guided"
+	p.x = e.x
+	p.y = e.y
+	p.prev_x = e.x
+	p.prev_y = e.y
+	p.dest_x = t.x
+	p.dest_y = t.y
+	p.speed = w.projectile_speed
+	p.damage = w.damage
+	p.damage_type = w.damage_type
+	p.splash_radius = w.splash_radius
+	p.splash_edge_percent = w.splash_edge_percent
+	p.weapon_id = w.def_id
+	world.projectiles.append(p)
+
+
+static func _step_projectiles(world: SimWorld) -> void:
+	var still_flying: Array[SimProjectile] = []
+	for p: SimProjectile in world.projectiles:
+		p.prev_x = p.x
+		p.prev_y = p.y
+		if p.guided:
+			var t: SimEntity = world.get_entity(p.target_id)
+			if t != null and not t.dead:
+				p.dest_x = t.x
+				p.dest_y = t.y
+		var dx: int = p.dest_x - p.x
+		var dy: int = p.dest_y - p.y
+		var dist: int = Fx.length(dx, dy)
+		if dist > p.speed:
+			p.x += (dx * p.speed) / dist
+			p.y += (dy * p.speed) / dist
+			still_flying.append(p)
+			continue
+		p.x = p.dest_x
+		p.y = p.dest_y
+		_impact(world, p.player_id, p.attacker_id, p.target_id, p.x, p.y, p.damage, p.damage_type,
+				p.splash_radius, p.splash_edge_percent)
+	world.projectiles = still_flying
+
+
+## Applies a hit at (x, y). Without splash, only the intended target is hurt,
+## and only if it is still there; with splash, every enemy in the radius is.
+static func _impact(world: SimWorld, player_id: int, attacker_id: int, target_id: int, x: int, y: int,
+		damage: int, damage_type: String, splash_radius: int, edge_percent: int) -> void:
+	world.events.append({"type": "hit", "x": x, "y": y, "damage_type": damage_type, "radius": splash_radius})
+	if splash_radius <= 0:
+		var t: SimEntity = world.get_entity(target_id)
+		if t != null and not t.dead and Fx.length(t.x - x, t.y - y) <= t.radius + Fx.ONE / 2:
+			world.apply_damage(t, damage, damage_type, attacker_id)
+		return
+	for t: SimEntity in world.query_radius(x, y, splash_radius + SimWorld.MAX_UNIT_RADIUS):
+		if t.dead or not _is_enemy(player_id, t.player_id):
+			continue
+		var dist: int = maxi(0, Fx.length(t.x - x, t.y - y) - t.radius)
+		if dist > splash_radius:
+			continue
+		var percent: int = 100 - ((100 - edge_percent) * dist) / splash_radius
+		world.apply_damage(t, (damage * percent) / 100, damage_type, attacker_id)

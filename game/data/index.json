@@ -1,4 +1,11 @@
 {
+  "damage_matrix": "res://data/damage_matrix.json",
+  "weapons": [
+    "res://data/weapons/tank_cannon_120.json",
+    "res://data/weapons/tank_cannon_125.json",
+    "res://data/weapons/assault_rifles.json",
+    "res://data/weapons/test_mortar.json"
+  ],
   "units": [
     "res://data/units/us_mbt.json",
     "res://data/units/us_rifle_squad.json",

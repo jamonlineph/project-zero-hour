@@ -23,6 +23,8 @@ var path: Array[Vector2i] = []      ## waypoints in fixed-point meters; last = d
 var path_index: int = 0             ## waypoint currently being driven to
 ## Entity id whose path this mover reuses (group orders), or 0 to plan its own.
 var follow_leader: int = 0
+## True while an attack-moving unit stops to fight; its path is kept.
+var paused: bool = false
 
 
 ## Sets a new destination and asks for a path to it.
@@ -32,6 +34,7 @@ func order_move(tx: int, ty: int) -> void:
 	has_target = true
 	needs_path = true
 	follow_leader = 0
+	paused = false
 	path.clear()
 	path_index = 0
 
@@ -40,6 +43,7 @@ func stop() -> void:
 	has_target = false
 	needs_path = false
 	follow_leader = 0
+	paused = false
 	path.clear()
 	path_index = 0
 
@@ -52,6 +56,7 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(target_y)
 	h.add_bool(needs_path)
 	h.add_int(follow_leader)
+	h.add_bool(paused)
 	h.add_int(path_index)
 	h.add_int(path.size())
 	for p: Vector2i in path:

@@ -3,7 +3,7 @@ extends CanvasLayer
 ## Minimal developer HUD: a status line, control hints and the selection box.
 ## The real HUD comes in Phase 1 (P1-25, docs/design/controls-and-ui.md).
 
-const HELP_TEXT := "Mouse: left-click/drag select, right-click move, wheel zoom, middle-drag pan, arrows pan, , . rotate, S stop\nTouch: tap unit select, tap ground move, drag pan, hold then drag box-select, double-tap select same type, pinch zoom/rotate"
+const HELP_TEXT := "Mouse: left-click/drag select, right-click move/attack, A+click attack-move, H hold, S stop, wheel zoom, middle-drag pan, arrows pan, , . rotate\nTouch: tap unit select, tap enemy attack, tap ground move, drag pan, hold then drag box-select, double-tap select same type, pinch zoom/rotate"
 
 var selection_box: SelectionBox
 var _runner: SimRunner

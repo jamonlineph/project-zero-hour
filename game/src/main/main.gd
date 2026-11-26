@@ -32,6 +32,7 @@ func _ready() -> void:
 		map_def.width_m = 128
 		map_def.height_m = 128
 	world = SimWorld.from_map(SEED, map_def)
+	world.damage_matrix = content.damage_matrix
 	_spawn_sandbox_units()
 	_build_environment()
 
@@ -68,6 +69,8 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	game_view.sync(runner.alpha)
+	game_view.play_events(runner.pending_events)
+	runner.pending_events.clear()
 
 
 func _spawn_sandbox_units() -> void:

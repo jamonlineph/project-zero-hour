@@ -12,7 +12,7 @@ static func step(world: SimWorld) -> void:
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
 		var m: SimMover = e.mover
-		if m == null or not m.has_target or m.needs_path:
+		if m == null or not m.has_target or m.needs_path or m.paused:
 			continue
 		var wx: int = m.target_x
 		var wy: int = m.target_y
