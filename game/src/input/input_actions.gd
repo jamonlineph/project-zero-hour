@@ -18,6 +18,7 @@ const BINDINGS: Dictionary = {
 	"cmd_stop": [KEY_S],
 	"cmd_attack_move": [KEY_A],
 	"cmd_hold": [KEY_H],
+	"cmd_guard": [KEY_G],
 	"toggle_help": [KEY_F1],
 }
 

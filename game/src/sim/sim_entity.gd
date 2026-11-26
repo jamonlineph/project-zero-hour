@@ -6,8 +6,8 @@ extends RefCounted
 ## Strings) plus optional component objects. Systems in res://src/sim/systems/
 ## read and change entities; nothing outside the sim writes to them.
 
-## What the unit was told to do (P1-10).
-enum Order { IDLE = 0, MOVE = 1, ATTACK = 2, ATTACK_MOVE = 3, HOLD = 4 }
+## What the unit was told to do (P1-10; GUARD and PATROL from P1-24b).
+enum Order { IDLE = 0, MOVE = 1, ATTACK = 2, ATTACK_MOVE = 3, HOLD = 4, GUARD = 5, PATROL = 6 }
 
 var id: int = 0
 var player_id: int = 0          ## 0 = neutral
@@ -35,10 +35,12 @@ var gatherer: SimGatherer = null
 var supply: SimSupply = null    ## supply sites only
 
 var order: Order = Order.IDLE
-var order_target_id: int = 0    ## ATTACK: the entity to destroy
-var order_x: int = 0            ## ATTACK_MOVE: where to go (fixed-point meters)
+var order_target_id: int = 0    ## ATTACK: the entity to destroy; GUARD: the entity to protect
+var order_x: int = 0            ## ATTACK_MOVE / PATROL: where to go (fixed-point meters)
 var order_y: int = 0
-var order_repath_tick: int = 0  ## ATTACK: when the chase path was last planned
+var order_repath_tick: int = 0  ## ATTACK / GUARD: when the chase path was last planned
+var order_from_x: int = 0       ## PATROL: the other end of the route
+var order_from_y: int = 0
 
 
 func is_armed() -> bool:
@@ -63,6 +65,11 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(order_x)
 	h.add_int(order_y)
 	h.add_int(order_repath_tick)
+	# Only while patrolling, so states without patrols hash as they always did
+	# (golden replays recorded before P1-24b stay valid).
+	if order == Order.PATROL:
+		h.add_int(order_from_x)
+		h.add_int(order_from_y)
 	if mover != null:
 		mover.write_hash(h)
 	else:

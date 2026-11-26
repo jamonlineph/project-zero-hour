@@ -15,7 +15,7 @@ Touch and mouse are equals: every action must be possible with either. The HUD l
 | Pan on trackpads without a middle button | Space + drag | ✅ |
 | Zoom | Wheel, pinch on trackpad, = / − | ✅ |
 | Rotate camera | , and . | ✅ |
-| Attack-move / hold / guard | A / H / G (guard comes with P1-24) | ✅ A and H |
+| Attack-move / hold / guard / patrol | A / H / G (then click what to guard) / Patrol button (then click the far end); right-click cancels a pending order | ✅ |
 | Control groups | Ctrl+1–9 to set, 1–9 to select, double-tap to jump, Shift+1–9 to add | ✅ |
 | Build menu hotkeys | Grid keys Q W E R / A S D F / Z X C V for the 12 slots of the open menu (Shift+key or right-click cancels one in production) | ✅ |
 | Camera bookmarks | Ctrl+F5–F8 to save the view, F5–F8 to return to it | ✅ |
@@ -38,7 +38,7 @@ The keys for camera movement and unit orders can be rebound in Settings (control
 | Attack-move, stop, hold | Buttons in the command grid when units are selected | ✅ |
 | Control groups | Group buttons 1–5 in the touch bar: tap to select (twice quickly jumps), hold 0.5 s to store | ✅ |
 | Box-select mode | "Box" toggle in the touch bar, so a one-finger drag selects instead of pans | ✅ |
-| Context order | Hold a finger still for 0.6 s: a radial menu with attack-move here, move here, stop, hold, rally here (patrol and guard come with P1-24b) | ✅ |
+| Context order | Hold a finger still for 0.6 s: a radial menu with attack-move here, move here, patrol here, stop, hold, rally here, and "guard this" when held on your own unit or building | ✅ |
 
 ## HUD layout (landscape; adapts to the window size)
 

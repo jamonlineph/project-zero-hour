@@ -97,8 +97,7 @@ func on_drag(sd: InputEventScreenDrag, now_ms: int) -> void:
 
 
 func tap(pos: Vector2) -> void:
-	if _sel.attack_move_armed:
-		_sel.order_attack_move(pos)
+	if _sel.handle_armed_click(pos):
 		return
 	var hit: int = _sel.pick_unit(pos, true)
 	if hit != 0:

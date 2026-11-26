@@ -527,6 +527,8 @@ func _apply_commands() -> void:
 			SimCommand.Type.BUILD, SimCommand.Type.PRODUCE, SimCommand.Type.CANCEL, \
 					SimCommand.Type.RALLY, SimCommand.Type.GATHER, SimCommand.Type.SELL, SimCommand.Type.REPAIR:
 				BaseCommands.apply(self, c)
+			SimCommand.Type.GUARD, SimCommand.Type.PATROL:
+				UnitCommands.apply(self, c)
 			_:
 				push_error("SimWorld: unknown command type %d" % c.type)
 
@@ -653,6 +655,15 @@ func _owned_entities(c: SimCommand) -> Array[SimEntity]:
 
 ## Entities named in the command that exist, belong to the issuing player and
 ## can move. Sorted by id, duplicates removed.
+## For command helpers outside SimWorld (UnitCommands).
+func owned_movers_of(c: SimCommand) -> Array[SimEntity]:
+	return _owned_movers(c)
+
+
+func apply_move(c: SimCommand) -> void:
+	_apply_move(c)
+
+
 func _owned_movers(c: SimCommand) -> Array[SimEntity]:
 	var ids: Array[int] = c.entity_ids.duplicate()
 	ids.sort()

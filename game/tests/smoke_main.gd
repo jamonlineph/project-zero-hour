@@ -485,6 +485,37 @@ func _check_touch_controls(main: Node, world: SimWorld, selection: SelectionCont
 			moving = true
 	if not moving:
 		problems.append("\"Move here\" from the radial menu did not move the units")
+	if not labels.has("Patrol here"):
+		problems.append("the radial menu lacks \"Patrol here\"")
+
+	# Guard and patrol through the same click path as a player (P1-24b).
+	var ward: int = 0
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		if e.player_id == 1 and e.building != null:
+			ward = id
+			break
+	var alive: Array[int] = []
+	for id: int in own:
+		if world.get_entity(id) != null:
+			alive.append(id)
+	if ward != 0 and not alive.is_empty():
+		selection.select_ids(alive)
+		var gv: GameView = main.get("game_view")
+		cam.focus_on(gv.get_view(ward).position)
+		var ward_screen: Vector2 = cam.camera.unproject_position(gv.get_view(ward).global_position)
+		selection.guard_armed = true
+		selection.handle_armed_click(ward_screen)
+		for i: int in 10:
+			await process_frame
+		if world.get_entity(alive[0]).order != SimEntity.Order.GUARD:
+			problems.append("clicking a building while Guard was armed did not order a guard")
+		selection.patrol_armed = true
+		selection.handle_armed_click(ground)
+		for i: int in 10:
+			await process_frame
+		if world.get_entity(alive[0]).order != SimEntity.Order.PATROL:
+			problems.append("clicking the ground while Patrol was armed did not order a patrol")
 	selection.select_ids([])
 	if hud.open_radial(ground) != null:
 		problems.append("the radial menu opened with nothing selected")

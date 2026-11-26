@@ -55,8 +55,12 @@ func entries_for(selection: SelectionController) -> Array[Array]:
 		out.append(["Attack-move here", func() -> void: selection.order_attack_move(p)])
 	if movers:
 		out.append(["Move here", func() -> void: selection.order_move(p)])
+		out.append(["Patrol here", func() -> void: selection.order_patrol(p)])
 		out.append(["Stop", selection.order_stop])
 		out.append(["Hold", selection.order_hold])
+	var ward: int = selection.pick_own_entity(p) if armed else 0
+	if ward != 0 and not selection.selected.has(ward):
+		out.append(["Guard this", func() -> void: selection.order_guard(ward)])
 	if producers:
 		out.append(["Rally here", func() -> void: selection.order_rally(p)])
 	return out

@@ -10,7 +10,7 @@ const ACTION_NAMES: Dictionary = {
 	"cam_forward": "Camera forward", "cam_back": "Camera back",
 	"cam_rotate_left": "Rotate camera left", "cam_rotate_right": "Rotate camera right",
 	"cam_zoom_in": "Zoom in", "cam_zoom_out": "Zoom out",
-	"cmd_stop": "Stop", "cmd_attack_move": "Attack-move", "cmd_hold": "Hold position",
+	"cmd_stop": "Stop", "cmd_attack_move": "Attack-move", "cmd_hold": "Hold position", "cmd_guard": "Guard",
 	"toggle_help": "Show or hide help",
 }
 

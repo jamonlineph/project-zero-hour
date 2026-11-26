@@ -6,6 +6,7 @@ extends RefCounted
 enum Type {
 	MOVE = 1, STOP = 2, ATTACK = 3, ATTACK_MOVE = 4, HOLD = 5,
 	BUILD = 6, PRODUCE = 7, CANCEL = 8, RALLY = 9, GATHER = 10, SELL = 11, REPAIR = 12,
+	GUARD = 13, PATROL = 14,
 }
 
 var tick: int = 0               ## tick on which the command is applied
@@ -15,7 +16,7 @@ var type: Type = Type.MOVE
 var entity_ids: Array[int] = []
 var target_x: int = 0           ## fixed-point meters
 var target_y: int = 0
-var target_entity: int = 0      ## ATTACK target, PRODUCE/CANCEL/RALLY/SELL/REPAIR building, GATHER site
+var target_entity: int = 0      ## ATTACK target, PRODUCE/CANCEL/RALLY/SELL/REPAIR building, GATHER site, GUARD ward
 var def_id: String = ""         ## BUILD: building id; PRODUCE: unit id
 var index: int = 0              ## CANCEL: queue slot
 
@@ -47,6 +48,23 @@ static func make_attack(ids: Array[int], target_id: int) -> SimCommand:
 static func make_attack_move(ids: Array[int], tx: int, ty: int) -> SimCommand:
 	var c := make_move(ids, tx, ty)
 	c.type = Type.ATTACK_MOVE
+	return c
+
+
+## Armed units in `ids` stay near `ward_id` (an own or allied unit or
+## building) and fight enemies that come close to it.
+static func make_guard(ids: Array[int], ward_id: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.GUARD
+	c.entity_ids = ids.duplicate()
+	c.target_entity = ward_id
+	return c
+
+
+## Units in `ids` attack-move back and forth between where they are and (tx, ty).
+static func make_patrol(ids: Array[int], tx: int, ty: int) -> SimCommand:
+	var c := make_move(ids, tx, ty)
+	c.type = Type.PATROL
 	return c
 
 

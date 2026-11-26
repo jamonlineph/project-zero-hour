@@ -4,6 +4,15 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P1-24b Guard and patrol orders (Claude Code, branch claude/phase-0-wrapup)
+- Done: two new sim orders and commands. PATROL attack-moves to the far end and back, forever; each unit patrols between its own start and the place it reached, and stops to fight on the way. GUARD keeps armed units within 6 m of an own or allied unit or building, attacks the nearest visible enemy within 25 m of it (chasing only inside that radius), and ends when the ward dies. Controls: G then click (or the Guard button) to guard; the Patrol button then click; radial menu "Patrol here" and "Guard this"; right-click cancels a pending order. The patrol's far end only enters the state hash while a unit patrols, so golden replays recorded earlier still match.
+- Tests: `tools/run_tests.sh` -> 150 tests, 0 failed (new `test_orders.gd`: back and forth, fights on the way, guard follows, guard attacks only near its ward, ends when the ward dies, can't guard an enemy, command round trip, determinism); smoke_main orders a guard and a patrol through the real click path.
+- Not verified: on a phone.
+- Next: P1-30b (renderer errors under software OpenGL); then the Phase 1 checks only the owner can do.
+- For the owner: none.
+
+---
+
 ## 2026-11-26: P1-30 Terrain and map format v1 (Claude Code, branch claude/phase-0-wrapup)
 - Done: maps are folders (`game/data/maps/<id>/map.json` plus `height.r16`, raw 16-bit heights, one per 2 m cell). The sim gets integer heights; a cell more than `max_step_cm` above a neighbor is an impassable cliff edge, and cells under `water_level_cm` are water. `TerrainView` builds the ground mesh from the same heights (colored by slope and height, darkened by fog). Units, rocks, effects, move markers and the placement ghost sit on the terrain, and mouse and touch picking follow the hills. The sandbox is now a map folder with gentle hills and raised rocks inside its obstacle rectangles, so passability is unchanged (golden replays still match). `tools/make_heightmap.py` builds `height.r16` from `terrain_gen` in `map.json`.
 - Tests: `tools/run_tests.sh` -> 142 tests, 0 failed (new `test_terrain.gd`: loader, exact scaling, bad file size, cliffs, water, sandbox passability unchanged, terrain mesh equals sim heights); smoke_main checks every unit stands on the drawn terrain.

@@ -336,7 +336,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Deselect button.
 - **Accept:** on a phone, every action in the touch table works; documented in PROGRESS.
 
-### P1-24b · Guard and patrol orders — ⬜
+### P1-24b · Guard and patrol orders — ✅ 2026-11-26 (Claude Code)
 - **Needs:** P1-10, P1-24
 - **Do:**
   - Sim: a GUARD order (stay near a unit or building, attack enemies that come close, return) and a PATROL order (move back and forth between two points, attack-moving).

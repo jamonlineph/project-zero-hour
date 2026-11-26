@@ -8,7 +8,7 @@ extends CanvasLayer
 ## - Place / Cancel buttons while placing a building (for touch)
 ## Layout uses anchors so it reflows when a Googlebook window is resized.
 
-const HELP_TEXT := "Mouse: click/drag select, right-click move/attack/gather/repair (or set rally with only buildings selected), A+click attack-move, S stop, H hold, grid keys Q-W-E-R / A-S-D-F / Z-X-C-V, Ctrl+1-9 set group, 1-9 select (twice: jump), Ctrl+F5-F8 save view, F5-F8 go to view, wheel zoom, middle-drag, Space+drag or arrows pan, , . rotate, F9 save replay, F1 hide help\nTouch: tap select, tap enemy attack, tap ground move, drag pan, hold then drag box-select, double-tap select type, pinch zoom/rotate, use the grid buttons"
+const HELP_TEXT := "Mouse: click/drag select, right-click move/attack/gather/repair (or set rally with only buildings selected), A+click attack-move, G+click guard, S stop, H hold, grid keys Q-W-E-R / A-S-D-F / Z-X-C-V, Ctrl+1-9 set group, 1-9 select (twice: jump), Ctrl+F5-F8 save view, F5-F8 go to view, wheel zoom, middle-drag, Space+drag or arrows pan, , . rotate, F9 save replay, F1 hide help\nTouch: tap select, tap enemy attack, tap ground move, drag pan, hold then drag box-select, double-tap select type, pinch zoom/rotate, use the grid buttons"
 const REFRESH_SEC: float = 0.25
 
 ## The Menu button (top right) was pressed: open the pause menu.
@@ -188,6 +188,14 @@ func _unit_orders() -> Array[Dictionary]:
 		{"label": "Attack-move", "tooltip": "Then tap or click the target point", "action": func() -> void: _selection.attack_move_armed = true},
 		{"label": "Stop", "action": _selection.order_stop},
 		{"label": "Hold", "action": _selection.order_hold},
+		{"label": "Patrol", "tooltip": "Then tap or click the far end of the route",
+			"action": func() -> void:
+				_selection.disarm()
+				_selection.patrol_armed = true},
+		{"label": "Guard", "tooltip": "Then tap or click the unit or building to guard (key G)",
+			"action": func() -> void:
+				_selection.disarm()
+				_selection.guard_armed = true},
 	]
 
 

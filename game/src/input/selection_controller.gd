@@ -27,6 +27,10 @@ var selected: Array[int] = []
 
 ## True after pressing A: the next left-click is an attack-move target.
 var attack_move_armed: bool = false
+## After the Patrol button: the next click or tap is the patrol's far end.
+var patrol_armed: bool = false
+## After G or the Guard button: the next click or tap picks what to guard.
+var guard_armed: bool = false
 ## Building placement gets every pointer event first while it is active.
 var placement: PlacementController
 ## Command-grid hotkeys (CommandGrid.handle_key): checked before our own keys.
@@ -76,6 +80,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		order_hold()
 	elif event.is_action_pressed("cmd_attack_move") and not selected.is_empty():
 		attack_move_armed = true
+	elif event.is_action_pressed("cmd_guard") and not selected.is_empty():
+		guard_armed = true
 
 
 
@@ -111,6 +117,55 @@ func order_move(screen_pos: Vector2) -> void:
 	var point: Vector3 = ground
 	runner.submit(SimCommand.make_move(selected, Fx.from_float(point.x), Fx.from_float(point.z)))
 	game_view.show_move_marker(point)
+
+
+## Runs a pending attack-move, patrol or guard order at a click or tap.
+## Returns true if one was pending.
+func handle_armed_click(screen_pos: Vector2) -> bool:
+	if attack_move_armed:
+		order_attack_move(screen_pos)
+		return true
+	if patrol_armed:
+		order_patrol(screen_pos)
+		return true
+	if guard_armed:
+		guard_armed = false
+		var ward: int = pick_own_entity(screen_pos)
+		if ward != 0:
+			order_guard(ward)
+		return true
+	return false
+
+
+func disarm() -> void:
+	attack_move_armed = false
+	patrol_armed = false
+	guard_armed = false
+
+
+## Patrol between where the units are and the ground point there.
+func order_patrol(screen_pos: Vector2) -> void:
+	patrol_armed = false
+	if selected.is_empty():
+		return
+	var ground: Variant = rts_camera.screen_to_ground(screen_pos)
+	if ground == null:
+		return
+	var point: Vector3 = ground
+	runner.submit(SimCommand.make_patrol(selected, Fx.from_float(point.x), Fx.from_float(point.z)))
+	game_view.show_move_marker(point)
+
+
+## Armed units in the selection guard an own unit or building.
+func order_guard(ward_id: int) -> void:
+	if not selected.is_empty():
+		runner.submit(SimCommand.make_guard(selected, ward_id))
+
+
+## Own unit or building nearest a screen position (within the pick radius), or 0.
+func pick_own_entity(screen_pos: Vector2) -> int:
+	return _pick(screen_pos, func(e: SimEntity) -> bool:
+		return e.player_id == local_player_id and (e.mover != null or e.building != null))
 
 
 func order_stop() -> void:
@@ -192,8 +247,7 @@ func _on_mouse_button(mb: InputEventMouseButton) -> void:
 	if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed and rts_camera.space_pan_held():
 		return  # Space + drag pans the camera (RtsCamera handles it)
 	if mb.button_index == MOUSE_BUTTON_LEFT:
-		if mb.pressed and attack_move_armed:
-			order_attack_move(mb.position)
+		if mb.pressed and handle_armed_click(mb.position):
 			_mouse_down = false
 			return
 		if mb.pressed:
@@ -214,7 +268,9 @@ func _on_mouse_button(mb: InputEventMouseButton) -> void:
 				elif not mb.shift_pressed:
 					select_ids([])
 	elif mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
-		attack_move_armed = false
+		if attack_move_armed or patrol_armed or guard_armed:
+			disarm()   # right-click cancels a pending order
+			return
 		order_at(mb.position)
 
 
