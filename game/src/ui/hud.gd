@@ -17,6 +17,7 @@ signal menu_requested
 var selection_box: SelectionBox
 var command_grid: CommandGrid
 var minimap: Minimap
+var touch_bar: TouchBar
 var _runner: SimRunner
 var _selection: SelectionController
 var _camera: RtsCamera
@@ -124,7 +125,23 @@ func bind_controls(selection: SelectionController, cam: RtsCamera, placement: Pl
 	minimap.setup(_runner.world, selection.local_player_id, cam)
 	minimap.jump_requested.connect(func(p: Vector3) -> void: cam.focus_on(p))
 	placement.placement_changed.connect(func(active: bool) -> void: _place_buttons.visible = active)
+	touch_bar = TouchBar.new()
+	add_child(touch_bar)
+	touch_bar.setup(selection)
+	selection.long_pressed.connect(open_radial)
 	refresh_commands()
+
+
+## Opens the long-press order menu at a screen position (P1-24).
+func open_radial(pos: Vector2) -> RadialMenu:
+	var old: Node = get_node_or_null("RadialMenu")
+	if old != null:
+		old.free()
+	var menu := RadialMenu.new()
+	add_child(menu)
+	if not menu.open(_selection, pos):
+		return null
+	return menu
 
 
 func on_selection_changed(ids: Array[int]) -> void:
@@ -269,6 +286,8 @@ func _layout() -> void:
 	var view: Vector2 = get_viewport().get_visible_rect().size
 	var margin: float = 10.0
 	minimap.position = Vector2(margin, view.y - minimap.size.y - margin)
+	if touch_bar != null:
+		touch_bar.position = Vector2(margin, minimap.position.y - TouchBar.BUTTON_SIZE.y - 8.0)
 	var grid_size: Vector2 = command_grid.get_combined_minimum_size()
 	command_grid.position = Vector2(view.x - grid_size.x - margin, view.y - grid_size.y - margin)
 	_place_buttons.position = Vector2(view.x - grid_size.x - margin, command_grid.position.y - 60.0)

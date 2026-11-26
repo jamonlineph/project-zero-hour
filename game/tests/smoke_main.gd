@@ -61,6 +61,7 @@ func _run() -> void:
 		if moved == 0:
 			failures.append("no selected unit moved after a move order")
 		failures.append_array(_check_desktop_controls(main, world, selection))
+		failures.append_array(await _check_touch_controls(main, world, selection))
 		failures.append_array(await _check_hud_build_and_produce(main, world, selection))
 		failures.append_array(await _check_attack(world, selection))
 		failures.append_array(await _check_unit_views(world, game_view, selection))
@@ -400,3 +401,102 @@ func _key(code: Key, ctrl: bool) -> InputEventKey:
 	k.pressed = true
 	k.ctrl_pressed = ctrl
 	return k
+
+
+## P1-24: touch bar (Clear, Box mode, group buttons), long press and the
+## radial menu, driven through the same code paths as real touches.
+func _check_touch_controls(main: Node, world: SimWorld, selection: SelectionController) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var hud: Hud = main.get("hud")
+	var cam: RtsCamera = main.get("rts_camera")
+	var bar: TouchBar = hud.touch_bar
+	if bar == null:
+		problems.append("the HUD has no touch bar")
+		return problems
+	var own: Array[int] = []
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		if e.player_id == 1 and e.mover != null and not e.weapons.is_empty():
+			own.append(id)
+
+	# Group button: hold stores, Clear deselects, a short tap recalls.
+	selection.select_ids(own)
+	bar._press_ms[2] = 1000
+	bar.release_group(2, 1000 + 700)
+	(bar.find_child("Clear", true, false) as Button).pressed.emit()
+	if not selection.selected.is_empty():
+		problems.append("Clear did not deselect")
+	bar._press_ms[2] = 5000
+	bar.release_group(2, 5000 + 100)
+	if selection.selected != own:
+		problems.append("tapping group button 2 did not select the stored group")
+	if not bar.group_buttons[1].text.contains("(%d)" % own.size()):
+		problems.append("group button 2 does not show its size (%s)" % bar.group_buttons[1].text)
+
+	# Box mode: a one-finger drag selects instead of panning.
+	selection.select_ids([])
+	var box: Button = bar.find_child("BoxToggle", true, false)
+	box.button_pressed = true
+	var cam_before: Vector3 = cam.position
+	var view_size: Vector2 = main.get_viewport().get_visible_rect().size
+	selection.touch.on_touch(_touch(0, Vector2(2, 2), true), 0)
+	selection.touch.on_drag(_drag(0, view_size - Vector2(2, 2)), 10)
+	selection.touch.on_touch(_touch(0, view_size - Vector2(2, 2), false), 20)
+	box.button_pressed = false
+	if selection.selected.is_empty():
+		problems.append("a drag in box mode selected nothing")
+	if cam.position != cam_before:
+		problems.append("a drag in box mode panned the camera")
+
+	# Long press: fires once, and releasing afterwards is not a tap.
+	var ground := Vector2(view_size.x * 0.5, view_size.y * 0.45)
+	selection.select_ids(own)
+	selection.touch.on_touch(_touch(0, ground, true), 0)
+	if selection.touch.poll_long_press(300) != null:
+		problems.append("a long press fired too early")
+	var held: Variant = selection.touch.poll_long_press(700)
+	if held == null or selection.touch.poll_long_press(800) != null:
+		problems.append("a long press did not fire exactly once")
+	selection.touch.on_touch(_touch(0, ground, false), 900)
+
+	# Radial menu: offers orders for armed units, and "Move here" moves them.
+	var menu: RadialMenu = hud.open_radial(ground)
+	if menu == null:
+		problems.append("the radial menu did not open for armed units")
+		return problems
+	var labels: PackedStringArray = menu.button_labels()
+	for want: String in ["Attack-move here", "Move here", "Stop"]:
+		if not labels.has(want):
+			problems.append("the radial menu lacks \"%s\" (has %s)" % [want, labels])
+	(menu.find_child("Movehere", true, false) as Button).pressed.emit()
+	for i: int in 20:
+		await process_frame
+	if is_instance_valid(menu) and menu.is_inside_tree():
+		problems.append("the radial menu stayed open after a choice")
+	var moving: bool = false
+	for id: int in own:
+		var e: SimEntity = world.get_entity(id)
+		if e != null and e.mover.has_target:
+			moving = true
+	if not moving:
+		problems.append("\"Move here\" from the radial menu did not move the units")
+	selection.select_ids([])
+	if hud.open_radial(ground) != null:
+		problems.append("the radial menu opened with nothing selected")
+	return problems
+
+
+func _touch(index: int, pos: Vector2, pressed: bool) -> InputEventScreenTouch:
+	var t := InputEventScreenTouch.new()
+	t.index = index
+	t.position = pos
+	t.pressed = pressed
+	return t
+
+
+func _drag(index: int, pos: Vector2) -> InputEventScreenDrag:
+	var d := InputEventScreenDrag.new()
+	d.index = index
+	d.position = pos
+	d.relative = Vector2(5, 5)
+	return d

@@ -34,11 +34,11 @@ The keys for camera movement and unit orders can be rebound in Settings (control
 | Box select | Hold still for 0.35 s, then drag | ✅ |
 | Select all of a type on screen | Double-tap a unit | ✅ |
 | Zoom / rotate / pan | Two fingers: pinch, twist, drag | ✅ |
-| Deselect | "Clear" button in the selection panel | ⬜ P1-24 |
-| Attack-move, stop, hold | Buttons in the command bar | ⬜ P1-24 |
-| Control groups | Bottom row of group buttons: tap to select, long-press to assign | ⬜ P1-24 |
-| Box-select mode | Toggle button, so a one-finger drag selects instead of pans | ⬜ P1-24 |
-| Context order | Long-press the ground for a radial menu: attack-move, patrol, set rally point | ⬜ P1-24 |
+| Deselect | "Clear" button in the touch bar (bottom left, above the minimap) | ✅ |
+| Attack-move, stop, hold | Buttons in the command grid when units are selected | ✅ |
+| Control groups | Group buttons 1–5 in the touch bar: tap to select (twice quickly jumps), hold 0.5 s to store | ✅ |
+| Box-select mode | "Box" toggle in the touch bar, so a one-finger drag selects instead of pans | ✅ |
+| Context order | Hold a finger still for 0.6 s: a radial menu with attack-move here, move here, stop, hold, rally here (patrol and guard come with P1-24b) | ✅ |
 
 ## HUD layout (landscape; adapts to the window size)
 

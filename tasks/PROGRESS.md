@@ -4,6 +4,15 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: P1-24 Touch controls (Claude Code, branch claude/phase-0-wrapup)
+- Done: a touch bar above the minimap with Clear, a Box toggle (one-finger drag selects instead of panning) and group buttons 1–5 (tap selects, tap twice jumps the camera, hold 0.5 s stores; each shows its size). Holding a finger still for 0.6 s opens a radial menu with the orders that fit the selection: attack-move here, move here, stop, hold, rally here. Touch gestures moved out of `SelectionController` into `TouchGestures`. Guard and patrol need new sim orders, so they became P1-24b.
+- Tests: `tools/run_tests.sh` -> 129 tests, 0 failed; smoke_main drives the group buttons, Clear, box mode, the long press and the radial menu through the real code paths.
+- Not verified: on a real phone (button sizes, the 0.6 s hold, notches). That check belongs to P0-12.
+- Next: P1-28 effects, P1-29 audio, P1-30 terrain.
+- For the owner: when you try the APK, check that the touch bar is reachable with your thumb and that the long press feels right.
+
+---
+
 ## 2026-11-26: P1-35 Settings (Claude Code, branch claude/phase-0-wrapup)
 - Done: a Settings screen, reached from the main menu and the pause menu, with render scale, frame-rate limit (30/60/unlimited), shadows, battery saver (30 fps, lower resolution, no shadows), interface size, edge panning, key rebinding (a key already in use is swapped) and volume sliders. Every change applies at once and is saved in `user://settings.cfg` (`GameSettings`). Tests use scratch files, never the player's settings.
 - Tests: `tools/run_tests.sh` -> 129 tests, 0 failed (new `test_settings.gd`); smoke_menu opens Settings from both menus and checks that battery saver applies and is saved.

@@ -327,7 +327,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Hover highlight; cursor states for move and attack.
 - **Accept:** behavior matches [controls-and-ui.md](../docs/design/controls-and-ui.md); tests where possible (controller-level).
 
-### P1-24 · Touch controls complete — ⬜
+### P1-24 · Touch controls complete — ✅ 2026-11-26 (Claude Code: touch bar, box mode, long-press radial menu; driven in the smoke test, not yet tried on a phone; guard and patrol split into P1-24b)
 - **Do:**
   - Command bar (attack-move, stop, hold).
   - Group buttons (tap to select, long-press to assign).
@@ -335,6 +335,13 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Long-press radial menu.
   - Deselect button.
 - **Accept:** on a phone, every action in the touch table works; documented in PROGRESS.
+
+### P1-24b · Guard and patrol orders — ⬜
+- **Needs:** P1-10, P1-24
+- **Do:**
+  - Sim: a GUARD order (stay near a unit or building, attack enemies that come close, return) and a PATROL order (move back and forth between two points, attack-moving).
+  - Keys: G for guard (then click the target), and a "Patrol" entry in the radial menu and the command grid.
+- **Accept:** tests for both orders, including determinism; docs/design/controls-and-ui.md updated.
 
 ### P1-25 · HUD v1 — ✅ 2026-11-26 (Claude Code: not yet checked on a real screen; phone tabs/collapsing come with P1-24)
 - **Needs:** P1-13, P1-15, P1-16

@@ -7,16 +7,15 @@ extends Node
 ## move (or attack, on an enemy), A then left-click attack-move, H hold, S stop.
 ## Keys: Ctrl+1–9 store a control group, 1–9 recall it (twice quickly jumps
 ## the camera), Shift+1–9 add it. Space + left-drag pans instead of selecting.
-## Touch: tap your unit to select it, tap an enemy to attack it, tap ground to
-## move the selection,
-## one-finger drag pans, hold still then drag for box select, double-tap a unit
-## to select all of that type on screen, two fingers zoom, rotate and pan.
+## Touch: see TouchGestures (touch_gestures.gd). The HUD adds touch buttons
+## (TouchBar) and the long-press radial menu (RadialMenu).
 ## See docs/design/controls-and-ui.md.
 
 signal selection_changed(ids: Array[int])
+## A finger held still on the battlefield (the HUD opens the radial menu).
+signal long_pressed(screen_pos: Vector2)
 
 const DRAG_THRESHOLD_PX: float = 10.0
-const LONG_PRESS_SEC: float = 0.35
 const MIN_PICK_RADIUS_PX: float = 28.0
 
 var runner: SimRunner
@@ -37,14 +36,8 @@ var _mouse_down: bool = false
 var _mouse_dragging: bool = false
 var _mouse_start: Vector2 = Vector2.ZERO
 
-var _touches: Dictionary[int, Vector2] = {}   ## finger index -> position
-var _touch_start: Vector2 = Vector2.ZERO
-var _touch_start_ms: int = 0
-var _touch_moved: bool = false
-var _touch_box: bool = false
-var _pinch_dist: float = 0.0
-var _pinch_angle: float = 0.0
-var _pinch_mid: Vector2 = Vector2.ZERO
+## Touch gestures live in their own class; see touch_gestures.gd.
+var touch := TouchGestures.new(self)
 
 
 func setup(sim_runner: SimRunner, view: GameView, cam: RtsCamera, overlay: SelectionBox, player_id: int) -> void:
@@ -57,6 +50,9 @@ func setup(sim_runner: SimRunner, view: GameView, cam: RtsCamera, overlay: Selec
 
 func _process(_delta: float) -> void:
 	_prune_selection()
+	var held: Variant = touch.poll_long_press(Time.get_ticks_msec())
+	if held != null:
+		long_pressed.emit(held)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -69,9 +65,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion:
 		_on_mouse_motion(event as InputEventMouseMotion)
 	elif event is InputEventScreenTouch:
-		_on_touch(event as InputEventScreenTouch)
+		touch.on_touch(event as InputEventScreenTouch, Time.get_ticks_msec())
 	elif event is InputEventScreenDrag:
-		_on_drag(event as InputEventScreenDrag)
+		touch.on_drag(event as InputEventScreenDrag, Time.get_ticks_msec())
 	elif event is InputEventKey and groups.handle_key(event as InputEventKey, self):
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("cmd_stop"):
@@ -150,7 +146,6 @@ func order_attack_move(screen_pos: Vector2) -> void:
 ## repair one of our buildings; set the rally point when only buildings are
 ## selected; otherwise move.
 func order_at(screen_pos: Vector2) -> void:
-	var world: SimWorld = runner.world
 	var enemy: int = _pick_unit(screen_pos, false)
 	if enemy != 0:
 		order_attack(enemy)
@@ -165,15 +160,22 @@ func order_at(screen_pos: Vector2) -> void:
 		runner.submit(SimCommand.make_repair(selected, own_building))
 		return
 	if not selected.is_empty() and not _selected_any(func(e: SimEntity) -> bool: return e.mover != null):
-		var ground: Variant = rts_camera.screen_to_ground(screen_pos)
-		if ground != null:
-			var point: Vector3 = ground
-			for id: int in selected:
-				if world.entities.has(id) and world.entities[id].building != null:
-					runner.submit(SimCommand.make_rally(id, Fx.from_float(point.x), Fx.from_float(point.z)))
-			game_view.show_move_marker(point)
+		order_rally(screen_pos)
 		return
 	order_move(screen_pos)
+
+
+## Sets the rally point of every selected building to the ground there.
+func order_rally(screen_pos: Vector2) -> void:
+	var world: SimWorld = runner.world
+	var ground: Variant = rts_camera.screen_to_ground(screen_pos)
+	if ground == null:
+		return
+	var point: Vector3 = ground
+	for id: int in selected:
+		if world.entities.has(id) and world.entities[id].building != null:
+			runner.submit(SimCommand.make_rally(id, Fx.from_float(point.x), Fx.from_float(point.z)))
+	game_view.show_move_marker(point)
 
 
 func _selected_any(predicate: Callable) -> bool:
@@ -206,7 +208,7 @@ func _on_mouse_button(mb: InputEventMouseButton) -> void:
 			else:
 				var hit: int = _pick_own_unit(mb.position)
 				if mb.double_click and hit != 0:
-					_select_same_type_on_screen(hit)
+					select_same_type_on_screen(hit)
 				elif hit != 0:
 					select_ids([hit], mb.shift_pressed)
 				elif not mb.shift_pressed:
@@ -223,93 +225,6 @@ func _on_mouse_motion(mm: InputEventMouseMotion) -> void:
 		_mouse_dragging = true
 	if _mouse_dragging:
 		box_overlay.show_box(Rect2(_mouse_start, mm.position - _mouse_start).abs())
-
-
-# --- Touch ---
-
-func _on_touch(st: InputEventScreenTouch) -> void:
-	if st.pressed:
-		_touches[st.index] = st.position
-		if _touches.size() == 1:
-			_touch_start = st.position
-			_touch_start_ms = Time.get_ticks_msec()
-			_touch_moved = false
-			_touch_box = false
-			if st.double_tap:
-				var hit: int = _pick_own_unit(st.position)
-				if hit != 0:
-					_select_same_type_on_screen(hit)
-					_touch_moved = true   # consumed; not a tap
-		elif _touches.size() == 2:
-			_touch_moved = true       # a second finger cancels the tap
-			_touch_box = false
-			box_overlay.hide_box()
-			_begin_pinch()
-		return
-	var was_single: bool = _touches.size() == 1
-	_touches.erase(st.index)
-	if was_single:
-		if _touch_box:
-			box_select(Rect2(_touch_start, st.position - _touch_start).abs())
-			box_overlay.hide_box()
-		elif not _touch_moved:
-			_tap(st.position)
-	elif _touches.size() == 1:
-		# Two fingers became one: continue as a pan, never as a tap.
-		_touch_start = _touches.values()[0]
-		_touch_moved = true
-		_touch_box = false
-
-
-func _on_drag(sd: InputEventScreenDrag) -> void:
-	_touches[sd.index] = sd.position
-	if _touches.size() == 1:
-		if not _touch_moved and sd.position.distance_to(_touch_start) > DRAG_THRESHOLD_PX:
-			_touch_moved = true
-			_touch_box = Time.get_ticks_msec() - _touch_start_ms >= int(LONG_PRESS_SEC * 1000.0)
-		if _touch_moved:
-			if _touch_box:
-				box_overlay.show_box(Rect2(_touch_start, sd.position - _touch_start).abs())
-			else:
-				rts_camera.pan_screen(sd.relative)
-	elif _touches.size() == 2:
-		_update_pinch()
-
-
-func _tap(pos: Vector2) -> void:
-	if attack_move_armed:
-		order_attack_move(pos)
-		return
-	var hit: int = _pick_own_unit(pos)
-	if hit != 0:
-		select_ids([hit])
-	elif not selected.is_empty():
-		order_at(pos)
-
-
-func _begin_pinch() -> void:
-	var pts: Array = _touches.values()
-	var a: Vector2 = pts[0]
-	var b: Vector2 = pts[1]
-	_pinch_dist = a.distance_to(b)
-	_pinch_angle = (b - a).angle()
-	_pinch_mid = (a + b) * 0.5
-
-
-func _update_pinch() -> void:
-	var pts: Array = _touches.values()
-	var a: Vector2 = pts[0]
-	var b: Vector2 = pts[1]
-	var dist: float = a.distance_to(b)
-	var angle: float = (b - a).angle()
-	var mid: Vector2 = (a + b) * 0.5
-	if _pinch_dist > 1.0 and dist > 1.0:
-		rts_camera.zoom_by(_pinch_dist / dist)
-	rts_camera.rotate_by(angle_difference(_pinch_angle, angle))
-	rts_camera.pan_screen(mid - _pinch_mid)
-	_pinch_dist = dist
-	_pinch_angle = angle
-	_pinch_mid = mid
 
 
 # --- Helpers ---
@@ -375,7 +290,7 @@ func _pick(screen_pos: Vector2, predicate: Callable) -> int:
 	return best_id
 
 
-func _select_same_type_on_screen(entity_id: int) -> void:
+func select_same_type_on_screen(entity_id: int) -> void:
 	var def_id: String = runner.world.entities[entity_id].def_id
 	var rect: Rect2 = get_viewport().get_visible_rect()
 	var ids: Array[int] = []
