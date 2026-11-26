@@ -8,6 +8,9 @@ extends GridContainer
 ## "action" (Callable), optional "alt_action" (Callable, right-click / long
 ## press, for example cancel), optional "tooltip"}.
 
+## Emitted after a slot's action ran (the game plays a click).
+signal activated(slot: int)
+
 const SLOT_KEYS: Array[Key] = [KEY_Q, KEY_W, KEY_E, KEY_R, KEY_A, KEY_S, KEY_D, KEY_F, KEY_Z, KEY_X, KEY_C, KEY_V]
 const SLOT_LABELS: Array[String] = ["Q", "W", "E", "R", "A", "S", "D", "F", "Z", "X", "C", "V"]
 const BUTTON_SIZE := Vector2(76, 60)
@@ -68,6 +71,7 @@ func activate(slot: int, alternate: bool = false) -> bool:
 	var action: Variant = e.get(key, null)
 	if action is Callable and (action as Callable).is_valid():
 		(action as Callable).call()
+		activated.emit(slot)
 		return true
 	return false
 

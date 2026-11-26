@@ -50,6 +50,15 @@ func _ready() -> void:
 	_button(box, "Settings", open_settings).name = "Settings"
 	_button(box, "Quit", func() -> void: get_tree().quit())
 	_refresh_labels()
+	DevCapture.attach_if_requested(self)
+	# `godot --path game -- --scenario=<id>` skips the menu and starts that match.
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--scenario="):
+			var id: String = arg.trim_prefix("--scenario=")
+			if content.scenarios.has(id):
+				_start.call_deferred(content.scenarios[id])
+			else:
+				push_error("Unknown scenario '%s'" % id)
 
 
 func start_skirmish() -> void:

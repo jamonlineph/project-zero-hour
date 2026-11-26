@@ -26,15 +26,21 @@ def reset_scene():
     bpy.ops.wm.read_factory_settings(use_empty=True)
 
 
+def srgb_to_linear(c):
+    """Palette colors are written as screen (sRGB) values, the way artists
+    pick them; Blender and glTF materials want linear values."""
+    return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
+
 def get_material(name, color, roughness=0.75, metallic=0.0):
-    """Create (or reuse) a simple Principled BSDF material."""
+    """Create (or reuse) a simple Principled BSDF material. `color` is sRGB."""
     mat = bpy.data.materials.get(name)
     if mat is not None:
         return mat
     mat = bpy.data.materials.new(name)
     if hasattr(mat, "use_nodes") and not mat.use_nodes:
         mat.use_nodes = True
-    rgba = (color[0], color[1], color[2], 1.0)
+    rgba = (srgb_to_linear(color[0]), srgb_to_linear(color[1]), srgb_to_linear(color[2]), 1.0)
     mat.diffuse_color = rgba
     bsdf = mat.node_tree.nodes.get("Principled BSDF") if mat.node_tree else None
     if bsdf is not None:

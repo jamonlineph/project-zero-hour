@@ -72,7 +72,7 @@ func _ready() -> void:
 	rts_camera.name = "RtsCamera"
 	add_child(rts_camera)
 	rts_camera.set_bounds(Rect2(0, 0, map_def.width_m, map_def.height_m))
-	rts_camera.focus_on(Vector3(map_def.width_m * 0.35, 0.0, map_def.height_m * 0.5))
+	rts_camera.focus_on(_start_focus())
 
 	hud = Hud.new()
 	hud.name = "Hud"
@@ -83,6 +83,10 @@ func _ready() -> void:
 	selection.name = "SelectionController"
 	selection.setup(runner, game_view, rts_camera, hud.selection_box, LOCAL_PLAYER)
 	selection.selection_changed.connect(hud.on_selection_changed)
+	selection.selection_changed.connect(func(ids: Array[int]) -> void:
+		if not ids.is_empty():
+			game_view.sounds.play_ui("ack"))
+	hud.command_grid.activated.connect(func(_slot: int) -> void: game_view.sounds.play_ui("ui_click"))
 	add_child(selection)
 
 	placement = PlacementController.new()
@@ -98,6 +102,7 @@ func _ready() -> void:
 	add_child(pointer)
 
 	GameSettings.current().apply(get_tree())
+	DevCapture.attach_if_requested(self)
 
 	pause_menu = PauseMenu.new()
 	pause_menu.name = "PauseMenu"
@@ -130,6 +135,26 @@ func _process(_delta: float) -> void:
 	runner.pending_events.clear()
 
 
+## Where the camera starts: the local player's HQ (or first building or
+## unit), else the map's first start position, else left of center.
+func _start_focus() -> Vector3:
+	var fallback: SimEntity = null
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		if e.player_id != LOCAL_PLAYER:
+			continue
+		if e.def_id.ends_with("_command_hq"):
+			return Vector3(Fx.to_float(e.x), 0.0, Fx.to_float(e.y))
+		if fallback == null or (e.building != null and fallback.building == null):
+			fallback = e
+	if fallback != null:
+		return Vector3(Fx.to_float(fallback.x), 0.0, Fx.to_float(fallback.y))
+	if not map_def.start_positions.is_empty():
+		var p: Vector2i = map_def.start_positions[0]
+		return Vector3(p.x, 0.0, p.y)
+	return Vector3(map_def.width_m * 0.35, 0.0, map_def.height_m * 0.5)
+
+
 func _build_environment() -> void:
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
@@ -137,7 +162,13 @@ func _build_environment() -> void:
 	sky.sky_material = ProceduralSkyMaterial.new()
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+	# Checked on a real render: full sky ambient plus the sun washed every
+	# color out to near white. Less ambient keeps the muted palette readable.
+	env.ambient_light_energy = 0.45
+	env.ambient_light_sky_contribution = 0.6
+	env.reflected_light_source = Environment.REFLECTION_SOURCE_DISABLED
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.tonemap_exposure = 0.9
 	var world_env := WorldEnvironment.new()
 	world_env.environment = env
 	add_child(world_env)
@@ -145,6 +176,7 @@ func _build_environment() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-50.0, -35.0, 0.0)
 	sun.shadow_enabled = true
+	sun.light_energy = 0.9
 	sun.add_to_group("shadow_lights")   # GameSettings turns shadows on and off
 	add_child(sun)
 

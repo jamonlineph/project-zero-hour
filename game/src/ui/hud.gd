@@ -61,6 +61,8 @@ func _ready() -> void:
 	_help.add_theme_font_size_override("font_size", 11)
 	_help.modulate = Color(1, 1, 1, 0.75)
 	_help.position = Vector2(12, 40)
+	_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_help.custom_minimum_size.x = 560.0
 	add_child(_help)
 
 	minimap = Minimap.new()
@@ -284,6 +286,8 @@ func _process(delta: float) -> void:
 
 func _layout() -> void:
 	var view: Vector2 = get_viewport().get_visible_rect().size
+	_help.custom_minimum_size.x = minf(560.0, view.x * 0.6)
+	_help.size.x = _help.custom_minimum_size.x
 	var margin: float = 10.0
 	minimap.position = Vector2(margin, view.y - minimap.size.y - margin)
 	if touch_bar != null:

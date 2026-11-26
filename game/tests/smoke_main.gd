@@ -64,6 +64,10 @@ func _run() -> void:
 		failures.append_array(await _check_touch_controls(main, world, selection))
 		failures.append_array(await _check_hud_build_and_produce(main, world, selection))
 		failures.append_array(await _check_attack(world, selection))
+		if game_view.effects == null or game_view.effects.played == 0:
+			failures.append("combat played no effects (muzzle flashes, tracers or explosions)")
+		if game_view.sounds == null or game_view.sounds.played == 0:
+			failures.append("combat played no sounds")
 		failures.append_array(await _check_unit_views(world, game_view, selection))
 		failures.append_array(_check_fog(main, world, game_view))
 

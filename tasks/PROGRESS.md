@@ -4,6 +4,22 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-26: First real renders; P1-28 Effects; P1-29 Audio (Claude Code, branch claude/phase-0-wrapup)
+- **First real look at the game.** A Godot build with OpenGL now runs on this machine through a virtual display and Mesa's software renderer, so the game was rendered for the first time (`docs/screenshots/`). New `--screenshot=<file>` option (`DevCapture`); how-to in `docs/08-testing-and-qa.md`. What it showed, and the fixes:
+  - Colors were washed out to near white. Blender palette colors were being treated as linear; `sf_common.get_material` now converts them from sRGB, and all 35 models were rebuilt. Scene ambient light and sun were also turned down.
+  - The camera started away from the base; it now starts on the player's HQ.
+  - The F1 help ran off the screen; it now wraps.
+  - Since P1-32, `-- --scenario=<id>` no longer skipped the menu (the menu became the main scene). The menu now honors it again.
+  - A custom-cursor texture leaked at exit; it is released when the match closes.
+- **P1-28 effects:** `CombatEffects` keeps pools of particle effects (muzzle flash, explosion sized by splash radius, smoke, death blast) and tracers for instant weapons, driven by sim events. Nothing plays where the player can't see. Battery saver halves particle counts. New perf scenario `effects_50` (50 explosions a second).
+- **P1-29 audio:** audio buses (Master, Music, SFX, UI, Voice), a pool of 3D sound players with a per-sound rate limit, and 11 original placeholder sounds synthesized by `tools/gen_sounds.py` (weapons by type, explosions, UI click, unit acknowledgement, construction complete). The Settings volume sliders now work.
+- Tests: `tools/run_tests.sh` -> 134 tests, 0 failed (new `test_audio.gd`); smoke_main checks that combat plays effects and sounds.
+- Not verified: effects and sounds on a phone; how the synthesized sounds feel (they are rough placeholders); lighting under the Mobile renderer (the screenshots use Compatibility).
+- Next: P1-30 terrain and map format, then P1-24b guard and patrol.
+- For the owner: look at `docs/screenshots/` and say whether the look is heading the right way (Q-6).
+
+---
+
 ## 2026-11-26: P1-24 Touch controls (Claude Code, branch claude/phase-0-wrapup)
 - Done: a touch bar above the minimap with Clear, a Box toggle (one-finger drag selects instead of panning) and group buttons 1–5 (tap selects, tap twice jumps the camera, hold 0.5 s stores; each shows its size). Holding a finger still for 0.6 s opens a radial menu with the orders that fit the selection: attack-move here, move here, stop, hold, rally here. Touch gestures moved out of `SelectionController` into `TouchGestures`. Guard and patrol need new sim orders, so they became P1-24b.
 - Tests: `tools/run_tests.sh` -> 129 tests, 0 failed; smoke_main drives the group buttons, Clear, box mode, the long press and the radial menu through the real code paths.

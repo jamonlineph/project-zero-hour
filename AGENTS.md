@@ -56,9 +56,11 @@ This file is the single source of truth for every AI agent working in this repo:
 | All tests (unit + smoke) | `tools/run_tests.sh`. On Windows: `tools\run_tests.ps1`. Set `GODOT=/path/to/godot` if Godot isn't on your PATH |
 | Repo checks (provenance, banned files) | `python3 tools/check_repo.py` |
 | Rebuild placeholder art | `tools/build_assets.sh` (set `BLENDER=/path/to/blender`). Options: `--only ID ...`, `--no-icons`, `--sheets` |
+| Rebuild placeholder sounds | `python3 tools/gen_sounds.py` (needs numpy; writes `game/assets/audio/sfx/` and the manifest rows) |
 | Re-import assets after adding files | `godot --headless --path game --import` |
 | Regenerate golden replays (only after an intended change to sim rules or data; say why in the commit) | `tools/regen_golden_replays.sh` |
 | Run the game | `godot --path game`, or open `game/project.godot` and press F5 |
+| Screenshot without a screen | `xvfb-run -a godot --rendering-driver opengl3 --path game -- --scenario=skirmish_vs_ai --screenshot=/tmp/shot.png` (details in `docs/08-testing-and-qa.md`) |
 
 ## 7. Definition of done (every task)
 

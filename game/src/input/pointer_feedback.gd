@@ -31,6 +31,13 @@ func setup(selection_controller: SelectionController) -> void:
 		Input.set_custom_mouse_cursor(_attack_cursor(), Input.CURSOR_HELP, Vector2(16, 16))
 
 
+func _exit_tree() -> void:
+	# Release the custom cursor before the renderer shuts down.
+	if DisplayServer.get_name() != "headless":
+		Input.set_custom_mouse_cursor(null, Input.CURSOR_HELP)
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+
 func _process(_delta: float) -> void:
 	_frame += 1
 	if selection == null or not selection.rts_camera.edge_pan_enabled:

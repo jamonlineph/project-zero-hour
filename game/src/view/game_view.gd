@@ -9,12 +9,18 @@ var content: ContentDb
 var local_player_id: int = 1
 var _views: Dictionary[int, UnitView] = {}
 var _wreck_material: StandardMaterial3D
+var effects: CombatEffects
+var sounds: GameSounds
 var wrecks_made: int = 0
 
 
 func setup(sim_world: SimWorld, content_db: ContentDb) -> void:
 	world = sim_world
 	content = content_db
+	effects = CombatEffects.new()
+	add_child(effects)
+	sounds = GameSounds.new()
+	add_child(sounds)
 
 
 ## Call once per frame after the sim has stepped. alpha = progress into the tick.
@@ -76,42 +82,43 @@ func _remove_view(id: int) -> void:
 		v.queue_free()
 
 
-## Simple placeholder effects for sim events until P1-28 adds real ones: a
-## brief flash where a weapon fires and a puff where something dies.
+## Effects for sim events (P1-28). Nothing plays where this player can't see.
 func play_events(events: Array[Dictionary]) -> void:
 	for ev: Dictionary in events:
 		match ev["type"]:
 			"fired":
 				var shooter: UnitView = _views.get(ev["attacker"], null)
-				if shooter != null and not shooter.visible:
+				if shooter == null or not shooter.visible:
 					continue
-				var at := Vector3(Fx.to_float(ev["x"]), 1.5, Fx.to_float(ev["y"]))
-				if shooter != null:
-					at = shooter.muzzle_position()
-				_flash(at, Color(1.0, 0.85, 0.4), 0.6, 0.12)
+				var from: Vector3 = shooter.muzzle_position()
+				effects.play(CombatEffects.Kind.MUZZLE, from)
+				var weapon: WeaponDef = content.weapons.get(str(ev["weapon"]), null) if content != null else null
+				if weapon == null or weapon.projectile == "instant":
+					effects.tracer(from, Vector3(Fx.to_float(ev["tx"]), 1.0, Fx.to_float(ev["ty"])))
+				sounds.play_at(GameSounds.weapon_sound(weapon), from)
+			"hit":
+				if not world.can_see(local_player_id, ev["x"], ev["y"]):
+					continue
+				var radius_m: float = Fx.to_float(ev["radius"])
+				var at := Vector3(Fx.to_float(ev["x"]), 0.6, Fx.to_float(ev["y"]))
+				effects.play(CombatEffects.Kind.EXPLOSION, at, clampf(0.4 + radius_m * 0.25, 0.4, 3.0))
+				if radius_m > 0.0:
+					sounds.play_at("explosion_small", at)
 			"died":
 				if not world.can_see(local_player_id, ev["x"], ev["y"]):
 					continue
-				_flash(Vector3(Fx.to_float(ev["x"]), 1.0, Fx.to_float(ev["y"])), Color(0.3, 0.3, 0.3), 3.0, 0.8)
-
-
-func _flash(at: Vector3, color: Color, size: float, seconds: float) -> void:
-	var mat := StandardMaterial3D.new()
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	mat.albedo_color = color
-	var sphere := SphereMesh.new()
-	sphere.radius = size * 0.5
-	sphere.height = size
-	var mi := MeshInstance3D.new()
-	mi.mesh = sphere
-	mi.material_override = mat
-	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	mi.position = at
-	add_child(mi)
-	var tween := mi.create_tween()
-	tween.tween_property(mat, "albedo_color:a", 0.0, seconds)
-	tween.tween_callback(mi.queue_free)
+				var at := Vector3(Fx.to_float(ev["x"]), 0.8, Fx.to_float(ev["y"]))
+				var unit: UnitDef = content.get_unit(str(ev["def_id"])) if content != null else null
+				if unit != null and unit.is_infantry():
+					effects.play(CombatEffects.Kind.EXPLOSION, at, 0.6)
+				else:
+					var big: float = 2.0 if unit == null else 1.0   # buildings blow up bigger
+					effects.play(CombatEffects.Kind.DEATH, at, big)
+					effects.play(CombatEffects.Kind.SMOKE, at, big)
+					sounds.play_at("explosion_large", at)
+			"built":
+				if int(ev["player"]) == local_player_id:
+					sounds.play_ui("build_complete")
 
 
 func get_view(entity_id: int) -> UnitView:

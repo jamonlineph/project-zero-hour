@@ -14,7 +14,7 @@ const BASELINE_PATH: String = "res://tests/perf/perf_baseline.json"
 const TOLERANCE: float = 0.20
 ## The view scenario times about 2 ms of work per frame and varies more from
 ## run to run, so it gets a looser limit.
-const TOLERANCE_OVERRIDES: Dictionary = {"view_300": 0.5}
+const TOLERANCE_OVERRIDES: Dictionary = {"view_300": 0.5, "effects_50": 0.5}
 const SEED: int = 4242
 
 var _content: ContentDb
@@ -51,6 +51,10 @@ func _run() -> void:
 	for r: int in 3:
 		views.append(await _view_scenario(_battle_world(150), 120, calib_ms))
 	scenarios["view_300"] = _best(views)
+	var fx_runs: Array[Dictionary] = []
+	for r: int in 3:
+		fx_runs.append(await _effects_scenario(180, calib_ms))
+	scenarios["effects_50"] = _best(fx_runs)
 	for name: String in scenarios:
 		var r: Dictionary = scenarios[name]
 		print("%-11s median %6.2f ms  p95 %6.2f ms  max %6.2f ms  (normalized %.3f, %d entities)" % [
@@ -187,6 +191,32 @@ func _best(runs: Array) -> Dictionary:
 		if r["median_ms"] < best["median_ms"]:
 			best = r
 	return best
+
+
+## 50 explosions per second (plus muzzle flashes and tracers) on top of the
+## view: times the per-frame cost of starting pooled effects.
+func _effects_scenario(frames: int, calib_ms: float) -> Dictionary:
+	var world: SimWorld = _battle_world(150)
+	var view := GameView.new()
+	view.setup(world, _content)
+	root.add_child(view)
+	view.sync(0.0)
+	var samples: PackedFloat64Array = []
+	var carry: float = 0.0
+	for f: int in frames:
+		carry += 50.0 / 60.0          # 50 per second at 60 fps
+		var start: int = Time.get_ticks_usec()
+		while carry >= 1.0:
+			carry -= 1.0
+			var at := Vector3(float(f % 200) + 20.0, 0.5, float((f * 7) % 200) + 20.0)
+			view.effects.play(CombatEffects.Kind.EXPLOSION, at, 1.5)
+			view.effects.play(CombatEffects.Kind.MUZZLE, at + Vector3(0, 1, 0))
+			view.effects.tracer(at + Vector3(0, 1, 0), at + Vector3(20, 1, 0))
+		view.sync(0.0)
+		samples.append((Time.get_ticks_usec() - start) / 1000.0)
+		await process_frame
+	view.queue_free()
+	return _summary(samples, calib_ms, world.entity_ids.size())
 
 
 func _summary(samples: PackedFloat64Array, calib_ms: float, entities: int) -> Dictionary:

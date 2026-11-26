@@ -41,7 +41,7 @@ Units and buildings are low-poly 3D models, so the camera can zoom and rotate an
 | Team color | A material named exactly `team_color`. Godot recolors it per player (`TeamColors.apply`). |
 | Moving parts | Separate objects named `turret`, `barrel`, `rotor_main`, `wheel_l0` and so on, parented in a hierarchy (turret → hull). Put each part's origin at its pivot: the game turns `turret` about its vertical axis and tilts `barrel` about its X axis from their rest pose (`set_origin` in `sf_common.py` does this for generated models). |
 | Effect points | Empties named `muzzle_0`, `muzzle_1`, `fx_exhaust`, `fx_smoke` |
-| Materials | Principled BSDF only (that's what glTF exports). Base color, roughness, metallic, optional normal map. |
+| Materials | Principled BSDF only (that's what glTF exports). Base color, roughness, metallic, optional normal map. Colors in `blender/specs/placeholders.json` are sRGB (as picked in an image editor); `sf_common.get_material` converts them to linear. |
 | File names | `<faction>_<role>[_<variant>]`: `us_mbt`, `ru_ew_vehicle`, `cn_command_hq` |
 | Paths | `game/assets/models/<units|buildings|props>/<id>.glb`, `game/assets/icons/<category>/<id>.png`, `game/assets/sprites/<category>/<id>_8dir.png` |
 

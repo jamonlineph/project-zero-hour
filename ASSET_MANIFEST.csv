@@ -1,4 +1,15 @@
 path,author,source,license,generated_by,notes
+game/assets/audio/sfx/ack.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/artillery.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/autocannon.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/build_complete.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/cannon.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/explosion_large.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/explosion_small.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/laser.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/missile.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/rifle.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/ui_click.wav,Signal Front contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ru_barracks.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_barracks)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ru_command_hq.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_command_hq)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ru_drone_launch_site.png,Signal Front contributors,"blender/build_assets.py (procedural, spec: ru_drone_launch_site)",CC-BY-SA-4.0,script,placeholder

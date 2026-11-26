@@ -13,9 +13,9 @@
 
 ### Performance harness (P1-33)
 
-- **Scenarios:** `battle_300` (two 150-unit armies attack-move into each other on an open 256 m map), `march_300` (300 vehicles cross the sandbox map in groups of 12, through the ridge gap), `view_300` (`GameView.sync` with 300 entities on screen).
+- **Scenarios:** `battle_300` (two 150-unit armies attack-move into each other on an open 256 m map), `march_300` (300 vehicles cross the sandbox map in groups of 12, through the ridge gap), `view_300` (`GameView.sync` with 300 entities on screen), `effects_50` (50 explosions per second with muzzle flashes and tracers, on top of the view).
 - **Numbers:** median, 95th percentile and maximum ms per tick (per frame for the view), best of 3 repeats. Results go to `build/perf/latest.json`.
-- **Limits:** the sim scenarios fail at more than 20% over the baseline; `view_300` (about 2 ms of work, noisier) at more than 50%.
+- **Limits:** the sim scenarios fail at more than 20% over the baseline; `view_300` and `effects_50` (a few ms of work, noisier) at more than 50%.
 - **Machine speed:** every run also times a fixed GDScript workload ("calibration"). The regression check compares `median / calibration`, so a slower CI runner doesn't fail on its own.
 - **Find the slow system:** `tools/run_perf.sh --profile` prints the average ms per tick of each sim system.
 - **Update the baseline** only after an intended change (new feature, accepted slowdown, faster code) or a change of CI runner: `tools/run_perf.sh --update-baseline`, and say why in the commit. CI uploads its own `latest.json` as an artifact; copying that over the baseline is the most reliable way to set it.
@@ -25,6 +25,21 @@ How the test runner behaves:
 - It fails a test if the test crashes (script error), even when no assertion failed.
 - `push_error()` inside a test doesn't count as a failure, because tests trigger it on purpose to check error handling.
 - The smoke test does count `push_error()`, because the real game must start cleanly.
+
+## Screenshots without a screen
+
+Agents usually run on machines without a GPU or display. The game can still render through a virtual display and Mesa's software OpenGL:
+
+```bash
+xvfb-run -a -s "-screen 0 1280x720x24" godot --rendering-driver opengl3 --path game -- --scenario=skirmish_vs_ai --screenshot=/tmp/shot.png --screenshot-frames=240
+```
+
+- `--screenshot=<file>` saves the rendered frame after `--screenshot-frames` frames (default 90), then quits (`DevCapture`). Without `--scenario=` it captures the main menu.
+- `--scenario=<id>` skips the menu and starts that scenario (`sandbox`, `skirmish_vs_ai`, `ai_duel`).
+- Use a normal Godot editor build (the official downloads include X11 and OpenGL). A "headless only" build can't do this.
+- Software rendering runs at about 15–20 fps, so the sim reaches about 15 s of game time per 240 frames.
+- It uses the Compatibility renderer, not Mobile, so lighting can differ slightly from phones. It's good for layout, colors, models and UI, not for final lighting or performance.
+- Example shots live in `docs/screenshots/`.
 
 ## Planned test additions
 

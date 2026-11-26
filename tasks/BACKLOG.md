@@ -367,12 +367,12 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - Apply fog to the minimap.
 - **Accept:** visual check plus a smoke test that enemy views are hidden when not visible.
 
-### P1-28 · Effects v1 — ⬜
+### P1-28 · Effects v1 — ✅ 2026-11-26 (Claude Code: pooled particles and tracers; `effects_50` perf scenario; frame time on a phone not measured yet)
 - **Needs:** P1-07
 - **Do:** pooled `GPUParticles3D` for muzzle flash, tracer, explosion, smoke and death, within the mobile budget.
 - **Accept:** no frame drop below budget in the performance harness with 50 explosions per second.
 
-### P1-29 · Audio v1 — ⬜
+### P1-29 · Audio v1 — ✅ 2026-11-26 (Claude Code: 11 synthesized placeholder sounds from `tools/gen_sounds.py`; no music yet)
 - **Needs:** P1-07
 - **Do:**
   - Audio buses (master, sfx, ui, voice, music).

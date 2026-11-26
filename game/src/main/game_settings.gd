@@ -59,6 +59,7 @@ func apply(tree: SceneTree) -> void:
 	root.content_scale_factor = ui_scale
 	for node: Node in tree.get_nodes_in_group("shadow_lights"):
 		(node as Light3D).shadow_enabled = effective_shadows()
+	GameSounds.ensure_buses()
 	for bus: String in volumes:
 		var index: int = AudioServer.get_bus_index(bus)
 		if index >= 0:
