@@ -33,6 +33,8 @@ var shadows: bool = true
 var ui_scale: float = 1.0
 var edge_pan: bool = true
 var battery_saver: bool = false
+## Accessibility (P3-20): team colors that stay apart with color blindness.
+var colorblind_colors: bool = false
 ## Bus name -> linear volume 0..1.
 var volumes: Dictionary[String, float] = {"Master": 1.0, "Music": 0.7, "SFX": 1.0, "UI": 0.8, "Voice": 1.0}
 ## Action -> physical keycode, only for actions the player rebound.
@@ -104,6 +106,7 @@ func apply(tree: SceneTree) -> void:
 			AudioServer.set_bus_volume_db(index, linear_to_db(maxf(volumes[bus], 0.0001)))
 			AudioServer.set_bus_mute(index, volumes[bus] <= 0.0)
 	apply_bindings()
+	TeamColors.colorblind = colorblind_colors
 
 
 ## Replaces the key of every rebound action (InputActions has the defaults).
@@ -141,6 +144,7 @@ func save_to(path: String) -> Error:
 	cfg.set_value("video", "fps_cap", fps_cap)
 	cfg.set_value("video", "shadows", shadows)
 	cfg.set_value("video", "battery_saver", battery_saver)
+	cfg.set_value("accessibility", "colorblind_colors", colorblind_colors)
 	cfg.set_value("ui", "ui_scale", ui_scale)
 	cfg.set_value("controls", "edge_pan", edge_pan)
 	for bus: String in volumes:
@@ -169,6 +173,7 @@ func load_from(path: String) -> void:
 	fps_cap = fps if FPS_CHOICES.has(fps) else 60
 	shadows = bool(cfg.get_value("video", "shadows", shadows))
 	battery_saver = bool(cfg.get_value("video", "battery_saver", battery_saver))
+	colorblind_colors = bool(cfg.get_value("accessibility", "colorblind_colors", colorblind_colors))
 	ui_scale = clampf(float(cfg.get_value("ui", "ui_scale", ui_scale)), 0.5, 2.0)
 	edge_pan = bool(cfg.get_value("controls", "edge_pan", edge_pan))
 	for bus: String in BUSES:

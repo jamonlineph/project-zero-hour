@@ -14,8 +14,22 @@ const DEFAULTS: Dictionary = {
 }
 
 
+## Okabe-Ito colors: told apart with the common kinds of color blindness
+## (P3-20, the "Colorblind-safe team colors" setting).
+const COLORBLIND: Dictionary = {
+	0: Color(0.75, 0.75, 0.75),
+	1: Color(0.0, 0.45, 0.70),    # blue
+	2: Color(0.90, 0.62, 0.0),    # orange
+	3: Color(0.80, 0.47, 0.65),   # reddish purple
+	4: Color(0.0, 0.62, 0.45),    # bluish green
+}
+
+## Set from GameSettings.colorblind_colors.
+static var colorblind: bool = false
+
+
 static func for_player(player_id: int) -> Color:
-	return DEFAULTS.get(player_id, Color.WHITE)
+	return (COLORBLIND if colorblind else DEFAULTS).get(player_id, Color.WHITE)
 
 
 ## Recolors every surface whose material is named "team_color" under `root`.

@@ -71,9 +71,9 @@ The keys for camera movement and unit orders can be rebound in Settings (control
 
 ## Accessibility (P3-20)
 
-- UI scale slider
-- Colorblind-safe team colors option
-- Subtitles for voice lines
-- Hold-to-confirm off/on
-- Remappable keys
-- Reduced camera shake
+- UI scale: ✅ "Interface size" (75–150%, P1-35)
+- Colorblind-safe team colors: ✅ setting, Okabe-Ito palette (blue, orange, reddish purple, bluish green), also on the minimap (P3-20)
+- Remappable keys: ✅ (P1-35)
+- Subtitles for voice lines: when voice lines exist (there are none yet; acknowledgements are radio chirps)
+- Hold-to-confirm off/on: when a destructive command exists (there is no sell button yet)
+- Reduced camera shake: when camera shake exists (there is none yet)

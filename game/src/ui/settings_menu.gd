@@ -79,6 +79,8 @@ func _build_rows() -> void:
 		func() -> void: settings.battery_saver = not settings.battery_saver).name = "BatterySaver"
 	_cycle("Interface size", "%d%%" % roundi(settings.ui_scale * 100.0), func() -> void:
 		settings.ui_scale = _next(GameSettings.UI_SCALES, settings.ui_scale))
+	_cycle("Colorblind-safe team colors", "On" if settings.colorblind_colors else "Off",
+		func() -> void: settings.colorblind_colors = not settings.colorblind_colors).name = "ColorblindColors"
 	_header("Controls")
 	_cycle("Pan at the screen edge (mouse)", "On" if settings.edge_pan else "Off",
 		func() -> void: settings.edge_pan = not settings.edge_pan)

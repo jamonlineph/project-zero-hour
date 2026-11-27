@@ -604,7 +604,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 | P3-17 | Mod support (data packs that override JSON and assets) |
 | P3-18 | Localization through translation keys and Weblate |
 | P3-19 | Spreadsheet → JSON balance import tool |
-| P3-20 | Accessibility options ([controls-and-ui.md](../docs/design/controls-and-ui.md)) |
+| P3-20 | Accessibility options ([controls-and-ui.md](../docs/design/controls-and-ui.md)) — 🔄 colorblind-safe team colors done 2026-11-27 (Claude Code); UI scale and key remapping exist; subtitles, hold-to-confirm and reduced shake wait for the features they apply to |
 | P3-21 | Turn on DCO sign-off once outside contributors join |
 | P3-22 | Save and load — ✅ v1 2026-11-27 (Claude Code): a save is the replay plus the state hash; loading fast-forwards and checks the hash (`SaveGame`, `SaveLoader`, "Save game" in the pause menu, "Load game" in the main menu). Later: true snapshots if loading long matches is too slow on phones |
 | P3-23 | Maps 2–12 (three biomes) |

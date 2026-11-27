@@ -106,3 +106,23 @@ func test_low_end_detection() -> void:
 	assert_true(GameSettings.is_low_end("mobile", 3 * 1024 * 1024 * 1024))
 	assert_false(GameSettings.is_low_end("mobile", 8 * 1024 * 1024 * 1024))
 	assert_false(GameSettings.is_low_end("forward_plus", -1), "unknown memory is not low end")
+
+
+func test_colorblind_colors_persist_and_change_the_palette() -> void:
+	# P3-20: the setting saves, and applying it swaps the team palette.
+	var path: String = "user://test_settings_colorblind.cfg"
+	var s := GameSettings.new()
+	s.colorblind_colors = true
+	s.save_to(path)
+	var loaded := GameSettings.new()
+	loaded.load_from(path)
+	assert_true(loaded.colorblind_colors)
+	var tree := Engine.get_main_loop() as SceneTree
+	var normal_red: Color = TeamColors.for_player(2)
+	loaded.apply(tree)
+	assert_true(TeamColors.colorblind)
+	assert_ne(TeamColors.for_player(2), normal_red, "the palette did not change")
+	assert_eq(TeamColors.for_player(2), TeamColors.COLORBLIND[2])
+	GameSettings.new().apply(tree)
+	assert_false(TeamColors.colorblind, "default settings did not restore the normal palette")
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
