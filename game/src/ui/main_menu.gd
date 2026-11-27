@@ -21,6 +21,7 @@ var _credits_button: Button
 func _ready() -> void:
 	GameSettings.current().apply(get_tree())
 	UiTheme.apply(get_tree())
+	add_child(MusicPlayer.new())
 	content = ContentDb.new()
 	if not content.load_all():
 		for e: String in content.errors:

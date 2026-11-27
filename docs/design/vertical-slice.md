@@ -8,7 +8,7 @@
 - **Commander:** ranks 1–3 only, with the rank-1 and rank-3 powers in [commander.md](commander.md).
 - **AI:** v1, easy and normal.
 - **Art:** final-quality Blender models and icons for everything listed below.
-- **Audio:** weapon sounds, explosions, unit acknowledgements (voice lines optional), and one music track.
+- **Audio:** weapon sounds, explosions, unit acknowledgements (voice lines optional), and one music track. Done in P2-18, all generated from code: `tools/gen_sounds.py` (20 effects: weapons, explosions, interface, radio-chirp acknowledgements, alerts for powers, incoming strikes, upgrades, promotions, losses and jamming) and `tools/gen_music.py` (an 80 s loop in D minor at 96 BPM, played by `MusicPlayer` on the Music bus). Alerts are rate-limited (`GameSounds.GAPS_MS`; "under attack" at most every 8 s).
 
 ## Units (first-pass numbers; tune in playtests)
 

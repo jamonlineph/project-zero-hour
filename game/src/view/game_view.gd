@@ -113,6 +113,7 @@ func _remove_view(id: int) -> void:
 ## Effects for sim events (P1-28). Nothing plays where this player can't see.
 func play_events(events: Array[Dictionary]) -> void:
 	for ev: Dictionary in events:
+		sounds.play_alert(ev, world, local_player_id)
 		match ev["type"]:
 			"fired":
 				var shooter: UnitView = _views.get(ev["attacker"], null)
@@ -160,7 +161,7 @@ func play_events(events: Array[Dictionary]) -> void:
 				effects.play(CombatEffects.Kind.MUZZLE, at, 1.5)
 				if ev["type"] == "intercepted":
 					effects.play(CombatEffects.Kind.EXPLOSION, at, 0.5)
-				sounds.play_at("autocannon", at)
+				sounds.play_at("aps_intercept", at)
 			"built":
 				if int(ev["player"]) == local_player_id:
 					sounds.play_ui("build_complete")

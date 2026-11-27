@@ -553,7 +553,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 ### P2-17 · UI art pass — ✅ 2026-11-27 (Claude Code: `UiTheme` with the OFL font Inter, framed panels and buttons, bigger command-grid buttons with icons and hotkey tags; screenshots in `docs/screenshots/ui/`)
 - **Accept:** a Godot `Theme`, an OFL font, framed icons, readable at phone size.
 
-### P2-18 · Audio pass — ⬜
+### P2-18 · Audio pass — ✅ 2026-11-27 (Claude Code: 9 new generated effects, alerts wired to sim events, an original generated music track; all CC BY-SA, in the manifest)
 - **Accept:** weapons, explosions, UI, acknowledgements, one music track; all in the manifest.
 
 ### P2-19 · Google Play internal testing — ⬜ (owner + agent)

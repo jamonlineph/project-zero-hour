@@ -3,8 +3,8 @@
 
 Every sound is synthesized here from noise, sine waves and envelopes, with a
 fixed random seed, so the files are original, reproducible and licensed like
-the rest of the project's assets (CC BY-SA 4.0). Final sounds replace them in
-Phase 2. Writes game/assets/audio/sfx/*.wav and updates ASSET_MANIFEST.csv.
+the rest of the project's assets (CC BY-SA 4.0). The P2-18 audio pass added
+alerts, protection, jamming and acknowledgement sounds. Writes game/assets/audio/sfx/*.wav and updates ASSET_MANIFEST.csv.
 
 Usage: python3 tools/gen_sounds.py
 """
@@ -131,11 +131,101 @@ def build_complete():
     return _norm(np.sin(phase) * _env(s, 0.005, 1.2), 0.5)
 
 
+# --- P2-18 additions (kept after the originals: the shared random stream
+# stays in the same order, so the first sounds don't change) -------------
+
+def _tones(seconds, steps, attack=0.005, decay=1.2, peak=0.5):
+    """Notes in sequence: steps = [(frequency, start_seconds), ...]."""
+    t = _t(seconds)
+    f = np.full_like(t, steps[0][0])
+    for freq, start in steps[1:]:
+        f = np.where(t >= start, freq, f)
+    phase = 2 * np.pi * np.cumsum(f) / RATE
+    tone = np.sin(phase) + 0.25 * np.sin(2 * phase)
+    return _norm(tone * _env(seconds, attack, decay), peak)
+
+
+def _chirp(seconds, f0, f1, squelch):
+    """Radio acknowledgement: a squelch burst, then a short tone glide."""
+    t = _t(seconds)
+    f = f0 + (f1 - f0) * t / seconds
+    phase = 2 * np.pi * np.cumsum(f) / RATE
+    tone = np.sin(phase) * _env(seconds, 0.01, 1.5)
+    burst = _lowpass(_noise(seconds), 0.3) * np.clip(1.0 - t / squelch, 0.0, 1.0) * 0.5
+    return _norm(tone + burst, 0.45)
+
+
+def ack_2():
+    return _chirp(0.18, 700.0, 1000.0, 0.04)
+
+
+def ack_3():
+    return _chirp(0.2, 950.0, 650.0, 0.05)
+
+
+def aps_intercept():
+    """Active protection: a sharp crack and a short whoosh."""
+    s = 0.4
+    t = _t(s)
+    crack = _noise(s) * np.exp(-t * 60.0)
+    whoosh = _lowpass(_noise(s), 0.7) * _env(s, 0.02, 2.5) * 0.6
+    return _norm(crack + whoosh)
+
+
+def jam_static():
+    """Jamming: warbling radio static."""
+    s = 0.5
+    t = _t(s)
+    warble = 0.5 + 0.5 * np.sin(2 * np.pi * 14 * t)
+    return _norm(_noise(s) * warble * _env(s, 0.02, 1.0), 0.55)
+
+
+def power_alert():
+    """A commander power was used: a two-tone rising alert."""
+    return _tones(0.5, [(440.0, 0.0), (660.0, 0.12), (880.0, 0.24)], decay=1.0, peak=0.5)
+
+
+def upgrade_complete():
+    return _tones(0.6, [(523.0, 0.0), (659.0, 0.12), (784.0, 0.24), (1047.0, 0.36)], decay=1.4)
+
+
+def rank_up():
+    """Promotion: a short brass-like fanfare (stacked harmonics)."""
+    s = 0.9
+    t = _t(s)
+    f = np.select([t < 0.15, t < 0.3], [392.0, 523.0], 659.0)
+    phase = 2 * np.pi * np.cumsum(f) / RATE
+    brass = sum(np.sin(k * phase) / k for k in range(1, 6))
+    return _norm(brass * _env(s, 0.02, 1.3), 0.5)
+
+
+def strike_incoming():
+    """An enemy strike was launched: a falling whistle."""
+    s = 1.2
+    t = _t(s)
+    f = 1500.0 - 900.0 * t / s
+    phase = 2 * np.pi * np.cumsum(f) / RATE
+    return _norm(np.sin(phase) * _env(s, 0.1, 0.8), 0.4)
+
+
+def under_attack():
+    """Low two-pulse alarm when our units or buildings are lost."""
+    s = 0.8
+    t = _t(s)
+    gate = ((t % 0.4) < 0.25).astype(float)
+    tone = np.sign(np.sin(2 * np.pi * 330 * t)) * 0.4 + np.sin(2 * np.pi * 165 * t)
+    return _norm(_lowpass(tone * gate, 0.5) * _env(s, 0.01, 0.6), 0.5)
+
+
 SOUNDS = {
     "rifle": rifle, "autocannon": autocannon, "cannon": cannon, "artillery": artillery,
     "missile": missile, "laser": laser, "explosion_small": explosion_small,
     "explosion_large": explosion_large, "ui_click": ui_click, "ack": ack,
     "build_complete": build_complete,
+    # P2-18
+    "ack_2": ack_2, "ack_3": ack_3, "aps_intercept": aps_intercept, "jam_static": jam_static,
+    "power_alert": power_alert, "upgrade_complete": upgrade_complete, "rank_up": rank_up,
+    "strike_incoming": strike_incoming, "under_attack": under_attack,
 }
 
 

@@ -1,15 +1,25 @@
 path,author,source,license,generated_by,notes
+game/assets/audio/music/main_theme.ogg,Project Zero Hour contributors,tools/gen_music.py (procedural),CC-BY-SA-4.0,script,music: main theme (P2-18)
 game/assets/audio/sfx/ack.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/ack_2.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/ack_3.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/aps_intercept.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/artillery.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/autocannon.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/build_complete.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/cannon.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/explosion_large.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/explosion_small.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/jam_static.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/laser.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/missile.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/power_alert.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/rank_up.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/rifle.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/strike_incoming.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/ui_click.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/under_attack.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/audio/sfx/upgrade_complete.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/fonts/Inter-Bold.otf,The Inter Project Authors,"https://github.com/rsms/inter (Inter 4.0, Debian fonts-inter package)",OFL-1.1,third-party,UI font (P2-17); OFL.txt is its license
 game/assets/fonts/Inter-Regular.otf,The Inter Project Authors,"https://github.com/rsms/inter (Inter 4.0, Debian fonts-inter package)",OFL-1.1,third-party,UI font (P2-17); OFL.txt is its license
 game/assets/fonts/Inter-SemiBold.otf,The Inter Project Authors,"https://github.com/rsms/inter (Inter 4.0, Debian fonts-inter package)",OFL-1.1,third-party,UI font (P2-17); OFL.txt is its license

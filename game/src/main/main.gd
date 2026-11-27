@@ -30,6 +30,7 @@ var director: CameraDirector
 func _ready() -> void:
 	InputActions.register()
 	UiTheme.apply(get_tree())
+	add_child(MusicPlayer.new())
 	content = ContentDb.new()
 	if not content.load_all():
 		for message: String in content.errors:
@@ -110,7 +111,7 @@ func _ready() -> void:
 	selection.selection_changed.connect(hud.on_selection_changed)
 	selection.selection_changed.connect(func(ids: Array[int]) -> void:
 		if not ids.is_empty():
-			game_view.sounds.play_ui("ack"))
+			game_view.sounds.play_ack())
 	hud.command_grid.activated.connect(func(_slot: int) -> void: game_view.sounds.play_ui("ui_click"))
 	add_child(selection)
 

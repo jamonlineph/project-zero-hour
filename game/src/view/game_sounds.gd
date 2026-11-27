@@ -11,6 +11,10 @@ extends Node3D
 const BUSES: Array[String] = ["Music", "SFX", "UI", "Voice"]
 const POOL: int = 24
 const MIN_GAP_MS: int = 60
+## Longer gaps for alerts, so a lost battle doesn't become a siren (P2-18).
+const GAPS_MS: Dictionary = {"under_attack": 8000, "strike_incoming": 1500, "power_alert": 500,
+	"jam_static": 300, "rank_up": 1000, "upgrade_complete": 500}
+const ACKS: Array[String] = ["ack", "ack_2", "ack_3"]
 const SFX_DIR: String = "res://assets/audio/sfx/"
 ## Weapon sound by projectile, then by damage type.
 const BY_PROJECTILE: Dictionary = {"ballistic": "artillery", "guided": "missile"}
@@ -92,6 +96,35 @@ func play_ui(sound: String, now_ms: int = -1) -> bool:
 	return true
 
 
+## A radio acknowledgement, one of a few variants (view-side randomness).
+func play_ack() -> bool:
+	return play_ui(ACKS[randi() % ACKS.size()])
+
+
+## Interface alerts for sim events (P2-18). `local_player_id` is whose
+## alerts these are.
+func play_alert(ev: Dictionary, world: SimWorld, local_player_id: int) -> void:
+	var mine: bool = int(ev.get("player", -1)) == local_player_id
+	match ev["type"]:
+		"power_used":
+			play_ui("power_alert")
+		"strike_launched":
+			if not mine:
+				play_ui("strike_incoming")
+		"researched", "upgraded":
+			if mine:
+				play_ui("upgrade_complete")
+		"rank_up":
+			if mine:
+				play_ui("rank_up")
+		"died":
+			if mine:
+				play_ui("under_attack")
+		"jammed_shot":
+			if world.can_see(local_player_id, ev["x"], ev["y"]):
+				play_at("jam_static", Vector3(Fx.to_float(ev["x"]), 1.0, Fx.to_float(ev["y"])))
+
+
 static func weapon_sound(weapon: WeaponDef) -> String:
 	if weapon == null:
 		return "rifle"
@@ -102,7 +135,7 @@ static func weapon_sound(weapon: WeaponDef) -> String:
 
 func _ready_to_play(sound: String, now_ms: int) -> bool:
 	var now: int = now_ms if now_ms >= 0 else Time.get_ticks_msec()
-	if now - _last_ms.get(sound, -100000) < MIN_GAP_MS:
+	if now - _last_ms.get(sound, -100000) < int(GAPS_MS.get(sound, MIN_GAP_MS)):
 		return false
 	_last_ms[sound] = now
 	return true
