@@ -39,7 +39,7 @@ static func _build(world: SimWorld, c: SimCommand) -> void:
 	if def == null or def.faction != player.faction and player.faction != "":
 		return
 	var builders: Array[SimEntity] = []
-	for e: SimEntity in world.owned_entities(c):
+	for e: SimEntity in WorldCommands.owned(world, c):
 		if e.builder != null:
 			builders.append(e)
 	if builders.is_empty() or player.credits < def.cost:
@@ -108,7 +108,7 @@ static func _gather(world: SimWorld, c: SimCommand) -> void:
 	var site: SimEntity = world.get_entity(c.target_entity)
 	if site == null or site.supply == null or site.supply.remaining <= 0:
 		return
-	for e: SimEntity in world.owned_entities(c):
+	for e: SimEntity in WorldCommands.owned(world, c):
 		if e.gatherer == null:
 			continue
 		e.order = SimEntity.Order.IDLE
@@ -132,6 +132,6 @@ static func _repair(world: SimWorld, c: SimCommand) -> void:
 	var b: SimEntity = _own_building(world, c)
 	if b == null:
 		return
-	for e: SimEntity in world.owned_entities(c):
+	for e: SimEntity in WorldCommands.owned(world, c):
 		if e.builder != null:
 			_assign_builder(world, e, b.id, b.building.built)

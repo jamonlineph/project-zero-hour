@@ -51,7 +51,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	rules = SimRules.new()
 	errors.clear()
 	_hasher = SimHash.new()
-	var index: Variant = _read_json(index_path)
+	var index: Variant = read_json(index_path)
 	if not index is Dictionary:
 		errors.append("%s: expected a JSON object" % index_path)
 		return false
@@ -76,7 +76,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 		_load_power(str(path))
 	var check_path: String = str((index as Dictionary).get("determinism_check", ""))
 	if check_path != "":
-		var check: Variant = _read_json(check_path)
+		var check: Variant = read_json(check_path)
 		if check is Dictionary:
 			determinism_check = check
 		else:
@@ -116,30 +116,30 @@ func cost_of(id: String) -> int:
 
 
 func _load_building(path: String) -> void:
-	var parsed: Variant = _read_json(path)
+	var parsed: Variant = read_json(path)
 	if not parsed is Dictionary:
 		errors.append("%s: expected a JSON object" % path)
 		return
 	var src: Dictionary = parsed
 	var b := BuildingDef.new()
-	b.id = _req_string(src, "id", path)
-	b.faction = _req_string(src, "faction", path)
-	b.name = _req_string(src, "name", path)
+	b.id = req_string(src, "id", path)
+	b.faction = req_string(src, "faction", path)
+	b.name = req_string(src, "name", path)
 	b.armor_class = str(src.get("armor_class", "structure"))
-	b.max_hp = _req_int(src, "max_hp", path, 1)
-	b.cost = _req_int(src, "cost", path, 0)
+	b.max_hp = req_int(src, "max_hp", path, 1)
+	b.cost = req_int(src, "cost", path, 0)
 	var fp: Variant = src.get("footprint_cells", [])
 	if fp is Array and (fp as Array).size() == 2:
 		b.footprint_w = maxi(1, int(fp[0]))
 		b.footprint_h = maxi(1, int(fp[1]))
 	else:
 		errors.append("%s: 'footprint_cells' must be [w, h]" % path)
-	b.build_ticks = _ms_to_ticks(_req_int(src, "build_time_ms", path, 1))
+	b.build_ticks = ms_to_ticks(req_int(src, "build_time_ms", path, 1))
 	b.power = int(src.get("power", 0))
 	if src.has("vision_cm"):
-		b.vision = Fx.from_ratio(_req_int(src, "vision_cm", path, 0), 100)
-	b.requires = _string_list(src, "requires", path)
-	b.produces = _string_list(src, "produces", path)
+		b.vision = Fx.from_ratio(req_int(src, "vision_cm", path, 0), 100)
+	b.requires = string_list(src, "requires", path)
+	b.produces = string_list(src, "produces", path)
 	b.dropoff = bool(src.get("dropoff", false))
 	b.free_unit = str(src.get("free_unit", ""))
 	for weapon_id: Variant in src.get("weapons", []):
@@ -160,24 +160,24 @@ func _load_building(path: String) -> void:
 
 
 func _load_scenario(path: String) -> void:
-	var parsed: Variant = _read_json(path)
+	var parsed: Variant = read_json(path)
 	if not parsed is Dictionary:
 		errors.append("%s: expected a JSON object" % path)
 		return
 	var src: Dictionary = parsed
-	var id: String = _req_string(src, "id", path)
+	var id: String = req_string(src, "id", path)
 	if path.get_file().get_basename() != id:
 		errors.append("%s: file name must match id '%s'" % [path, id])
 	scenarios[id] = src
 
 
 func _load_ai_preset(path: String) -> void:
-	var parsed: Variant = _read_json(path)
+	var parsed: Variant = read_json(path)
 	if not parsed is Dictionary:
 		errors.append("%s: expected a JSON object" % path)
 		return
 	var src: Dictionary = parsed
-	var id: String = _req_string(src, "id", path)
+	var id: String = req_string(src, "id", path)
 	for b: Variant in src.get("build_order", []):
 		if not buildings.has(str(b)):
 			errors.append("%s: build_order has unknown building '%s'" % [path, str(b)])
@@ -234,7 +234,7 @@ func _check_references() -> void:
 				errors.append("scenario %s spawns unknown '%s'" % [id, def_id])
 
 
-func _string_list(d: Dictionary, key: String, path: String) -> PackedStringArray:
+func string_list(d: Dictionary, key: String, path: String) -> PackedStringArray:
 	var out := PackedStringArray()
 	var v: Variant = d.get(key, [])
 	if not v is Array:
@@ -245,12 +245,12 @@ func _string_list(d: Dictionary, key: String, path: String) -> PackedStringArray
 	return out
 
 
-static func _ms_to_ticks(ms: int) -> int:
+static func ms_to_ticks(ms: int) -> int:
 	return maxi(1, (ms * SimWorld.TICK_RATE + 999) / 1000)
 
 
 func _load_rules(path: String) -> void:
-	var parsed: Variant = _read_json(path)
+	var parsed: Variant = read_json(path)
 	if not parsed is Dictionary:
 		errors.append("%s: expected a JSON object" % path)
 		return
@@ -258,10 +258,10 @@ func _load_rules(path: String) -> void:
 	rules.veterancy_xp_multipliers = _int_list(src, "veterancy_xp_multipliers", path, 3)
 	rules.veterancy_damage_bonus = _int_list(src, "veterancy_damage_bonus_percent", path, 4)
 	rules.veterancy_armor_bonus = _int_list(src, "veterancy_armor_bonus_percent", path, 4)
-	rules.self_repair_rank = _req_int(src, "veterancy_self_repair_rank", path, 0)
-	rules.self_repair_percent_per_2s = _req_int(src, "veterancy_self_repair_percent_per_2s", path, 0)
+	rules.self_repair_rank = req_int(src, "veterancy_self_repair_rank", path, 0)
+	rules.self_repair_percent_per_2s = req_int(src, "veterancy_self_repair_percent_per_2s", path, 0)
 	rules.commander_rank_xp = _int_list(src, "commander_rank_xp", path, 5)
-	rules.building_kill_xp_percent = _req_int(src, "building_kill_xp_percent", path, 0)
+	rules.building_kill_xp_percent = req_int(src, "building_kill_xp_percent", path, 0)
 	start_kit = src.get("start_kit", [])
 	if src.has("skirmish_credits"):
 		skirmish_credits = _int_list(src, "skirmish_credits", path, (src["skirmish_credits"] as Array).size())
@@ -280,7 +280,7 @@ func _int_list(d: Dictionary, key: String, path: String, size: int) -> PackedInt
 
 
 func _load_damage_matrix(path: String) -> void:
-	var parsed: Variant = _read_json(path)
+	var parsed: Variant = read_json(path)
 	if not parsed is Dictionary:
 		errors.append("%s: expected a JSON object" % path)
 		return
@@ -305,160 +305,6 @@ func _load_damage_matrix(path: String) -> void:
 			damage_matrix.set_percent(str(damage_type), damage_matrix.armor_classes[i], int(v))
 
 
-func _load_weapon(path: String) -> void:
-	var parsed: Variant = _read_json(path)
-	if not parsed is Dictionary:
-		errors.append("%s: expected a JSON object" % path)
-		return
-	var src: Dictionary = parsed
-	var w := WeaponDef.new()
-	w.id = _req_string(src, "id", path)
-	w.damage = _req_int(src, "damage", path, 0)
-	w.damage_type = _req_string(src, "damage_type", path)
-	if not damage_matrix.has_damage_type(w.damage_type):
-		errors.append("%s: damage_type '%s' is not in the damage matrix" % [path, w.damage_type])
-	w.max_range = Fx.from_ratio(_req_int(src, "range_cm", path, 1), 100)
-	if src.has("min_range_cm"):
-		w.min_range = Fx.from_ratio(_req_int(src, "min_range_cm", path, 0), 100)
-	var reload_ms: int = _req_int(src, "reload_ms", path, 1)
-	w.reload_ticks = maxi(1, (reload_ms * SimWorld.TICK_RATE + 999) / 1000)
-	w.projectile = str(src.get("projectile", "instant"))
-	if not w.projectile in ["instant", "ballistic", "guided"]:
-		errors.append("%s: projectile must be instant, ballistic or guided" % path)
-	if w.projectile != "instant":
-		w.projectile_speed = maxi(1, Fx.from_ratio(_req_int(src, "projectile_speed_cm_per_s", path, 1), 100 * SimWorld.TICK_RATE))
-	if src.has("splash_radius_cm"):
-		w.splash_radius = Fx.from_ratio(_req_int(src, "splash_radius_cm", path, 0), 100)
-	if src.has("splash_edge_percent"):
-		w.splash_edge_percent = _req_int(src, "splash_edge_percent", path, 0)
-	w.needs_spotter = bool(src.get("needs_spotter", false))
-	w.drone_attack = bool(src.get("drone_attack", false))
-	if src.has("stock"):
-		w.stock = _req_int(src, "stock", path, 1)
-		w.restock_ticks = _req_int(src, "restock_s", path, 1) * SimWorld.TICK_RATE
-	if src.has("cone_deg"):
-		var cone_deg: int = _req_int(src, "cone_deg", path, 1)
-		w.cone_half = (cone_deg * Fx.ANGLE_FULL) / 720
-		if w.projectile != "instant":
-			errors.append("%s: cone_deg needs an instant weapon" % path)
-	if w.min_range >= w.max_range:
-		errors.append("%s: min_range_cm must be below range_cm" % path)
-	if w.splash_edge_percent < 0 or w.splash_edge_percent > 100:
-		errors.append("%s: splash_edge_percent must be 0-100" % path)
-	var targets: Variant = src.get("targets", ["ground"])
-	w.targets = PackedStringArray()
-	for t: Variant in targets:
-		if not DamageMatrix.TARGET_CATEGORIES.has(str(t)):
-			errors.append("%s: unknown target category '%s'" % [path, str(t)])
-		w.targets.append(str(t))
-	if path.get_file().get_basename() != w.id:
-		errors.append("%s: file name must match id '%s'" % [path, w.id])
-	weapons[w.id] = w
-
-
-func _load_map(path: String) -> void:
-	var parsed: Variant = _read_json(path)
-	if not parsed is Dictionary:
-		errors.append("%s: expected a JSON object" % path)
-		return
-	var src: Dictionary = parsed
-	var m := MapDef.new()
-	m.id = _req_string(src, "id", path)
-	m.name = _req_string(src, "name", path)
-	m.width_m = _req_int(src, "width_m", path, 16)
-	m.height_m = _req_int(src, "height_m", path, 16)
-	var obstacles: Variant = src.get("obstacles_m", [])
-	if not obstacles is Array:
-		errors.append("%s: 'obstacles_m' must be a list" % path)
-		obstacles = []
-	for i: int in (obstacles as Array).size():
-		var o: Variant = obstacles[i]
-		if not o is Array or (o as Array).size() != 4:
-			errors.append("%s: obstacle %d must be [x_m, y_m, w_m, h_m]" % [path, i])
-			continue
-		var rect := PackedInt32Array()
-		for v: Variant in o:
-			if not (v is float or v is int) or float(v) != floorf(float(v)):
-				errors.append("%s: obstacle %d must hold whole numbers" % [path, i])
-				break
-			rect.append(int(v))
-		if rect.size() == 4:
-			if rect[2] <= 0 or rect[3] <= 0:
-				errors.append("%s: obstacle %d needs a positive size" % [path, i])
-			else:
-				m.obstacles_m.append(rect)
-	for start: Variant in src.get("start_positions_m", []):
-		if start is Array and (start as Array).size() == 2:
-			m.start_positions.append(Vector2i(int(start[0]), int(start[1])))
-		else:
-			errors.append("%s: start positions must be [x_m, y_m]" % path)
-	for site: Variant in src.get("supply_sites_m", []):
-		if site is Array and (site as Array).size() == 3:
-			m.supply_sites.append(PackedInt32Array([int(site[0]), int(site[1]), int(site[2])]))
-		else:
-			errors.append("%s: supply sites must be [x_m, y_m, amount]" % path)
-	# Map folders: res://data/maps/<id>/map.json (P1-30). The folder name is the id.
-	var name_from_path: String = path.get_base_dir().get_file() if path.get_file() == "map.json" \
-			else path.get_file().get_basename()
-	if name_from_path != m.id:
-		errors.append("%s: folder or file name must match id '%s'" % [path, m.id])
-	m.civilian_buildings_m = _int_rows(src, "civilian_buildings_m", 5, path)
-	m.bridges_m = _int_rows(src, "bridges_m", 4, path)
-	m.skirmish = bool(src.get("skirmish", false))
-	m.max_step_cm = int(src.get("max_step_cm", m.max_step_cm))
-	if src.has("water_level_cm"):
-		m.water_level_cm = int(src["water_level_cm"])
-	if src.has("height"):
-		_load_heights(m, path.get_base_dir().path_join(str(src["height"])), int(src.get("height_scale_cm", 0)), path)
-	maps[m.id] = m
-
-
-## A list of whole-number rows of `size` values each (map rectangles).
-func _int_rows(src: Dictionary, key: String, size: int, path: String) -> Array[PackedInt32Array]:
-	var out: Array[PackedInt32Array] = []
-	var rows: Variant = src.get(key, [])
-	if not rows is Array:
-		errors.append("%s: '%s' must be a list" % [path, key])
-		return out
-	for i: int in (rows as Array).size():
-		var r: Variant = rows[i]
-		if not r is Array or (r as Array).size() != size:
-			errors.append("%s: %s entry %d must hold %d numbers" % [path, key, i, size])
-			continue
-		var row := PackedInt32Array()
-		for v: Variant in r:
-			row.append(int(v))
-		if row[2] <= 0 or row[3] <= 0:
-			errors.append("%s: %s entry %d needs a positive size" % [path, key, i])
-			continue
-		out.append(row)
-	return out
-
-
-## Reads a raw 16-bit little-endian heightmap: one sample per 2 m cell, row by
-## row from the map's (0, 0) corner. 65535 = height_scale_cm. Raw bytes, not a
-## PNG, because Godot re-encodes imported images; raw data is exact everywhere.
-func _load_heights(m: MapDef, file: String, scale_cm: int, path: String) -> void:
-	if scale_cm <= 0:
-		errors.append("%s: 'height_scale_cm' must be positive when 'height' is set" % path)
-		return
-	if not FileAccess.file_exists(file):
-		errors.append("%s: height file %s not found" % [path, file])
-		return
-	var bytes: PackedByteArray = FileAccess.get_file_as_bytes(file)
-	var count: int = m.cells_x() * m.cells_y()
-	if bytes.size() != count * 2:
-		errors.append("%s: %s has %d bytes, expected %d (%d x %d cells, 2 bytes each)" % [
-			path, file.get_file(), bytes.size(), count * 2, m.cells_x(), m.cells_y()])
-		return
-	m.heights_cm.resize(count)
-	for i: int in count:
-		var v: int = bytes.decode_u16(i * 2)
-		m.heights_cm[i] = (v * scale_cm) / 65535
-		if _hasher != null:
-			_hasher.add_int(v)
-
-
 func get_power(id: String) -> PowerDef:
 	return powers.get(id, null)
 
@@ -474,69 +320,8 @@ func powers_for(faction: String) -> Array[PowerDef]:
 	return out
 
 
-func _load_power(path: String) -> void:
-	var parsed: Variant = _read_json(path)
-	if not parsed is Dictionary:
-		errors.append("%s: expected a JSON object" % path)
-		return
-	var src: Dictionary = parsed
-	var p := PowerDef.new()
-	p.id = _req_string(src, "id", path)
-	p.faction = _req_string(src, "faction", path)
-	p.name = _req_string(src, "name", path)
-	p.description = str(src.get("description", ""))
-	p.tier = _req_int(src, "tier", path, 1)
-	p.kind = _req_string(src, "kind", path)
-	if not PowerDef.KINDS.has(p.kind):
-		errors.append("%s: unknown kind '%s'" % [path, p.kind])
-	p.targeted = bool(src.get("targeted", not p.kind in ["reinforce", "cyber", "unlock"]))
-	p.cooldown_ticks = int(src.get("cooldown_s", 0)) * SimWorld.TICK_RATE
-	p.radius = Fx.from_ratio(int(src.get("radius_cm", 0)), 100)
-	p.duration_ticks = int(src.get("duration_s", 0)) * SimWorld.TICK_RATE
-	p.count = int(src.get("count", 1))
-	p.strike_id = str(src.get("strike", ""))
-	p.unit_id = str(src.get("unit", ""))
-	p.needs_spotted = bool(src.get("needs_spotted", false))
-	if path.get_file().get_basename() != p.id:
-		errors.append("%s: file name must match id '%s'" % [path, p.id])
-	powers[p.id] = p
-
-
 func get_strike(id: String) -> StrikeDef:
 	return strikes.get(id, null)
-
-
-func _load_strike(path: String) -> void:
-	var parsed: Variant = _read_json(path)
-	if not parsed is Dictionary:
-		errors.append("%s: expected a JSON object" % path)
-		return
-	var src: Dictionary = parsed
-	var s := StrikeDef.new()
-	s.id = _req_string(src, "id", path)
-	s.name = _req_string(src, "name", path)
-	s.kind = str(src.get("kind", "missile"))
-	if not s.kind in ["missile", "aircraft"]:
-		errors.append("%s: kind must be missile or aircraft" % path)
-	s.max_hp = _req_int(src, "max_hp", path, 1)
-	s.speed = Fx.from_ratio(_req_int(src, "speed_cm_per_s", path, 1), 100 * SimWorld.TICK_RATE)
-	s.radius = Fx.from_ratio(int(src.get("radius_cm", 100)), 100)
-	s.vision = Fx.from_ratio(int(src.get("vision_cm", 0)), 100)
-	var pl: Variant = src.get("payload", {})
-	if pl is Dictionary:
-		s.damage = _req_int(pl, "damage", path, 0)
-		s.damage_type = _req_string(pl, "damage_type", path)
-		if not damage_matrix.has_damage_type(s.damage_type):
-			errors.append("%s: damage_type '%s' is not in the damage matrix" % [path, s.damage_type])
-		s.splash_radius = Fx.from_ratio(int(pl.get("splash_radius_cm", 0)), 100)
-		s.splash_edge_percent = int(pl.get("splash_edge_percent", 50))
-		s.count = maxi(1, int(pl.get("count", 1)))
-		s.spread = Fx.from_ratio(int(pl.get("spread_cm", 0)), 100)
-	else:
-		errors.append("%s: 'payload' must be an object" % path)
-	if path.get_file().get_basename() != s.id:
-		errors.append("%s: file name must match id '%s'" % [path, s.id])
-	strikes[s.id] = s
 
 
 func get_upgrade(id: String) -> UpgradeDef:
@@ -554,119 +339,37 @@ func upgrades_at(building_id: String) -> Array[UpgradeDef]:
 	return out
 
 
-func _load_upgrade(path: String) -> void:
-	var parsed: Variant = _read_json(path)
-	if not parsed is Dictionary:
-		errors.append("%s: expected a JSON object" % path)
-		return
-	var src: Dictionary = parsed
-	var u := UpgradeDef.new()
-	u.id = _req_string(src, "id", path)
-	u.faction = _req_string(src, "faction", path)
-	u.name = _req_string(src, "name", path)
-	u.scope = str(src.get("scope", "global"))
-	if not u.scope in ["global", "unit"]:
-		errors.append("%s: scope must be global or unit" % path)
-	u.cost = _req_int(src, "cost", path, 0)
-	if u.scope == "global":
-		u.research_ticks = _ms_to_ticks(_req_int(src, "research_time_ms", path, 1))
-		u.researched_at = _req_string(src, "researched_at", path)
-	u.requires = _string_list(src, "requires", path)
-	u.requires_rank = int(src.get("requires_rank", 1))
-	u.applies_to = _string_list(src, "applies_to", path)
-	var fx: Variant = src.get("effects", {})
-	if fx is Dictionary:
-		for k: Variant in fx:
-			if not UpgradeDef.EFFECT_KEYS.has(str(k)):
-				errors.append("%s: unknown effect '%s'" % [path, str(k)])
-			else:
-				u.effects[str(k)] = int(fx[k])
-	u.attachment = str(src.get("attachment", ""))
-	if u.attachment != "" and not u.attachment.begins_with("upg_"):
-		errors.append("%s: attachment node names start with upg_" % path)
-	if path.get_file().get_basename() != u.id:
-		errors.append("%s: file name must match id '%s'" % [path, u.id])
-	upgrades[u.id] = u
+func _load_weapon(path: String) -> void:
+	UnitLoader.load_weapon(self, path)
 
 
 func _load_unit(path: String) -> void:
-	var parsed: Variant = _read_json(path)
-	if not parsed is Dictionary:
-		errors.append("%s: expected a JSON object" % path)
-		return
-	var src: Dictionary = parsed
-	var u := UnitDef.new()
-	u.id = _req_string(src, "id", path)
-	u.faction = _req_string(src, "faction", path)
-	u.role = _req_string(src, "role", path)
-	u.name = _req_string(src, "name", path)
-	u.armor_class = _req_string(src, "armor_class", path)
-	u.max_hp = _req_int(src, "max_hp", path, 1)
-	u.cost = _req_int(src, "cost", path, 0)
-	u.speed = Fx.from_ratio(_req_int(src, "speed_cm_per_s", path, 0), 100 * SimWorld.TICK_RATE)
-	u.radius = Fx.from_ratio(_req_int(src, "radius_cm", path, 1), 100)
-	if src.has("vision_cm"):
-		u.vision = Fx.from_ratio(_req_int(src, "vision_cm", path, 0), 100)
-	# Optional. Missing or 0 means the unit turns instantly (infantry, drones).
-	if src.has("turn_rate_deg_per_s"):
-		var deg_per_s: int = _req_int(src, "turn_rate_deg_per_s", path, 0)
-		if deg_per_s > 0:
-			# Round up so slow turners never get a turn rate of 0.
-			var per_tick: int = (deg_per_s * Fx.ANGLE_FULL + 360 * SimWorld.TICK_RATE - 1) / (360 * SimWorld.TICK_RATE)
-			u.turn_rate = mini(per_tick, Fx.ANGLE_FULL)
-	if src.has("build_time_ms"):
-		u.build_ticks = _ms_to_ticks(_req_int(src, "build_time_ms", path, 1))
-	u.requires = _string_list(src, "requires", path)
-	u.builder = bool(src.get("builder", false))
-	u.flying = bool(src.get("flying", u.armor_class == "drone"))
-	u.fiber_optic = bool(src.get("fiber_optic", false))
-	u.spotter = bool(src.get("spotter", false))
-	u.aps_charges = int(src.get("aps_charges", 0))
-	u.cage_hits = int(src.get("cage_hits", 0))
-	u.decoy_of = str(src.get("decoy_of", ""))
-	u.requires_unlock = str(src.get("requires_unlock", ""))
-	var jam: Variant = src.get("jammer", null)
-	if jam is Dictionary:
-		u.jam_radius = Fx.from_ratio(_req_int(jam, "radius_cm", path, 1), 100)
-		u.jam_strength = int((jam as Dictionary).get("strength", 1))
-		if (jam as Dictionary).has("spoof_radius_cm"):
-			u.spoof_radius = Fx.from_ratio(_req_int(jam, "spoof_radius_cm", path, 1), 100)
-			u.spoof_range = Fx.from_ratio(_req_int(jam, "spoof_range_cm", path, 1), 100)
-			u.spoof_cooldown_ticks = _req_int(jam, "spoof_cooldown_s", path, 1) * SimWorld.TICK_RATE
-	if src.has("endurance_s"):
-		u.endurance_ticks = _req_int(src, "endurance_s", path, 1) * SimWorld.TICK_RATE
-	var g: Variant = src.get("gatherer", null)
-	if g is Dictionary:
-		u.gatherer = true
-		u.gather_capacity = _req_int(g, "capacity", path, 1)
-		u.gather_load_ticks = _ms_to_ticks(_req_int(g, "load_ms", path, 1))
-		u.gather_unload_ticks = _ms_to_ticks(_req_int(g, "unload_ms", path, 1))
-	if damage_matrix.armor_classes.size() > 0 and not damage_matrix.armor_classes.has(u.armor_class):
-		errors.append("%s: armor_class '%s' is not in the damage matrix" % [path, u.armor_class])
-	for weapon_id: Variant in src.get("weapons", []):
-		var w: WeaponDef = get_weapon(str(weapon_id))
-		if w == null:
-			errors.append("%s: unknown weapon '%s'" % [path, str(weapon_id)])
-		else:
-			u.weapons.append(w)
-	var visual: Variant = src.get("visual", {})
-	if visual is Dictionary:
-		u.model_path = str((visual as Dictionary).get("model", ""))
-		u.icon_path = str((visual as Dictionary).get("icon", ""))
-	else:
-		errors.append("%s: 'visual' must be an object" % path)
-	if u.endurance_ticks > 0 and not u.flying:
-		errors.append("%s: endurance_s only makes sense for flying units" % path)
-	if u.vision <= 0 and u.decoy_of == "":
-		errors.append("%s: vision_cm must be positive" % path)
-	if path.get_file().get_basename() != u.id:
-		errors.append("%s: file name must match id '%s'" % [path, u.id])
-	if units.has(u.id):
-		errors.append("%s: duplicate unit id '%s'" % [path, u.id])
-	units[u.id] = u
+	UnitLoader.load_unit(self, path)
 
 
-func _req_string(d: Dictionary, key: String, path: String) -> String:
+func _load_map(path: String) -> void:
+	MapLoader.load_map(self, path)
+
+
+func _load_power(path: String) -> void:
+	PowerLoader.load_power(self, path)
+
+
+func _load_strike(path: String) -> void:
+	PowerLoader.load_strike(self, path)
+
+
+func _load_upgrade(path: String) -> void:
+	PowerLoader.load_upgrade(self, path)
+
+
+## Adds raw data to the content hash (height files).
+func hash_int(v: int) -> void:
+	if _hasher != null:
+		_hasher.add_int(v)
+
+
+func req_string(d: Dictionary, key: String, path: String) -> String:
 	var v: Variant = d.get(key)
 	if not v is String or (v as String).is_empty():
 		errors.append("%s: '%s' must be a non-empty string" % [path, key])
@@ -674,7 +377,7 @@ func _req_string(d: Dictionary, key: String, path: String) -> String:
 	return v
 
 
-func _req_int(d: Dictionary, key: String, path: String, min_value: int) -> int:
+func req_int(d: Dictionary, key: String, path: String, min_value: int) -> int:
 	if not d.has(key):
 		errors.append("%s: missing '%s'" % [path, key])
 		return min_value
@@ -693,7 +396,7 @@ func _req_int(d: Dictionary, key: String, path: String, min_value: int) -> int:
 	return i
 
 
-func _read_json(path: String) -> Variant:
+func read_json(path: String) -> Variant:
 	if not FileAccess.file_exists(path):
 		errors.append("%s: file not found" % path)
 		return null

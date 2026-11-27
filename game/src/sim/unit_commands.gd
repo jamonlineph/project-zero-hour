@@ -20,7 +20,7 @@ static func _guard(world: SimWorld, c: SimCommand) -> void:
 	var ward: SimEntity = world.get_entity(c.target_entity)
 	if ward == null or ward.dead or ward.player_id == 0 or world.are_enemies(c.player_id, ward.player_id):
 		return
-	for e: SimEntity in world.owned_movers_of(c):
+	for e: SimEntity in WorldCommands.owned_movers(world, c):
 		if e.id == ward.id or e.weapons.is_empty():
 			continue
 		e.order = SimEntity.Order.GUARD
@@ -34,11 +34,11 @@ static func _guard(world: SimWorld, c: SimCommand) -> void:
 ## Moves like attack-move, then OrderSystem sends each unit back and forth
 ## between its own start and the slot it reached.
 static func _patrol(world: SimWorld, c: SimCommand) -> void:
-	var movers: Array[SimEntity] = world.owned_movers_of(c)
+	var movers: Array[SimEntity] = WorldCommands.owned_movers(world, c)
 	var starts: Dictionary[int, Vector2i] = {}
 	for e: SimEntity in movers:
 		starts[e.id] = Vector2i(e.x, e.y)
-	world.apply_move(c)
+	WorldCommands.move(world, c)
 	for e: SimEntity in movers:
 		e.order = SimEntity.Order.PATROL
 		e.order_x = c.target_x
@@ -51,7 +51,7 @@ static func _patrol(world: SimWorld, c: SimCommand) -> void:
 ## within its spoof radius of the point: each flies to a random point and,
 ## if armed, attacks a random entity nearby, of any side (P2-03).
 static func _spoof(world: SimWorld, c: SimCommand) -> void:
-	for e: SimEntity in world.owned_entities_of(c):
+	for e: SimEntity in WorldCommands.owned(world, c):
 		var j: SimJammer = e.jammer
 		if j == null or j.spoof_radius <= 0 or world.tick < j.spoof_ready_tick:
 			continue

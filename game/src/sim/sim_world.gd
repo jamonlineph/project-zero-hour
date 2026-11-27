@@ -12,7 +12,7 @@ const TICK_RATE: int = 15  ## simulation ticks per second
 ## Upper bound on any entity's radius, used to pad area searches.
 const MAX_UNIT_RADIUS: int = 12 * Fx.ONE
 ## Bucket size of the spatial index used for area searches.
-const INDEX_BUCKET: int = 16 * Fx.ONE
+const INDEX_BUCKET: int = SpatialIndex.BUCKET
 
 var tick: int = 0
 var rng: SimRng
@@ -48,12 +48,7 @@ var active_spotters: Array[SimEntity] = []
 var events: Array[Dictionary] = []
 var _next_id: int = 1
 var _next_projectile_id: int = 1
-var _index_cols: int = 1
-var _index_rows: int = 1
-var _index: Array[Array] = []
-## The same buckets split by team (players only, no neutrals), so enemy
-## searches never walk through friendly units. Rebuilt with _index.
-var _team_index: Dictionary[int, Array] = {}
+var _spatial := SpatialIndex.new()   ## rebuilt each tick after movement
 var _pending: Dictionary[int, Array] = {}   ## tick -> Array of SimCommand
 
 
@@ -94,54 +89,8 @@ func can_see(player_id: int, x: int, y: int) -> bool:
 ## Adds a unit and returns its id. x and y are fixed-point meters; facing is a
 ## binary angle (0 = +X).
 func spawn_unit(def: UnitDef, player_id: int, x: int, y: int, facing: int = 0) -> int:
-	var e := SimEntity.new()
-	e.id = _next_id
+	var e: SimEntity = WorldSpawn.make_unit(self, def, _next_id, player_id, x, y, facing)
 	_next_id += 1
-	e.player_id = player_id
-	e.def_id = def.id
-	e.armor_class = def.armor_class
-	e.x = clampi(x, 0, map_width)
-	e.y = clampi(y, 0, map_height)
-	e.prev_x = e.x
-	e.prev_y = e.y
-	e.facing = Fx.wrap_angle(facing)
-	e.prev_facing = e.facing
-	e.radius = def.radius
-	e.vision = def.vision
-	e.max_hp = def.max_hp
-	e.hp = def.max_hp
-	if def.speed > 0:
-		e.mover = SimMover.new()
-		e.mover.speed = def.speed
-		e.mover.turn_rate = def.turn_rate
-		e.mover.flying = def.flying
-	if def.endurance_ticks > 0:
-		e.drone = SimDrone.new()
-		e.drone.endurance_max = def.endurance_ticks
-		e.drone.endurance = def.endurance_ticks
-		e.drone.fiber_optic = def.fiber_optic
-	e.spotter = def.spotter
-	e.aps_max = def.aps_charges
-	e.aps_charges = def.aps_charges
-	e.cage_hits = def.cage_hits
-	e.decoy_of = def.decoy_of
-	if def.jam_radius > 0:
-		e.jammer = SimJammer.new()
-		e.jammer.radius = def.jam_radius
-		e.jammer.strength = maxi(1, def.jam_strength)
-		e.jammer.spoof_radius = def.spoof_radius
-		e.jammer.spoof_range = def.spoof_range
-		e.jammer.spoof_cooldown = def.spoof_cooldown_ticks
-	for w: WeaponDef in def.weapons:
-		e.weapons.append(SimWeapon.from_def(w))
-	e.cost = def.cost
-	if def.builder:
-		e.builder = SimBuilder.new()
-	if def.gatherer:
-		e.gatherer = SimGatherer.new()
-		e.gatherer.capacity = def.gather_capacity
-		e.gatherer.load_ticks = def.gather_load_ticks
-		e.gatherer.unload_ticks = def.gather_unload_ticks
 	entities[e.id] = e
 	entity_ids.append(e.id)
 	Upgrades.apply_global(self, e)
@@ -209,82 +158,21 @@ func spawn_building(def: BuildingDef, player_id: int, cx: int, cy: int, built: b
 	if not map.place_footprint(cx, cy, def.footprint_w, def.footprint_h, id):
 		return 0
 	_next_id += 1
-	var e := SimEntity.new()
-	e.id = id
-	e.player_id = player_id
-	e.def_id = def.id
-	e.armor_class = def.armor_class
-	e.x = cx * SimMap.CELL + (def.footprint_w * SimMap.CELL) / 2
-	e.y = cy * SimMap.CELL + (def.footprint_h * SimMap.CELL) / 2
-	e.prev_x = e.x
-	e.prev_y = e.y
-	e.radius = (mini(def.footprint_w, def.footprint_h) * SimMap.CELL) / 2
-	e.vision = def.vision
-	e.max_hp = def.max_hp
-	e.hp = def.max_hp if built else maxi(1, def.max_hp / 10)
-	e.cost = def.cost
-	var b := SimBuilding.new()
-	b.cell_x = cx
-	b.cell_y = cy
-	b.w = def.footprint_w
-	b.h = def.footprint_h
-	b.built = built
-	b.total = def.build_ticks * 2
-	b.progress = b.total if built else 0
-	b.power = def.power
-	b.produces = def.produces.duplicate()
-	b.dropoff = def.dropoff
-	b.free_unit = def.free_unit
-	e.building = b
-	for w: WeaponDef in def.weapons:
-		e.weapons.append(SimWeapon.from_def(w))
-	entities[e.id] = e
-	entity_ids.append(e.id)
-	return e.id
+	add_entity(WorldSpawn.make_building(def, id, player_id, cx, cy, built))
+	return id
 
 
 ## True if the footprint at `origin` is open terrain with no building on it and
 ## no unit standing on it (a unit there would be trapped).
 func can_place(def: BuildingDef, origin: Vector2i) -> bool:
-	for y: int in range(origin.y, origin.y + def.footprint_h):
-		for x: int in range(origin.x, origin.x + def.footprint_w):
-			if not map.is_passable(x, y):
-				return false
-	for id: int in entity_ids:
-		var u: SimEntity = entities[id]
-		if u.mover == null:
-			continue
-		var cell: Vector2i = map.cell_of(u.x, u.y)
-		if cell.x >= origin.x and cell.y >= origin.y and cell.x < origin.x + def.footprint_w and cell.y < origin.y + def.footprint_h:
-			return false
-	return true
+	return WorldPlacement.can_place(self, def, origin)
 
 
 ## Footprint origin (cells) that centers a building as near as possible on the
-## point (fixed-point meters). A point exactly between two choices goes toward
-## the middle of the map, so mirrored points give mirrored footprints on a
-## mirrored map (P2-11c fairness).
+## point (fixed-point meters); ties go toward the middle of the map (P2-11c).
 func footprint_origin(def: BuildingDef, x: int, y: int) -> Vector2i:
-	return Vector2i(footprint_start(x, def.footprint_w, map_width),
-		footprint_start(y, def.footprint_h, map_height))
-
-
-## First cell of a `size`-cell span centered near `p` on an axis `extent` long
-## (both fixed-point meters).
-static func footprint_start(p: int, size: int, extent: int) -> int:
-	var toward_low: bool = p > extent / 2   # past the middle, ties go to lower cells
-	if size % 2 == 1:
-		# The span's center is a cell center: the cell holding p.
-		var c: int = SimMap.cell_coord(p)
-		if toward_low and posmod(p, SimMap.CELL) == 0:
-			c -= 1
-		return c - size / 2
-	# The span's center is a cell edge: the nearest one.
-	var shifted: int = p + SimMap.CELL / 2
-	var edge: int = SimMap.cell_coord(shifted)
-	if toward_low and posmod(shifted, SimMap.CELL) == 0:
-		edge -= 1
-	return edge - size / 2
+	return Vector2i(WorldPlacement.footprint_start(x, def.footprint_w, map_width),
+		WorldPlacement.footprint_start(y, def.footprint_h, map_height))
 
 
 ## A neutral supply site holding `amount` credits, blocking a 2x2-cell area.
@@ -295,23 +183,8 @@ func spawn_supply_site(x: int, y: int, amount: int) -> int:
 	if not map.place_footprint(cx, cy, 2, 2, id):
 		return 0
 	_next_id += 1
-	var e := SimEntity.new()
-	e.id = id
-	e.player_id = 0
-	e.def_id = "supply_site"
-	e.armor_class = "structure"
-	e.x = cx * SimMap.CELL + SimMap.CELL
-	e.y = cy * SimMap.CELL + SimMap.CELL
-	e.prev_x = e.x
-	e.prev_y = e.y
-	e.radius = SimMap.CELL
-	e.max_hp = 1
-	e.hp = 1
-	e.supply = SimSupply.new()
-	e.supply.remaining = amount
-	entities[e.id] = e
-	entity_ids.append(e.id)
-	return e.id
+	add_entity(WorldSpawn.make_supply_site(id, cx, cy, amount))
+	return id
 
 
 ## True if the player owns a finished building of every id in `requires`.
@@ -331,59 +204,13 @@ func has_requirements(player_id: int, requires: PackedStringArray) -> bool:
 ## Distance from a point to the nearest edge of an entity: its footprint for
 ## buildings and supply sites, its circle otherwise (fixed-point meters).
 func distance_to_body(x: int, y: int, target: SimEntity) -> int:
-	if target.building == null and target.supply == null:
-		return maxi(0, Fx.length(target.x - x, target.y - y) - target.radius)
-	var half_w: int = target.radius
-	var half_h: int = target.radius
-	if target.building != null:
-		half_w = (target.building.w * SimMap.CELL) / 2
-		half_h = (target.building.h * SimMap.CELL) / 2
-	var dx: int = maxi(0, absi(x - target.x) - half_w)
-	var dy: int = maxi(0, absi(y - target.y) - half_h)
-	return Fx.length(dx, dy)
+	return WorldPlacement.distance_to_body(x, y, target)
 
 
 ## The open cell next to an entity's body that is nearest to (x, y): where a
 ## builder or gatherer parks to work on it.
 func approach_point(target: SimEntity, x: int, y: int) -> Vector2i:
-	var cx0: int
-	var cy0: int
-	var w: int
-	var h: int
-	if target.building != null:
-		cx0 = target.building.cell_x
-		cy0 = target.building.cell_y
-		w = target.building.w
-		h = target.building.h
-	else:
-		var c: Vector2i = map.cell_of(target.x, target.y)
-		cx0 = c.x - 1
-		cy0 = c.y - 1
-		w = 2
-		h = 2
-	var best := Vector2i(target.x, target.y)
-	var best_d: int = -1
-	for cy: int in range(cy0 - 1, cy0 + h + 1):
-		for cx: int in range(cx0 - 1, cx0 + w + 1):
-			var edge: bool = cx == cx0 - 1 or cy == cy0 - 1 or cx == cx0 + w or cy == cy0 + h
-			if not edge or not map.is_passable(cx, cy):
-				continue
-			var p: Vector2i = SimMap.cell_center(cx, cy)
-			var d: int = Fx.length_sq(p.x - x, p.y - y)
-			if best_d < 0 or d < best_d or (d == best_d and _nearer_middle(p, best)):
-				best = p
-				best_d = d
-	return best
-
-
-## Tie-break for equally good cells: the one nearer the middle of the map, so
-## mirrored bases pick mirrored cells (P2-11c fairness).
-func _nearer_middle(a: Vector2i, b: Vector2i) -> bool:
-	var ax: int = absi(2 * a.x - map_width)
-	var bx: int = absi(2 * b.x - map_width)
-	if ax != bx:
-		return ax < bx
-	return absi(2 * a.y - map_height) < absi(2 * b.y - map_height)
+	return WorldPlacement.approach_point(self, target, x, y)
 
 
 func queue_command(cmd: SimCommand) -> void:
@@ -423,7 +250,7 @@ func step() -> void:
 	SeparationSystem.step(self)
 	if tick % SimVision.UPDATE_INTERVAL == 0:
 		vision.update(self)
-	_rebuild_index()
+	_spatial.rebuild(self)
 	CombatSystem.step(self)
 	ProtectionSystem.step(self)
 	VeterancySystem.step(self)
@@ -437,28 +264,10 @@ func next_projectile_id() -> int:
 	return _next_projectile_id - 1
 
 
-## Deals damage after armor (damage matrix, then the target's veterancy) and
-## grants XP to the attacker and its player. Returns the damage dealt. An
-## entity reaching 0 hp is marked dead and removed at the end of the tick.
+## Deals damage after armor and grants XP (WorldDamage). Returns the damage
+## dealt. An entity reaching 0 hp is marked dead and removed at the end of the tick.
 func apply_damage(target: SimEntity, amount: int, damage_type: String, attacker_id: int, drone_hit: bool = false) -> int:
-	if target.dead:
-		return 0
-	amount = ProtectionSystem.cage(target, amount, drone_hit)   # P2-06
-	var raw: int = damage_matrix.apply(amount, damage_type, target.armor_class)
-	if raw > 0:
-		raw = maxi(1, (raw * (100 - rules.veterancy_armor_bonus[target.vet_rank])) / 100)
-	var dealt: int = mini(raw, target.hp)
-	target.hp -= dealt
-	var attacker: SimEntity = get_entity(attacker_id)
-	if attacker != null and dealt > 0 and are_enemies(attacker.player_id, target.player_id):
-		_grant_xp(attacker, (dealt * target.cost) / maxi(1, target.max_hp))
-	if target.hp <= 0:
-		target.dead = true
-		events.append({"type": "died", "id": target.id, "def_id": target.def_id,
-				"player": target.player_id, "x": target.x, "y": target.y, "killer": attacker_id})
-		if attacker != null and target.building != null and are_enemies(attacker.player_id, target.player_id):
-			_grant_player_xp(attacker.player_id, (target.cost * rules.building_kill_xp_percent) / 100)
-	return dealt
+	return WorldDamage.apply(self, target, amount, damage_type, attacker_id, drone_hit)
 
 
 ## Extra damage percent for an attacker's veterancy rank.
@@ -466,105 +275,28 @@ func damage_bonus(e: SimEntity) -> int:
 	return rules.veterancy_damage_bonus[e.vet_rank]
 
 
-func _grant_xp(attacker: SimEntity, amount: int) -> void:
-	if amount <= 0:
-		return
-	attacker.xp += amount
-	var base: int = maxi(100, attacker.cost)
-	while attacker.vet_rank < 3 and attacker.xp >= base * rules.veterancy_xp_multipliers[attacker.vet_rank]:
-		attacker.vet_rank += 1
-		events.append({"type": "promoted", "id": attacker.id, "rank": attacker.vet_rank})
-	_grant_player_xp(attacker.player_id, amount)
-
-
-func _grant_player_xp(player_id: int, amount: int) -> void:
-	if amount <= 0 or player_id == 0:
-		return
-	var p: SimPlayer = get_player(player_id)
-	p.xp += amount
-	var new_rank: int = 1
-	for i: int in rules.commander_rank_xp.size():
-		if p.xp >= rules.commander_rank_xp[i]:
-			new_rank = i + 1
-	if new_rank > p.rank:
-		p.rank = new_rank
-		events.append({"type": "rank_up", "player": player_id, "rank": new_rank})
-
-
 ## Living and dead entities whose position lies within `radius` of (x, y)
 ## (fixed-point), from the index built this tick. Order is deterministic.
 func query_radius(x: int, y: int, radius: int) -> Array[SimEntity]:
-	var result: Array[SimEntity] = []
-	if _index.is_empty():
-		_rebuild_index()
-	var x0: int = clampi((x - radius) / INDEX_BUCKET, 0, _index_cols - 1)
-	var x1: int = clampi((x + radius) / INDEX_BUCKET, 0, _index_cols - 1)
-	var y0: int = clampi((y - radius) / INDEX_BUCKET, 0, _index_rows - 1)
-	var y1: int = clampi((y + radius) / INDEX_BUCKET, 0, _index_rows - 1)
-	# Fx.length is floor(sqrt), so length <= r exactly when dx²+dy² < (r+1)².
-	var limit: int = (radius + 1) * (radius + 1)
-	for by: int in range(y0, y1 + 1):
-		for bx: int in range(x0, x1 + 1):
-			for e: SimEntity in _index[by * _index_cols + bx]:
-				var dx: int = e.x - x
-				var dy: int = e.y - y
-				if absi(dx) <= radius and absi(dy) <= radius and dx * dx + dy * dy < limit:
-					result.append(e)
-	return result
+	if _spatial.is_empty():
+		_spatial.rebuild(self)
+	return _spatial.query_radius(x, y, radius)
 
 
 ## Like query_radius, but only entities that are enemies of `player_id`
 ## (another team, not neutral). Skips friendly units before any distance math,
 ## which matters inside big blobs of one player's units.
 func query_enemies(player_id: int, x: int, y: int, radius: int) -> Array[SimEntity]:
-	var result: Array[SimEntity] = []
 	if player_id == 0:
-		return result
-	if _index.is_empty():
-		_rebuild_index()
-	var team: int = team_of(player_id)
-	var x0: int = clampi((x - radius) / INDEX_BUCKET, 0, _index_cols - 1)
-	var x1: int = clampi((x + radius) / INDEX_BUCKET, 0, _index_cols - 1)
-	var y0: int = clampi((y - radius) / INDEX_BUCKET, 0, _index_rows - 1)
-	var y1: int = clampi((y + radius) / INDEX_BUCKET, 0, _index_rows - 1)
-	var limit: int = (radius + 1) * (radius + 1)
-	for other: int in _team_index:
-		if other == team:
-			continue
-		var buckets: Array = _team_index[other]
-		for by: int in range(y0, y1 + 1):
-			for bx: int in range(x0, x1 + 1):
-				for e: SimEntity in buckets[by * _index_cols + bx]:
-					var dx: int = e.x - x
-					var dy: int = e.y - y
-					if absi(dx) <= radius and absi(dy) <= radius and dx * dx + dy * dy < limit:
-						result.append(e)
-	return result
+		return []
+	if _spatial.is_empty():
+		_spatial.rebuild(self)
+	return _spatial.query_other_teams(team_of(player_id), x, y, radius)
 
 
-func _rebuild_index() -> void:
-	_index_cols = maxi(1, (map_width + INDEX_BUCKET - 1) / INDEX_BUCKET)
-	_index_rows = maxi(1, (map_height + INDEX_BUCKET - 1) / INDEX_BUCKET)
-	if _index.size() != _index_cols * _index_rows:
-		_index.resize(_index_cols * _index_rows)
-	for i: int in _index.size():
-		_index[i] = []
-	_team_index.clear()
-	for id: int in entity_ids:
-		var e: SimEntity = entities[id]
-		var bx: int = clampi(e.x / INDEX_BUCKET, 0, _index_cols - 1)
-		var by: int = clampi(e.y / INDEX_BUCKET, 0, _index_rows - 1)
-		var b: int = by * _index_cols + bx
-		_index[b].append(e)
-		if e.player_id != 0:
-			var team: int = team_of(e.player_id)
-			if not _team_index.has(team):
-				var buckets: Array[Array] = []
-				buckets.resize(_index.size())
-				for i: int in buckets.size():
-					buckets[i] = []
-				_team_index[team] = buckets
-			(_team_index[team] as Array)[b].append(e)
+## Rebuilds the area-search index (the perf harness times it alone).
+func rebuild_index() -> void:
+	_spatial.rebuild(self)
 
 
 func _remove_dead() -> void:
@@ -578,7 +310,7 @@ func _remove_dead() -> void:
 			alive.append(id)
 	if alive.size() != entity_ids.size():
 		entity_ids = alive
-		_index.clear()
+		_spatial.clear()
 
 
 ## Hash of the whole state. Equal hashes on two machines mean they agree.
@@ -611,181 +343,4 @@ func _apply_commands() -> void:
 		return
 	var cmds: Array = _pending[tick]
 	_pending.erase(tick)
-	cmds.sort_custom(_command_before)
-	for c: SimCommand in cmds:
-		match c.type:
-			SimCommand.Type.MOVE:
-				_apply_move(c)
-			SimCommand.Type.STOP:
-				_apply_stop(c)
-			SimCommand.Type.ATTACK:
-				_apply_attack(c)
-			SimCommand.Type.ATTACK_MOVE:
-				_apply_move(c)
-				for e: SimEntity in _owned_movers(c):
-					e.order = SimEntity.Order.ATTACK_MOVE
-					e.order_x = c.target_x
-					e.order_y = c.target_y
-			SimCommand.Type.HOLD:
-				_apply_hold(c)
-			SimCommand.Type.BUILD, SimCommand.Type.PRODUCE, SimCommand.Type.CANCEL, \
-					SimCommand.Type.RALLY, SimCommand.Type.GATHER, SimCommand.Type.SELL, SimCommand.Type.REPAIR:
-				BaseCommands.apply(self, c)
-			SimCommand.Type.CHOOSE_POWER, SimCommand.Type.USE_POWER:
-				CommanderPowers.apply_command(self, c)
-			SimCommand.Type.RESEARCH, SimCommand.Type.UPGRADE_UNIT:
-				Upgrades.apply_command(self, c)
-			SimCommand.Type.GUARD, SimCommand.Type.PATROL, SimCommand.Type.SPOOF:
-				UnitCommands.apply(self, c)
-			_:
-				push_error("SimWorld: unknown command type %d" % c.type)
-
-
-## Canonical command order within a tick: by player, then by sequence number.
-func _command_before(a: SimCommand, b: SimCommand) -> bool:
-	if a.player_id != b.player_id:
-		return a.player_id < b.player_id
-	return a.seq < b.seq
-
-
-## Groups closer together than this keep their layout at the destination;
-## more spread-out groups form a grid there instead.
-const KEEP_LAYOUT_RADIUS: int = 12 * Fx.ONE
-
-
-## A move order. One unit near the group's center (the leader) plans a path;
-## the others reuse it (see PathingSystem) and end in their own slot.
-func _apply_move(c: SimCommand) -> void:
-	var movers: Array[SimEntity] = _owned_movers(c)
-	if movers.is_empty():
-		return
-	var n: int = movers.size()
-	var cx: int = 0
-	var cy: int = 0
-	for e: SimEntity in movers:
-		cx += e.x
-		cy += e.y
-	cx /= n
-	cy /= n
-	var spread: int = 0
-	var leader: SimEntity = movers[0]
-	var leader_dist: int = -1
-	for e: SimEntity in movers:
-		var d: int = Fx.length(e.x - cx, e.y - cy)
-		spread = maxi(spread, d)
-		if leader_dist < 0 or d < leader_dist:
-			leader = e
-			leader_dist = d
-	var offsets: Array[Vector2i] = []
-	if spread <= KEEP_LAYOUT_RADIUS:
-		for e: SimEntity in movers:
-			offsets.append(Vector2i(e.x - cx, e.y - cy))
-	else:
-		var spacing: int = 0
-		for e: SimEntity in movers:
-			spacing = maxi(spacing, e.radius * 2 + Fx.from_ratio(1, 2))
-		offsets = Formation.grid_offsets(n, spacing)
-	for i: int in n:
-		var e: SimEntity = movers[i]
-		e.mover.order_move(
-			clampi(c.target_x + offsets[i].x, 0, map_width),
-			clampi(c.target_y + offsets[i].y, 0, map_height))
-		e.mover.follow_leader = 0 if e == leader or n == 1 else leader.id
-		e.order = SimEntity.Order.MOVE
-		e.order_target_id = 0
-		# A direct move order takes builders and gatherers off their jobs.
-		if e.builder != null:
-			e.builder.target_id = 0
-		if e.gatherer != null:
-			e.gatherer.state = SimGatherer.State.IDLE
-			e.gatherer.auto = false
-			e.gatherer.site_id = 0
-
-
-func _apply_stop(c: SimCommand) -> void:
-	for e: SimEntity in _owned_entities(c):
-		if e.mover != null:
-			e.mover.stop()
-		e.order = SimEntity.Order.IDLE
-		e.order_target_id = 0
-		for w: SimWeapon in e.weapons:
-			w.target_id = 0
-
-
-## Orders armed units to destroy an enemy entity. Units with no weapon able
-## to hit it ignore the order.
-func _apply_attack(c: SimCommand) -> void:
-	var t: SimEntity = get_entity(c.target_entity)
-	if t == null or t.dead or not are_enemies(c.player_id, t.player_id) or not can_see(c.player_id, t.x, t.y):
-		return
-	for e: SimEntity in _owned_entities(c):
-		var able: bool = false
-		for w: SimWeapon in e.weapons:
-			if DamageMatrix.can_target(w.targets, t.armor_class):
-				able = true
-		if not able:
-			continue
-		e.order = SimEntity.Order.ATTACK
-		e.order_target_id = t.id
-		e.order_repath_tick = tick
-		if e.mover != null:
-			e.mover.order_move(t.x, t.y)
-
-
-func _apply_hold(c: SimCommand) -> void:
-	for e: SimEntity in _owned_entities(c):
-		if e.mover != null:
-			e.mover.stop()
-		e.order = SimEntity.Order.HOLD
-		e.order_target_id = 0
-
-
-## Entities named in the command that exist, are alive and belong to the
-## issuing player. Sorted by id, duplicates removed.
-func owned_entities(c: SimCommand) -> Array[SimEntity]:
-	return _owned_entities(c)
-
-
-func _owned_entities(c: SimCommand) -> Array[SimEntity]:
-	var ids: Array[int] = c.entity_ids.duplicate()
-	ids.sort()
-	var result: Array[SimEntity] = []
-	var last: int = -1
-	for id: int in ids:
-		if id == last:
-			continue
-		last = id
-		var e: SimEntity = get_entity(id)
-		if e != null and not e.dead and e.player_id == c.player_id:
-			result.append(e)
-	return result
-
-
-## Entities named in the command that exist, belong to the issuing player and
-## can move. Sorted by id, duplicates removed.
-## For command helpers outside SimWorld (UnitCommands).
-func owned_entities_of(c: SimCommand) -> Array[SimEntity]:
-	return _owned_entities(c)
-
-
-func owned_movers_of(c: SimCommand) -> Array[SimEntity]:
-	return _owned_movers(c)
-
-
-func apply_move(c: SimCommand) -> void:
-	_apply_move(c)
-
-
-func _owned_movers(c: SimCommand) -> Array[SimEntity]:
-	var ids: Array[int] = c.entity_ids.duplicate()
-	ids.sort()
-	var result: Array[SimEntity] = []
-	var last: int = -1
-	for id: int in ids:
-		if id == last:
-			continue
-		last = id
-		var e: SimEntity = get_entity(id)
-		if e != null and e.player_id == c.player_id and e.mover != null:
-			result.append(e)
-	return result
+	WorldCommands.apply_all(self, cmds)

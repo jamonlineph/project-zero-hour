@@ -281,7 +281,7 @@ func _profile(name: String, world: SimWorld, ticks: int) -> void:
 		["vision", func() -> void:
 			if world.tick % SimVision.UPDATE_INTERVAL == 0:
 				world.vision.update(world)],
-		["index", func() -> void: world._rebuild_index()],
+		["index", func() -> void: world.rebuild_index()],
 		["combat", func() -> void: CombatSystem.step(world)],
 		["veterancy", func() -> void: VeterancySystem.step(world)],
 		["victory", func() -> void: VictorySystem.step(world)],

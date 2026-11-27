@@ -525,7 +525,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Do:** make the AI save for its most-needed unit (choose for every idle factory first, then buy in order of need and stop when the top choice is unaffordable); then re-measure. Also check Reserve Call-Up (3 free squads every 3 minutes) over long games.
 - **Accept:** neither faction wins more than 60% of 40 Riverside runs, and Twin Ridge stays within 60% too.
 
-### P2-11d · Split `sim_world.gd` — ⬜
+### P2-11d · Split `sim_world.gd` — ✅ 2026-11-27 (Claude Code: sim_world.gd 346 lines, content_db.gd 412; golden replays and the determinism hash unchanged)
 - **Seen (2026-11-27):** `game/src/sim/sim_world.gd` is about 790 lines, almost twice the 400-line guideline.
 - **Do:** move cohesive parts (spawning, placement and footprints, the spatial queries) into helper scripts without changing behavior; golden replays must stay unchanged.
 - **Accept:** each file under about 400 lines; all tests pass with no replay regeneration.

@@ -38,7 +38,7 @@ static func _research(world: SimWorld, c: SimCommand, def: UpgradeDef, player: S
 static func _upgrade_units(world: SimWorld, c: SimCommand, def: UpgradeDef, player: SimPlayer) -> void:
 	if def.scope != "unit":
 		return
-	for e: SimEntity in world.owned_entities_of(c):
+	for e: SimEntity in WorldCommands.owned(world, c):
 		if not def.applies(e.def_id) or e.upgrades.has(def.id) or player.credits < def.cost:
 			continue
 		player.credits -= def.cost
