@@ -21,6 +21,7 @@ var touch_bar: TouchBar
 var power_bar: PowerBar
 var _runner: SimRunner
 var _selection: SelectionController
+var _menus: CommandMenus
 var _camera: RtsCamera
 var _placement: PlacementController
 var _top: Label
@@ -159,6 +160,7 @@ func bind_controls(selection: SelectionController, cam: RtsCamera, placement: Pl
 	_selection = selection
 	_camera = cam
 	_placement = placement
+	_menus = CommandMenus.new(_runner, selection, placement)
 	minimap.setup(_runner.world, selection.local_player_id, cam)
 	minimap.jump_requested.connect(func(p: Vector3) -> void: cam.focus_on(p))
 	placement.placement_changed.connect(func(active: bool) -> void: _place_buttons.visible = active)
@@ -195,145 +197,9 @@ func toggle_help() -> void:
 
 ## Rebuilds the command grid for the current selection.
 func refresh_commands() -> void:
-	if _selection == null or command_grid == null:
+	if _menus == null or command_grid == null:
 		return
-	var world: SimWorld = _runner.world
-	var entries: Array[Dictionary] = []
-	var builders: bool = false
-	var units: bool = false
-	var producer: SimEntity = null
-	var shelters: Array[int] = []   ## our buildings with units inside (P3-05)
-	for id: int in _selection.selected:
-		var e: SimEntity = world.get_entity(id)
-		if e == null:
-			continue
-		if e.garrison != null and not e.garrison.occupants.is_empty():
-			shelters.append(e.id)
-		builders = builders or e.builder != null
-		units = units or e.mover != null
-		if producer == null and e.building != null and e.building.built \
-				and (not e.building.produces.is_empty() or not world.content.upgrades_at(e.def_id).is_empty()):
-			producer = e
-	if builders:
-		entries = _build_menu(world)
-	elif units:
-		entries = _unit_orders()
-	elif producer != null:
-		entries = _production_menu(world, producer)
-		entries.append_array(UpgradeMenu.research_entries(_runner, _selection.local_player_id, producer))
-	if not shelters.is_empty() and not units:
-		entries.append({"label": "Exit all", "tooltip": "Everyone inside comes out",
-			"action": func() -> void:
-				for sid: int in shelters:
-					_runner.submit(SimCommand.make_unload(sid))})
-	command_grid.set_entries(entries)
-
-
-func _unit_orders() -> Array[Dictionary]:
-	var none: Dictionary = {"label": "", "enabled": false}
-	# Top row: per-unit upgrade kits for the selection (P2-05).
-	var top: Array[Dictionary] = UpgradeMenu.kit_entries(_runner, _selection.local_player_id, _selection.selected, 4)
-	while top.size() < 4:
-		top.append(none)
-	return [
-		top[0], top[1], top[2], top[3],
-		{"label": "Attack-move", "tooltip": "Then tap or click the target point", "action": func() -> void: _selection.attack_move_armed = true},
-		{"label": "Stop", "action": _selection.order_stop},
-		{"label": "Hold", "action": _selection.order_hold},
-		{"label": "Patrol", "tooltip": "Then tap or click the far end of the route",
-			"action": func() -> void:
-				_selection.disarm()
-				_selection.patrol_armed = true},
-		{"label": "Guard", "tooltip": "Then tap or click the unit or building to guard (key G)",
-			"action": func() -> void:
-				_selection.disarm()
-				_selection.guard_armed = true},
-		_spoof_entry(),
-	]
-
-
-## "Spoof" for selected jamming vehicles (P2-03), greyed out while cooling down.
-func _spoof_entry() -> Dictionary:
-	var world: SimWorld = _runner.world
-	var any: bool = false
-	var ready: bool = false
-	for id: int in _selection.selected:
-		var e: SimEntity = world.get_entity(id)
-		if e != null and e.jammer != null and e.jammer.spoof_radius > 0:
-			any = true
-			ready = ready or world.tick >= e.jammer.spoof_ready_tick
-	if not any:
-		return {"label": "", "enabled": false}
-	return {"label": "Spoof", "enabled": ready,
-		"tooltip": "Then tap or click: enemy drones there fly off course and may attack their own side",
-		"action": func() -> void:
-			_selection.disarm()
-			_selection.spoof_armed = true}
-
-
-func _build_menu(world: SimWorld) -> Array[Dictionary]:
-	var entries: Array[Dictionary] = []
-	var player: SimPlayer = world.get_player(_selection.local_player_id)
-	for def: BuildingDef in world.content.buildings.values():
-		if def.faction != player.faction or entries.size() >= 12:
-			continue
-		var ok: bool = player.credits >= def.cost and world.has_requirements(_selection.local_player_id, def.requires)
-		entries.append({
-			"label": "%s\n%d" % [def.name, def.cost],
-			"icon": _icon(def.icon_path),
-			"enabled": ok,
-			"tooltip": "%s (%d credits)%s" % [def.name, def.cost, "" if ok else _missing(world, def.requires, def.cost)],
-			"action": func() -> void: _placement.begin(def.id),
-		})
-	return entries
-
-
-func _production_menu(world: SimWorld, building: SimEntity) -> Array[Dictionary]:
-	var entries: Array[Dictionary] = []
-	var player: SimPlayer = world.get_player(_selection.local_player_id)
-	for unit_id: String in building.building.produces:
-		var def: UnitDef = world.content.get_unit(unit_id)
-		if def == null:
-			continue
-		var queued: int = building.building.queue.count(unit_id)
-		var ok: bool = player.credits >= def.cost and world.has_requirements(_selection.local_player_id, def.requires) \
-			and building.building.queue.size() < SimBuilding.MAX_QUEUE
-		var bid: int = building.id
-		entries.append({
-			"label": "%s\n%d%s" % [def.name, def.cost, " (x%d)" % queued if queued > 0 else ""],
-			"icon": _icon(def.icon_path),
-			"enabled": ok,
-			"tooltip": "%s (%d credits). Right-click or Shift+key cancels one.%s" % [def.name, def.cost, "" if ok else _missing(world, def.requires, def.cost)],
-			"action": func() -> void: _runner.submit(SimCommand.make_produce(bid, unit_id)),
-			"alt_action": func() -> void: _cancel_last(bid, unit_id),
-		})
-	return entries
-
-
-func _cancel_last(building_id: int, unit_id: String) -> void:
-	var b: SimEntity = _runner.world.get_entity(building_id)
-	if b == null or b.building == null:
-		return
-	var slot: int = b.building.queue.rfind(unit_id)
-	if slot >= 0:
-		_runner.submit(SimCommand.make_cancel(building_id, slot))
-
-
-func _missing(world: SimWorld, requires: PackedStringArray, cost: int) -> String:
-	var parts: PackedStringArray = []
-	if world.get_player(_selection.local_player_id).credits < cost:
-		parts.append("not enough credits")
-	for r: String in requires:
-		if not world.has_requirements(_selection.local_player_id, [r]):
-			var def: BuildingDef = world.content.get_building(r)
-			parts.append("needs " + (def.name if def != null else r))
-	return " - " + ", ".join(parts) if not parts.is_empty() else ""
-
-
-func _icon(path: String) -> Texture2D:
-	if path != "" and ResourceLoader.exists(path):
-		return load(path)
-	return null
+	command_grid.set_entries(_menus.entries())
 
 
 func _on_ticked(tick: int) -> void:
@@ -359,7 +225,7 @@ func _process(delta: float) -> void:
 	if _refresh <= 0.0:
 		_refresh = REFRESH_SEC
 		refresh_commands()
-		_selection_panel.text = _describe_selection(world)
+		_selection_panel.text = SelectionText.describe(world, _selection.selected) if _selection != null else ""
 	_layout()
 	if world.game_over and not _banner.visible:
 		var my_team: int = world.team_of(_runner.local_player_id)
@@ -390,49 +256,3 @@ func _layout() -> void:
 	_debug.position.x = view.x - _debug.size.x - margin
 	if _banner.visible:
 		_banner.position = (view - _banner.size) * 0.5
-
-
-func _describe_selection(world: SimWorld) -> String:
-	if _selection == null or _selection.selected.is_empty():
-		return ""
-	if _selection.selected.size() == 1:
-		var e: SimEntity = world.get_entity(_selection.selected[0])
-		if e == null:
-			return ""
-		var text: String = "%s   %d / %d hp" % [_name_of(world, e.def_id), e.hp, e.max_hp]
-		if e.vet_rank > 0:
-			text += "   veteran " + "*".repeat(e.vet_rank)
-		if e.building != null:
-			if not e.building.built:
-				text += "   building %d%%" % ((100 * e.building.progress) / maxi(1, e.building.total))
-			elif not e.building.queue.is_empty():
-				var def: UnitDef = world.content.get_unit(e.building.queue[0])
-				var pct: int = (100 * e.building.queue_progress) / maxi(1, def.build_ticks if def != null else 1)
-				text += "\nQueue: %s (%d%%)%s" % [_name_of(world, e.building.queue[0]), pct,
-					" + %d more" % (e.building.queue.size() - 1) if e.building.queue.size() > 1 else ""]
-		if e.gatherer != null and e.gatherer.carried > 0:
-			text += "   carrying %d" % e.gatherer.carried
-		if e.supply != null:
-			text = "Supply site   %d credits left" % e.supply.remaining
-		if e.garrison != null:
-			text += "\nInside: %d / %d" % [e.garrison.occupants.size(), e.garrison.capacity]
-		return text
-	var counts: Dictionary[String, int] = {}
-	for id: int in _selection.selected:
-		var e: SimEntity = world.get_entity(id)
-		if e != null:
-			counts[e.def_id] = counts.get(e.def_id, 0) + 1
-	var parts: PackedStringArray = []
-	for def_id: String in counts:
-		parts.append("%dx %s" % [counts[def_id], _name_of(world, def_id)])
-	return "%d selected: %s" % [_selection.selected.size(), ", ".join(parts)]
-
-
-func _name_of(world: SimWorld, def_id: String) -> String:
-	if world.content == null:
-		return def_id
-	var u: UnitDef = world.content.get_unit(def_id)
-	if u != null:
-		return u.name
-	var b: BuildingDef = world.content.get_building(def_id)
-	return b.name if b != null else def_id
