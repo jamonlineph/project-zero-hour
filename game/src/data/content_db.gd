@@ -402,12 +402,37 @@ func _load_map(path: String) -> void:
 			else path.get_file().get_basename()
 	if name_from_path != m.id:
 		errors.append("%s: folder or file name must match id '%s'" % [path, m.id])
+	m.civilian_buildings_m = _int_rows(src, "civilian_buildings_m", 5, path)
+	m.bridges_m = _int_rows(src, "bridges_m", 4, path)
+	m.skirmish = bool(src.get("skirmish", false))
 	m.max_step_cm = int(src.get("max_step_cm", m.max_step_cm))
 	if src.has("water_level_cm"):
 		m.water_level_cm = int(src["water_level_cm"])
 	if src.has("height"):
 		_load_heights(m, path.get_base_dir().path_join(str(src["height"])), int(src.get("height_scale_cm", 0)), path)
 	maps[m.id] = m
+
+
+## A list of whole-number rows of `size` values each (map rectangles).
+func _int_rows(src: Dictionary, key: String, size: int, path: String) -> Array[PackedInt32Array]:
+	var out: Array[PackedInt32Array] = []
+	var rows: Variant = src.get(key, [])
+	if not rows is Array:
+		errors.append("%s: '%s' must be a list" % [path, key])
+		return out
+	for i: int in (rows as Array).size():
+		var r: Variant = rows[i]
+		if not r is Array or (r as Array).size() != size:
+			errors.append("%s: %s entry %d must hold %d numbers" % [path, key, i, size])
+			continue
+		var row := PackedInt32Array()
+		for v: Variant in r:
+			row.append(int(v))
+		if row[2] <= 0 or row[3] <= 0:
+			errors.append("%s: %s entry %d needs a positive size" % [path, key, i])
+			continue
+		out.append(row)
+	return out
 
 
 ## Reads a raw 16-bit little-endian heightmap: one sample per 2 m cell, row by

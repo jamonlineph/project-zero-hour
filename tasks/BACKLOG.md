@@ -523,8 +523,9 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Seen (2026-11-27):** `game/src/sim/sim_world.gd` is about 790 lines, almost twice the 400-line guideline.
 - **Do:** move cohesive parts (spawning, placement and footprints, the spatial queries) into helper scripts without changing behavior; golden replays must stay unchanged.
 - **Accept:** each file under about 400 lines; all tests pass with no replay regeneration.
+- **Also:** `game/src/data/content_db.gd` is about 710 lines; split its loaders the same way.
 
-### P2-12 · Map "Riverside" — ⬜
+### P2-12 · Map "Riverside" — 🔄 Claude Code 2026-11-27 (map, view and tests done; 40-run fairness check running)
 - **Needs:** P1-30
 - **Accept:** a map per `vertical-slice.md` that is fair in AI-vs-AI runs (neither side wins more than 55% of 40 runs).
 

@@ -11,6 +11,8 @@ const VISIBLE: int = 255
 
 var world: SimWorld
 var local_player_id: int = 1
+## Developer screenshots (`--reveal`): draw the whole map as visible.
+var reveal_all: bool = false
 var texture: ImageTexture
 var _image: Image
 var _materials: Array[ShaderMaterial] = []
@@ -55,7 +57,7 @@ func refresh() -> void:
 			var x: int = cx * SimVision.CELL + half
 			var y: int = cy * SimVision.CELL + half
 			var value: int = UNEXPLORED
-			if v.is_visible(team, x, y):
+			if reveal_all or v.is_visible(team, x, y):
 				value = VISIBLE
 			elif v.is_explored(team, x, y):
 				value = EXPLORED

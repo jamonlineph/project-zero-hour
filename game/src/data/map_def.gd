@@ -20,6 +20,17 @@ var heights_cm: PackedInt32Array = PackedInt32Array()
 var max_step_cm: int = 100
 ## Cells lower than this are deep water (impassable). Unset = no water.
 var water_level_cm: int = -1000000
+## Town houses [x_m, y_m, w_m, h_m, roof_height_m]: they block like obstacles
+## and the view draws them as houses (P2-12).
+var civilian_buildings_m: Array[PackedInt32Array] = []
+## Bridge decks [x_m, y_m, w_m, h_m] drawn over river crossings (view only).
+var bridges_m: Array[PackedInt32Array] = []
+## Offered in the skirmish menu (P2-12).
+var skirmish: bool = false
+
+
+func has_water() -> bool:
+	return water_level_cm > -1000000
 
 
 ## Builds the sim grid for this map.
@@ -27,6 +38,8 @@ func make_sim_map() -> SimMap:
 	var map := SimMap.new(width_m, height_m)
 	for o: PackedInt32Array in obstacles_m:
 		map.add_obstacle_m(o[0], o[1], o[2], o[3])
+	for b: PackedInt32Array in civilian_buildings_m:
+		map.add_obstacle_m(b[0], b[1], b[2], b[3])
 	if not heights_cm.is_empty():
 		var fx := PackedInt32Array()
 		fx.resize(heights_cm.size())

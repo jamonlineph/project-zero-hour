@@ -35,6 +35,14 @@ func _run() -> void:
 		failures.append("the main menu did not load")
 	else:
 		failures.append_array(await _check_settings(menu))
+		# P2-12: Riverside is the default skirmish map, and the map button cycles.
+		if menu.get("map_id") != "riverside":
+			failures.append("the default skirmish map is not Riverside")
+		var map_button: Button = menu.find_child("Map", true, false)
+		map_button.pressed.emit()
+		if menu.get("map_id") == "riverside":
+			failures.append("the map button did not change the map")
+		map_button.pressed.emit()
 		menu.call("start_skirmish")
 		for i: int in 20:
 			await process_frame
@@ -51,6 +59,8 @@ func _run() -> void:
 					hqs += 1
 			if hqs != 2:
 				failures.append("expected 2 HQs, found %d" % hqs)
+			if runner.world.map_width != Fx.from_int(256) or game.get_node_or_null("MapFeatures/Water") == null:
+				failures.append("the skirmish did not start on Riverside with its river drawn")
 			var pause: PauseMenu = game.get("pause_menu")
 			pause.toggle()
 			var tick: int = runner.world.tick

@@ -67,7 +67,8 @@
   ],
   "maps": [
     "res://data/maps/sandbox/map.json",
-    "res://data/maps/twin_ridge/map.json"
+    "res://data/maps/twin_ridge/map.json",
+    "res://data/maps/riverside/map.json"
   ],
   "scenarios": [
     "res://data/scenarios/sandbox.json",

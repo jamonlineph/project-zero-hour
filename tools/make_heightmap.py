@@ -10,6 +10,11 @@ be rebuilt and compared. terrain_gen keys (all optional, meters):
   "base_m":     ground level
   "hills":      [[x, y, radius, height], ...]   smooth Gaussian bumps (negative = dips)
   "raise_obstacles_m": height added inside every obstacle rectangle (rock outcrops)
+  "channels":   [[x, y, w, h, bed], ...]   rectangles carved down to height "bed"
+                (rivers); the ground slopes back up over "bank_m" around them
+  "bank_m":     width of a channel's sloped bank (default 6)
+  "mirror_x":   true copies the west half onto the east half, so the heights
+                are exactly mirrored across the middle (1v1 fairness)
 """
 
 import json
@@ -39,6 +44,15 @@ def build(folder):
         for ox, oy, ow, oh in m.get("obstacles_m", []):
             inside = (gx >= ox) & (gx < ox + ow) & (gy >= oy) & (gy < oy + oh)
             height[inside] += raise_m
+    bank = float(gen.get("bank_m", 6.0))
+    for x, y, cw, ch, bed in gen.get("channels", []):
+        dx = np.maximum(np.maximum(x - gx, gx - (x + cw)), 0.0)
+        dy = np.maximum(np.maximum(y - gy, gy - (y + ch)), 0.0)
+        t = np.clip(np.sqrt(dx * dx + dy * dy) / bank, 0.0, 1.0)
+        height = np.minimum(height, bed + (height - bed) * t)
+    if gen.get("mirror_x", False):
+        for i in range(w // 2):
+            height[:, w - 1 - i] = height[:, i]
     scale_m = m["height_scale_cm"] / 100.0
     if height.min() < 0 or height.max() > scale_m:
         sys.exit("heights %.2f..%.2f m fall outside 0..%.2f m (height_scale_cm)" % (height.min(), height.max(), scale_m))

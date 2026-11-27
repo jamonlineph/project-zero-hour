@@ -76,6 +76,11 @@ func _ready() -> void:
 	rts_camera.set_bounds(Rect2(0, 0, map_def.width_m, map_def.height_m))
 	rts_camera.ground_height = terrain.height_at
 	rts_camera.focus_on(_start_focus())
+	var cam: Variant = DevCapture.camera_override()
+	if cam != null:
+		rts_camera.focus_on(Vector3(cam.x, 0.0, cam.y))
+		rts_camera.distance = cam.z
+		rts_camera.zoom_by(1.0)
 
 	hud = Hud.new()
 	hud.name = "Hud"
@@ -185,12 +190,16 @@ func _build_environment() -> void:
 
 	# Terrain materials darken under the local player's fog of war (P1-27).
 	fog = FogOfWar.new()
+	fog.reveal_all = DevCapture.reveal_requested()
 	fog.setup(world, LOCAL_PLAYER)
 	add_child(fog)
 
 	terrain = TerrainView.new()
 	terrain.build(map_def, fog)
 	add_child(terrain)
+	var features := MapFeaturesView.new()
+	features.build(map_def, fog, terrain.height_at)
+	add_child(features)
 
 	# Rocks are drawn from the map's obstacles, so what you see is what blocks
 	# movement. Heights are view-only decoration, so ordinary random numbers are

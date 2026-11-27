@@ -34,7 +34,8 @@ Agents usually run on machines without a GPU or display. The game can still rend
 xvfb-run -a -s "-screen 0 1280x720x24" godot --rendering-driver opengl3 --path game -- --scenario=skirmish_vs_ai --screenshot=/tmp/shot.png --screenshot-frames=240
 ```
 
-- `--screenshot=<file>` saves the rendered frame after `--screenshot-frames` frames (default 90), then quits (`DevCapture`). Without `--scenario=` it captures the main menu.
+- `--screenshot=<file>` saves the rendered frame after `--screenshot-frames` frames (default 90), then quits (`DevCapture`). Without `--scenario=` or `--watch=` it captures the main menu.
+- `--watch=<map_id>` starts computer vs computer on any map (for example `--watch=riverside`). `--camera=<x_m>,<z_m>,<distance_m>` aims the camera at a map point, and `--reveal` lifts the fog on the terrain (view only).
 - `--scenario=<id>` skips the menu and starts that scenario (`sandbox`, `skirmish_vs_ai`, `ai_duel`).
 - Use a normal Godot editor build (the official downloads include X11 and OpenGL). A "headless only" build can't do this.
 - Software rendering runs at about 15–20 fps, so the sim reaches about 15 s of game time per 240 frames.

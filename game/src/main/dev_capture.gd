@@ -2,6 +2,8 @@ class_name DevCapture
 extends Node
 ## Developer screenshots: run the game with
 ##   godot --path game -- --screenshot=/tmp/shot.png [--screenshot-frames=90]
+##     [--camera=<x_m>,<z_m>,<distance_m>] [--reveal]
+## --camera aims the camera at a map point, --reveal lifts the fog (view only).
 ## and it saves the rendered frame after that many frames, then quits. Works
 ## on machines without a screen through a virtual display and software OpenGL
 ## (see docs/08-testing-and-qa.md). Does nothing without the argument.
@@ -26,6 +28,20 @@ static func attach_if_requested(host: Node) -> void:
 	cap.path = shot
 	cap.frames_left = frames
 	host.add_child(cap)
+
+
+## The --camera=x,z,distance point as (x, z, distance), or null.
+static func camera_override() -> Variant:
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--camera="):
+			var parts: PackedStringArray = arg.trim_prefix("--camera=").split(",")
+			if parts.size() == 3:
+				return Vector3(parts[0].to_float(), parts[1].to_float(), parts[2].to_float())
+	return null
+
+
+static func reveal_requested() -> bool:
+	return OS.get_cmdline_user_args().has("--reveal")
 
 
 func _process(_delta: float) -> void:

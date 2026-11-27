@@ -7,13 +7,20 @@
   - `width_m`, `height_m`; `obstacles_m` (blocked rectangles `[x, y, w, h]` in meters); `start_positions_m`; `supply_sites_m` (`[x, y, credits]`)
   - `height` (the height file, normally `height.r16`) and `height_scale_cm` (the height that the file's maximum value 65535 means)
   - `max_step_cm` (default 100): a cell more than this above one of its four neighbors is an impassable cliff edge. Only the upper cell is blocked, so the ground below a cliff stays open.
-  - `water_level_cm` (optional): cells lower than this are deep water and impassable
-  - `terrain_gen` (optional): hills and raised rocks that `tools/make_heightmap.py` turns into `height.r16`
+  - `water_level_cm` (optional): cells lower than this are deep water and impassable; the view draws a water surface over them
+  - `terrain_gen` (optional): hills, raised rocks and carved river `channels` that `tools/make_heightmap.py` turns into `height.r16`. `mirror_x: true` copies the west half onto the east, so a 1v1 map's heights are exactly mirrored
+  - `civilian_buildings_m` (optional): town houses `[x, y, w, h, roof_height]` in meters. They block like obstacles and are drawn as houses (garrisoning comes later)
+  - `bridges_m` (optional): bridge decks `[x, y, w, h]` drawn over river crossings. View only: the crossing itself is ground the channels leave uncarved
+  - `skirmish` (optional, default false): offered in the skirmish menu
 - `height.r16`: raw 16-bit little-endian heights, one sample per 2 m cell, row by row from the map's (0, 0) corner. Raw bytes rather than a PNG, because Godot re-encodes imported images (to 8-bit textures); raw data is read exactly the same on every platform, which the deterministic sim needs.
 - The sim gets integer heights (`SimMap.height_at`) and the passability grid; `TerrainView` builds the ground mesh from the same heights, so what you see is what the sim uses.
 - Later: `splat.png` (terrain texture weights), `props.json` (decorations), neutral buildings and triggers.
 - Sizes: 256×256 m (1v1), 384×384 m (2v2), 512×512 m (4 players). The sandbox is 128×128 m.
-- Maps today: **sandbox** (developer test map, not mirrored) and **Twin Ridge** (`twin_ridge`, 128×128 m, exactly mirrored; used for skirmishes and AI duels until Riverside exists).
+- Maps today:
+  - **Riverside** (`riverside`, 256×256 m, the vertical-slice map and the default skirmish map): farmland on both sides of a river running north-south through the middle, two bridges 116 m apart, and a small town on both banks between them. Per side: a safe supply site by the base, two farm expansions (north and south) and a contested site in the town square.
+  - **Twin Ridge** (`twin_ridge`, 128×128 m): a small, fast map; the `ai_duel` and determinism-check scenario.
+  - **sandbox**: developer test map, not mirrored, not offered for skirmish.
+- Every skirmish map is checked by `test_maps.gd` to be an exact mirror (heights, passability, starts, obstacles, houses and supply sites).
 
 ## Map design rules
 

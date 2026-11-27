@@ -2,7 +2,8 @@ extends SceneTree
 ## Plays AI-vs-AI skirmishes headless and logs the results (P2-11).
 ## Usage: godot --headless --path game --script res://tests/tools/ai_matches.gd -- [runs] [p1_level] [p2_level] [swap] [map=<id>] [seed=<first>] [stats]
 ## "swap" trades the two factions between the start positions (tells a
-## faction imbalance apart from a map-side bias).
+## faction imbalance apart from a map-side bias). Without map= it plays the
+## ai_duel scenario (Twin Ridge); with map=<id> a skirmish on that map.
 ## Writes build/ai/results.json and prints a summary. Used for balance and
 ## map fairness checks (P2-12 needs neither side above 55% over 40 runs).
 
@@ -28,13 +29,16 @@ func _initialize() -> void:
 	var produced: Dictionary = {}   ## player -> def_id -> count, over all runs
 	var lost: Dictionary = {}
 	for r: int in runs:
-		var sc: Dictionary = (db.scenarios["ai_duel"] as Dictionary).duplicate(true)
+		var sc: Dictionary
+		if map_id != "":
+			# Any map: a computer-vs-computer skirmish from its start positions.
+			sc = MatchConfig.skirmish(db, map_id, "kp" if swap else "us", 10000, true)
+		else:
+			sc = (db.scenarios["ai_duel"] as Dictionary).duplicate(true)
+			if swap:
+				_swap_factions(sc)
 		for i: int in 2:
 			(sc["players"] as Array)[i]["difficulty"] = levels[i]
-		if swap:
-			_swap_factions(sc)
-		if map_id != "":
-			sc["map"] = map_id
 		var runner := SimRunner.new()
 		runner.world = MatchSetup.build_from(db, sc, first_seed + r)
 		runner.players = [1, 2]

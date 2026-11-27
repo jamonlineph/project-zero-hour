@@ -9,6 +9,7 @@ extends MeshInstance3D
 const GRASS := Color(0.36, 0.42, 0.28)
 const ROCK := Color(0.45, 0.43, 0.40)
 const EARTH := Color(0.33, 0.30, 0.22)
+const MUD := Color(0.30, 0.27, 0.20)    ## river banks and beds (P2-12)
 
 var map_def: MapDef
 
@@ -76,6 +77,10 @@ static func _color(def: MapDef, x: float, z: float, y: float, low: float, high: 
 	var dz: float = def.height_at_m(x, z + 1.0) - def.height_at_m(x, z - 1.0)
 	var slope: float = clampf(Vector2(dx, dz).length() / 2.0, 0.0, 1.0)   # rise per meter
 	var c: Color = GRASS.lerp(ROCK, smoothstep(0.25, 0.6, slope))
+	if def.has_water():
+		# Banks turn to mud over the last half meter above the water.
+		var above: float = y - def.water_level_cm / 100.0
+		return MUD.lerp(c, smoothstep(0.0, 0.5, above))
 	if high - low > 0.1:
 		var t: float = (y - low) / (high - low)
 		c = EARTH.lerp(c, smoothstep(0.0, 0.35, t))

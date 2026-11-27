@@ -4,12 +4,15 @@ extends Control
 ## switches to the game scene.
 
 const GAME_SCENE: String = "res://scenes/main.tscn"
-const MAP_ID: String = "twin_ridge"   ## mirrored, so neither side is favored (P2-11b)
+## The first skirmish map in id order is the default (P2-12: Riverside).
+const DEFAULT_MAP: String = "riverside"
 
 var content: ContentDb
 var faction: String = "us"
 var credits_index: int = 1
 var difficulty: String = "normal"   ## the computer opponent (P2-11)
+var map_id: String = DEFAULT_MAP
+var _map_button: Button
 var _difficulty_button: Button
 var _faction_button: Button
 var _credits_button: Button
@@ -44,6 +47,8 @@ func _ready() -> void:
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(sub)
 
+	_map_button = _button(box, "", _cycle_map)
+	_map_button.name = "Map"
 	_faction_button = _button(box, "", _cycle_faction)
 	_credits_button = _button(box, "", _cycle_credits)
 	_difficulty_button = _button(box, "", _cycle_difficulty)
@@ -63,14 +68,21 @@ func _ready() -> void:
 				_start.call_deferred(content.scenarios[id])
 			else:
 				push_error("Unknown scenario '%s'" % id)
+		# `-- --watch=<map>` starts computer vs computer on that map.
+		elif arg.begins_with("--watch="):
+			var watch_map: String = arg.trim_prefix("--watch=")
+			if content.maps.has(watch_map):
+				_start.call_deferred(MatchConfig.skirmish(content, watch_map, faction, content.skirmish_credits[credits_index], true))
+			else:
+				push_error("Unknown map '%s'" % watch_map)
 
 
 func start_skirmish() -> void:
-	_start(MatchConfig.skirmish(content, MAP_ID, faction, content.skirmish_credits[credits_index], false, difficulty))
+	_start(MatchConfig.skirmish(content, map_id, faction, content.skirmish_credits[credits_index], false, difficulty))
 
 
 func start_watch() -> void:
-	_start(MatchConfig.skirmish(content, MAP_ID, faction, content.skirmish_credits[credits_index], true))
+	_start(MatchConfig.skirmish(content, map_id, faction, content.skirmish_credits[credits_index], true))
 
 
 func start_sandbox() -> void:
@@ -95,6 +107,23 @@ func _cycle_faction() -> void:
 	_refresh_labels()
 
 
+## Maps offered for skirmish (MapDef.skirmish), in id order.
+func skirmish_maps() -> Array[String]:
+	var ids: Array[String] = []
+	for id: String in content.maps:
+		if content.maps[id].skirmish:
+			ids.append(id)
+	ids.sort()
+	return ids
+
+
+func _cycle_map() -> void:
+	var ids: Array[String] = skirmish_maps()
+	if not ids.is_empty():
+		map_id = ids[(ids.find(map_id) + 1) % ids.size()]
+	_refresh_labels()
+
+
 func _cycle_difficulty() -> void:
 	difficulty = "easy" if difficulty == "normal" else "normal"
 	_refresh_labels()
@@ -106,6 +135,8 @@ func _cycle_credits() -> void:
 
 
 func _refresh_labels() -> void:
+	var map: MapDef = content.get_map(map_id)
+	_map_button.text = "Map: %s   (tap to change)" % (map.name if map != null else map_id)
 	_faction_button.text = "Your side: %s   (tap to change)" % MatchConfig.FACTIONS[faction]
 	_credits_button.text = "Starting credits: %d   (tap to change)" % content.skirmish_credits[credits_index]
 	_difficulty_button.text = "Computer: %s   (tap to change)" % difficulty.capitalize()
