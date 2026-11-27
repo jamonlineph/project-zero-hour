@@ -88,7 +88,7 @@ Every model needs at least one `team_color` surface; the smoke test checks this.
 1. **Spec:** add it to `blender/specs/placeholders.json` (size, archetype, options).
 2. **Placeholder:** `tools/build_assets.sh --only <id>`. The generator builds a grey-box model, its icon and its manifest row.
 3. **Hook it up:** point `game/data/units/<id>.json` → `visual.model` and `visual.icon` at the outputs. Run the tests.
-4. **Final art:** an artist makes `art_source/<category>/<id>.blend` following the conventions above. Backlog P2-15 adds an export script for `.blend` files that writes the same outputs.
+4. **Final art:** an artist makes `art_source/<category>/<id>.blend` following the conventions above, plus `art_source/<category>/<id>.json` with `author`, `license` and `source`. `tools/export_blend.sh --only <id>` checks it, writes the same outputs as the placeholder and records the artist in the manifest (details in `blender/README.md`).
 5. **Animation:**
    - Vehicles animate in Godot code (turret yaw, barrel pitch, wheels, rotors).
    - Infantry need a shared skeleton and a shared animation set: idle, walk, run, aim, fire, prone, two death variants, enter-building.

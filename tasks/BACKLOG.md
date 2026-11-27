@@ -544,7 +544,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Needs:** P2-15
 - **Accept:** as P2-13.
 
-### P2-15 · Export script for hand-made `.blend` files — ⬜
+### P2-15 · Export script for hand-made `.blend` files — ✅ 2026-11-27 (Claude Code: `tools/export_blend.sh`, provenance sidecar per file, self-test `tools/test_export_blend.sh`)
 - **Accept:** `blender/export_blend.py` exports `art_source/**/<id>.blend` to `.glb` and renders icons and sheets with the same settings as the placeholders, then updates the manifest.
 
 ### P2-16 · Infantry skeleton and animations — ⬜

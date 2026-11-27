@@ -27,6 +27,8 @@ Set `BLENDER=/path/to/blender` if Blender isn't on your PATH. Tested with Blende
 | `sf_generators.py` | One generator per archetype: `tracked`, `wheeled`, `infantry`, `drone`, `building` |
 | `sf_common.py` | Shapes, materials, glTF export, camera/lights, sprite-sheet stitching, manifest |
 | `specs/placeholders.json` | Asset specs: id, category, archetype, faction, sizes in meters, options |
+| `export_blend.py` | Exports hand-made `art_source/**/<id>.blend` files the same way (P2-15) |
+| `tests/make_test_blends.py` | Fixtures for `tools/test_export_blend.sh` |
 
 ## Add a placeholder asset
 
@@ -44,4 +46,23 @@ Hand-made models live in `art_source/<category>/<id>.blend`. Export them with th
 - a material named `team_color`
 - empties named `muzzle_0`, `fx_exhaust` and so on for effects
 
-Backlog task P2-15 adds a script that exports and renders icons from `.blend` files the same way.
+Next to each `.blend`, add a provenance file with the same name, `art_source/<category>/<id>.json`:
+
+```json
+{"author": "Jane Doe", "license": "CC-BY-SA-4.0", "source": "made in Blender 5.3"}
+```
+
+The license must be one of `CC-BY-SA-4.0`, `CC-BY-4.0`, `CC0-1.0` or `OFL-1.1`. Then:
+
+```bash
+tools/export_blend.sh --check            # check every file against the conventions, write nothing
+tools/export_blend.sh --only us_mbt      # export one model, render its icon, update the manifest
+tools/export_blend.sh --sheets           # all of them, with sprite sheets
+```
+
+`blender/export_blend.py` (P2-15):
+- refuses a file without provenance, with a license that isn't allowed, or without a `team_color` surface;
+- warns when the model doesn't stand on z = 0, a material isn't Principled BSDF, or the model is over the triangle budget of its placeholder spec;
+- writes the same `.glb`, icon and sprite sheet paths as `build_assets.py`, rendered with the same lights and camera (the file's own lights and cameras are ignored), and records the artist as the author in `ASSET_MANIFEST.csv`.
+
+The `.blend` file is never changed. `tools/test_export_blend.sh` checks the exporter on generated test files in a temp folder.
