@@ -9,6 +9,8 @@
   "building_kill_xp_percent": 50,
   "_crush_doc": "Crushing (P3-07): a moving tank deals this percent of a max hp per second to enemies it drives into (touching, ahead of it). The damage matrix's 'crush' row says who can be crushed.",
   "crush_percent_per_s": 100,
+  "_fund_doc": "UAE sovereign fund (P3-02b): every interval_s, a player of this faction earns percent of their unspent credits, at most cap per payment (doubled by the cap_doubled_by power).",
+  "sovereign_fund": {"faction": "ae", "interval_s": 60, "percent": 3, "cap": 300, "cap_doubled_by": "ae_unlock_fund"},
   "_start_kit_doc": "Skirmish starting units: [id pattern ({f} = faction id), dx_m, dy_m] from the start position. dx is mirrored for starts on the east half of the map.",
   "start_kit": [
     ["{f}_command_hq", 0, 0],

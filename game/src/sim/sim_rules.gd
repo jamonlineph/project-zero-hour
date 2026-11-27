@@ -19,6 +19,14 @@ var building_kill_xp_percent: int = 50
 ## into, percent of the victim's max hp (who can be crushed: damage type
 ## "crush" in the damage matrix).
 var crush_percent_per_s: int = 100
+## Sovereign fund (P3-02b, FundSystem): the faction that earns interest, how
+## often, how much of its unspent credits, the most per payment, and the
+## power id that doubles that cap. An empty faction turns it off.
+var fund_faction: String = "ae"
+var fund_interval_ticks: int = 60 * 15
+var fund_percent: int = 3
+var fund_cap: int = 300
+var fund_cap_doubler: String = "ae_unlock_fund"
 
 
 func write_hash(h: SimHash) -> void:
@@ -30,3 +38,8 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(self_repair_percent_per_2s)
 	h.add_int(building_kill_xp_percent)
 	h.add_int(crush_percent_per_s)
+	h.add_string(fund_faction)
+	h.add_int(fund_interval_ticks)
+	h.add_int(fund_percent)
+	h.add_int(fund_cap)
+	h.add_string(fund_cap_doubler)

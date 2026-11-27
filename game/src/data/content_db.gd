@@ -264,6 +264,15 @@ func _load_rules(path: String) -> void:
 	rules.commander_rank_xp = _int_list(src, "commander_rank_xp", path, 5)
 	rules.building_kill_xp_percent = req_int(src, "building_kill_xp_percent", path, 0)
 	rules.crush_percent_per_s = req_int(src, "crush_percent_per_s", path, 0)
+	var fund: Variant = src.get("sovereign_fund", {})
+	if not fund is Dictionary:
+		errors.append("%s: 'sovereign_fund' must be an object" % path)
+		fund = {}
+	rules.fund_faction = str((fund as Dictionary).get("faction", ""))
+	rules.fund_interval_ticks = ms_to_ticks(int((fund as Dictionary).get("interval_s", 60)) * 1000)
+	rules.fund_percent = int((fund as Dictionary).get("percent", 0))
+	rules.fund_cap = int((fund as Dictionary).get("cap", 0))
+	rules.fund_cap_doubler = str((fund as Dictionary).get("cap_doubled_by", ""))
 	start_kit = src.get("start_kit", [])
 	if src.has("skirmish_credits"):
 		skirmish_credits = _int_list(src, "skirmish_credits", path, (src["skirmish_credits"] as Array).size())

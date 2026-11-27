@@ -45,7 +45,7 @@ Four sides, chosen by the owner on 2026-11-26: **America, the United Arab Emirat
 - **Weaknesses:** few units on the field, expensive losses, needs its economy running to keep up; heavy armor is limited.
 - **Signature mechanics:**
   - **Procurement:** units can be ordered off-map for a premium; a transport aircraft delivers them to a landing pad (it can be shot down).
-  - **Sovereign fund:** unspent credits earn a small interest every minute, up to a cap. Saving pays off, but so does spending well.
+  - **Sovereign fund:** unspent credits earn a small interest every minute, up to a cap. Saving pays off, but so does spending well. In the game (P3-02b): 3% of unspent credits every 60 s, at most 300 per payment, 600 with the rank-5 unlock (`sovereign_fund` in rules.json, `FundSystem`); the top bar shows "(+N fund)" for a few seconds.
   - **Swarm drones:** trucks that launch groups of small drones that hunt together.
   - **Desert raiders:** fast wheeled vehicles that move faster off-road.
   - **Special forces:** elite infantry that can call in precision strikes and disable buildings.

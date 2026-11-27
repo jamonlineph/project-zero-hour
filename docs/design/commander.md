@@ -46,7 +46,7 @@ In the game (P2-09): powers are data in `game/data/powers/`; the Commander butto
 | Rank 3 | Drone swarm strike (24 small drones attack an area) · Laser shield (air-defense sites in an area also shoot down drones and shells for 30 s) · Unlock: presidential guard detachment |
 | Rank 5 | Stand-off missile strike (2 jets fire 4 missiles; interceptable) · Unlock: sovereign fund cap doubled |
 
-In the game (P3-02a): satellite pass (`ae_satellite_pass`), drone swarm strike (`ae_drone_swarm`: 24 `swarm_drone` strikes), the presidential guard unlock (`ae_unlock_guard`) and the stand-off strike (`ae_standoff_strike`: 4 `standoff_missile` strikes from the map edge). Emergency procurement, the laser shield and the sovereign-fund unlock wait for their mechanics (P3-02e, P3-02f, P3-02b).
+In the game (P3-02a): satellite pass (`ae_satellite_pass`), drone swarm strike (`ae_drone_swarm`: 24 `swarm_drone` strikes), the presidential guard unlock (`ae_unlock_guard`) and the stand-off strike (`ae_standoff_strike`: 4 `standoff_missile` strikes from the map edge). The sovereign-fund unlock (`ae_unlock_fund`) doubles the fund's cap (P3-02b). Emergency procurement and the laser shield wait for their mechanics (P3-02e, P3-02f).
 
 ### EU
 

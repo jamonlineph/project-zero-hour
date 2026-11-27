@@ -259,6 +259,7 @@ func step() -> void:
 	DecoySystem.step(self)
 	CommanderPowers.expire(self)
 	PowerSystem.step(self)
+	FundSystem.step(self)
 	ConstructionSystem.step(self)
 	ProductionSystem.step(self)
 	Upgrades.step(self)

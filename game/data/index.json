@@ -145,6 +145,7 @@
     "res://data/powers/ae_satellite_pass.json",
     "res://data/powers/ae_drone_swarm.json",
     "res://data/powers/ae_unlock_guard.json",
-    "res://data/powers/ae_standoff_strike.json"
+    "res://data/powers/ae_standoff_strike.json",
+    "res://data/powers/ae_unlock_fund.json"
   ]
 }

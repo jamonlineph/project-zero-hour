@@ -10,6 +10,7 @@ extends CanvasLayer
 
 const HELP_TEXT := "Mouse: click/drag select, right-click move/attack/gather/repair (or set rally with only buildings selected), A+click attack-move, G+click guard, S stop, H hold, grid keys Q-W-E-R / A-S-D-F / Z-X-C-V, Ctrl+1-9 set group, 1-9 select (twice: jump), Ctrl+F5-F8 save view, F5-F8 go to view, wheel zoom, middle-drag, Space+drag or arrows pan, , . rotate, F9 save replay, F1 hide help\nTouch: tap select, tap enemy attack, tap ground move, drag pan, hold then drag box-select, double-tap select type, pinch zoom/rotate, use the grid buttons"
 const REFRESH_SEC: float = 0.25
+const FUND_SECONDS: float = 5.0   ## how long "+N fund" stays in the top bar (P3-02b)
 
 ## The Menu button (top right) was pressed: open the pause menu.
 signal menu_requested
@@ -36,6 +37,8 @@ var _place_buttons: HBoxContainer
 var _selected_count: int = 0
 var _last_hash: int = 0
 var _refresh: float = 0.0
+var _fund_gain: int = 0
+var _fund_shown: float = 0.0
 
 
 func _ready() -> void:
@@ -203,6 +206,10 @@ func refresh_commands() -> void:
 
 
 func _on_ticked(tick: int) -> void:
+	for ev: Dictionary in _runner.world.events:
+		if ev.get("type") == "interest" and int(ev.get("player", 0)) == _runner.local_player_id:
+			_fund_gain = int(ev["amount"])
+			_fund_shown = FUND_SECONDS
 	# Hashing every tick is wasteful; once per second is enough for a debug line.
 	if tick % SimWorld.TICK_RATE == 0:
 		_last_hash = _runner.world.state_hash()
@@ -217,8 +224,10 @@ func _process(delta: float) -> void:
 	var world: SimWorld = _runner.world
 	var p: SimPlayer = world.get_player(_runner.local_player_id)
 	var secs: int = world.tick / SimWorld.TICK_RATE
-	_top.text = "  Credits %d     Power %d / %d%s     Rank %s     %d:%02d" % [
-		p.credits, p.power_used, p.power_produced, "  LOW POWER" if p.low_power() else "",
+	_fund_shown = maxf(0.0, _fund_shown - delta)
+	_top.text = "  Credits %d%s     Power %d / %d%s     Rank %s     %d:%02d" % [
+		p.credits, "  (+%d fund)" % _fund_gain if _fund_shown > 0.0 else "",
+		p.power_used, p.power_produced, "  LOW POWER" if p.low_power() else "",
 		"*".repeat(p.rank) + ".".repeat(5 - p.rank), secs / 60, secs % 60]
 	_debug.text = "tick %d | %d fps | state %08x  " % [world.tick, Engine.get_frames_per_second(), _last_hash]
 	_refresh -= delta

@@ -1,0 +1,8 @@
+{
+  "id": "ae_unlock_fund",
+  "faction": "ae",
+  "name": "Unlock: Larger Sovereign Fund",
+  "tier": 5,
+  "kind": "unlock",
+  "description": "The sovereign fund pays up to twice as much interest each minute."
+}
