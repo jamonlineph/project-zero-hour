@@ -147,7 +147,7 @@ Keep this list in sync with the code whenever you add a system.
 
 ## 8. Saving and loading (P3)
 
-A save is a snapshot of `SimWorld` (all ints and strings) plus the command log since the last snapshot. Saves are versioned and include the content hash.
+A save (P3-22, `SaveGame`) is the match's replay (scenario, seed, content hash, every command so far) plus the state hash at the moment of saving. Loading (`SaveLoader`) rebuilds the match and fast-forwards: human players' recorded commands are fed back, AI players think again (deterministic, so they reach the same plans), and the final state hash must match. Nothing can be forgotten this way; the cost is loading time for long matches. Saves are versioned (`save_format`). A true snapshot format can replace this later if loading is too slow on phones.
 
 ## 9. Performance budgets
 

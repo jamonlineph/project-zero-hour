@@ -8,6 +8,7 @@ const MENU_SCENE: String = "res://scenes/menu.tscn"
 var runner: SimRunner
 var _title: Label
 var _resume: Button
+var _save_button: Button
 
 
 func setup(sim_runner: SimRunner) -> void:
@@ -35,6 +36,8 @@ func _ready() -> void:
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(_title)
 	_resume = _button(box, "Resume", close)
+	_save_button = _button(box, "Save game", save_game)
+	_save_button.name = "SaveGame"
 	_button(box, "Save replay", save_replay)
 	_button(box, "Settings", open_settings)
 	_button(box, "Quit to menu", quit_to_menu)
@@ -43,6 +46,7 @@ func _ready() -> void:
 func open_paused() -> void:
 	_title.text = "Paused"
 	_resume.visible = true
+	_save_button.visible = true
 	visible = true
 	if runner != null:
 		runner.paused = true
@@ -51,6 +55,7 @@ func open_paused() -> void:
 func open_game_over(text: String) -> void:
 	_title.text = text
 	_resume.visible = false
+	_save_button.visible = false
 	visible = true
 
 
@@ -65,6 +70,21 @@ func toggle() -> void:
 		close()
 	else:
 		open_paused()
+
+
+## Saves the match to resume later (P3-22). Single player only: every
+## player must be on this machine.
+func save_game() -> String:
+	var path: String = SaveGame.save(runner) if runner != null and _all_local() else ""
+	_title.text = "Game saved" if path != "" else "Could not save"
+	return path
+
+
+func _all_local() -> bool:
+	for p: int in runner.players:
+		if not runner.local_players.has(p):
+			return false
+	return true
 
 
 func save_replay() -> void:

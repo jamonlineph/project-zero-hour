@@ -606,7 +606,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 | P3-19 | Spreadsheet → JSON balance import tool |
 | P3-20 | Accessibility options ([controls-and-ui.md](../docs/design/controls-and-ui.md)) |
 | P3-21 | Turn on DCO sign-off once outside contributors join |
-| P3-22 | Save and load |
+| P3-22 | Save and load — ✅ v1 2026-11-27 (Claude Code): a save is the replay plus the state hash; loading fast-forwards and checks the hash (`SaveGame`, `SaveLoader`, "Save game" in the pause menu, "Load game" in the main menu). Later: true snapshots if loading long matches is too slow on phones |
 | P3-23 | Maps 2–12 (three biomes) |
 | P3-24 | Open beta: Play open testing, F-Droid metadata, GitHub releases |
 

@@ -60,6 +60,7 @@ func _ready() -> void:
 	_button(box, "Start skirmish vs computer", start_skirmish).name = "StartSkirmish"
 	_button(box, "Watch computer vs computer", start_watch).name = "Watch"
 	_button(box, "Sandbox (developer test map)", start_sandbox).name = "Sandbox"
+	_button(box, "Load game", open_load).name = "LoadGame"
 	_button(box, "Settings", open_settings).name = "Settings"
 	_button(box, "Quit", func() -> void: get_tree().quit())
 	_refresh_labels()
@@ -72,6 +73,8 @@ func _ready() -> void:
 				_start.call_deferred(content.scenarios[id])
 			else:
 				push_error("Unknown scenario '%s'" % id)
+		elif arg == "--open=load":
+			open_load.call_deferred()
 		# `-- --watch=<map> [--side=<faction>]` starts computer vs computer on
 		# that map; --side picks player 1's faction (the HUD's point of view).
 		elif arg.begins_with("--watch="):
@@ -93,6 +96,20 @@ func start_watch() -> void:
 
 func start_sandbox() -> void:
 	_start(content.scenarios.get("sandbox", {}))
+
+
+func open_load() -> LoadMenu:
+	var menu := LoadMenu.new()
+	menu.name = "LoadMenu"
+	menu.chosen.connect(load_game)
+	add_child(menu)
+	return menu
+
+
+## Starts a saved game (SaveGame.read data).
+func load_game(data: Dictionary) -> void:
+	MatchConfig.load_save = data
+	_start(data.get("scenario_data", {}))
 
 
 func open_settings() -> SettingsMenu:

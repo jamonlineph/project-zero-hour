@@ -29,6 +29,7 @@ var _help: Label
 var _banner: Label
 var _selection_panel: Label
 var _minimap_frame: Panel     ## framed backgrounds (P2-17)
+var _notice: Label
 var _selection_frame: Panel
 var _place_buttons: HBoxContainer
 var _selected_count: int = 0
@@ -128,6 +129,24 @@ func _ready() -> void:
 	_banner.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
 	_banner.visible = false
 	add_child(_banner)
+
+
+## A short message at the top of the screen that fades after a few seconds.
+func show_notice(text: String, seconds: float = 6.0) -> void:
+	if _notice == null:
+		_notice = Label.new()
+		_notice.name = "Notice"
+		_notice.add_theme_color_override("font_color", UiTheme.ACCENT)
+		_notice.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_notice.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+		_notice.position.y = 96
+		add_child(_notice)
+	_notice.text = text
+	_notice.modulate.a = 1.0
+	_notice.visible = true
+	var t := _notice.create_tween()
+	t.tween_interval(seconds)
+	t.tween_property(_notice, "modulate:a", 0.0, 1.0)
 
 
 func setup(runner: SimRunner) -> void:

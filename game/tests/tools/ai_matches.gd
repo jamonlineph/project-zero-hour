@@ -1,11 +1,13 @@
 extends SceneTree
 ## Plays AI-vs-AI skirmishes headless and logs the results (P2-11).
-## Usage: godot --headless --path game --script res://tests/tools/ai_matches.gd -- [runs] [p1_level] [p2_level] [swap] [map=<id>] [seed=<first>] [mirror=<faction>] [stats]
+## Usage: godot --headless --path game --script res://tests/tools/ai_matches.gd -- [runs] [p1_level] [p2_level] [swap] [map=<id>] [seed=<first>] [mirror=<faction>] [flip] [stats]
 ## "swap" trades the two factions between the start positions (tells a
 ## faction imbalance apart from a map-side bias). Without map= it plays the
 ## ai_duel scenario (Twin Ridge); with map=<id> a skirmish on that map.
 ## "mirror=us" (needs map=) gives both players the same faction: then only the
 ## start positions differ, which isolates a side advantage (P2-12b).
+## "flip" (with mirror=) puts player 1 in the east, to tell a side
+## advantage apart from a player-order one.
 ## Writes build/ai/results.json and prints a summary. Used for balance and
 ## map fairness checks (P2-12 needs neither side above 55% over 40 runs).
 
@@ -41,6 +43,9 @@ func _initialize() -> void:
 			sc = MatchConfig.skirmish(db, map_id, "kp" if swap else "us", 10000, true)
 			if mirror != "":
 				_make_mirror(sc, mirror)
+			if args.has("flip"):
+				for s: Variant in sc["spawns"]:
+					s["player"] = 3 - int(s["player"])
 		else:
 			sc = (db.scenarios["ai_duel"] as Dictionary).duplicate(true)
 			if swap:

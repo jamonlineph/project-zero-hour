@@ -6,6 +6,8 @@ extends RefCounted
 
 ## Scenario dictionary for the next match (see MatchSetup), or empty.
 static var pending: Dictionary = {}
+## A save (SaveGame.read) to load instead of a new match (P3-22), or empty.
+static var load_save: Dictionary = {}
 ## Faction ids that are playable in skirmish, with display names.
 ## Playable now. The UAE (`ae`) and the EU (`eu`) join when their rosters
 ## are built (docs/design/factions.md).

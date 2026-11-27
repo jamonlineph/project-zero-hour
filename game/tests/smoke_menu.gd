@@ -84,6 +84,7 @@ func _run() -> void:
 				await process_frame
 			if runner.world.tick == tick:
 				failures.append("the game did not resume")
+			failures.append_array(await _check_save_and_load(game))
 	if _errors.count > 0:
 		failures.append("%d error(s) were logged" % _errors.count)
 	OS.remove_logger(_errors)
@@ -94,6 +95,42 @@ func _run() -> void:
 		for f: String in failures:
 			printerr("smoke_menu FAIL: ", f)
 		quit(1)
+
+
+## P3-22: save from the pause menu, then load it through the real game scene
+## and arrive at the same tick and state.
+func _check_save_and_load(game: Node) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	SaveGame.dir = "user://test_saves_smoke/"
+	var pause: PauseMenu = game.get("pause_menu")
+	pause.toggle()
+	await process_frame
+	var runner: SimRunner = game.get("runner")
+	var saved_tick: int = runner.world.tick
+	var saved_hash: int = runner.world.state_hash()
+	var path: String = pause.save_game()
+	if path == "":
+		problems.append("the pause menu could not save the game")
+		return problems
+	MatchConfig.load_save = SaveGame.read(path)
+	change_scene_to_file("res://scenes/main.tscn")
+	for i: int in 600:
+		await process_frame
+		var g: Node = current_scene
+		if g != null and g.get("runner") != null and g.get("loader") == null:
+			break
+	var loaded: SimRunner = current_scene.get("runner")
+	if loaded == null:
+		problems.append("loading did not open the game scene")
+	elif current_scene.get("loader") != null:
+		problems.append("loading never finished")
+	elif loaded.world.tick < saved_tick:
+		problems.append("the loaded game stopped at tick %d, before %d" % [loaded.world.tick, saved_tick])
+	elif loaded.world.tick == saved_tick and loaded.world.state_hash() != saved_hash:
+		problems.append("the loaded game differs from the saved one")
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+	SaveGame.dir = "user://saves/"
+	return problems
 
 
 ## P1-35: the settings screen opens from the main menu, battery saver applies

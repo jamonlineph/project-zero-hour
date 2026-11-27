@@ -123,6 +123,25 @@ func try_step() -> bool:
 	return true
 
 
+## Loads a player's recorded commands (SimCommand dicts) as their batches for
+## every tick up to `until_tick`, so the runner can fast-forward a saved match
+## (SaveLoader, P3-22). Ticks with no command get an empty batch.
+func preload_commands(player_id: int, commands: Array, until_tick: int) -> void:
+	var by_tick: Dictionary[int, Array] = {}
+	for d: Variant in commands:
+		var c: SimCommand = SimCommand.from_dict(d as Dictionary)
+		if not by_tick.has(c.tick):
+			by_tick[c.tick] = []
+		by_tick[c.tick].append(c)
+	for t: int in range(world.tick, until_tick + 1):
+		if _batches.has(t) and (_batches[t] as Dictionary).has(player_id):
+			continue
+		var cmds: Array[SimCommand] = []
+		for c: Variant in by_tick.get(t, []):
+			cmds.append(c as SimCommand)
+		_store(player_id, t, cmds)
+
+
 ## Everything needed to replay this match so far.
 func make_replay() -> Replay:
 	var r := Replay.new()

@@ -25,6 +25,9 @@ var terrain: TerrainView
 var pointer: PointerFeedback
 var _game_over_shown: bool = false
 var director: CameraDirector
+## Loading a saved game (P3-22): fast-forwarding until done.
+var loader: SaveLoader
+var _loading_label: Label
 
 
 func _ready() -> void:
@@ -41,8 +44,14 @@ func _ready() -> void:
 	var scenario: Dictionary = MatchConfig.pending if not MatchConfig.pending.is_empty() \
 		else content.scenarios.get(scenario_id, {})
 	MatchConfig.pending = {}
+	var save_data: Dictionary = MatchConfig.load_save
+	MatchConfig.load_save = {}
+	if not save_data.is_empty():
+		scenario = save_data.get("scenario_data", {})
 	scenario_id = str(scenario.get("id", scenario_id))
 	var seed_value: int = int(DevCapture.arg("seed", str(SEED)))
+	if not save_data.is_empty():
+		seed_value = int(save_data.get("seed", seed_value))
 	world = MatchSetup.build_from(content, scenario, seed_value) if not scenario.is_empty() else null
 	if world == null:
 		push_error("Sandbox: scenario '%s' failed to load; using an empty map" % scenario_id)
@@ -65,7 +74,10 @@ func _ready() -> void:
 	runner.add_ai_from_scenario(content, scenario)
 	runner.scenario_data = scenario
 	runner.start()
-
+	if not save_data.is_empty():
+		loader = SaveLoader.new()
+		loader.begin(runner, save_data)
+		runner.paused = true
 	game_view = GameView.new()
 	game_view.name = "GameView"
 	game_view.setup(world, content)
@@ -153,6 +165,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 
 func _process(_delta: float) -> void:
+	if loader != null:
+		_continue_loading()
+		return
 	game_view.sync(runner.alpha)
 	if world.game_over and not _game_over_shown:
 		_game_over_shown = true
@@ -183,6 +198,29 @@ func _attach_director() -> void:
 	director.shot_every_s = float(DevCapture.arg("shot-every", "10"))
 	director.setup(world, content, rts_camera)
 	add_child(director)
+
+
+## Fast-forwards a loaded save a chunk per frame behind a progress label.
+func _continue_loading() -> void:
+	if _loading_label == null:
+		_loading_label = Label.new()
+		_loading_label.name = "Loading"
+		_loading_label.add_theme_font_size_override("font_size", 32)
+		_loading_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+		hud.add_child(_loading_label)
+	if not loader.advance(450):
+		_loading_label.text = "Loading saved game… %d%%" % int(loader.progress() * 100.0)
+		return
+	var ok: bool = loader.matches()
+	loader = null
+	_loading_label.queue_free()
+	runner.pending_events.clear()   # don't replay the whole match's sounds
+	runner.paused = false
+	game_view.sync(0.0)
+	rts_camera.focus_on(_start_focus())
+	if not ok:
+		push_warning("Loaded save differs from when it was saved (the game's data changed since).")
+		hud.show_notice("This save was made with a different game version; it may play out differently.")
 
 
 ## Where the camera starts: the local player's HQ (or first building or
