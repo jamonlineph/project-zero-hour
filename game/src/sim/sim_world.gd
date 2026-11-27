@@ -269,6 +269,7 @@ func step() -> void:
 	if tick % SimVision.UPDATE_INTERVAL == 0:
 		vision.update(self)
 	_spatial.rebuild(self)
+	CrushSystem.step(self)
 	CombatSystem.step(self)
 	ProtectionSystem.step(self)
 	VeterancySystem.step(self)

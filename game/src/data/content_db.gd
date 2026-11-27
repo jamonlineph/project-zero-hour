@@ -263,6 +263,7 @@ func _load_rules(path: String) -> void:
 	rules.self_repair_percent_per_2s = req_int(src, "veterancy_self_repair_percent_per_2s", path, 0)
 	rules.commander_rank_xp = _int_list(src, "commander_rank_xp", path, 5)
 	rules.building_kill_xp_percent = req_int(src, "building_kill_xp_percent", path, 0)
+	rules.crush_percent_per_s = req_int(src, "crush_percent_per_s", path, 0)
 	start_kit = src.get("start_kit", [])
 	if src.has("skirmish_credits"):
 		skirmish_credits = _int_list(src, "skirmish_credits", path, (src["skirmish_credits"] as Array).size())

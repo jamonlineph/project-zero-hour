@@ -4,6 +4,19 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-27: P3-23a biomes and two maps, P3-07 crushing (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P3-23 split** into a–d in the backlog. **P3-23a:** maps pick a `biome` (temperate, desert, winter). The view takes ground, water and house colors and the obstacle style from `Biomes`: rocks, sandstone mesas, or pine forests (two MultiMeshes for all trees). Obstacle drawing moved from `main.gd` to `MapFeaturesView`.
+  - **Desert Crossroads** (bases in the south, a mesa block between them, an oasis town on the northern road) and **Frostwood** (forest lanes, a logging village between the northern bases, a frozen lake). Both 256 m, mirrored, offered for skirmish; `test_maps.gd` now checks reachability (including every house) on every skirmish map. Base-to-base paths are mirror images on all three maps.
+  - **P3-07:** `CrushSystem` (after the spatial index, before combat): main battle tanks run down enemy infantry touching their front while they move, 100% of max hp per second (`crush_percent_per_s` in rules.json; the damage matrix's `crush` row limits it to infantry). Golden replays and the determinism hash regenerated (crushing is in the rules hash): new hash 303367140.
+- Tests: `tools/run_tests.sh` -> 272 tests, 0 failed (+ both smoke tests). `python3 tools/check_repo.py` -> ok.
+- AI runs on the new maps (40 each, before crushing): Frostwood west 19, east 20; America 13–7 in faction games. Desert Crossroads east 25, west 15; North Korea 15–5. Within noise for 20–40 games, but logged in P2-11f with a recheck.
+- Not verified: frame rate of the forest maps on a phone (trees are MultiMeshes, so the draw-call count stays small); how crushing feels with touch controls.
+- Next: P2-11f balance recheck with crushing (batch running), then P1-30b renderer errors, then P3-02 UAE.
+- For the owner: the determinism hash changed again on purpose (crushing). Screenshots of the new maps: `docs/screenshots/maps/`.
+
+---
+
 ## 2026-11-27: P2-11e, P3-22, P3-05, P3-20, P2-12b: balance, save/load, garrisons, colorblind colors, side fairness (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P2-11e:** America's rocket artillery sat idle because its recon drones hovered over the army; spotters now fly 30 m ahead toward the target while the army attacks, and America keeps 3. Riverside went from about 85% North Korea to 23–17.

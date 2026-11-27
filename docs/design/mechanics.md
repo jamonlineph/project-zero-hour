@@ -35,7 +35,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Veterancy | Three ranks from cost-weighted damage dealt (1x/2x/4x own cost): +damage, +armor, self-repair at rank 3 (`rules.json`) | P1-17 | ✅ |
 | Garrisoning | Infantry enter buildings and fire from them; flame/thermobaric weapons clear them. v1: town houses (neutral, 2 squads, belong to whoever is inside), bunkers and trench lines (2 squads); +5 m range from inside; can't be shot directly, splash stopped except thermobaric (50%), which also hits occupants when it hits the building; "Exit all" lets them out; a destroyed building throws them out hurt (25% of max hp). The AI keeps up to 2 squads in town houses on its half | P3-05 | ✅ v1 |
 | Transports | Vehicles carry infantry; some have firing ports | P3-06 | ⬜ |
-| Crushing | Heavy vehicles crush infantry and light obstacles | P3-07 | ⬜ |
+| Crushing | Main battle tanks (`"crusher": true`) run down enemy infantry they drive into: 100% of the victim's max hp per second while it touches the front of a moving tank (`CrushSystem`, `crush_percent_per_s` in rules.json, the `crush` row of the damage matrix). Parked tanks, side brushes, friends, vehicles and garrisoned units are safe. Light obstacles (fences, wrecks) come with map props (P3-23d) | P3-07 | ✅ |
 | Stealth and detection | Stealthed units are invisible until they fire or a detector is near | P3-09 | ⬜ |
 | Mines and obstacles | Engineers lay mines, trenches and tank obstacles | P3-10 | ⬜ |
 | Bridges | Destructible; builders repair them | P3-11 | ⬜ |

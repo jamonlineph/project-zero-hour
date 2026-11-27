@@ -23,6 +23,7 @@ var flying: bool = false        ## flies over terrain (default: armor class "dro
 var endurance_ticks: int = 0    ## drones: flight time on a full charge (data: endurance_s); 0 = unlimited
 var fiber_optic: bool = false   ## drones: immune to jamming and spoofing
 var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
+var crusher: bool = false       ## hurts enemies it drives over (P3-07, CrushSystem)
 var aps_charges: int = 0        ## active protection charges (P2-06)
 var cage_hits: int = 0          ## drone hits cage armor softens (P2-06)
 var decoy_of: String = ""       ## decoys: the unit id it imitates (P2-08)

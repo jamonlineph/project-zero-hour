@@ -7,6 +7,8 @@
   "veterancy_self_repair_percent_per_2s": 1,
   "commander_rank_xp": [0, 2000, 5000, 10000, 18000],
   "building_kill_xp_percent": 50,
+  "_crush_doc": "Crushing (P3-07): a moving tank deals this percent of a max hp per second to enemies it drives into (touching, ahead of it). The damage matrix's 'crush' row says who can be crushed.",
+  "crush_percent_per_s": 100,
   "_start_kit_doc": "Skirmish starting units: [id pattern ({f} = faction id), dx_m, dy_m] from the start position. dx is mirrored for starts on the east half of the map.",
   "start_kit": [
     ["{f}_command_hq", 0, 0],

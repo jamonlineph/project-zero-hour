@@ -4,6 +4,7 @@
   "role": "main_battle_tank",
   "name": "Main Battle Tank",
   "armor_class": "heavy_armor",
+  "crusher": true,
   "status": "first-pass numbers (docs/design/vertical-slice.md)",
   "max_hp": 1200,
   "cost": 1000,

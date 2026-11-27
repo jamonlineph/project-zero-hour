@@ -15,6 +15,10 @@ var self_repair_percent_per_2s: int = 1
 var commander_rank_xp: PackedInt32Array = [0, 2000, 5000, 10000, 18000]
 ## Extra commander XP for destroying a building, percent of its cost.
 var building_kill_xp_percent: int = 50
+## Crushing (P3-07): damage per second to a unit a moving crusher drives
+## into, percent of the victim's max hp (who can be crushed: damage type
+## "crush" in the damage matrix).
+var crush_percent_per_s: int = 100
 
 
 func write_hash(h: SimHash) -> void:
@@ -25,3 +29,4 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(self_repair_rank)
 	h.add_int(self_repair_percent_per_2s)
 	h.add_int(building_kill_xp_percent)
+	h.add_int(crush_percent_per_s)

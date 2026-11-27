@@ -18,6 +18,7 @@
 - `anti_air`
 - `counter_drone` (lasers, microwave, jamming damage)
 - `thermobaric` (clears garrisons)
+- `crush` (tanks driving over infantry, P3-07; not a weapon)
 
 ### Damage multipliers (starting values, tuned in playtests)
 
@@ -32,6 +33,7 @@ These go into `game/data/damage_matrix.json` in P1-09.
 | Anti-air | 0% | 0% | 0% | 100% | 80% | 0% |
 | Counter-drone | 0% | 0% | 0% | 10% | 150% | 0% |
 | Thermobaric | 150% | 60% | 20% | 0% | 0% | 80% (+ clears garrisons) |
+| Crush | 100% | 0% | 0% | 0% | 0% | 0% |
 
 **Design rule:** every unit has **one clear job** and **at least two counters**. Check every new unit against this table before adding it.
 
@@ -84,3 +86,4 @@ Thresholds scale with the unit's cost: 1×, 2× and 4× its cost in XP.
 | Interception | Strategic missiles and strike aircraft are entities with hp. Air-defense sites spend interceptors (stock + reload) to shoot them down |
 | Strikes (data) | `game/data/strikes/<id>.json`: `kind` (missile or aircraft), `max_hp`, `speed_cm_per_s`, and a `payload` (`damage`, `damage_type`, splash, `count` impacts scattered within `spread_cm`). They fly in from the map edge on the launcher's side. Weapons with `stock` (interceptors) fire at most that many shots, regaining one every `restock_s` |
 | Decoys | Shown to enemies as the real unit type until an enemy unit comes within 15 m or a recon drone flies over. Decoys die in one hit |
+| Crushing | Units with `"crusher": true` (both main battle tanks) deal `crush` damage, `crush_percent_per_s` (rules.json, 100) of the victim's max hp per second, to enemies touching their front while they move. The `crush` row of the damage matrix limits it to infantry. A squad that keeps getting pushed by a driving tank dies in about a second; one brushed from the side, or walking past a parked tank, is safe. Decoy tanks don't crush (P3-07) |

@@ -32,6 +32,7 @@ static func make_unit(world: SimWorld, def: UnitDef, id: int, player_id: int, x:
 		e.drone.endurance = def.endurance_ticks
 		e.drone.fiber_optic = def.fiber_optic
 	e.spotter = def.spotter
+	e.crusher = def.crusher
 	e.aps_max = def.aps_charges
 	e.aps_charges = def.aps_charges
 	e.cage_hits = def.cage_hits

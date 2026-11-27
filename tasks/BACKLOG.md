@@ -539,7 +539,8 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 
 ### P2-11f · Riverside faction balance after the formation fix — ⬜
 - **Seen (2026-11-27):** after P2-12b, 40 Riverside runs went North Korea 26, America 14 (65%); P2-11e had 23–17. Over both batches North Korea won 49 of 80 (61%).
-- **Do:** after P3-07 (crushing changes tank-versus-infantry fights), run 80 faction matches on Riverside and 40 on Twin Ridge and the new maps; if one faction wins more than 58% overall, find which unit pairing decides it (as in P2-11e) before touching prices.
+- **Also seen:** Desert Crossroads (40 runs) east 25, west 15, and North Korea 15–5 in faction games; Frostwood America 13–7 with even sides.
+- **Do:** after P3-07 (crushing changes tank-versus-infantry fights), run 80 faction matches on Riverside and 40 on Twin Ridge and the new maps, and 40 more mirror matches on Desert Crossroads; if one faction wins more than 58% overall, find which unit pairing decides it (as in P2-11e) before touching prices.
 - **Accept:** each faction within 42–58% over 80 Riverside runs, and no map beyond 60%.
 
 ### P2-11d · Split `sim_world.gd` — ✅ 2026-11-27 (Claude Code: sim_world.gd 346 lines, content_db.gd 412; golden replays and the determinism hash unchanged)
@@ -599,7 +600,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 | P3-04 | Aircraft and airbases (ammo, rearming, helicopters) |
 | P3-05 | Garrisoning buildings, and clearing them — ✅ v1 2026-11-27 (Claude Code): `GarrisonSystem`, GARRISON/UNLOAD commands, town houses as neutral buildings, bunkers and trenches hold 2, thermobaric clearing, right-click to enter, "Exit all", house flags, AI holds town houses; `test_garrison.gd`. Later: a garrison indicator on the minimap, transports (P3-06) |
 | P3-06 | Transports and firing ports |
-| P3-07 | Crushing |
+| P3-07 | Crushing — ✅ 2026-11-27 (Claude Code): `CrushSystem`; main battle tanks (`"crusher": true`) run down enemy infantry touching their front while they move (100% max hp per second, `crush_percent_per_s`, damage type `crush` in the matrix); `test_crushing.gd`. Light obstacles wait for map props (P3-23d) |
 | P3-08 | Neutral capturable buildings |
 | P3-09 | Stealth and detection |
 | P3-10 | Mines, trenches and obstacles |
@@ -615,7 +616,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 | P3-20 | Accessibility options ([controls-and-ui.md](../docs/design/controls-and-ui.md)) — 🔄 colorblind-safe team colors done 2026-11-27 (Claude Code); UI scale and key remapping exist; subtitles, hold-to-confirm and reduced shake wait for the features they apply to |
 | P3-21 | Turn on DCO sign-off once outside contributors join |
 | P3-22 | Save and load — ✅ v1 2026-11-27 (Claude Code): a save is the replay plus the state hash; loading fast-forwards and checks the hash (`SaveGame`, `SaveLoader`, "Save game" in the pause menu, "Load game" in the main menu). Later: true snapshots if loading long matches is too slow on phones |
-| P3-23 | Maps 2–12 (three biomes) — 🔄 split 2026-11-27 (Claude Code): **P3-23a** 🔄 (AI fairness runs pending) biomes in the view (`Biomes`, map `biome` field, obstacles drawn as rocks / mesas / pine forests, MultiMesh trees) and two 1v1 maps, Desert Crossroads and Frostwood (mirrored, every site and house reachable, `test_maps.gd`); **P3-23b** ⬜ 2v2 maps (384×384 m) once skirmish takes 4 players; **P3-23c** ⬜ more 1v1 maps toward 12 in all, one feature each (bridges, high ground, a city center); **P3-23d** ⬜ props and textures (palms, boulders, snowdrifts, a splat map) |
+| P3-23 | Maps 2–12 (three biomes) — 🔄 split 2026-11-27 (Claude Code): **P3-23a** ✅ biomes in the view (`Biomes`, map `biome` field, obstacles drawn as rocks / mesas / pine forests, MultiMesh trees) and two 1v1 maps, Desert Crossroads and Frostwood (mirrored, every site and house reachable, `test_maps.gd`; 40 AI runs each before crushing: Frostwood sides 19–20, America 13–7 in faction games; Desert Crossroads east 25–15 and North Korea 15–5, rechecked in P2-11f); **P3-23b** ⬜ 2v2 maps (384×384 m) once skirmish takes 4 players; **P3-23c** ⬜ more 1v1 maps toward 12 in all, one feature each (bridges, high ground, a city center); **P3-23d** ⬜ props and textures (palms, boulders, snowdrifts, a splat map) |
 | P3-24 | Open beta: Play open testing, F-Droid metadata, GitHub releases |
 
 ## Phase 4: Polish (epics)

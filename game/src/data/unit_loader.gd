@@ -87,6 +87,7 @@ static func load_unit(db: ContentDb, path: String) -> void:
 	u.flying = bool(src.get("flying", u.armor_class == "drone"))
 	u.fiber_optic = bool(src.get("fiber_optic", false))
 	u.spotter = bool(src.get("spotter", false))
+	u.crusher = bool(src.get("crusher", false))
 	u.aps_charges = int(src.get("aps_charges", 0))
 	u.cage_hits = int(src.get("cage_hits", 0))
 	u.decoy_of = str(src.get("decoy_of", ""))

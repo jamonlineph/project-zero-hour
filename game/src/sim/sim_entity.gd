@@ -36,6 +36,7 @@ var supply: SimSupply = null    ## supply sites only
 var drone: SimDrone = null      ## drones only: endurance and launcher (P2-01)
 var jammer: SimJammer = null    ## jamming field and spoofing (P2-03)
 var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
+var crusher: bool = false       ## hurts enemies it drives over (P3-07); from the def, so not hashed
 var strike: SimStrike = null    ## a missile or strike aircraft in flight (P2-07)
 var decoy_of: String = ""       ## a decoy imitating this unit id (P2-08)
 var revealed_mask: int = 0      ## decoys: bit per team that has seen through it
