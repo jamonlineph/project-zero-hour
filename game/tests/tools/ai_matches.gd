@@ -1,9 +1,11 @@
 extends SceneTree
 ## Plays AI-vs-AI skirmishes headless and logs the results (P2-11).
-## Usage: godot --headless --path game --script res://tests/tools/ai_matches.gd -- [runs] [p1_level] [p2_level] [swap] [map=<id>] [seed=<first>] [stats]
+## Usage: godot --headless --path game --script res://tests/tools/ai_matches.gd -- [runs] [p1_level] [p2_level] [swap] [map=<id>] [seed=<first>] [mirror=<faction>] [stats]
 ## "swap" trades the two factions between the start positions (tells a
 ## faction imbalance apart from a map-side bias). Without map= it plays the
 ## ai_duel scenario (Twin Ridge); with map=<id> a skirmish on that map.
+## "mirror=us" (needs map=) gives both players the same faction: then only the
+## start positions differ, which isolates a side advantage (P2-12b).
 ## Writes build/ai/results.json and prints a summary. Used for balance and
 ## map fairness checks (P2-12 needs neither side above 55% over 40 runs).
 
@@ -14,11 +16,14 @@ func _initialize() -> void:
 	var swap: bool = args.has("swap")
 	var map_id: String = ""
 	var first_seed: int = 1000
+	var mirror: String = ""
 	for a: String in args:
 		if a.begins_with("map="):
 			map_id = a.trim_prefix("map=")
 		elif a.begins_with("seed="):
 			first_seed = int(a.trim_prefix("seed="))
+		elif a.begins_with("mirror="):
+			mirror = a.trim_prefix("mirror=")
 	var db := ContentDb.new()
 	if not db.load_all():
 		printerr("ai_matches: content failed to load")
@@ -34,6 +39,8 @@ func _initialize() -> void:
 		if map_id != "":
 			# Any map: a computer-vs-computer skirmish from its start positions.
 			sc = MatchConfig.skirmish(db, map_id, "kp" if swap else "us", 10000, true)
+			if mirror != "":
+				_make_mirror(sc, mirror)
 		else:
 			sc = (db.scenarios["ai_duel"] as Dictionary).duplicate(true)
 			if swap:
@@ -80,6 +87,9 @@ func _initialize() -> void:
 	var p: Array = (db.scenarios["ai_duel"] as Dictionary)["players"]
 	var f1: String = str(p[1 if swap else 0]["faction"])
 	var f2: String = str(p[0 if swap else 1]["faction"])
+	if mirror != "":
+		f1 = mirror
+		f2 = mirror
 	print("ai_matches: team 1 (%s, %s, west) %d, team 2 (%s, %s, east) %d, no result %d; wrote %s" % [
 		f1, levels[0], wins[1], f2, levels[1], wins[2], wins[0], out])
 	quit(0)
@@ -89,6 +99,16 @@ func _count(table: Dictionary, pid: int, def_id: String) -> void:
 	if not table.has(pid):
 		table[pid] = {}
 	table[pid][def_id] = int(table[pid].get(def_id, 0)) + 1
+
+
+## Gives player 2 the same faction, AI preset and starting units as player 1.
+func _make_mirror(sc: Dictionary, faction: String) -> void:
+	for p: Variant in sc["players"]:
+		p["faction"] = faction
+		p["ai"] = faction + "_default"
+	for s: Variant in sc["spawns"]:
+		var def: String = str(s["def"])
+		s["def"] = faction + def.substr(def.find("_"))
 
 
 ## Trades factions, AI presets and starting units between the two players.
