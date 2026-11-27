@@ -1,0 +1,22 @@
+{
+  "id": "ae_recon_drone",
+  "faction": "ae",
+  "role": "recon_drone",
+  "name": "Recon Drone",
+  "armor_class": "drone",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 60,
+  "cost": 300,
+  "speed_cm_per_s": 1700,
+  "radius_cm": 100,
+  "vision_cm": 7000,
+  "build_time_ms": 6000,
+  "requires": [],
+  "weapons": [],
+  "endurance_s": 100,
+  "spotter": true,
+  "visual": {
+    "model": "res://assets/models/units/ae_recon_drone.glb",
+    "icon": "res://assets/icons/units/ae_recon_drone.png"
+  }
+}

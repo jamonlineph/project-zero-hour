@@ -1,0 +1,22 @@
+{
+  "id": "ae_rifle_squad",
+  "faction": "ae",
+  "role": "basic_infantry",
+  "name": "Rifle Squad",
+  "armor_class": "infantry",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 240,
+  "cost": 275,
+  "speed_cm_per_s": 400,
+  "radius_cm": 150,
+  "vision_cm": 4500,
+  "build_time_ms": 6000,
+  "requires": [],
+  "weapons": [
+    "ae_assault_rifles"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/ae_rifle_squad.glb",
+    "icon": "res://assets/icons/units/ae_rifle_squad.png"
+  }
+}

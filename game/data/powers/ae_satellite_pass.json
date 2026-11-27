@@ -1,0 +1,11 @@
+{
+  "id": "ae_satellite_pass",
+  "faction": "ae",
+  "name": "Satellite Recon Pass",
+  "tier": 1,
+  "kind": "reveal",
+  "description": "Reveals an area for 20 s; it also counts as a spotter.",
+  "cooldown_s": 120,
+  "radius_cm": 3500,
+  "duration_s": 20
+}

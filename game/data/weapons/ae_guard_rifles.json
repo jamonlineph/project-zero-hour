@@ -1,0 +1,13 @@
+{
+  "id": "ae_guard_rifles",
+  "status": "first-pass stats (P3-02a)",
+  "damage": 20,
+  "damage_type": "small_arms",
+  "range_cm": 3500,
+  "reload_ms": 800,
+  "projectile": "instant",
+  "targets": [
+    "ground",
+    "drone"
+  ]
+}

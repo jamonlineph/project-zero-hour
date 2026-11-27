@@ -1,0 +1,22 @@
+{
+  "id": "ae_engineer",
+  "faction": "ae",
+  "role": "builder",
+  "name": "Engineering Vehicle",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 600,
+  "cost": 1000,
+  "speed_cm_per_s": 650,
+  "turn_rate_deg_per_s": 120,
+  "radius_cm": 250,
+  "vision_cm": 4000,
+  "build_time_ms": 10000,
+  "requires": [],
+  "weapons": [],
+  "builder": true,
+  "visual": {
+    "model": "res://assets/models/units/ae_engineer.glb",
+    "icon": "res://assets/icons/units/ae_engineer.png"
+  }
+}

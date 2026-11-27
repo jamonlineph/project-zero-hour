@@ -1,0 +1,27 @@
+{
+  "id": "ae_sam_site",
+  "faction": "ae",
+  "name": "Air-Defense Site",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 1100,
+  "cost": 1100,
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "build_time_ms": 15000,
+  "power": -3,
+  "vision_cm": 9500,
+  "requires": [
+    "ae_logistics_hub"
+  ],
+  "produces": [],
+  "weapons": [
+    "sam_interceptor"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/ae_sam_site.glb",
+    "icon": "res://assets/icons/buildings/ae_sam_site.png"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "raider_hmg",
+  "status": "first-pass stats (P3-02a)",
+  "damage": 16,
+  "damage_type": "small_arms",
+  "range_cm": 3500,
+  "reload_ms": 500,
+  "projectile": "instant",
+  "targets": [
+    "ground",
+    "drone"
+  ]
+}

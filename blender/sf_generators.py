@@ -136,6 +136,32 @@ def wheeled(spec, palette):
         empty("muzzle_0", (0, length * 0.2 - width * 0.26, head_z), parent=head)
         set_origin(mount, (0, length * 0.2, body_z + height * 0.45))
         set_origin(head, (0, length * 0.2, head_z))
+    elif cargo == "gun":
+        # A turret with an autocannon (8x8 fighting vehicles, P3-02a).
+        top = body_z + height * 0.45
+        t_w, t_l, t_h = width * 0.55, length * 0.26, height * 0.28
+        t_y = length * 0.08
+        turret = box("turret", (t_w, t_l, t_h), (0, t_y, top + t_h / 2), m["accent"], body)
+        for side, sx in (("l", -1), ("r", 1)):
+            box(f"team_panel_{side}", (0.05, t_l * 0.6, t_h * 0.55), (sx * (t_w / 2 + 0.03), t_y, top + t_h / 2), m["team"], turret)
+        barrel_len = spec.get("barrel_length", length * 0.32)
+        barrel_y = t_y - t_l / 2 - barrel_len / 2
+        barrel = cylinder("barrel", spec.get("barrel_radius", 0.06), barrel_len, (0, barrel_y, top + t_h * 0.55), m["metal"], axis="Y", parent=turret)
+        empty("muzzle_0", (0, barrel_y - barrel_len / 2, top + t_h * 0.55), parent=barrel)
+        set_origin(turret, (0, t_y, top))
+        set_origin(barrel, (0, barrel_y + barrel_len / 2, top + t_h * 0.55))
+    elif cargo == "hmg":
+        # Open desert buggy: a roll cage and a heavy machine gun on a ring mount (P3-02a).
+        top = body_z + height * 0.45
+        for i, (sx, sy) in enumerate(((-1, -1), (1, -1), (-1, 1), (1, 1))):
+            cylinder(f"roll_bar_{i}", 0.05, height * 0.5, (sx * width * 0.38, length * 0.18 * sy, top + height * 0.25), m["metal"], parent=body)
+        box("roll_roof", (width * 0.8, length * 0.4, 0.06), (0, 0, top + height * 0.5), m["metal"], body)
+        mount = cylinder("turret", width * 0.18, 0.15, (0, length * 0.05, top + height * 0.52), m["metal"], parent=body)
+        gun_l = length * 0.3
+        gun = box("barrel", (0.12, gun_l, 0.12), (0, length * 0.05 - gun_l / 2, top + height * 0.62), m["dark"], mount)
+        empty("muzzle_0", (0, length * 0.05 - gun_l, top + height * 0.62), parent=gun)
+        set_origin(mount, (0, length * 0.05, top + height * 0.52))
+        set_origin(gun, (0, length * 0.05, top + height * 0.62))
     elif cargo == "ew":
         shelter = box("ew_shelter", (width * 0.88, length * 0.55, height * 0.55), (0, length * 0.16, body_z + height * 0.67), m["accent"], body)
         for i, (sx, h) in enumerate(((-1, 2.4), (1, 1.8), (0, 3.0))):

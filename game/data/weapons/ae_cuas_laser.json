@@ -1,0 +1,12 @@
+{
+  "id": "ae_cuas_laser",
+  "status": "first-pass stats (P3-02a)",
+  "damage": 60,
+  "damage_type": "counter_drone",
+  "range_cm": 5000,
+  "reload_ms": 500,
+  "projectile": "instant",
+  "targets": [
+    "drone"
+  ]
+}

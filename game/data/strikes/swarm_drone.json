@@ -1,0 +1,18 @@
+{
+  "id": "swarm_drone",
+  "name": "Swarm Drone",
+  "kind": "missile",
+  "_doc": "UAE drone swarm strike (P3-02a): small, slow, easy to shoot down one by one; many of them.",
+  "max_hp": 15,
+  "speed_cm_per_s": 3500,
+  "radius_cm": 40,
+  "vision_cm": 1000,
+  "payload": {
+    "damage": 70,
+    "damage_type": "high_explosive",
+    "splash_radius_cm": 300,
+    "splash_edge_percent": 50,
+    "count": 1,
+    "spread_cm": 1800
+  }
+}

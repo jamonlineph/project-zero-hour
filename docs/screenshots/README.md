@@ -11,6 +11,13 @@ Captured on a machine without a GPU, through a virtual display and software Open
 | `riverside_town.png` | Riverside (P2-12): the town on both banks of the river (`--watch=riverside --camera=128,128,90 --reveal`) |
 | `riverside_bridge.png` | Riverside: the north bridge (`--camera=128,72,45`) |
 
+## Factions (`factions/`, P3-02a)
+
+| File | What |
+|---|---|
+| `uae_base.png` | A UAE base on Desert Crossroads at 1:40, computer vs computer (`--watch=desert_crossroads --side=ae --enemy=kp`) |
+| `uae_icons.png` | UAE build icons: 8x8 fighting vehicle, desert raider, tank, special forces, HQ, drone industry complex |
+
 ## Maps and biomes (`maps/`, P3-23a)
 
 | File | What |
@@ -37,7 +44,7 @@ Captured on a machine without a GPU, through a virtual display and software Open
 
 | File | What |
 |---|---|
-| `main_menu.png` | Main menu in the new theme (Inter font, framed buttons, amber title) |
+| `main_menu.png` | Main menu in the new theme (Inter font, framed buttons, amber title); since P3-02a with "You" and "Enemy" side by side |
 | `hud_engineer_selected.png` | In-game HUD with an engineer selected: framed top bar, minimap and selection panel, command grid with icons, costs and hotkey tags (`--select=us_engineer`) |
 | `pause_menu.png`, `settings.png`, `commander_panel.png` | Overlays (`--open=pause`, `--open=settings`, `--open=commander`) |
 | `load_game.png` | The load screen with two saves (P3-22, `--open=load`) |

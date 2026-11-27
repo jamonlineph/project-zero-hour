@@ -1,0 +1,18 @@
+{
+  "id": "standoff_missile",
+  "name": "Stand-off Missile",
+  "kind": "missile",
+  "_doc": "UAE rank-5 strike (P3-02a): four heavy missiles from beyond the map edge; air defense can shoot them down.",
+  "max_hp": 120,
+  "speed_cm_per_s": 6000,
+  "radius_cm": 80,
+  "vision_cm": 1500,
+  "payload": {
+    "damage": 420,
+    "damage_type": "high_explosive",
+    "splash_radius_cm": 800,
+    "splash_edge_percent": 40,
+    "count": 1,
+    "spread_cm": 900
+  }
+}

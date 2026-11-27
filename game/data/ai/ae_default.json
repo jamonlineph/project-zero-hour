@@ -1,0 +1,57 @@
+{
+  "id": "ae_default",
+  "faction": "ae",
+  "_doc": "Skirmish AI preset (docs/design/ai-opponent.md). The UAE fields fewer, better units and raids with fast raiders.",
+  "build_order": [
+    "ae_power_plant",
+    "ae_logistics_hub",
+    "ae_barracks",
+    "ae_vehicle_depot",
+    "ae_power_plant",
+    "ae_logistics_hub",
+    "ae_drone_complex",
+    "ae_power_plant",
+    "ae_sam_site"
+  ],
+  "unit_mix": {
+    "ae_mbt": 2,
+    "ae_raider": 2,
+    "ae_rifle_squad": 1,
+    "ae_at_team": 1,
+    "ae_ifv": 1,
+    "ae_recon_drone": 1,
+    "ae_rocket_artillery": 1
+  },
+  "max_gatherers": 4,
+  "max_spotters": 3,
+  "gatherer_unit": "ae_logistics_truck",
+  "attack_wave_size": 6,
+  "first_attack_after_s": 190,
+  "think_interval_ticks": 15,
+  "defend_radius_m": 45,
+  "counters": {
+    "heavy_armor": [
+      "ae_at_team",
+      "ae_mbt"
+    ],
+    "infantry": [
+      "ae_raider",
+      "ae_ifv"
+    ],
+    "light_vehicle": [
+      "ae_mbt"
+    ],
+    "drone": [
+      "ae_laser_cuas"
+    ]
+  },
+  "power_priority": [
+    "ae_satellite_pass",
+    "ae_drone_swarm",
+    "ae_unlock_guard",
+    "ae_standoff_strike"
+  ],
+  "research": [
+    "ae_export_armor"
+  ]
+}

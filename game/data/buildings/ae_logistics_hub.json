@@ -1,0 +1,25 @@
+{
+  "id": "ae_logistics_hub",
+  "faction": "ae",
+  "name": "Logistics Hub",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 1800,
+  "cost": 1500,
+  "footprint_cells": [
+    6,
+    5
+  ],
+  "build_time_ms": 15000,
+  "power": -1,
+  "vision_cm": 5000,
+  "requires": [
+    "ae_command_hq"
+  ],
+  "produces": [],
+  "dropoff": true,
+  "visual": {
+    "model": "res://assets/models/buildings/ae_logistics_hub.glb",
+    "icon": "res://assets/icons/buildings/ae_logistics_hub.png"
+  }
+}

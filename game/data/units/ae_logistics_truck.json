@@ -1,0 +1,26 @@
+{
+  "id": "ae_logistics_truck",
+  "faction": "ae",
+  "role": "gatherer",
+  "name": "Contracted Truck",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 400,
+  "cost": 500,
+  "speed_cm_per_s": 820,
+  "turn_rate_deg_per_s": 140,
+  "radius_cm": 220,
+  "vision_cm": 3500,
+  "build_time_ms": 7000,
+  "requires": [],
+  "weapons": [],
+  "gatherer": {
+    "capacity": 300,
+    "load_ms": 2500,
+    "unload_ms": 2000
+  },
+  "visual": {
+    "model": "res://assets/models/units/ae_logistics_truck.glb",
+    "icon": "res://assets/icons/units/ae_logistics_truck.png"
+  }
+}

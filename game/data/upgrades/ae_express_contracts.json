@@ -1,0 +1,18 @@
+{
+  "id": "ae_express_contracts",
+  "_doc": "Faster contracted logistics.",
+  "faction": "ae",
+  "name": "Express Contracts",
+  "scope": "global",
+  "cost": 800,
+  "research_time_ms": 30000,
+  "researched_at": "ae_logistics_hub",
+  "requires": [],
+  "requires_rank": 3,
+  "applies_to": [
+    "ae_logistics_truck"
+  ],
+  "effects": {
+    "speed_percent": 20
+  }
+}

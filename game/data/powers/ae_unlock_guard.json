@@ -1,0 +1,9 @@
+{
+  "id": "ae_unlock_guard",
+  "faction": "ae",
+  "name": "Unlock: Presidential Guard",
+  "tier": 3,
+  "kind": "unlock",
+  "description": "Barracks can train the presidential guard detachment, elite assault infantry with missiles.",
+  "unit": "ae_guard_unit"
+}

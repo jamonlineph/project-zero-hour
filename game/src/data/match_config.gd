@@ -8,17 +8,25 @@ extends RefCounted
 static var pending: Dictionary = {}
 ## A save (SaveGame.read) to load instead of a new match (P3-22), or empty.
 static var load_save: Dictionary = {}
-## Faction ids that are playable in skirmish, with display names.
-## Playable now. The UAE (`ae`) and the EU (`eu`) join when their rosters
-## are built (docs/design/factions.md).
-const FACTIONS: Dictionary = {"us": "America", "kp": "North Korea"}
+## Faction ids that are playable in skirmish, with display names. The EU
+## (`eu`) joins when its roster is built (docs/design/factions.md).
+const FACTIONS: Dictionary = {"us": "America", "ae": "UAE", "kp": "North Korea"}
+
+
+## The opponent picked when none is given: North Korea, or America for a
+## North Korean player.
+static func default_enemy(faction: String) -> String:
+	return "us" if faction == "kp" else "kp"
 
 
 ## A 1v1 skirmish: player 1 (human, or AI when watching) against an AI.
+## `enemy` is the computer's faction (default_enemy when empty); a mirror
+## match (same faction) is allowed.
 static func skirmish(content: ContentDb, map_id: String, faction: String, credits: int, watch_only: bool = false,
-		difficulty: String = "normal") -> Dictionary:
+		difficulty: String = "normal", enemy: String = "") -> Dictionary:
 	var map: MapDef = content.get_map(map_id)
-	var enemy: String = "kp" if faction == "us" else "us"
+	if enemy == "":
+		enemy = default_enemy(faction)
 	var players: Array = [
 		{"id": 1, "team": 1, "faction": faction, "credits": credits},
 		{"id": 2, "team": 2, "faction": enemy, "credits": credits, "ai": enemy + "_default", "difficulty": difficulty},

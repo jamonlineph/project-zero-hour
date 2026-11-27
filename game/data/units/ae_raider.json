@@ -1,0 +1,23 @@
+{
+  "id": "ae_raider",
+  "faction": "ae",
+  "role": "light_vehicle",
+  "name": "Desert Raider",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 380,
+  "cost": 550,
+  "speed_cm_per_s": 1150,
+  "turn_rate_deg_per_s": 200,
+  "radius_cm": 220,
+  "vision_cm": 5500,
+  "build_time_ms": 8000,
+  "requires": [],
+  "weapons": [
+    "raider_hmg"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/ae_raider.glb",
+    "icon": "res://assets/icons/units/ae_raider.png"
+  }
+}

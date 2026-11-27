@@ -1,0 +1,24 @@
+{
+  "id": "ae_guard_unit",
+  "faction": "ae",
+  "role": "elite_infantry",
+  "name": "Presidential Guard Detachment",
+  "armor_class": "infantry",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 380,
+  "cost": 900,
+  "speed_cm_per_s": 420,
+  "radius_cm": 150,
+  "vision_cm": 5500,
+  "build_time_ms": 14000,
+  "requires": [],
+  "weapons": [
+    "ae_guard_rifles",
+    "ae_at_missile"
+  ],
+  "requires_unlock": "ae_unlock_guard",
+  "visual": {
+    "model": "res://assets/models/units/ae_guard_unit.glb",
+    "icon": "res://assets/icons/units/ae_guard_unit.png"
+  }
+}

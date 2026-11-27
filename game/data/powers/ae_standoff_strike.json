@@ -1,0 +1,11 @@
+{
+  "id": "ae_standoff_strike",
+  "faction": "ae",
+  "name": "Stand-off Missile Strike",
+  "tier": 5,
+  "kind": "strike",
+  "description": "4 heavy missiles on a point. Air defense can shoot them down.",
+  "cooldown_s": 300,
+  "strike": "standoff_missile",
+  "count": 4
+}

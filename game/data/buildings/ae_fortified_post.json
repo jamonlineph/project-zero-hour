@@ -1,0 +1,28 @@
+{
+  "id": "ae_fortified_post",
+  "faction": "ae",
+  "name": "Fortified Post",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 1500,
+  "cost": 650,
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "build_time_ms": 10000,
+  "power": 0,
+  "vision_cm": 4500,
+  "requires": [
+    "ae_barracks"
+  ],
+  "produces": [],
+  "weapons": [
+    "bunker_machine_gun"
+  ],
+  "garrison_capacity": 2,
+  "visual": {
+    "model": "res://assets/models/buildings/ae_fortified_post.glb",
+    "icon": "res://assets/icons/buildings/ae_fortified_post.png"
+  }
+}

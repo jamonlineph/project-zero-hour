@@ -1,0 +1,24 @@
+{
+  "id": "ae_mbt",
+  "faction": "ae",
+  "role": "main_battle_tank",
+  "name": "Main Battle Tank",
+  "armor_class": "heavy_armor",
+  "crusher": true,
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 1150,
+  "cost": 1100,
+  "speed_cm_per_s": 820,
+  "turn_rate_deg_per_s": 100,
+  "radius_cm": 310,
+  "vision_cm": 5000,
+  "build_time_ms": 15000,
+  "requires": [],
+  "weapons": [
+    "tank_cannon_120_autoloader"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/ae_mbt.glb",
+    "icon": "res://assets/icons/units/ae_mbt.png"
+  }
+}

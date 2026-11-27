@@ -1,0 +1,19 @@
+{
+  "id": "ae_ifv_aps_kit",
+  "_doc": "Per vehicle: two interceptor charges against missiles and drones (P2-06). No model attachment yet (wheeled models have no upgrade parts).",
+  "faction": "ae",
+  "name": "Active Protection Kit",
+  "scope": "unit",
+  "cost": 300,
+  "requires": [
+    "ae_vehicle_depot"
+  ],
+  "requires_rank": 1,
+  "applies_to": [
+    "ae_ifv",
+    "ae_mbt"
+  ],
+  "effects": {
+    "aps_charges": 2
+  }
+}

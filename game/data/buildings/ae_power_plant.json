@@ -1,0 +1,22 @@
+{
+  "id": "ae_power_plant",
+  "faction": "ae",
+  "name": "Solar-Gas Power Plant",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 1100,
+  "cost": 900,
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "build_time_ms": 10000,
+  "power": 10,
+  "vision_cm": 5000,
+  "requires": [],
+  "produces": [],
+  "visual": {
+    "model": "res://assets/models/buildings/ae_power_plant.glb",
+    "icon": "res://assets/icons/buildings/ae_power_plant.png"
+  }
+}

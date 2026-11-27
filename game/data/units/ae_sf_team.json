@@ -1,0 +1,23 @@
+{
+  "id": "ae_sf_team",
+  "faction": "ae",
+  "role": "special_forces",
+  "name": "Special Forces Team",
+  "armor_class": "infantry",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 300,
+  "cost": 700,
+  "speed_cm_per_s": 460,
+  "radius_cm": 140,
+  "vision_cm": 6500,
+  "build_time_ms": 12000,
+  "requires": [],
+  "weapons": [
+    "ae_sf_carbines"
+  ],
+  "spotter": true,
+  "visual": {
+    "model": "res://assets/models/units/ae_sf_team.glb",
+    "icon": "res://assets/icons/units/ae_sf_team.png"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "ae_rocket_pod",
+  "status": "first-pass stats (P3-02a)",
+  "damage": 200,
+  "damage_type": "high_explosive",
+  "range_cm": 16000,
+  "reload_ms": 9000,
+  "projectile": "guided",
+  "targets": [
+    "ground"
+  ],
+  "min_range_cm": 2000,
+  "projectile_speed_cm_per_s": 8000,
+  "splash_radius_cm": 600,
+  "splash_edge_percent": 40,
+  "needs_spotter": true
+}

@@ -1,6 +1,6 @@
 extends SceneTree
 ## Plays AI-vs-AI skirmishes headless and logs the results (P2-11).
-## Usage: godot --headless --path game --script res://tests/tools/ai_matches.gd -- [runs] [p1_level] [p2_level] [swap] [map=<id>] [seed=<first>] [mirror=<faction>] [flip] [stats]
+## Usage: godot --headless --path game --script res://tests/tools/ai_matches.gd -- [runs] [p1_level] [p2_level] [swap] [map=<id>] [seed=<first>] [mirror=<faction>] [vs=<f1>,<f2>] [flip] [stats]
 ## "swap" trades the two factions between the start positions (tells a
 ## faction imbalance apart from a map-side bias). Without map= it plays the
 ## ai_duel scenario (Twin Ridge); with map=<id> a skirmish on that map.
@@ -8,6 +8,7 @@ extends SceneTree
 ## start positions differ, which isolates a side advantage (P2-12b).
 ## "flip" (with mirror=) puts player 1 in the east, to tell a side
 ## advantage apart from a player-order one.
+## "vs=ae,kp" (with map=) sets player 1's and player 2's factions.
 ## Writes build/ai/results.json and prints a summary. Used for balance and
 ## map fairness checks (P2-12 needs neither side above 55% over 40 runs).
 
@@ -19,6 +20,7 @@ func _initialize() -> void:
 	var map_id: String = ""
 	var first_seed: int = 1000
 	var mirror: String = ""
+	var vs: PackedStringArray = []   ## vs=<p1 faction>,<p2 faction> (P3-02a)
 	for a: String in args:
 		if a.begins_with("map="):
 			map_id = a.trim_prefix("map=")
@@ -26,6 +28,8 @@ func _initialize() -> void:
 			first_seed = int(a.trim_prefix("seed="))
 		elif a.begins_with("mirror="):
 			mirror = a.trim_prefix("mirror=")
+		elif a.begins_with("vs="):
+			vs = a.trim_prefix("vs=").split(",")
 	var db := ContentDb.new()
 	if not db.load_all():
 		printerr("ai_matches: content failed to load")
@@ -40,7 +44,10 @@ func _initialize() -> void:
 		var sc: Dictionary
 		if map_id != "":
 			# Any map: a computer-vs-computer skirmish from its start positions.
-			sc = MatchConfig.skirmish(db, map_id, "kp" if swap else "us", 10000, true)
+			if vs.size() == 2:
+				sc = MatchConfig.skirmish(db, map_id, vs[0], 10000, true, "normal", vs[1])
+			else:
+				sc = MatchConfig.skirmish(db, map_id, "kp" if swap else "us", 10000, true)
 			if mirror != "":
 				_make_mirror(sc, mirror)
 			if args.has("flip"):
@@ -95,6 +102,9 @@ func _initialize() -> void:
 	if mirror != "":
 		f1 = mirror
 		f2 = mirror
+	elif vs.size() == 2:
+		f1 = vs[0]
+		f2 = vs[1]
 	var flipped: bool = args.has("flip")
 	print("ai_matches: team 1 (%s, %s, %s) %d, team 2 (%s, %s, %s) %d, no result %d; wrote %s" % [
 		f1, levels[0], "east" if flipped else "west", wins[1], f2, levels[1], "west" if flipped else "east",

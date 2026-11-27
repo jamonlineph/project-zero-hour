@@ -20,7 +20,16 @@
     "res://data/weapons/hpm_emitter.json",
     "res://data/weapons/cuas_airburst_gun.json",
     "res://data/weapons/wingman_cannon.json",
-    "res://data/weapons/kp_assault_rifles.json"
+    "res://data/weapons/kp_assault_rifles.json",
+    "res://data/weapons/ae_assault_rifles.json",
+    "res://data/weapons/ae_at_missile.json",
+    "res://data/weapons/ae_sf_carbines.json",
+    "res://data/weapons/ae_guard_rifles.json",
+    "res://data/weapons/raider_hmg.json",
+    "res://data/weapons/ae_ifv_autocannon.json",
+    "res://data/weapons/tank_cannon_120_autoloader.json",
+    "res://data/weapons/ae_rocket_pod.json",
+    "res://data/weapons/ae_cuas_laser.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",
@@ -45,7 +54,19 @@
     "res://data/units/kp_decoy_tank.json",
     "res://data/units/us_wingman_drone.json",
     "res://data/units/us_recon_team.json",
-    "res://data/units/kp_spotter_officer.json"
+    "res://data/units/kp_spotter_officer.json",
+    "res://data/units/ae_engineer.json",
+    "res://data/units/ae_logistics_truck.json",
+    "res://data/units/ae_rifle_squad.json",
+    "res://data/units/ae_at_team.json",
+    "res://data/units/ae_sf_team.json",
+    "res://data/units/ae_guard_unit.json",
+    "res://data/units/ae_raider.json",
+    "res://data/units/ae_ifv.json",
+    "res://data/units/ae_mbt.json",
+    "res://data/units/ae_rocket_artillery.json",
+    "res://data/units/ae_laser_cuas.json",
+    "res://data/units/ae_recon_drone.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",
@@ -64,7 +85,15 @@
     "res://data/buildings/us_sam_site.json",
     "res://data/buildings/kp_drone_launch_site.json",
     "res://data/buildings/kp_trench_line.json",
-    "res://data/buildings/kp_sam_site.json"
+    "res://data/buildings/kp_sam_site.json",
+    "res://data/buildings/ae_command_hq.json",
+    "res://data/buildings/ae_power_plant.json",
+    "res://data/buildings/ae_barracks.json",
+    "res://data/buildings/ae_logistics_hub.json",
+    "res://data/buildings/ae_vehicle_depot.json",
+    "res://data/buildings/ae_drone_complex.json",
+    "res://data/buildings/ae_fortified_post.json",
+    "res://data/buildings/ae_sam_site.json"
   ],
   "maps": [
     "res://data/maps/sandbox/map.json",
@@ -80,7 +109,8 @@
   ],
   "ai": [
     "res://data/ai/us_default.json",
-    "res://data/ai/kp_default.json"
+    "res://data/ai/kp_default.json",
+    "res://data/ai/ae_default.json"
   ],
   "upgrades": [
     "res://data/upgrades/us_self_driving_trucks.json",
@@ -88,12 +118,17 @@
     "res://data/upgrades/us_ifv_aps_kit.json",
     "res://data/upgrades/kp_reactive_armor.json",
     "res://data/upgrades/kp_extended_range_shells.json",
-    "res://data/upgrades/kp_ifv_cage_kit.json"
+    "res://data/upgrades/kp_ifv_cage_kit.json",
+    "res://data/upgrades/ae_export_armor.json",
+    "res://data/upgrades/ae_ifv_aps_kit.json",
+    "res://data/upgrades/ae_express_contracts.json"
   ],
   "strikes": [
     "res://data/strikes/guided_rocket.json",
     "res://data/strikes/heavy_rocket.json",
-    "res://data/strikes/strike_jet.json"
+    "res://data/strikes/strike_jet.json",
+    "res://data/strikes/swarm_drone.json",
+    "res://data/strikes/standoff_missile.json"
   ],
   "powers": [
     "res://data/powers/us_satellite_pass.json",
@@ -106,6 +141,10 @@
     "res://data/powers/kp_rocket_barrage.json",
     "res://data/powers/kp_gps_jamming.json",
     "res://data/powers/kp_unlock_spotter_officer.json",
-    "res://data/powers/kp_decoy_deployment.json"
+    "res://data/powers/kp_decoy_deployment.json",
+    "res://data/powers/ae_satellite_pass.json",
+    "res://data/powers/ae_drone_swarm.json",
+    "res://data/powers/ae_unlock_guard.json",
+    "res://data/powers/ae_standoff_strike.json"
   ]
 }

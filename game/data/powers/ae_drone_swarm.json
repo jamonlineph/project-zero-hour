@@ -1,0 +1,11 @@
+{
+  "id": "ae_drone_swarm",
+  "faction": "ae",
+  "name": "Drone Swarm Strike",
+  "tier": 3,
+  "kind": "strike",
+  "description": "24 small drones dive on an area. Each is easy to shoot down; together they are hard to stop.",
+  "cooldown_s": 240,
+  "strike": "swarm_drone",
+  "count": 24
+}

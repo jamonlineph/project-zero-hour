@@ -4,6 +4,20 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-27: P3-02a UAE base roster, P1-30b bisect, HUD split (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P3-02 split** into a–g in the backlog. **P3-02a:** the UAE is playable in skirmish. 12 units (engineer, contracted truck, rifle squad, missile team, special forces as a spotter, presidential guard unlock, desert raider, 8x8 IFV, tank, rocket launcher, laser vehicle, recon drone), 8 buildings, 9 weapons, 3 upgrades, 4 powers (satellite pass, 24-drone swarm strike, guard unlock, 4-missile stand-off strike) and the `ae_default` AI preset. Placeholder art for all 20 from the Blender specs, including two new wheeled options: `gun` (turreted 8x8) and `hmg` (open buggy). The menu has "You" and "Enemy" side by side; any faction can face any other. `ai_matches.gd` takes `vs=<f1>,<f2>`.
+  - `test_factions.gd`: every playable faction has a start kit, an AI preset that only uses its own content, a way to build every unit, and powers in tiers 1 and 3; the UAE AI builds and fights against North Korea; its strike powers launch 24 drones and 4 missiles.
+  - `hud.gd` split (438 → 258 lines): `CommandMenus`, `SelectionText`.
+  - **P1-30b bisect:** the 3,300-frame `ai_duel` render logs the same 72 "material is null" errors with particle effects disabled, so particles are not the cause; the count is the same both times, so it follows game events.
+  - **Balance (P2-11f):** with and without crushing, all 20 paired Riverside seeds had the same winner, so crushing did not cause the North Korea lean. Since the formation fix North Korea won 58 of 80 Riverside faction games. Desert Crossroads mirror runs with crushing: west 20, east 20.
+- Tests: `tools/run_tests.sh` -> 279 tests, 0 failed (+ both smoke tests). `python3 tools/check_repo.py` -> ok (143 assets).
+- Not verified: UAE balance (P3-02g); the UAE AI loses its first infantry to North Korea's early raids on Twin Ridge.
+- Next: P2-11f (North Korea 72% on Riverside since the formation fix), P1-30b (bisect wrecks, status bars, team colors next), P3-02b sovereign fund.
+- For the owner: the UAE uses working names only ("8x8 Infantry Fighting Vehicle", "Desert Raider"); real-world class names stay out of the game.
+
+---
+
 ## 2026-11-27: P3-23a biomes and two maps, P3-07 crushing (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P3-23 split** into a–d in the backlog. **P3-23a:** maps pick a `biome` (temperate, desert, winter). The view takes ground, water and house colors and the obstacle style from `Biomes`: rocks, sandstone mesas, or pine forests (two MultiMeshes for all trees). Obstacle drawing moved from `main.gd` to `MapFeaturesView`.

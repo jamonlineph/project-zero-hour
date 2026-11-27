@@ -9,12 +9,14 @@ const DEFAULT_MAP: String = "riverside"
 
 var content: ContentDb
 var faction: String = "us"
+var enemy: String = "kp"   ## the computer's faction (P3-02a)
 var credits_index: int = 1
 var difficulty: String = "normal"   ## the computer opponent (P2-11)
 var map_id: String = DEFAULT_MAP
 var _map_button: Button
 var _difficulty_button: Button
 var _faction_button: Button
+var _enemy_button: Button
 var _credits_button: Button
 
 
@@ -53,7 +55,17 @@ func _ready() -> void:
 
 	_map_button = _button(box, "", _cycle_map)
 	_map_button.name = "Map"
-	_faction_button = _button(box, "", _cycle_faction)
+	# Both sides on one row, so the menu still fits 720p.
+	var sides := HBoxContainer.new()
+	sides.add_theme_constant_override("separation", 8)
+	box.add_child(sides)
+	_faction_button = _button(sides, "", _cycle_faction)
+	_faction_button.name = "Faction"
+	_enemy_button = _button(sides, "", _cycle_enemy)
+	_enemy_button.name = "Enemy"
+	for b: Button in [_faction_button, _enemy_button]:
+		b.custom_minimum_size = Vector2(206, 50)
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_credits_button = _button(box, "", _cycle_credits)
 	_difficulty_button = _button(box, "", _cycle_difficulty)
 	_difficulty_button.name = "Difficulty"
@@ -80,18 +92,20 @@ func _ready() -> void:
 		elif arg.begins_with("--watch="):
 			var watch_map: String = arg.trim_prefix("--watch=")
 			faction = DevCapture.arg("side", faction)
-			if content.maps.has(watch_map) and MatchConfig.FACTIONS.has(faction):
-				_start.call_deferred(MatchConfig.skirmish(content, watch_map, faction, content.skirmish_credits[credits_index], true))
+			enemy = DevCapture.arg("enemy", MatchConfig.default_enemy(faction))
+			if content.maps.has(watch_map) and MatchConfig.FACTIONS.has(faction) and MatchConfig.FACTIONS.has(enemy):
+				_start.call_deferred(MatchConfig.skirmish(content, watch_map, faction,
+					content.skirmish_credits[credits_index], true, "normal", enemy))
 			else:
 				push_error("Unknown map '%s'" % watch_map)
 
 
 func start_skirmish() -> void:
-	_start(MatchConfig.skirmish(content, map_id, faction, content.skirmish_credits[credits_index], false, difficulty))
+	_start(MatchConfig.skirmish(content, map_id, faction, content.skirmish_credits[credits_index], false, difficulty, enemy))
 
 
 func start_watch() -> void:
-	_start(MatchConfig.skirmish(content, map_id, faction, content.skirmish_credits[credits_index], true))
+	_start(MatchConfig.skirmish(content, map_id, faction, content.skirmish_credits[credits_index], true, "normal", enemy))
 
 
 func start_sandbox() -> void:
@@ -130,6 +144,12 @@ func _cycle_faction() -> void:
 	_refresh_labels()
 
 
+func _cycle_enemy() -> void:
+	var ids: Array = MatchConfig.FACTIONS.keys()
+	enemy = ids[(ids.find(enemy) + 1) % ids.size()]
+	_refresh_labels()
+
+
 ## Maps offered for skirmish (MapDef.skirmish), in id order.
 func skirmish_maps() -> Array[String]:
 	var ids: Array[String] = []
@@ -160,7 +180,8 @@ func _cycle_credits() -> void:
 func _refresh_labels() -> void:
 	var map: MapDef = content.get_map(map_id)
 	_map_button.text = "Map: %s   (tap to change)" % (map.name if map != null else map_id)
-	_faction_button.text = "Your side: %s   (tap to change)" % MatchConfig.FACTIONS[faction]
+	_faction_button.text = "You: %s" % MatchConfig.FACTIONS[faction]
+	_enemy_button.text = "Enemy: %s" % MatchConfig.FACTIONS[enemy]
 	_credits_button.text = "Starting credits: %d   (tap to change)" % content.skirmish_credits[credits_index]
 	_difficulty_button.text = "Computer: %s   (tap to change)" % difficulty.capitalize()
 

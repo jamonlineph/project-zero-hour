@@ -1,0 +1,31 @@
+{
+  "id": "ae_vehicle_depot",
+  "faction": "ae",
+  "name": "Vehicle Depot",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 2500,
+  "cost": 2000,
+  "footprint_cells": [
+    7,
+    6
+  ],
+  "build_time_ms": 20000,
+  "power": -2,
+  "vision_cm": 5000,
+  "requires": [
+    "ae_logistics_hub"
+  ],
+  "produces": [
+    "ae_mbt",
+    "ae_logistics_truck",
+    "ae_raider",
+    "ae_ifv",
+    "ae_rocket_artillery",
+    "ae_laser_cuas"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/ae_vehicle_depot.glb",
+    "icon": "res://assets/icons/buildings/ae_vehicle_depot.png"
+  }
+}

@@ -76,7 +76,7 @@ The owner's direction (2026-11-26): the game should feel like the military RTS g
 | Archetype | Options |
 |---|---|
 | `tracked` | `length`, `width`, `height`; `turret` (false for engineers), `turret_scale`, `turret_offset`, `barrel_length` (0 = none), `barrel_radius`; `aps`, `cage`; `extras`: `dozer_blade`, `crane`, `antennas`, `rear_door`; `turret_extras`: `missile_box`, `sight` |
-| `wheeled` | `length`, `width`, `height`, `axles`; `cargo`: `crates`, `armored`, `launcher`, `pods`, `laser`, `ew`; `extras` as for tracked |
+| `wheeled` | `length`, `width`, `height`, `axles`; `cargo`: `crates`, `armored`, `launcher`, `pods`, `laser`, `ew`, `gun` (turret and autocannon; `barrel_length`, `barrel_radius`), `hmg` (open buggy: roll cage and machine gun); `extras` as for tracked |
 | `infantry` | `figures`, `scale`; `weapon`: `rifle`, `launcher`, `drone_case` |
 | `drone` | `size`; `wing` (true = small fixed-wing instead of a quadcopter) |
 | `building` | `width`, `depth`, `height`; `style`: `block` (default), `bunker`, `trench`, `sam`; `details` for blocks: `mast`, `vents`, `garage`, `reactor`, `stacks`, `tanks`, `pad`, `dish`, `flag` |

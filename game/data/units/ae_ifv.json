@@ -1,0 +1,23 @@
+{
+  "id": "ae_ifv",
+  "faction": "ae",
+  "role": "armored_transport",
+  "name": "8x8 Infantry Fighting Vehicle",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 680,
+  "cost": 850,
+  "speed_cm_per_s": 900,
+  "turn_rate_deg_per_s": 120,
+  "radius_cm": 280,
+  "vision_cm": 5000,
+  "build_time_ms": 12000,
+  "requires": [],
+  "weapons": [
+    "ae_ifv_autocannon"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/ae_ifv.glb",
+    "icon": "res://assets/icons/units/ae_ifv.png"
+  }
+}

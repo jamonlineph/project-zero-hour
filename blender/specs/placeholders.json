@@ -45,6 +45,26 @@
     {"category": "buildings", "archetype": "building", "id": "kp_sam_site", "faction": "kp", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.5, "tri_budget": 2500},
     {"id": "us_wingman_drone", "category": "units", "archetype": "drone", "faction": "us", "size": 4.0, "wing": true, "tri_budget": 800},
     {"id": "us_recon_team", "category": "units", "archetype": "infantry", "faction": "us", "figures": 2, "tri_budget": 1800},
-    {"id": "kp_spotter_officer", "category": "units", "archetype": "infantry", "faction": "kp", "figures": 1, "tri_budget": 1000}
+    {"id": "kp_spotter_officer", "category": "units", "archetype": "infantry", "faction": "kp", "figures": 1, "tri_budget": 1000},
+    {"id": "ae_mbt", "category": "units", "archetype": "tracked", "faction": "ae", "length": 7.6, "width": 3.5, "height": 2.3, "turret_scale": 0.95, "turret_extras": ["sight"], "tri_budget": 3000},
+    {"id": "ae_ifv", "category": "units", "archetype": "wheeled", "faction": "ae", "length": 8.0, "width": 3.0, "height": 2.6, "axles": 4, "cargo": "gun", "extras": ["rear_door"], "tri_budget": 2500},
+    {"id": "ae_raider", "category": "units", "archetype": "wheeled", "faction": "ae", "length": 4.4, "width": 2.2, "height": 1.8, "axles": 2, "cargo": "hmg", "tri_budget": 1500},
+    {"id": "ae_engineer", "category": "units", "archetype": "wheeled", "faction": "ae", "length": 7.2, "width": 2.8, "height": 2.8, "axles": 3, "extras": ["dozer_blade", "crane"], "tri_budget": 2500},
+    {"id": "ae_logistics_truck", "category": "units", "archetype": "wheeled", "faction": "ae", "length": 7.6, "width": 2.4, "height": 2.8, "axles": 2, "cargo": "crates", "tri_budget": 2000},
+    {"id": "ae_rocket_artillery", "category": "units", "archetype": "wheeled", "faction": "ae", "length": 8.5, "width": 2.6, "height": 3.0, "axles": 4, "cargo": "pods", "tri_budget": 2500},
+    {"id": "ae_laser_cuas", "category": "units", "archetype": "wheeled", "faction": "ae", "length": 6.5, "width": 2.5, "height": 2.6, "axles": 2, "cargo": "laser", "tri_budget": 2000},
+    {"id": "ae_recon_drone", "category": "units", "archetype": "drone", "faction": "ae", "size": 1.5, "wing": true, "tri_budget": 800},
+    {"id": "ae_rifle_squad", "category": "units", "archetype": "infantry", "faction": "ae", "figures": 4, "tri_budget": 3200},
+    {"id": "ae_at_team", "category": "units", "archetype": "infantry", "faction": "ae", "figures": 2, "weapon": "launcher", "tri_budget": 1800},
+    {"id": "ae_sf_team", "category": "units", "archetype": "infantry", "faction": "ae", "figures": 3, "tri_budget": 2600},
+    {"id": "ae_guard_unit", "category": "units", "archetype": "infantry", "faction": "ae", "figures": 4, "weapon": "launcher", "tri_budget": 3200},
+    {"id": "ae_command_hq", "category": "buildings", "archetype": "building", "faction": "ae", "width": 14.0, "depth": 12.0, "height": 6.5, "details": ["mast", "dish", "vents"], "tri_budget": 5000},
+    {"id": "ae_power_plant", "category": "buildings", "archetype": "building", "faction": "ae", "width": 8.0, "depth": 8.0, "height": 3.5, "details": ["tanks", "vents"], "tri_budget": 3000},
+    {"id": "ae_barracks", "category": "buildings", "archetype": "building", "faction": "ae", "width": 10.0, "depth": 8.0, "height": 3.4, "details": ["flag", "vents"], "tri_budget": 3000},
+    {"id": "ae_logistics_hub", "category": "buildings", "archetype": "building", "faction": "ae", "width": 12.0, "depth": 10.0, "height": 4.5, "details": ["garage", "tanks"], "tri_budget": 3500},
+    {"id": "ae_vehicle_depot", "category": "buildings", "archetype": "building", "faction": "ae", "width": 14.0, "depth": 12.0, "height": 6.0, "details": ["garage", "vents", "dish"], "tri_budget": 4000},
+    {"id": "ae_drone_complex", "category": "buildings", "archetype": "building", "faction": "ae", "width": 10.0, "depth": 10.0, "height": 4.0, "details": ["pad", "dish", "mast"], "tri_budget": 3000},
+    {"id": "ae_fortified_post", "category": "buildings", "archetype": "building", "faction": "ae", "style": "bunker", "width": 6.0, "depth": 6.0, "height": 2.6, "tri_budget": 1500},
+    {"id": "ae_sam_site", "category": "buildings", "archetype": "building", "faction": "ae", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.8, "tri_budget": 2500}
   ]
 }

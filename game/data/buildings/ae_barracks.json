@@ -1,0 +1,29 @@
+{
+  "id": "ae_barracks",
+  "faction": "ae",
+  "name": "Barracks",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
+  "max_hp": 1500,
+  "cost": 550,
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "build_time_ms": 12000,
+  "power": -1,
+  "vision_cm": 5000,
+  "requires": [
+    "ae_power_plant"
+  ],
+  "produces": [
+    "ae_rifle_squad",
+    "ae_at_team",
+    "ae_sf_team",
+    "ae_guard_unit"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/ae_barracks.glb",
+    "icon": "res://assets/icons/buildings/ae_barracks.png"
+  }
+}
