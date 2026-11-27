@@ -46,7 +46,7 @@ static func _build(world: SimWorld, c: SimCommand) -> void:
 		return
 	if not world.has_requirements(c.player_id, def.requires):
 		return
-	var origin: Vector2i = SimWorld.footprint_origin(def, c.target_x, c.target_y)
+	var origin: Vector2i = world.footprint_origin(def, c.target_x, c.target_y)
 	if not world.can_place(def, origin):
 		return
 	var id: int = world.spawn_building(def, c.player_id, origin.x, origin.y, false)

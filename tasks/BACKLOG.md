@@ -511,11 +511,18 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Do:** test each suspect with `godot --headless --path game --script res://tests/tools/ai_matches.gd -- 10 normal normal [swap]`; fix the cause; P2-12's mirror-fair map will be judged with the same tool.
 - **Accept:** on a mirrored map, neither side wins more than 55% of 40 runs.
 
-### P2-11c · Faction balance: North Korea beats America in AI-vs-AI — ⬜
+### P2-11c · Faction balance: North Korea beats America in AI-vs-AI — ✅ 2026-11-27 (Claude Code: America won 18 and North Korea 20 of the 40 canonical runs; over 120 runs America 58%, east side 53%)
 - **Seen (2026-11-26, Twin Ridge, normal vs normal, 40 runs):** North Korea won all 40, from either side. Side fairness is fine (P2-11b); this is balance or AI play.
 - **Suspects:** America's preset spends on rocket artillery that needs spotters and on recon drones the AI doesn't use well; North Korea's cheaper squads, cage armor and Reserve Call-Up snowball; America's composite armor arrives later than North Korea's reactive armor.
 - **Do:** try one change at a time and measure with `ai_matches.gd` (20 runs each way); prefer AI preset fixes before changing unit numbers (those must stay in sync with `vertical-slice.md`, see P2-10).
 - **Accept:** neither faction wins more than 60% of 40 normal-vs-normal runs on Twin Ridge; final tuning comes from human playtests (P2-20).
+- **Found:** the US AI never built recon drones (unarmed units weren't counted in its army), so its spotter-guided rocket artillery had no spotters; the AI also didn't count queued units and kept queueing the same type. Mirror matches (same faction on both sides) then showed two side biases: buildings with an odd width snapped 2 m east of the mirror point, and the AI had no randomness, so every seed replayed nearly the same game and tiny order effects decided all of them.
+- **Fixed:** spotters join the army; queued units count; both AIs think on the same tick; footprint snapping and exit-cell ties go toward the map middle (mirror-fair); the AI has its own seeded rng (wave size ±1, first attack ±15 s, unit-mix and target noise). Tests: `test_fairness.gd`.
+
+### P2-11d · Split `sim_world.gd` — ⬜
+- **Seen (2026-11-27):** `game/src/sim/sim_world.gd` is about 790 lines, almost twice the 400-line guideline.
+- **Do:** move cohesive parts (spawning, placement and footprints, the spatial queries) into helper scripts without changing behavior; golden replays must stay unchanged.
+- **Accept:** each file under about 400 lines; all tests pass with no replay regeneration.
 
 ### P2-12 · Map "Riverside" — ⬜
 - **Needs:** P1-30

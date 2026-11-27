@@ -40,7 +40,7 @@ func _spawn(world: SimWorld, def_id: String, x_m: int, y_m: int, player: int = 1
 	if u != null:
 		return world.spawn_unit(u, player, Fx.from_int(x_m), Fx.from_int(y_m))
 	var b: BuildingDef = _content().get_building(def_id)
-	var o: Vector2i = SimWorld.footprint_origin(b, Fx.from_int(x_m), Fx.from_int(y_m))
+	var o: Vector2i = world.footprint_origin(b, Fx.from_int(x_m), Fx.from_int(y_m))
 	return world.spawn_building(b, player, o.x, o.y, true)
 
 

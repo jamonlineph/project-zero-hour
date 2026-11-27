@@ -260,9 +260,31 @@ func can_place(def: BuildingDef, origin: Vector2i) -> bool:
 	return true
 
 
-## Footprint origin that centers a building on the point (fixed-point meters).
-static func footprint_origin(def: BuildingDef, x: int, y: int) -> Vector2i:
-	return Vector2i(SimMap.cell_coord(x) - def.footprint_w / 2, SimMap.cell_coord(y) - def.footprint_h / 2)
+## Footprint origin (cells) that centers a building as near as possible on the
+## point (fixed-point meters). A point exactly between two choices goes toward
+## the middle of the map, so mirrored points give mirrored footprints on a
+## mirrored map (P2-11c fairness).
+func footprint_origin(def: BuildingDef, x: int, y: int) -> Vector2i:
+	return Vector2i(footprint_start(x, def.footprint_w, map_width),
+		footprint_start(y, def.footprint_h, map_height))
+
+
+## First cell of a `size`-cell span centered near `p` on an axis `extent` long
+## (both fixed-point meters).
+static func footprint_start(p: int, size: int, extent: int) -> int:
+	var toward_low: bool = p > extent / 2   # past the middle, ties go to lower cells
+	if size % 2 == 1:
+		# The span's center is a cell center: the cell holding p.
+		var c: int = SimMap.cell_coord(p)
+		if toward_low and posmod(p, SimMap.CELL) == 0:
+			c -= 1
+		return c - size / 2
+	# The span's center is a cell edge: the nearest one.
+	var shifted: int = p + SimMap.CELL / 2
+	var edge: int = SimMap.cell_coord(shifted)
+	if toward_low and posmod(shifted, SimMap.CELL) == 0:
+		edge -= 1
+	return edge - size / 2
 
 
 ## A neutral supply site holding `amount` credits, blocking a 2x2-cell area.
@@ -348,10 +370,20 @@ func approach_point(target: SimEntity, x: int, y: int) -> Vector2i:
 				continue
 			var p: Vector2i = SimMap.cell_center(cx, cy)
 			var d: int = Fx.length_sq(p.x - x, p.y - y)
-			if best_d < 0 or d < best_d:
+			if best_d < 0 or d < best_d or (d == best_d and _nearer_middle(p, best)):
 				best = p
 				best_d = d
 	return best
+
+
+## Tie-break for equally good cells: the one nearer the middle of the map, so
+## mirrored bases pick mirrored cells (P2-11c fairness).
+func _nearer_middle(a: Vector2i, b: Vector2i) -> bool:
+	var ax: int = absi(2 * a.x - map_width)
+	var bx: int = absi(2 * b.x - map_width)
+	if ax != bx:
+		return ax < bx
+	return absi(2 * a.y - map_height) < absi(2 * b.y - map_height)
 
 
 func queue_command(cmd: SimCommand) -> void:

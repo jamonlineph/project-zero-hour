@@ -4,6 +4,26 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-27: P2-11c Faction balance and side fairness (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - AI play: recon drones (spotters) now move with the army, so America's rocket artillery has spotters; units still in a factory queue count toward the mix; both AIs think on the same tick.
+  - Mirror matches (same faction on both sides) showed America-vs-America went to the west 8 of 8, North Korea-vs-North Korea to the east 8 of 8. Two causes:
+    - Buildings with an odd width (most of them) snapped 2 m east of the requested point, so the east base was never a true mirror. `footprint_origin` is now an instance method that rounds ties toward the map middle; exit-cell ties do the same.
+    - The AI had no randomness, so every seed replayed nearly the same game. Each AI now has its own seeded `SimRng`: wave size ±1, first attack ±15 s, a little unit-mix and target noise.
+  - `ai_matches.gd` gained `seed=<first>` and `stats` (units produced and lost per player).
+- Result (Twin Ridge, normal vs normal):
+  - Canonical 40 runs (seeds 1000+): America 18, North Korea 20, 2 unfinished; east side 22 of 38.
+  - 120 runs (seeds 1000, 2000, 3000): America 67, North Korea 49 (58%); east 62, west 54 (53%).
+  - Mirror matches after the fix: west 24 of 40.
+  - A 40-run sample swings about ±8%, so the 55%/60% rules need the larger runs to judge.
+- Golden replays and the determinism check were regenerated (building placement changed on purpose). The phone should now show **3445782503**.
+- Tests: `tools/run_tests.sh` -> 240 tests, 0 failed (new `test_fairness.gd`). `python3 tools/check_repo.py` -> ok.
+- Not verified: human play; matches mostly end in 4 to 6 minutes, so the late game (powers, upgrades) barely affects these numbers.
+- Next: P2-12 (map "Riverside"); P2-11d (split `sim_world.gd`, now about 790 lines).
+- For the owner: the determinism-check number is now 3445782503. America leans slightly stronger over 120 runs (58%); I left unit numbers alone, since final tuning comes from playtests (P2-20).
+
+---
+
 ## 2026-11-26: P2-11b West-side advantage found and removed (Claude Code, branch claude/phase-0-wrapup)
 - Done: tested the suspects one at a time with `ai_matches.gd`.
   - On a flat, exactly mirrored copy of the sandbox, the west player still won 20 of 26, so map asymmetry was only part of it.

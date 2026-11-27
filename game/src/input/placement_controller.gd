@@ -86,7 +86,7 @@ func set_ground_point(x: int, y: int) -> void:
 		return
 	var world: SimWorld = runner.world
 	var def: BuildingDef = world.content.get_building(building_id)
-	var origin: Vector2i = SimWorld.footprint_origin(def, x, y)
+	var origin: Vector2i = world.footprint_origin(def, x, y)
 	center = Vector2i(origin.x * SimMap.CELL + (def.footprint_w * SimMap.CELL) / 2,
 		origin.y * SimMap.CELL + (def.footprint_h * SimMap.CELL) / 2)
 	var player: SimPlayer = world.get_player(selection.local_player_id)

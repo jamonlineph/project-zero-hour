@@ -65,7 +65,7 @@ The loader (`ContentDb`) converts data units into sim units with integer math.
 
 ### Coordinates
 
-Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from `(0, 0)` to `(map_width, map_height)`. `world.map` (`SimMap`) divides it into 2 m cells with a terrain-blocked layer and a building-footprint layer; cell `(cx, cy)` covers `[cx·2 m, (cx+1)·2 m)`. Terrain height (from P1-30) is a separate integer heightmap. Models face +Z in Godot (`Vector3.MODEL_FRONT`), which is −Y in Blender.
+Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from `(0, 0)` to `(map_width, map_height)`. `world.map` (`SimMap`) divides it into 2 m cells with a terrain-blocked layer and a building-footprint layer; cell `(cx, cy)` covers `[cx·2 m, (cx+1)·2 m)`. A building placed at a point gets the footprint centered nearest to it (`SimWorld.footprint_origin`); a point exactly between two choices goes toward the middle of the map, so mirrored maps give mirrored bases. Terrain height (from P1-30) is a separate integer heightmap. Models face +Z in Godot (`Vector3.MODEL_FRONT`), which is −Y in Blender.
 
 ### Entities, components, systems
 

@@ -33,6 +33,11 @@ var power_priority: PackedStringArray = []
 var research: PackedStringArray = []
 
 var _attacking: bool = false
+## Own random numbers, seeded from the sim's state at the first think, so each
+## match seed plays out differently without touching the sim's rng (P2-11c).
+var _rng: SimRng = null
+var _wave_size: int = 0          ## this match's wave size (attack_wave_size +-1)
+var _first_attack: int = 0       ## this match's first attack tick (+-15 s)
 var _target_id: int = 0
 var _rally_set: Dictionary[int, bool] = {}
 
@@ -79,8 +84,10 @@ func think(world: SimWorld) -> Array[SimCommand]:
 	var cmds: Array[SimCommand] = []
 	if world.game_over or world.content == null or world.get_player(player_id).defeated:
 		return cmds
-	if (world.tick + player_id) % think_interval != 0:
+	if world.tick % think_interval != 0:   # every AI on the same tick: no one reacts first (P2-11c)
 		return cmds
+	if _rng == null:
+		_seed(world)
 	var mine := _Mine.new(world, player_id)
 	_keep_builders(world, mine, cmds)
 	var reserve: int = _build(world, mine, cmds)
@@ -91,6 +98,14 @@ func think(world: SimWorld) -> Array[SimCommand]:
 	if difficulty != "easy" or (world.tick / think_interval) % 2 == 0:
 		AiStrategy.powers(world, self, mine.hq, mine.army, cmds)
 	return cmds
+
+
+## Picks this match's variations. Without them every seed plays the same
+## game, so AI-vs-AI results said nothing about balance (P2-11c).
+func _seed(world: SimWorld) -> void:
+	_rng = SimRng.new(world.rng.state ^ (player_id * 0x9E3779B1))
+	_wave_size = maxi(2, attack_wave_size - 1 + _rng.range_int(3))
+	_first_attack = maxi(0, first_attack_tick - 15 * SimWorld.TICK_RATE + _rng.range_int(30 * SimWorld.TICK_RATE + 1))
 
 
 ## Everything the AI owns, sorted by kind. Built once per think.
@@ -114,7 +129,9 @@ class _Mine:
 				builders.append(e)
 			elif e.gatherer != null:
 				gatherers.append(e)
-			elif e.mover != null and not e.weapons.is_empty():
+			elif e.mover != null and e.ttl == 0 and (not e.weapons.is_empty() or e.spotter):
+				# Spotters (recon drones) move with the army, so kill-chain
+				# weapons have someone marking their targets (P2-11c).
 				army.append(e)
 		if hq == null and not buildings.is_empty():
 			hq = buildings[0]
@@ -193,7 +210,7 @@ func _find_spot(world: SimWorld, def: BuildingDef, hq: SimEntity) -> Vector2i:
 		for d: Vector2i in dirs:
 			var cx: int = hq.x + d.x * sx * ring * 10 * Fx.ONE
 			var cy: int = hq.y + d.y * ring * 10 * Fx.ONE
-			var origin: Vector2i = SimWorld.footprint_origin(def, cx, cy)
+			var origin: Vector2i = world.footprint_origin(def, cx, cy)
 			if _clear(world, def, origin) and world.can_place(def, origin):
 				return Vector2i(cx, cy)
 	return Vector2i(-1, -1)
@@ -224,6 +241,11 @@ func _produce(world: SimWorld, mine: _Mine, cmds: Array[SimCommand], reserve: in
 	var counts: Dictionary[String, int] = {}
 	for e: SimEntity in mine.army:
 		counts[e.def_id] = counts.get(e.def_id, 0) + 1
+	# Units still being built count too, so a factory doesn't queue the same
+	# missing type over and over before the first one is out (P2-11c).
+	for b: SimEntity in mine.buildings:
+		for queued: String in b.building.queue:
+			counts[queued] = counts.get(queued, 0) + 1
 	var mix: Dictionary[String, int] = unit_mix.duplicate()
 	var bonus: Dictionary[String, int] = AiStrategy.counter_bonus(world, self)
 	for u: String in bonus:
@@ -239,8 +261,10 @@ func _produce(world: SimWorld, mine: _Mine, cmds: Array[SimCommand], reserve: in
 		for u: String in b.building.produces:
 			if not mix.has(u):
 				continue
-			# How far below its share of the army this unit type is.
-			var score: int = (mine.army.size() + 1) * mix[u] - counts.get(u, 0) * total_weight
+			# How far below its share of the army this unit type is, plus up
+			# to one unit's worth of noise so mixes vary between matches.
+			var score: int = (mine.army.size() + 1) * mix[u] - counts.get(u, 0) * total_weight \
+				+ _rng.range_int(maxi(1, total_weight))
 			if best == "" or score > best_score or (score == best_score and u < best):
 				best = u
 				best_score = score
@@ -268,7 +292,7 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 	if threat != null and not _attacking:
 		cmds.append(SimCommand.make_attack_move(army_ids, threat.x, threat.y))
 		return
-	if not _attacking and army_ids.size() >= attack_wave_size and world.tick >= first_attack_tick:
+	if not _attacking and army_ids.size() >= _wave_size and world.tick >= _first_attack:
 		_attacking = true
 		_target_id = 0
 	if not _attacking:
@@ -337,7 +361,8 @@ func _pick_target(world: SimWorld, hq: SimEntity) -> SimEntity:
 				continue
 			if not pass_buildings and e.builder == null:
 				continue
-			var d: int = Fx.length(e.x - hq.x, e.y - hq.y)
+			# Up to 20 m of noise, so waves don't always take the same route.
+			var d: int = Fx.length(e.x - hq.x, e.y - hq.y) + _rng.range_int(20) * Fx.ONE
 			if best == null or d < best_d:
 				best = e
 				best_d = d

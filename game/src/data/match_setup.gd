@@ -63,6 +63,6 @@ static func _spawn(world: SimWorld, content: ContentDb, s: Dictionary) -> void:
 			continue
 		var building: BuildingDef = content.get_building(def_id)
 		if building != null:
-			var origin: Vector2i = SimWorld.footprint_origin(building, x, y)
+			var origin: Vector2i = world.footprint_origin(building, x, y)
 			if world.spawn_building(building, player, origin.x, origin.y, bool(s.get("built", true))) == 0:
 				push_error("MatchSetup: no room for %s at (%d, %d) m" % [def_id, x_m, y_m])
