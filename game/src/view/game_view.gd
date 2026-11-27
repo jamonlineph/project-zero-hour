@@ -12,6 +12,8 @@ var _wreck_material: StandardMaterial3D
 var effects: CombatEffects
 ## Terrain height at (x, z) in meters (TerrainView.height_at); flat if unset.
 var ground_height: Callable
+## Developer videos (`--reveal`): draw every unit, ignoring the fog.
+var reveal_all: bool = false
 var sounds: GameSounds
 var wrecks_made: int = 0
 
@@ -53,6 +55,8 @@ func sync(alpha: float) -> void:
 ## Fog of war: enemies show only where this player sees; neutral things such
 ## as supply sites show once their ground has been explored.
 func is_shown(e: SimEntity) -> bool:
+	if reveal_all:
+		return true
 	if e.player_id == 0:
 		return world.vision.is_explored(world.team_of(local_player_id), e.x, e.y)
 	return not world.are_enemies(local_player_id, e.player_id) or world.can_see(local_player_id, e.x, e.y)

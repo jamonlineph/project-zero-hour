@@ -7,7 +7,7 @@ extends Node3D
 const DEFAULT_SCENARIO: String = "sandbox"
 const LOCAL_PLAYER: int = 1
 const ENEMY_PLAYER: int = 2
-const SEED: int = 20261125
+const SEED: int = 20261125   ## match seed; developer videos can pass --seed=<n>
 
 var content: ContentDb
 var map_def: MapDef
@@ -24,6 +24,7 @@ var fog: FogOfWar
 var terrain: TerrainView
 var pointer: PointerFeedback
 var _game_over_shown: bool = false
+var director: CameraDirector
 
 
 func _ready() -> void:
@@ -39,7 +40,8 @@ func _ready() -> void:
 		else content.scenarios.get(scenario_id, {})
 	MatchConfig.pending = {}
 	scenario_id = str(scenario.get("id", scenario_id))
-	world = MatchSetup.build_from(content, scenario, SEED) if not scenario.is_empty() else null
+	var seed_value: int = int(DevCapture.arg("seed", str(SEED)))
+	world = MatchSetup.build_from(content, scenario, seed_value) if not scenario.is_empty() else null
 	if world == null:
 		push_error("Sandbox: scenario '%s' failed to load; using an empty map" % scenario_id)
 		world = SimWorld.new(SEED, 128, 128)
@@ -55,7 +57,7 @@ func _ready() -> void:
 	runner.world = world
 	runner.local_player_id = LOCAL_PLAYER
 	runner.scenario_id = scenario_id
-	runner.seed_value = SEED
+	runner.seed_value = seed_value
 	runner.process_priority = -10   # step the sim before the view reads it
 	add_child(runner)
 	runner.add_ai_from_scenario(content, scenario)
@@ -66,6 +68,7 @@ func _ready() -> void:
 	game_view.name = "GameView"
 	game_view.setup(world, content)
 	game_view.ground_height = terrain.height_at
+	game_view.reveal_all = DevCapture.reveal_requested()
 	game_view.local_player_id = LOCAL_PLAYER
 	add_child(game_view)
 	game_view.sync(0.0)
@@ -111,6 +114,7 @@ func _ready() -> void:
 
 	GameSettings.current().apply(get_tree())
 	DevCapture.attach_if_requested(self)
+	_attach_director()
 
 	pause_menu = PauseMenu.new()
 	pause_menu.name = "PauseMenu"
@@ -140,7 +144,22 @@ func _process(_delta: float) -> void:
 		var my_team: int = world.team_of(LOCAL_PLAYER)
 		pause_menu.open_game_over("Draw" if world.winner_team == 0 else ("Victory" if world.winner_team == my_team else "Defeat"))
 	game_view.play_events(runner.pending_events)
+	if director != null:
+		director.observe(runner.pending_events)
 	runner.pending_events.clear()
+
+
+## Gameplay-video tools (--director, --speed=, --shot-dir=, --shot-every=).
+func _attach_director() -> void:
+	if not OS.get_cmdline_user_args().has("--director"):
+		return
+	Engine.time_scale = clampf(float(DevCapture.arg("speed", "1")), 0.25, 8.0)
+	hud.toggle_help()
+	director = CameraDirector.new()
+	director.shot_dir = DevCapture.arg("shot-dir")
+	director.shot_every_s = float(DevCapture.arg("shot-every", "10"))
+	director.setup(world, content, rts_camera)
+	add_child(director)
 
 
 ## Where the camera starts: the local player's HQ (or first building or

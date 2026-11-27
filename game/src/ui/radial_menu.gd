@@ -16,7 +16,7 @@ var _buttons: Array[Button] = []
 func open(selection: SelectionController, pos: Vector2) -> bool:
 	name = "RadialMenu"
 	at = pos
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var entries: Array[Array] = entries_for(selection)
 	if entries.is_empty():

@@ -63,6 +63,11 @@ func _run() -> void:
 				failures.append("the skirmish did not start on Riverside with its river drawn")
 			var pause: PauseMenu = game.get("pause_menu")
 			pause.toggle()
+			await process_frame
+			# The overlay must cover the screen (it once kept a zero size, so
+			# the end screen sat in a corner).
+			if pause.size.x < 640.0 or pause.size.y < 360.0:
+				failures.append("the pause menu is %s, not full screen" % str(pause.size))
 			var tick: int = runner.world.tick
 			for i: int in 30:
 				await process_frame
@@ -70,6 +75,8 @@ func _run() -> void:
 				failures.append("the game kept running while paused")
 			var pause_settings: SettingsMenu = pause.open_settings()
 			await process_frame
+			if pause_settings.size.x < 640.0:
+				failures.append("the settings screen is %s, not full screen" % str(pause_settings.size))
 			pause_settings.close()
 			await process_frame
 			pause.toggle()

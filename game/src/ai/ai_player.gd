@@ -22,6 +22,9 @@ var preset_id: String = ""
 var build_order: PackedStringArray = []
 var unit_mix: Dictionary[String, int] = {}
 var max_gatherers: int = 4
+## Unarmed spotters (recon drones) kept at once. Without a cap the AI kept
+## replacing lost drones and spent a third of its credits on them (P2-12).
+var max_spotters: int = 2
 var gatherer_unit: String = ""
 var attack_wave_size: int = 6
 var first_attack_tick: int = 2700
@@ -38,6 +41,11 @@ var _attacking: bool = false
 var _rng: SimRng = null
 var _wave_size: int = 0          ## this match's wave size (attack_wave_size +-1)
 var _first_attack: int = 0       ## this match's first attack tick (+-15 s)
+## An army that hasn't grown for this long attacks anyway, so a broke AI
+## doesn't wait forever for a full wave (P2-12: a Twin Ridge duel stalled).
+const STALL_TICKS: int = 90 * SimWorld.TICK_RATE
+var _army_size: int = 0
+var _grew_at: int = 0
 var _target_id: int = 0
 var _rally_set: Dictionary[int, bool] = {}
 
@@ -56,6 +64,7 @@ static func from_preset(content: ContentDb, id: String, player: int, level: Stri
 	for u: Variant in mix:
 		ai.unit_mix[str(u)] = int(mix[u])
 	ai.max_gatherers = int(p.get("max_gatherers", 4))
+	ai.max_spotters = int(p.get("max_spotters", 2))
 	ai.gatherer_unit = str(p.get("gatherer_unit", ""))
 	ai.attack_wave_size = int(p.get("attack_wave_size", 6))
 	ai.first_attack_tick = int(p.get("first_attack_after_s", 180)) * SimWorld.TICK_RATE
@@ -253,13 +262,17 @@ func _produce(world: SimWorld, mine: _Mine, cmds: Array[SimCommand], reserve: in
 	var total_weight: int = 0
 	for u: String in mix:
 		total_weight += mix[u]
+	var spotters: int = 0
+	for u: String in counts:
+		if _unarmed_spotter(world, u):
+			spotters += counts[u]
 	for b: SimEntity in mine.buildings:
 		if not b.building.built or b.building.queue.size() >= 2:
 			continue
 		var best: String = ""
 		var best_score: int = 0
 		for u: String in b.building.produces:
-			if not mix.has(u):
+			if not mix.has(u) or (spotters >= max_spotters and _unarmed_spotter(world, u)):
 				continue
 			# How far below its share of the army this unit type is, plus up
 			# to one unit's worth of noise so mixes vary between matches.
@@ -276,6 +289,13 @@ func _produce(world: SimWorld, mine: _Mine, cmds: Array[SimCommand], reserve: in
 		cmds.append(SimCommand.make_produce(b.id, best))
 		credits -= def.cost
 		counts[best] = counts.get(best, 0) + 1
+		if _unarmed_spotter(world, best):
+			spotters += 1
+
+
+func _unarmed_spotter(world: SimWorld, unit_id: String) -> bool:
+	var def: UnitDef = world.content.get_unit(unit_id)
+	return def != null and def.spotter and def.weapons.is_empty()
 
 
 func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
@@ -287,12 +307,18 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 		army_ids.append(e.id)
 	if army_ids.is_empty():
 		_attacking = false
+		_army_size = 0
+		_grew_at = world.tick
 		return
 	var threat: SimEntity = _nearest_threat(world, mine)
 	if threat != null and not _attacking:
 		cmds.append(SimCommand.make_attack_move(army_ids, threat.x, threat.y))
 		return
-	if not _attacking and army_ids.size() >= _wave_size and world.tick >= _first_attack:
+	if army_ids.size() > _army_size:
+		_grew_at = world.tick
+	_army_size = army_ids.size()
+	var stalled: bool = world.tick - _grew_at >= STALL_TICKS
+	if not _attacking and (army_ids.size() >= _wave_size or stalled) and world.tick >= _first_attack:
 		_attacking = true
 		_target_id = 0
 	if not _attacking:

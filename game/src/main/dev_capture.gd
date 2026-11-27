@@ -3,7 +3,8 @@ extends Node
 ## Developer screenshots: run the game with
 ##   godot --path game -- --screenshot=/tmp/shot.png [--screenshot-frames=90]
 ##     [--camera=<x_m>,<z_m>,<distance_m>] [--reveal]
-## --camera aims the camera at a map point, --reveal lifts the fog (view only).
+## --camera aims the camera at a map point, --reveal lifts the fog and shows
+## every unit (view only). Gameplay videos: see CameraDirector.
 ## and it saves the rendered frame after that many frames, then quits. Works
 ## on machines without a screen through a virtual display and software OpenGL
 ## (see docs/08-testing-and-qa.md). Does nothing without the argument.
@@ -42,6 +43,14 @@ static func camera_override() -> Variant:
 
 static func reveal_requested() -> bool:
 	return OS.get_cmdline_user_args().has("--reveal")
+
+
+## The value of a `--name=value` user argument, or `fallback`.
+static func arg(arg_name: String, fallback: String = "") -> String:
+	for a: String in OS.get_cmdline_user_args():
+		if a.begins_with("--%s=" % arg_name):
+			return a.trim_prefix("--%s=" % arg_name)
+	return fallback
 
 
 func _process(_delta: float) -> void:

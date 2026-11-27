@@ -24,21 +24,21 @@ func _ready() -> void:
 	if not content.load_all():
 		for e: String in content.errors:
 			push_error(e)
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var bg := ColorRect.new()
 	bg.color = Color(0.10, 0.13, 0.11)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(bg)
 	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(center)
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 14)
+	box.add_theme_constant_override("separation", 8)   # fits 720p with the map row (P2-12)
 	center.add_child(box)
 
 	var title := Label.new()
 	title.text = "PROJECT ZERO HOUR"
-	title.add_theme_font_size_override("font_size", 56)
+	title.add_theme_font_size_override("font_size", 48)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(title)
 	var sub := Label.new()
@@ -145,7 +145,7 @@ func _refresh_labels() -> void:
 func _button(parent: Control, text: String, action: Callable) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.custom_minimum_size = Vector2(420, 56)
+	b.custom_minimum_size = Vector2(420, 50)
 	b.add_theme_font_size_override("font_size", 20)
 	b.pressed.connect(action)
 	parent.add_child(b)
