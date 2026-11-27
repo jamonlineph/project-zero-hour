@@ -218,12 +218,18 @@ func order_attack_move(screen_pos: Vector2) -> void:
 
 ## Right-click / tap on a point. In order of preference: attack a visible
 ## enemy there; send gatherers to a supply site; send builders to finish or
-## repair one of our buildings; set the rally point when only buildings are
-## selected; otherwise move.
+## repair one of our buildings; send infantry into a building they can
+## garrison (P3-05); set the rally point when only buildings are selected;
+## otherwise move.
 func order_at(screen_pos: Vector2) -> void:
 	var enemy: int = _pick_unit(screen_pos, false)
 	if enemy != 0:
 		order_attack(enemy)
+		return
+	var shelter: int = _pick(screen_pos, func(e: SimEntity) -> bool:
+		return e.garrison != null and e.garrison.has_room() and (e.player_id == 0 or e.player_id == local_player_id))
+	if shelter != 0 and _selected_any(func(e: SimEntity) -> bool: return e.armor_class == "infantry"):
+		runner.submit(SimCommand.make_garrison(selected, shelter))
 		return
 	var site: int = _pick(screen_pos, func(e: SimEntity) -> bool: return e.supply != null)
 	if site != 0 and _selected_any(func(e: SimEntity) -> bool: return e.gatherer != null):
@@ -309,7 +315,8 @@ func _own_ids() -> Array[int]:
 	var ids: Array[int] = []
 	for id: int in runner.world.entity_ids:
 		var e: SimEntity = runner.world.entities[id]
-		if e.player_id == local_player_id and e.strike == null and not e.sensor and e.ttl == 0:   # strikes, sensors and timed units can't be selected
+		if e.player_id == local_player_id and e.strike == null and not e.sensor and e.ttl == 0 \
+				and e.inside_id == 0:   # strikes, sensors, timed and garrisoned units can't be selected
 			ids.append(id)
 	return ids
 
@@ -345,6 +352,8 @@ func _pick_own_unit(screen_pos: Vector2) -> int:
 func _pick_unit(screen_pos: Vector2, own: bool) -> int:
 	var world: SimWorld = runner.world
 	return _pick(screen_pos, func(e: SimEntity) -> bool:
+		if e.inside_id != 0:
+			return false   # inside a building: pick the building instead (P3-05)
 		if own:
 			return e.player_id == local_player_id and e.strike == null and not e.sensor and e.ttl == 0
 		return world.are_enemies(local_player_id, e.player_id) and world.can_see(local_player_id, e.x, e.y))

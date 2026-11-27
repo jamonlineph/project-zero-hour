@@ -76,7 +76,7 @@ Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from 
 
 1. Clear `events`; save `prev_x`, `prev_y` and `prev_facing` (for view interpolation).
 2. Apply this tick's commands (`WorldCommands`, by player then sequence number).
-2b. Orders: carry out MOVE / ATTACK / ATTACK_MOVE / HOLD / GUARD / PATROL (`OrderSystem`; GUARD and PATROL commands are applied by `UnitCommands`).
+2b. Orders: carry out MOVE / ATTACK / ATTACK_MOVE / HOLD / GUARD / PATROL (`OrderSystem`; GUARD and PATROL commands are applied by `UnitCommands`), then garrisons: units entering, occupants kept at their building, units coming out of destroyed buildings (`GarrisonSystem`, P3-05).
 2b'. Drones: endurance, return to the launcher at 20%, recharge when docked, crash at 0 (`DroneSystem`). Flying movers get straight-line paths and are skipped by separation.
 2b''. Jamming (`JammingSystem`): rebuilds the list of active jammers; enemy drones inside a field lose control and drift; spoofed drones fly to their spoofed point. Guided shots into a hostile field lose lock half the time (`CombatSystem`, via `SimWorld.jam_level`).
 2b'''. Kill chain (`KillChainSystem`): rebuilds the list of active spotters (jammed or spoofed drones don't spot). `needs_spotter` weapons fire beyond their owner's own sight only at targets a spotter sees (`SimWorld.is_spotted`); guided kill-chain shots lose guidance in flight when the target stops being spotted.

@@ -44,8 +44,6 @@ var _first_attack: int = 0       ## this match's first attack tick (+-15 s)
 ## An army that hasn't grown for this long attacks anyway, so a broke AI
 ## doesn't wait forever for a full wave (P2-12: a Twin Ridge duel stalled).
 const STALL_TICKS: int = 90 * SimWorld.TICK_RATE
-## How far ahead of the army spotters fly while it attacks (meters).
-const SPOTTER_LEAD_M: int = 30
 var _army_size: int = 0
 var _grew_at: int = 0
 var _target_id: int = 0
@@ -126,12 +124,18 @@ class _Mine:
 	var gatherers: Array[SimEntity] = []
 	var army: Array[SimEntity] = []
 	var hq: SimEntity = null
+	var garrisoned: int = 0   ## our units inside buildings (P3-05)
 
 	func _init(world: SimWorld, pid: int) -> void:
 		for id: int in world.entity_ids:
 			var e: SimEntity = world.entities[id]
 			if e.player_id != pid or e.dead:
 				continue
+			if e.inside_id != 0:
+				garrisoned += 1
+				continue
+			if e.building != null and e.garrison != null and e.garrison.neutral:
+				continue   # a town house we hold isn't part of our base
 			if e.building != null:
 				buildings.append(e)
 				if hq == null and e.def_id.ends_with("_command_hq"):
@@ -267,7 +271,8 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 		else:
 			fighters.append(e)
 			army_ids.append(e.id)
-	_escort(world, spotters, fighters, cmds)
+	var lead_target: SimEntity = world.get_entity(_target_id) if _attacking else null
+	AiTactics.escort(lead_target, spotters, fighters, cmds)
 	if army_ids.is_empty():
 		_attacking = false
 		_army_size = 0
@@ -285,6 +290,7 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 		_attacking = true
 		_target_id = 0
 	if not _attacking:
+		AiTactics.occupy_town(world, mine.hq, mine.army, mine.garrisoned, cmds)
 		return
 	var target: SimEntity = world.get_entity(_target_id)
 	var retarget: bool = target == null or target.dead
@@ -303,38 +309,6 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 			idle.append(e.id)
 	if not idle.is_empty():
 		cmds.append(SimCommand.make_attack_move(idle, target.x, target.y))
-
-
-## Keeps spotters over the army: at its center, or while attacking
-## SPOTTER_LEAD_M ahead of it toward the target, as forward observers for
-## kill-chain weapons (P2-11e). Sends those that drifted more than 12 m from
-## that point back to it. Drones heading home to recharge are left alone.
-func _escort(world: SimWorld, spotters: Array[SimEntity], fighters: Array[SimEntity], cmds: Array[SimCommand]) -> void:
-	if spotters.is_empty() or fighters.is_empty():
-		return
-	var cx: int = 0
-	var cy: int = 0
-	for f: SimEntity in fighters:
-		cx += f.x
-		cy += f.y
-	cx /= fighters.size()
-	cy /= fighters.size()
-	var target: SimEntity = world.get_entity(_target_id) if _attacking else null
-	if target != null and not target.dead:
-		var dist: int = Fx.length(target.x - cx, target.y - cy)
-		var lead: int = mini(SPOTTER_LEAD_M * Fx.ONE, dist)
-		if dist > 0:
-			cx += ((target.x - cx) * lead) / dist
-			cy += ((target.y - cy) * lead) / dist
-	var reach: int = 12 * Fx.ONE
-	var ids: Array[int] = []
-	for e: SimEntity in spotters:
-		if e.drone != null and e.drone.returning:
-			continue
-		if Fx.length_sq(e.x - cx, e.y - cy) > Fx.length_sq(reach, 0):
-			ids.append(e.id)
-	if not ids.is_empty():
-		cmds.append(SimCommand.make_move(ids, cx, cy))
 
 
 func _set_rally_points(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:

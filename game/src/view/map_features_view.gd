@@ -1,14 +1,12 @@
 class_name MapFeaturesView
 extends Node3D
-## Map scenery that isn't ground (P2-12): the water surface, bridge decks and
-## town houses from MapDef. Placeholder shapes in the classic military RTS
+## Map scenery that isn't ground (P2-12): the water surface and bridge decks
+## from MapDef. Town houses are buildings now (P3-05, HouseModel). Placeholder shapes in the classic military RTS
 ## look; they use fog materials so unexplored areas stay dark. View only.
 
 const WATER := Color(0.20, 0.32, 0.36)
 const DECK := Color(0.52, 0.50, 0.46)
 const RAIL := Color(0.30, 0.30, 0.30)
-const WALLS: Array[Color] = [Color(0.78, 0.72, 0.60), Color(0.62, 0.40, 0.30), Color(0.84, 0.82, 0.76)]
-const ROOFS: Array[Color] = [Color(0.45, 0.20, 0.16), Color(0.30, 0.30, 0.32)]
 const DECK_THICKNESS: float = 0.5
 const RAIL_HEIGHT: float = 0.9
 
@@ -25,8 +23,6 @@ func build(def: MapDef, fog: FogOfWar, ground: Callable) -> void:
 		_add_water(def)
 	for b: PackedInt32Array in def.bridges_m:
 		_add_bridge(b)
-	for i: int in def.civilian_buildings_m.size():
-		_add_house(def.civilian_buildings_m[i], i)
 
 
 ## One flat plane over the cells below the water level.
@@ -66,25 +62,6 @@ func _add_bridge(r: PackedInt32Array) -> void:
 		var off: Vector3 = Vector3(0.0, 0.0, side * (r[3] / 2.0 - 0.15)) if along_x \
 			else Vector3(side * (r[2] / 2.0 - 0.15), 0.0, 0.0)
 		m.position = center + off + Vector3(0.0, top + RAIL_HEIGHT / 2.0, 0.0)
-
-
-## Walls plus a gable roof whose ridge runs along the longer side.
-func _add_house(r: PackedInt32Array, index: int) -> void:
-	var center := Vector3(r[0] + r[2] / 2.0, 0.0, r[1] + r[3] / 2.0)
-	var base: float = _ground.call(center.x, center.z)
-	var wall_h: float = r[4] * 0.6
-	var box := BoxMesh.new()
-	box.size = Vector3(r[2] - 0.4, wall_h, r[3] - 0.4)
-	var walls := _mesh(box, WALLS[index % WALLS.size()], "House")
-	walls.position = center + Vector3(0.0, base + wall_h / 2.0 - 0.2, 0.0)
-	var prism := PrismMesh.new()
-	var ridge_along_x: bool = r[2] >= r[3]
-	# PrismMesh's triangle faces +-Z; turn it so the ridge follows the long side.
-	prism.size = Vector3(float(r[3]) if ridge_along_x else float(r[2]), r[4] * 0.4, float(r[2]) if ridge_along_x else float(r[3]))
-	var roof := _mesh(prism, ROOFS[index % ROOFS.size()], "Roof")
-	roof.position = center + Vector3(0.0, base + wall_h - 0.2 + r[4] * 0.2, 0.0)
-	if ridge_along_x:
-		roof.rotation.y = PI / 2.0
 
 
 func _mesh(m: Mesh, color: Color, base_name: String) -> MeshInstance3D:

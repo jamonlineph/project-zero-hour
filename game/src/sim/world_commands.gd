@@ -37,6 +37,8 @@ static func apply_all(world: SimWorld, cmds: Array) -> void:
 				Upgrades.apply_command(world, c)
 			SimCommand.Type.GUARD, SimCommand.Type.PATROL, SimCommand.Type.SPOOF:
 				UnitCommands.apply(world, c)
+			SimCommand.Type.GARRISON, SimCommand.Type.UNLOAD:
+				GarrisonSystem.apply_command(world, c)
 			_:
 				push_error("SimWorld: unknown command type %d" % c.type)
 
@@ -135,8 +137,8 @@ static func _hold(world: SimWorld, c: SimCommand) -> void:
 		e.order_target_id = 0
 
 
-## Entities named in the command that exist, are alive and belong to the
-## issuing player. Sorted by id, duplicates removed.
+## Entities named in the command that exist, are alive, belong to the
+## issuing player and aren't inside a garrison. Sorted by id, duplicates removed.
 static func owned(world: SimWorld, c: SimCommand) -> Array[SimEntity]:
 	var ids: Array[int] = c.entity_ids.duplicate()
 	ids.sort()
@@ -147,7 +149,7 @@ static func owned(world: SimWorld, c: SimCommand) -> Array[SimEntity]:
 			continue
 		last = id
 		var e: SimEntity = world.get_entity(id)
-		if e != null and not e.dead and e.player_id == c.player_id:
+		if e != null and not e.dead and e.player_id == c.player_id and e.inside_id == 0:
 			result.append(e)
 	return result
 
@@ -164,6 +166,6 @@ static func owned_movers(world: SimWorld, c: SimCommand) -> Array[SimEntity]:
 			continue
 		last = id
 		var e: SimEntity = world.get_entity(id)
-		if e != null and e.player_id == c.player_id and e.mover != null:
+		if e != null and e.player_id == c.player_id and e.mover != null and e.inside_id == 0:
 			result.append(e)
 	return result

@@ -1,0 +1,21 @@
+{
+  "id": "civilian_house",
+  "faction": "neutral",
+  "name": "House",
+  "_doc": "Town houses on maps (map.json civilian_buildings_m, P3-05): neutral until infantry garrison them. MatchSetup sizes each one from its map rectangle; footprint_cells is only the default.",
+  "armor_class": "structure",
+  "max_hp": 1200,
+  "cost": 0,
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "build_time_ms": 1000,
+  "power": 0,
+  "garrison_capacity": 2,
+  "vision_cm": 0,
+  "requires": [],
+  "produces": [],
+  "weapons": [],
+  "visual": {}
+}

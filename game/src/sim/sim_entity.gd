@@ -7,7 +7,7 @@ extends RefCounted
 ## read and change entities; nothing outside the sim writes to them.
 
 ## What the unit was told to do (P1-10; GUARD and PATROL from P1-24b).
-enum Order { IDLE = 0, MOVE = 1, ATTACK = 2, ATTACK_MOVE = 3, HOLD = 4, GUARD = 5, PATROL = 6 }
+enum Order { IDLE = 0, MOVE = 1, ATTACK = 2, ATTACK_MOVE = 3, HOLD = 4, GUARD = 5, PATROL = 6, GARRISON = 7 }
 
 var id: int = 0
 var player_id: int = 0          ## 0 = neutral
@@ -46,6 +46,8 @@ var aps_charges: int = 0        ## active protection: interceptions left (P2-06)
 var aps_max: int = 0
 var aps_reload: int = 0         ## ticks toward the next charge
 var cage_hits: int = 0          ## cage armor: drone hits it still softens (P2-06)
+var garrison: SimGarrison = null   ## structures infantry can enter (P3-05)
+var inside_id: int = 0          ## the structure this unit is garrisoned in (P3-05); 0 = outside
 
 var order: Order = Order.IDLE
 var order_target_id: int = 0    ## ATTACK: the entity to destroy; GUARD: the entity to protect
@@ -104,6 +106,11 @@ func write_hash(h: SimHash) -> void:
 		h.add_int(aps_max)
 		h.add_int(aps_reload)
 		h.add_int(cage_hits)
+	# Garrisons (P3-05): only when present, so older replays hash as before.
+	if garrison != null:
+		garrison.write_hash(h)
+	if inside_id != 0:
+		h.add_int(inside_id)
 	if mover != null:
 		mover.write_hash(h)
 	else:

@@ -33,7 +33,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Attack orders | Attack unit, attack-move, stop, hold position (guard later) | P1-10 | ✅ |
 | Vision and fog of war | Per-team visibility on 8 m cells (updated every 3 ticks), explored memory, shared allied vision; only visible enemies can be targeted or clicked. Fog rendering: P1-27 | P1-11 | ✅ |
 | Veterancy | Three ranks from cost-weighted damage dealt (1x/2x/4x own cost): +damage, +armor, self-repair at rank 3 (`rules.json`) | P1-17 | ✅ |
-| Garrisoning | Infantry enter buildings and fire from them; flame/thermobaric weapons clear them | P3-05 | ⬜ |
+| Garrisoning | Infantry enter buildings and fire from them; flame/thermobaric weapons clear them. v1: town houses (neutral, 2 squads, belong to whoever is inside), bunkers and trench lines (2 squads); +5 m range from inside; can't be shot directly, splash stopped except thermobaric (50%), which also hits occupants when it hits the building; "Exit all" lets them out; a destroyed building throws them out hurt (25% of max hp). The AI keeps up to 2 squads in town houses on its half | P3-05 | ✅ v1 |
 | Transports | Vehicles carry infantry; some have firing ports | P3-06 | ⬜ |
 | Crushing | Heavy vehicles crush infantry and light obstacles | P3-07 | ⬜ |
 | Stealth and detection | Stealthed units are invisible until they fire or a detector is near | P3-09 | ⬜ |

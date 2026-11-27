@@ -16,6 +16,12 @@ static func apply(world: SimWorld, target: SimEntity, amount: int, damage_type: 
 		raw = maxi(1, (raw * (100 - world.rules.veterancy_armor_bonus[target.vet_rank])) / 100)
 	var dealt: int = mini(raw, target.hp)
 	target.hp -= dealt
+	# A thermobaric hit on a garrisoned building also burns the units inside (P3-05).
+	if damage_type == "thermobaric" and target.garrison != null:
+		for oid: int in target.garrison.occupants:
+			var o: SimEntity = world.get_entity(oid)
+			if o != null and not o.dead:
+				apply(world, o, (amount * GarrisonSystem.CLEAR_PERCENT) / 100, damage_type, attacker_id, false)
 	var attacker: SimEntity = world.get_entity(attacker_id)
 	if attacker != null and dealt > 0 and world.are_enemies(attacker.player_id, target.player_id):
 		_grant_xp(world, attacker, (dealt * target.cost) / maxi(1, target.max_hp))

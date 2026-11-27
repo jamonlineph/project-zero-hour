@@ -60,6 +60,11 @@ func test_every_unit_and_building_has_a_model_and_icon() -> void:
 		assert_true(ResourceLoader.exists(u.icon_path), "%s: missing icon %s" % [id, u.icon_path])
 	for id: String in db.buildings:
 		var b: BuildingDef = db.buildings[id]
+		if b.faction == "neutral":
+			# Map buildings (town houses, P3-05) are drawn by code at the size the
+			# map gives them (HouseModel); they're never built or shown in menus.
+			assert_eq(b.cost, 0, "%s: neutral buildings can't be bought" % id)
+			continue
 		assert_true(ResourceLoader.exists(b.model_path), "%s: missing model %s" % [id, b.model_path])
 		assert_true(ResourceLoader.exists(b.icon_path), "%s: missing icon %s" % [id, b.icon_path])
 

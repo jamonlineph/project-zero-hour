@@ -73,6 +73,8 @@ static func in_range(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 	var dx: int = t.x - e.x
 	var dy: int = t.y - e.y
 	var reach: int = w.max_range + t.radius
+	if e.inside_id != 0:
+		reach += GarrisonSystem.RANGE_BONUS   # firing from a building (P3-05)
 	if absi(dx) > reach or absi(dy) > reach:
 		return false
 	# Same as Fx.length(dx, dy) <= reach and >= min_range (length is floor(sqrt)).
@@ -81,7 +83,7 @@ static func in_range(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 
 
 static func _valid_target(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
-	return not t.dead and world.are_enemies(e.player_id, t.player_id) \
+	return not t.dead and t.inside_id == 0 and world.are_enemies(e.player_id, t.player_id) \
 			and DamageMatrix.can_target(w.targets, t.armor_class) and in_range(e, w, t) \
 			and world.can_see(e.player_id, t.x, t.y) and KillChainSystem.may_engage(world, e, w, t) \
 			and not DecoySystem.is_known_decoy(world, e.player_id, t)
@@ -92,8 +94,8 @@ static func _acquire(world: SimWorld, e: SimEntity, w: SimWeapon) -> SimEntity:
 	var best_structure: bool = true
 	var best_dist: int = 0
 	for t: SimEntity in world.query_enemies(e.player_id, e.x, e.y, w.max_range + SimWorld.MAX_UNIT_RADIUS):
-		if t.dead:
-			continue
+		if t.dead or t.inside_id != 0:
+			continue   # units inside a building can't be shot directly (P3-05)
 		if not DamageMatrix.can_target(w.targets, t.armor_class) or not in_range(e, w, t):
 			continue
 		if not world.can_see(e.player_id, t.x, t.y) or not KillChainSystem.may_engage(world, e, w, t):
@@ -226,6 +228,11 @@ static func _impact(world: SimWorld, player_id: int, attacker_id: int, target_id
 		if dist > splash_radius:
 			continue
 		var percent: int = 100 - ((100 - edge_percent) * dist) / splash_radius
+		if t.inside_id != 0:
+			# Walls stop splash, except thermobaric blasts, which clear buildings.
+			if damage_type != "thermobaric":
+				continue
+			percent = (percent * GarrisonSystem.CLEAR_PERCENT) / 100
 		world.apply_damage(t, (damage * percent) / 100, damage_type, attacker_id, drone_hit)
 
 
@@ -236,7 +243,7 @@ static func _cone(world: SimWorld, e: SimEntity, w: SimWeapon, aimed: SimEntity,
 	world.events.append({"type": "hit", "x": aimed.x, "y": aimed.y, "damage_type": w.damage_type, "radius": 0})
 	var hits: Array[SimEntity] = []
 	for t: SimEntity in world.query_enemies(e.player_id, e.x, e.y, w.max_range + SimWorld.MAX_UNIT_RADIUS):
-		if t.dead or not DamageMatrix.can_target(w.targets, t.armor_class) or not in_range(e, w, t):
+		if t.dead or t.inside_id != 0 or not DamageMatrix.can_target(w.targets, t.armor_class) or not in_range(e, w, t):
 			continue
 		if not world.can_see(e.player_id, t.x, t.y):
 			continue

@@ -11,6 +11,12 @@ Captured on a machine without a GPU, through a virtual display and software Open
 | `riverside_town.png` | Riverside (P2-12): the town on both banks of the river (`--watch=riverside --camera=128,128,90 --reveal`) |
 | `riverside_bridge.png` | Riverside: the north bridge (`--camera=128,72,45`) |
 
+## Features (`features/`)
+
+| File | What |
+|---|---|
+| `garrisoned_town_house.png` | Riverside, 0:49: North Korea's computer player holds an east-bank town house (red flag) (P3-05) |
+
 ## Infantry animations (`infantry/`, P2-16)
 
 | File | What |
@@ -25,6 +31,7 @@ Captured on a machine without a GPU, through a virtual display and software Open
 | `main_menu.png` | Main menu in the new theme (Inter font, framed buttons, amber title) |
 | `hud_engineer_selected.png` | In-game HUD with an engineer selected: framed top bar, minimap and selection panel, command grid with icons, costs and hotkey tags (`--select=us_engineer`) |
 | `pause_menu.png`, `settings.png`, `commander_panel.png` | Overlays (`--open=pause`, `--open=settings`, `--open=commander`) |
+| `load_game.png` | The load screen with two saves (P3-22, `--open=load`) |
 
 ## Gameplay phases (`gameplay_phases/`, 2026-11-27)
 

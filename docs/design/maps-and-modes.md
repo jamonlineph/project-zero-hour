@@ -9,7 +9,7 @@
   - `max_step_cm` (default 100): a cell more than this above one of its four neighbors is an impassable cliff edge. Only the upper cell is blocked, so the ground below a cliff stays open.
   - `water_level_cm` (optional): cells lower than this are deep water and impassable; the view draws a water surface over them
   - `terrain_gen` (optional): hills, raised rocks and carved river `channels` that `tools/make_heightmap.py` turns into `height.r16`. `mirror_x: true` copies the west half onto the east, so a 1v1 map's heights are exactly mirrored
-  - `civilian_buildings_m` (optional): town houses `[x, y, w, h, roof_height]` in meters. They block like obstacles and are drawn as houses (garrisoning comes later)
+  - `civilian_buildings_m` (optional): town houses `[x, y, w, h, roof_height]` in meters. MatchSetup places them as neutral `civilian_house` buildings infantry can garrison (P3-05); `HouseModel` draws them at their size
   - `bridges_m` (optional): bridge decks `[x, y, w, h]` drawn over river crossings. View only: the crossing itself is ground the channels leave uncarved
   - `skirmish` (optional, default false): offered in the skirmish menu
 - `height.r16`: raw 16-bit little-endian heights, one sample per 2 m cell, row by row from the map's (0, 0) corner. Raw bytes rather than a PNG, because Godot re-encodes imported images (to 8-bit textures); raw data is read exactly the same on every platform, which the deterministic sim needs.

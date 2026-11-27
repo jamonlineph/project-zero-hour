@@ -40,6 +40,11 @@ static func build_from(content: ContentDb, sc: Dictionary, seed_value: int) -> S
 		player.credits = int(pd.get("credits", 0))
 	for site: PackedInt32Array in map_def.supply_sites:
 		world.spawn_supply_site(Fx.from_int(site[0]), Fx.from_int(site[1]), site[2])
+	# Town houses are neutral buildings infantry can garrison (P3-05).
+	var house: BuildingDef = content.get_building("civilian_house")
+	if house != null:
+		for r: PackedInt32Array in map_def.civilian_buildings_m:
+			world.spawn_structure(house, r[0], r[1], r[2], r[3])
 	for s: Variant in sc.get("spawns", []):
 		_spawn(world, content, s as Dictionary)
 	return world

@@ -57,17 +57,21 @@ static func make_unit(world: SimWorld, def: UnitDef, id: int, player_id: int, x:
 
 
 ## A building whose footprint origin is cell (cx, cy).
-static func make_building(def: BuildingDef, id: int, player_id: int, cx: int, cy: int, built: bool) -> SimEntity:
+## `size` (cells) overrides the definition's footprint (map houses, P3-05).
+static func make_building(def: BuildingDef, id: int, player_id: int, cx: int, cy: int, built: bool,
+		size: Vector2i = Vector2i.ZERO) -> SimEntity:
+	var fw: int = size.x if size.x > 0 else def.footprint_w
+	var fh: int = size.y if size.y > 0 else def.footprint_h
 	var e := SimEntity.new()
 	e.id = id
 	e.player_id = player_id
 	e.def_id = def.id
 	e.armor_class = def.armor_class
-	e.x = cx * SimMap.CELL + (def.footprint_w * SimMap.CELL) / 2
-	e.y = cy * SimMap.CELL + (def.footprint_h * SimMap.CELL) / 2
+	e.x = cx * SimMap.CELL + (fw * SimMap.CELL) / 2
+	e.y = cy * SimMap.CELL + (fh * SimMap.CELL) / 2
 	e.prev_x = e.x
 	e.prev_y = e.y
-	e.radius = (mini(def.footprint_w, def.footprint_h) * SimMap.CELL) / 2
+	e.radius = (mini(fw, fh) * SimMap.CELL) / 2
 	e.vision = def.vision
 	e.max_hp = def.max_hp
 	e.hp = def.max_hp if built else maxi(1, def.max_hp / 10)
@@ -75,8 +79,8 @@ static func make_building(def: BuildingDef, id: int, player_id: int, cx: int, cy
 	var b := SimBuilding.new()
 	b.cell_x = cx
 	b.cell_y = cy
-	b.w = def.footprint_w
-	b.h = def.footprint_h
+	b.w = fw
+	b.h = fh
 	b.built = built
 	b.total = def.build_ticks * 2
 	b.progress = b.total if built else 0
@@ -85,6 +89,9 @@ static func make_building(def: BuildingDef, id: int, player_id: int, cx: int, cy
 	b.dropoff = def.dropoff
 	b.free_unit = def.free_unit
 	e.building = b
+	if def.garrison_capacity > 0:
+		e.garrison = SimGarrison.new()
+		e.garrison.capacity = def.garrison_capacity
 	for w: WeaponDef in def.weapons:
 		e.weapons.append(SimWeapon.from_def(w))
 	return e

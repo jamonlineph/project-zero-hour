@@ -30,8 +30,8 @@ static func step(world: SimWorld) -> void:
 	var movers: Array[SimEntity] = []
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
-		if e.mover == null or e.mover.flying:
-			continue   # flyers don't push or get pushed
+		if e.mover == null or e.mover.flying or e.inside_id != 0:
+			continue   # flyers and garrisoned units don't push or get pushed
 		movers.append(e)
 		buckets[_bucket_of(e, cols, rows)].append(e)
 	for a: SimEntity in movers:

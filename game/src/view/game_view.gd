@@ -55,6 +55,8 @@ func sync(alpha: float) -> void:
 ## Fog of war: enemies show only where this player sees; neutral things such
 ## as supply sites show once their ground has been explored.
 func is_shown(e: SimEntity) -> bool:
+	if e.inside_id != 0:
+		return false   # inside a building (P3-05)
 	if reveal_all:
 		return true
 	if e.player_id == 0:

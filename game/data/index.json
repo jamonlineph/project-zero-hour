@@ -55,6 +55,7 @@
     "res://data/buildings/us_vehicle_depot.json",
     "res://data/buildings/kp_command_hq.json",
     "res://data/buildings/kp_power_plant.json",
+    "res://data/buildings/civilian_house.json",
     "res://data/buildings/kp_barracks.json",
     "res://data/buildings/kp_logistics_hub.json",
     "res://data/buildings/kp_vehicle_plant.json",

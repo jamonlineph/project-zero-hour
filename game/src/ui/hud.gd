@@ -202,10 +202,13 @@ func refresh_commands() -> void:
 	var builders: bool = false
 	var units: bool = false
 	var producer: SimEntity = null
+	var shelters: Array[int] = []   ## our buildings with units inside (P3-05)
 	for id: int in _selection.selected:
 		var e: SimEntity = world.get_entity(id)
 		if e == null:
 			continue
+		if e.garrison != null and not e.garrison.occupants.is_empty():
+			shelters.append(e.id)
 		builders = builders or e.builder != null
 		units = units or e.mover != null
 		if producer == null and e.building != null and e.building.built \
@@ -218,6 +221,11 @@ func refresh_commands() -> void:
 	elif producer != null:
 		entries = _production_menu(world, producer)
 		entries.append_array(UpgradeMenu.research_entries(_runner, _selection.local_player_id, producer))
+	if not shelters.is_empty() and not units:
+		entries.append({"label": "Exit all", "tooltip": "Everyone inside comes out",
+			"action": func() -> void:
+				for sid: int in shelters:
+					_runner.submit(SimCommand.make_unload(sid))})
 	command_grid.set_entries(entries)
 
 
@@ -406,6 +414,8 @@ func _describe_selection(world: SimWorld) -> String:
 			text += "   carrying %d" % e.gatherer.carried
 		if e.supply != null:
 			text = "Supply site   %d credits left" % e.supply.remaining
+		if e.garrison != null:
+			text += "\nInside: %d / %d" % [e.garrison.occupants.size(), e.garrison.capacity]
 		return text
 	var counts: Dictionary[String, int] = {}
 	for id: int in _selection.selected:

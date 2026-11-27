@@ -113,11 +113,18 @@ func test_riverside_everything_is_reachable_from_both_starts() -> void:
 
 
 func test_houses_block_movement() -> void:
+	# Houses are neutral buildings placed by MatchSetup (P3-05), not static
+	# obstacles, so check a match built on the map.
 	var m: MapDef = _db().get_map("riverside")
-	var map: SimMap = m.make_sim_map()
 	assert_false(m.civilian_buildings_m.is_empty())
+	var w: SimWorld = MatchSetup.build_from(_db(), MatchConfig.skirmish(_db(), "riverside", "us", 10000), 1)
+	var houses: int = 0
+	for id: int in w.entity_ids:
+		if w.entities[id].def_id == "civilian_house":
+			houses += 1
+	assert_eq(houses, m.civilian_buildings_m.size(), "not every house was placed")
 	var h: PackedInt32Array = m.civilian_buildings_m[0]
-	assert_false(map.is_passable((h[0] + h[2] / 2) / 2, (h[1] + h[3] / 2) / 2), "a house doesn't block")
+	assert_false(w.map.is_passable((h[0] + h[2] / 2) / 2, (h[1] + h[3] / 2) / 2), "a house doesn't block")
 
 
 func _flood(map: SimMap, from: Vector2i) -> Dictionary[Vector2i, bool]:

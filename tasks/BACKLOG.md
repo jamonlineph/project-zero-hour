@@ -589,7 +589,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 | P3-02 | UAE faction: roster, mechanics (procurement, sovereign fund, swarm drones, desert raiders), art, AI preset |
 | P3-03 | Superweapons for all factions, with countdowns and counterplay |
 | P3-04 | Aircraft and airbases (ammo, rearming, helicopters) |
-| P3-05 | Garrisoning buildings, and clearing them |
+| P3-05 | Garrisoning buildings, and clearing them — ✅ v1 2026-11-27 (Claude Code): `GarrisonSystem`, GARRISON/UNLOAD commands, town houses as neutral buildings, bunkers and trenches hold 2, thermobaric clearing, right-click to enter, "Exit all", house flags, AI holds town houses; `test_garrison.gd`. Later: a garrison indicator on the minimap, transports (P3-06) |
 | P3-06 | Transports and firing ports |
 | P3-07 | Crushing |
 | P3-08 | Neutral capturable buildings |

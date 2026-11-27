@@ -12,6 +12,7 @@
   ],
   "build_time_ms": 6000,
   "power": 0,
+  "garrison_capacity": 2,
   "vision_cm": 4000,
   "requires": [
     "kp_barracks"

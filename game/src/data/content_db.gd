@@ -142,6 +142,7 @@ func _load_building(path: String) -> void:
 	b.produces = string_list(src, "produces", path)
 	b.dropoff = bool(src.get("dropoff", false))
 	b.free_unit = str(src.get("free_unit", ""))
+	b.garrison_capacity = int(src.get("garrison_capacity", 0))
 	for weapon_id: Variant in src.get("weapons", []):
 		var w: WeaponDef = get_weapon(str(weapon_id))
 		if w == null:

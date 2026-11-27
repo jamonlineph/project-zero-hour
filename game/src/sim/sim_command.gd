@@ -7,7 +7,7 @@ enum Type {
 	MOVE = 1, STOP = 2, ATTACK = 3, ATTACK_MOVE = 4, HOLD = 5,
 	BUILD = 6, PRODUCE = 7, CANCEL = 8, RALLY = 9, GATHER = 10, SELL = 11, REPAIR = 12,
 	GUARD = 13, PATROL = 14, SPOOF = 15, RESEARCH = 16, UPGRADE_UNIT = 17,
-	CHOOSE_POWER = 18, USE_POWER = 19,
+	CHOOSE_POWER = 18, USE_POWER = 19, GARRISON = 20, UNLOAD = 21,
 }
 
 var tick: int = 0               ## tick on which the command is applied
@@ -103,6 +103,23 @@ static func make_choose_power(power_id: String) -> SimCommand:
 
 
 ## Use a chosen power, aimed at (tx, ty) when it needs a point (P2-09).
+## Infantry go into a structure (P3-05).
+static func make_garrison(ids: Array[int], structure_id: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.GARRISON
+	c.entity_ids = ids.duplicate()
+	c.target_entity = structure_id
+	return c
+
+
+## Everyone inside one of the player's structures comes out (P3-05).
+static func make_unload(structure_id: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.UNLOAD
+	c.target_entity = structure_id
+	return c
+
+
 static func make_use_power(power_id: String, tx: int, ty: int) -> SimCommand:
 	var c := SimCommand.new()
 	c.type = Type.USE_POWER

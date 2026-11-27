@@ -175,6 +175,23 @@ func footprint_origin(def: BuildingDef, x: int, y: int) -> Vector2i:
 		WorldPlacement.footprint_start(y, def.footprint_h, map_height))
 
 
+## A neutral building on a map rectangle in meters, sized from the rectangle
+## (town houses, P3-05). Returns its id, or 0 if the area is blocked.
+func spawn_structure(def: BuildingDef, x_m: int, y_m: int, w_m: int, h_m: int) -> int:
+	var cx: int = SimMap.cell_coord(Fx.from_int(x_m))
+	var cy: int = SimMap.cell_coord(Fx.from_int(y_m))
+	var size := Vector2i(maxi(1, (w_m * 100) / SimMap.CELL_CM), maxi(1, (h_m * 100) / SimMap.CELL_CM))
+	var id: int = _next_id
+	if not map.place_footprint(cx, cy, size.x, size.y, id):
+		return 0
+	_next_id += 1
+	var e: SimEntity = WorldSpawn.make_building(def, id, 0, cx, cy, true, size)
+	if e.garrison != null:
+		e.garrison.neutral = true
+	add_entity(e)
+	return id
+
+
 ## A neutral supply site holding `amount` credits, blocking a 2x2-cell area.
 func spawn_supply_site(x: int, y: int, amount: int) -> int:
 	var id: int = _next_id
@@ -234,6 +251,7 @@ func step() -> void:
 	# System order is part of the rules. Add new systems here, in order, and
 	# document the order in docs/02-architecture.md.
 	OrderSystem.step(self)
+	GarrisonSystem.step(self)
 	DroneSystem.step(self)
 	JammingSystem.step(self)
 	KillChainSystem.step(self)
