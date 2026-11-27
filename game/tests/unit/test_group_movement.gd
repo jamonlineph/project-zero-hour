@@ -149,3 +149,35 @@ func _assert_no_big_overlaps(world: SimWorld, ids: Array[int]) -> void:
 			var b: SimEntity = world.get_entity(ids[j])
 			var overlap: int = a.radius + b.radius - Fx.length(b.x - a.x, b.y - a.y)
 			assert_true(overlap <= a.radius / 10, "units %d and %d overlap by %d" % [ids[i], ids[j], overlap])
+
+
+## Goals handed out for a spread-out group (wider than KEEP_LAYOUT_RADIUS) at
+## `xs` ordered to (dest_x, 50 m), in a 200 m wide open world.
+func _formation_goals(xs: Array[int], dest_x: int) -> Array[Vector2i]:
+	var world := SimWorld.new(1, 200, 100)
+	var ids: Array[int] = []
+	for i: int in xs.size():
+		ids.append(world.spawn_unit(_def(), 1, Fx.from_int(xs[i]), Fx.from_int(30 + i * 8)))
+	_order(world, ids, dest_x, 50)
+	_run(world, 1)
+	var out: Array[Vector2i] = []
+	for id: int in ids:
+		var m: SimMover = world.get_entity(id).mover
+		out.append(Vector2i(m.target_x, m.target_y))
+	return out
+
+
+func test_mirrored_groups_get_mirrored_formations() -> void:
+	# P2-12b: the grid used to fill west to east whichever way the group
+	# went, so two mirrored armies formed up differently (a side bias).
+	var west: Array[Vector2i] = _formation_goals([20, 24, 28, 22, 26], 120)
+	var east: Array[Vector2i] = _formation_goals([180, 176, 172, 178, 174], 80)
+	var w: int = Fx.from_int(200)
+	var west_sorted: Array[String] = []
+	var east_mirrored: Array[String] = []
+	for i: int in west.size():
+		west_sorted.append(str(west[i]))
+		east_mirrored.append(str(Vector2i(w - east[i].x, east[i].y)))
+	west_sorted.sort()
+	east_mirrored.sort()
+	assert_eq(east_mirrored, west_sorted, "the two groups did not form up as mirror images")

@@ -82,6 +82,13 @@ static func move(world: SimWorld, c: SimCommand) -> void:
 		for e: SimEntity in movers:
 			spacing = maxi(spacing, e.radius * 2 + Fx.from_ratio(1, 2))
 		offsets = Formation.grid_offsets(n, spacing)
+		# Fill the grid from the side facing the destination, so two armies
+		# marching at each other form up as mirror images (P2-12b: the grid
+		# always filled west to east, which favored one side of a map).
+		var fx: int = -1 if c.target_x < cx else 1
+		var fy: int = -1 if c.target_y < cy else 1
+		for i: int in n:
+			offsets[i] = Vector2i(offsets[i].x * fx, offsets[i].y * fy)
 	for i: int in n:
 		var e: SimEntity = movers[i]
 		e.mover.order_move(

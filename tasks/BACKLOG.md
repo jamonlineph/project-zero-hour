@@ -529,10 +529,18 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Cause found:** America's rocket artillery needs a spotter to fire beyond its own sight, and the AI's 2 recon drones hovered over the army's center. Tests (20 runs each): rockets without the spotter rule → America 13–7; unguided rockets with the rule (immune to jamming) → North Korea 15–5; so the spotter rule, not jamming, held America back. Cheaper American units broke Twin Ridge (America 30–10) and were rejected; no artillery for either side still left North Korea at 12–7.
 - **Fix:** the AI's spotters fly 30 m ahead of the army toward its target while attacking (forward observers), and America's preset keeps 3 instead of 2 (`max_spotters`). 40 runs each: Riverside North Korea 23, America 17 (57.5%); Twin Ridge America 23, North Korea 17 (57.5%).
 
-### P2-12b · Check Riverside side fairness with the new AI — ⬜
+### P2-12b · Check Riverside side fairness with the new AI — ✅ 2026-11-27 (Claude Code: cause was the move formation always filling west to east; now it fills from the side facing the destination. Mirror runs west 43, east 35 over 78 (55%), from 100 of 157 (64%) before)
 - **Seen (2026-11-27):** with the P2-11e AI, faction matches on Riverside went to the west 29 of 40 (65% and 72% in two batches), while same-faction mirror matches with the earlier AI were even (west 21, east 18). Player 1 is always west in `ai_matches.gd`.
 - **Do:** run 40+ mirror matches per faction with the current AI (`ai_matches.gd` can't do mirrors yet; add a `mirror` option); if the west still wins more than 55%, find the cause as in P2-11b (mirror diffs) before changing the map.
 - **Accept:** mirror and swapped faction runs both within 55% for either side.
+- **Found:** a `mirror=<faction>` option and a `flip` option (player 1 in the east) in `ai_matches.gd`. Before the fix: mirror runs west 52 of 77, flipped west 48 of 80. Paths were symmetric (both sides use the same bridge), so the cause was elsewhere: `Formation.grid_offsets` filled the grid west to east for every move order, so a westward army formed up differently from an eastward one. `WorldCommands.move` now flips the grid toward the destination; `test_mirrored_groups_get_mirrored_formations` checks it. Golden replays and the determinism hash were regenerated (new hash 545746504).
+- **After (20 runs per batch):** mirror America 10–9 (one draw), mirror North Korea 12–8, flipped America west 12–7, flipped North Korea west 9–11: west 43, east 35 (55%, inside the noise for 78 games).
+- **Faction runs after the fix** (40, America against North Korea, both ways round): west 18, east 22; North Korea 26–14 (65%), against 23–17 in P2-11e. See P2-11f.
+
+### P2-11f · Riverside faction balance after the formation fix — ⬜
+- **Seen (2026-11-27):** after P2-12b, 40 Riverside runs went North Korea 26, America 14 (65%); P2-11e had 23–17. Over both batches North Korea won 49 of 80 (61%).
+- **Do:** after P3-07 (crushing changes tank-versus-infantry fights), run 80 faction matches on Riverside and 40 on Twin Ridge and the new maps; if one faction wins more than 58% overall, find which unit pairing decides it (as in P2-11e) before touching prices.
+- **Accept:** each faction within 42–58% over 80 Riverside runs, and no map beyond 60%.
 
 ### P2-11d · Split `sim_world.gd` — ✅ 2026-11-27 (Claude Code: sim_world.gd 346 lines, content_db.gd 412; golden replays and the determinism hash unchanged)
 - **Seen (2026-11-27):** `game/src/sim/sim_world.gd` is about 790 lines, almost twice the 400-line guideline.

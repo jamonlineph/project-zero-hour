@@ -95,8 +95,10 @@ func _initialize() -> void:
 	if mirror != "":
 		f1 = mirror
 		f2 = mirror
-	print("ai_matches: team 1 (%s, %s, west) %d, team 2 (%s, %s, east) %d, no result %d; wrote %s" % [
-		f1, levels[0], wins[1], f2, levels[1], wins[2], wins[0], out])
+	var flipped: bool = args.has("flip")
+	print("ai_matches: team 1 (%s, %s, %s) %d, team 2 (%s, %s, %s) %d, no result %d; wrote %s" % [
+		f1, levels[0], "east" if flipped else "west", wins[1], f2, levels[1], "west" if flipped else "east",
+		wins[2], wins[0], out])
 	quit(0)
 
 

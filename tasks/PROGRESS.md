@@ -4,6 +4,20 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-27: P2-11e, P3-22, P3-05, P3-20, P2-12b: balance, save/load, garrisons, colorblind colors, side fairness (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P2-11e:** America's rocket artillery sat idle because its recon drones hovered over the army; spotters now fly 30 m ahead toward the target while the army attacks, and America keeps 3. Riverside went from about 85% North Korea to 23–17.
+  - **P3-22 (v1):** "Save game" in the pause menu and "Load game" in the main menu. A save is the replay plus the state hash; loading fast-forwards behind a progress label and warns if the hash differs.
+  - **P3-05 (v1):** infantry garrison town houses (now neutral buildings), bunkers and trench lines: +5 m range inside, can't be targeted, thermobaric weapons clear them, a destroyed building throws them out hurt. Right-click to enter, "Exit all" to leave. The AI holds up to 2 houses on its half.
+  - **P3-20 (part):** "Colorblind-safe team colors" setting (Okabe-Ito palette).
+  - **P2-12b:** the west won about 64% of same-faction matches on Riverside. Cause: move orders filled their formation grid west to east whichever way the army went. The grid now fills from the side facing the destination; mirror runs are west 43, east 35 (55%). New determinism hash: 545746504 (golden replays regenerated for this change). `ai_matches.gd` labels sides correctly with `flip`.
+- Tests: `tools/run_tests.sh` -> 267 tests, 0 failed (+ both smoke tests). `python3 tools/check_repo.py` -> ok.
+- Not verified: save/load on a phone (loading a long match fast-forwards it; time it on a low-end device); garrison controls with touch.
+- Next: P3-23a biomes and new maps (in progress), then P3-07 crushing, then P2-11f (faction balance re-check: North Korea 26–14 in the latest Riverside batch).
+- For the owner: the determinism hash changed on purpose (formation fix); CI compares against the new value in `game/data/determinism_check.json`.
+
+---
+
 ## 2026-11-27: P2-11d, P2-15, P2-16, P2-17, P2-18: refactor, art export, infantry animation, UI and audio passes (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P2-11d:** `sim_world.gd` (790 → 346 lines) and `content_db.gd` (710 → 412) split into helpers: `WorldCommands`, `WorldSpawn`, `WorldPlacement`, `WorldDamage`, `SpatialIndex`; `UnitLoader`, `MapLoader`, `PowerLoader`. No behavior change: golden replays, content hash and determinism hash unchanged.
