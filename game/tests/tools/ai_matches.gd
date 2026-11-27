@@ -28,6 +28,7 @@ func _initialize() -> void:
 	var wins: Dictionary = {0: 0, 1: 0, 2: 0}
 	var produced: Dictionary = {}   ## player -> def_id -> count, over all runs
 	var lost: Dictionary = {}
+	var power_uses: Dictionary = {}   ## player -> power id -> uses
 	for r: int in runs:
 		var sc: Dictionary
 		if map_id != "":
@@ -54,6 +55,7 @@ func _initialize() -> void:
 				match ev["type"]:
 					"power_used":
 						powers += 1
+						_count(power_uses, int(ev["player"]), str(ev["power"]))
 					"produced":
 						_count(produced, int(ev["player"]), str(ev["def_id"]))
 					"died":
@@ -68,12 +70,13 @@ func _initialize() -> void:
 	DirAccess.make_dir_recursive_absolute(out.get_base_dir())
 	var f := FileAccess.open(out, FileAccess.WRITE)
 	f.store_string(JSON.stringify({"levels": levels, "runs": results, "wins": wins,
-			"produced": produced, "lost": lost}, "  ") + "\n")
+			"produced": produced, "lost": lost, "powers": power_uses}, "  ") + "\n")
 	f.close()
 	if args.has("stats"):
 		for pid: int in [1, 2]:
 			print("player %d produced %s" % [pid, produced.get(pid, {})])
 			print("player %d lost     %s" % [pid, lost.get(pid, {})])
+			print("player %d powers   %s" % [pid, power_uses.get(pid, {})])
 	var p: Array = (db.scenarios["ai_duel"] as Dictionary)["players"]
 	var f1: String = str(p[1 if swap else 0]["faction"])
 	var f2: String = str(p[0 if swap else 1]["faction"])

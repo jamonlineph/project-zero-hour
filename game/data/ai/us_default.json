@@ -23,8 +23,8 @@
   },
   "max_gatherers": 4,
   "gatherer_unit": "us_logistics_truck",
-  "attack_wave_size": 6,
-  "first_attack_after_s": 180,
+  "attack_wave_size": 7,
+  "first_attack_after_s": 200,
   "think_interval_ticks": 15,
   "defend_radius_m": 45,
   "counters": {

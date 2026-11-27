@@ -101,7 +101,7 @@ func think(world: SimWorld) -> Array[SimCommand]:
 	_keep_builders(world, mine, cmds)
 	var reserve: int = _build(world, mine, cmds)
 	_gatherers(world, mine, cmds, reserve)
-	_produce(world, mine, cmds, reserve)
+	AiProduction.produce(world, self, mine.army, mine.buildings, cmds, reserve)
 	_military(world, mine, cmds)
 	AiStrategy.research(world, self, mine.buildings, reserve, cmds)
 	if difficulty != "easy" or (world.tick / think_interval) % 2 == 0:
@@ -245,66 +245,27 @@ func _gatherers(world: SimWorld, mine: _Mine, cmds: Array[SimCommand], reserve: 
 			return
 
 
-func _produce(world: SimWorld, mine: _Mine, cmds: Array[SimCommand], reserve: int) -> void:
-	var credits: int = world.get_player(player_id).credits - reserve
-	var counts: Dictionary[String, int] = {}
-	for e: SimEntity in mine.army:
-		counts[e.def_id] = counts.get(e.def_id, 0) + 1
-	# Units still being built count too, so a factory doesn't queue the same
-	# missing type over and over before the first one is out (P2-11c).
-	for b: SimEntity in mine.buildings:
-		for queued: String in b.building.queue:
-			counts[queued] = counts.get(queued, 0) + 1
-	var mix: Dictionary[String, int] = unit_mix.duplicate()
-	var bonus: Dictionary[String, int] = AiStrategy.counter_bonus(world, self)
-	for u: String in bonus:
-		mix[u] = mix.get(u, 0) + bonus[u]
-	var total_weight: int = 0
-	for u: String in mix:
-		total_weight += mix[u]
-	var spotters: int = 0
-	for u: String in counts:
-		if _unarmed_spotter(world, u):
-			spotters += counts[u]
-	for b: SimEntity in mine.buildings:
-		if not b.building.built or b.building.queue.size() >= 2:
-			continue
-		var best: String = ""
-		var best_score: int = 0
-		for u: String in b.building.produces:
-			if not mix.has(u) or (spotters >= max_spotters and _unarmed_spotter(world, u)):
-				continue
-			# How far below its share of the army this unit type is, plus up
-			# to one unit's worth of noise so mixes vary between matches.
-			var score: int = (mine.army.size() + 1) * mix[u] - counts.get(u, 0) * total_weight \
-				+ _rng.range_int(maxi(1, total_weight))
-			if best == "" or score > best_score or (score == best_score and u < best):
-				best = u
-				best_score = score
-		if best == "":
-			continue
-		var def: UnitDef = world.content.get_unit(best)
-		if def == null or credits < def.cost or not world.has_requirements(player_id, def.requires):
-			continue
-		cmds.append(SimCommand.make_produce(b.id, best))
-		credits -= def.cost
-		counts[best] = counts.get(best, 0) + 1
-		if _unarmed_spotter(world, best):
-			spotters += 1
-
-
-func _unarmed_spotter(world: SimWorld, unit_id: String) -> bool:
-	var def: UnitDef = world.content.get_unit(unit_id)
-	return def != null and def.spotter and def.weapons.is_empty()
+## Rolls this match's noise in [0, bound) (AiProduction uses it).
+func noise(bound: int) -> int:
+	return _rng.range_int(maxi(1, bound))
 
 
 func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 	if mine.hq == null:
 		return
 	_set_rally_points(world, mine, cmds)
+	# Armed units fight; unarmed spotters (recon drones) hover over the army
+	# instead of leading the charge, where rifles shot them down (P2-11e).
 	var army_ids: Array[int] = []
+	var fighters: Array[SimEntity] = []
+	var spotters: Array[SimEntity] = []
 	for e: SimEntity in mine.army:
-		army_ids.append(e.id)
+		if e.weapons.is_empty():
+			spotters.append(e)
+		else:
+			fighters.append(e)
+			army_ids.append(e.id)
+	_escort(spotters, fighters, cmds)
 	if army_ids.is_empty():
 		_attacking = false
 		_army_size = 0
@@ -335,11 +296,34 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 	# Units that finished their attack-move (or just arrived from a factory)
 	# join the push.
 	var idle: Array[int] = []
-	for e: SimEntity in mine.army:
+	for e: SimEntity in fighters:
 		if e.order == SimEntity.Order.IDLE:
 			idle.append(e.id)
 	if not idle.is_empty():
 		cmds.append(SimCommand.make_attack_move(idle, target.x, target.y))
+
+
+## Sends spotters that drifted more than 12 m from the army's center back
+## over it. Drones heading home to recharge are left alone.
+func _escort(spotters: Array[SimEntity], fighters: Array[SimEntity], cmds: Array[SimCommand]) -> void:
+	if spotters.is_empty() or fighters.is_empty():
+		return
+	var cx: int = 0
+	var cy: int = 0
+	for f: SimEntity in fighters:
+		cx += f.x
+		cy += f.y
+	cx /= fighters.size()
+	cy /= fighters.size()
+	var reach: int = 12 * Fx.ONE
+	var ids: Array[int] = []
+	for e: SimEntity in spotters:
+		if e.drone != null and e.drone.returning:
+			continue
+		if Fx.length_sq(e.x - cx, e.y - cy) > Fx.length_sq(reach, 0):
+			ids.append(e.id)
+	if not ids.is_empty():
+		cmds.append(SimCommand.make_move(ids, cx, cy))
 
 
 func _set_rally_points(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
