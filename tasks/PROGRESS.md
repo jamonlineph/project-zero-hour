@@ -4,6 +4,21 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-27: P2-11d, P2-15, P2-16, P2-17, P2-18: refactor, art export, infantry animation, UI and audio passes (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P2-11d:** `sim_world.gd` (790 → 346 lines) and `content_db.gd` (710 → 412) split into helpers: `WorldCommands`, `WorldSpawn`, `WorldPlacement`, `WorldDamage`, `SpatialIndex`; `UnitLoader`, `MapLoader`, `PowerLoader`. No behavior change: golden replays, content hash and determinism hash unchanged.
+  - **P2-15:** `tools/export_blend.sh` exports hand-made `art_source/<category>/<id>.blend` (+ a provenance `.json`) to the same outputs as the placeholders and records the artist in the manifest; refuses files without provenance, an allowed license or a `team_color` surface. Self-test: `tools/test_export_blend.sh` (passes with Blender 5.3).
+  - **P2-16:** shared infantry rig (`blender/sf_rig.py`, armature `squad_rig`, bones per soldier) with 9 generated animations; all 7 infantry models rebuilt. `InfantryAnimator` drives an `AnimationTree` from sim state; soldiers now fall and lie still instead of flattening. Screenshots: `docs/screenshots/infantry/`.
+  - **P2-17:** `UiTheme` (dark olive panels, steel-olive frames, amber highlights) with the OFL font Inter, set on the window and on the HUD layer's controls (a `CanvasLayer` stops theme inheritance). Command-grid buttons are 88×80 with icon, name, cost and an amber hotkey tag. Screenshots: `docs/screenshots/ui/`.
+  - **P2-18:** 9 new generated sound effects (alerts, active protection, jamming, radio acknowledgements) wired to sim events with rate limits, and an original generated music track (`tools/gen_music.py`, 80 s loop) played by `MusicPlayer`.
+  - Dev options for screenshots: `--select=<def_id>`, `--open=pause|settings|commander`.
+- Tests: `tools/run_tests.sh` -> 253 tests, 0 failed. `python3 tools/check_repo.py` -> ok (103 assets).
+- Not verified: the music and sounds were checked by level and length only (no listening here); the UI on a real phone; real-GPU rendering of the rig.
+- Next: finish P2-11e (Riverside balance); P1-30b (renderer "material is null" errors).
+- For the owner: listen to `game/assets/audio/music/main_theme.ogg` and say if the style fits; it can be regenerated with different settings.
+
+---
+
 ## 2026-11-27: P2-12 Map "Riverside", gameplay video and phase screenshots (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **Riverside** (`riverside`): a 256 m 1v1 map, exactly mirrored across x = 128. A river runs north-south through the middle with two bridges 116 m apart, a small town sits on both banks between them, and farmland with hedgerows and copses fills the rest. Per side: a safe supply site, two farm expansions and a contested site in the town square. It is the default skirmish map; the menu has a map button.
