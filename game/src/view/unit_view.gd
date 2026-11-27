@@ -34,6 +34,7 @@ var is_wreck: bool = false
 var _upgrade_parts: Dictionary[String, Node3D] = {}   ## upg_* node name -> node (P2-05)
 var _upgrade_sig: int = -1
 var _decoy_look: bool = false
+var animator: InfantryAnimator   ## infantry with the shared rig (P2-16)
 static var _decoy_material: StandardMaterial3D
 
 
@@ -136,6 +137,8 @@ func setup(entity: SimEntity, def: UnitDef, team_color: Color) -> void:
 	elif def != null and def.is_infantry():
 		kind = Kind.INFANTRY
 	add_child(_model)
+	if kind == Kind.INFANTRY:
+		animator = InfantryAnimator.attach_to(_model)
 	_ring = _make_ring(radius_m)
 	_ring.visible = false
 	add_child(_ring)
@@ -252,6 +255,14 @@ func become_wreck(darken: Material) -> void:
 	_ring.visible = false
 	if status != null:
 		status.visible = false
+	if kind == Kind.INFANTRY and animator != null:
+		# Play the fall, lie still a moment, then sink away.
+		animator.play("death_1" if entity_id % 2 == 0 else "death_2")
+		var fall := create_tween()
+		fall.tween_interval(3.0)
+		fall.tween_property(self, "position:y", -1.0, 1.5)
+		fall.tween_callback(queue_free)
+		return
 	if kind == Kind.INFANTRY or kind == Kind.DRONE or kind == Kind.SUPPLY:
 		var t := create_tween()
 		t.tween_property(self, "scale", Vector3(1.0, 0.05, 1.0), 0.4)
@@ -331,6 +342,8 @@ func update_from_sim(e: SimEntity, alpha: float) -> void:
 	position = Vector3(px, 0.0, pz)
 	var facing: float = float(e.prev_facing) + float(Fx.angle_diff(e.prev_facing, e.facing)) * alpha
 	rotation.y = yaw_from_sim_angle(facing)
+	if animator != null:
+		animator.update(e, get_process_delta_time())
 
 
 ## Sim angle a points along (cos a, sin a) in sim X/Y, which is Godot X/Z.

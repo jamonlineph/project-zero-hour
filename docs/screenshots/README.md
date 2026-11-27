@@ -11,6 +11,13 @@ Captured on a machine without a GPU, through a virtual display and software Open
 | `riverside_town.png` | Riverside (P2-12): the town on both banks of the river (`--watch=riverside --camera=128,128,90 --reveal`) |
 | `riverside_bridge.png` | Riverside: the north bridge (`--camera=128,72,45`) |
 
+## Infantry animations (`infantry/`, P2-16)
+
+| File | What |
+|---|---|
+| `animation_poses.png` | The 9 shared animations on the rifle squad, rendered in Blender |
+| `in_game_closeup.png` | Soldiers in a Riverside match: North Korean squads idle by the HQ, American soldiers aiming and running (enlarged crop) |
+
 ## UI art pass (`ui/`, P2-17)
 
 | File | What |

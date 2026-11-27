@@ -91,8 +91,9 @@ Every model needs at least one `team_color` surface; the smoke test checks this.
 4. **Final art:** an artist makes `art_source/<category>/<id>.blend` following the conventions above, plus `art_source/<category>/<id>.json` with `author`, `license` and `source`. `tools/export_blend.sh --only <id>` checks it, writes the same outputs as the placeholder and records the artist in the manifest (details in `blender/README.md`).
 5. **Animation:**
    - Vehicles animate in Godot code (turret yaw, barrel pitch, wheels, rotors).
-   - Infantry need a shared skeleton and a shared animation set: idle, walk, run, aim, fire, prone, two death variants, enter-building.
-   - Source the animations from CC0 packs or animate them by hand (P2-16). Record every source in the manifest.
+   - Infantry share one rig and animation set (P2-16, `blender/sf_rig.py`). Each infantry model has one armature, `squad_rig`, with bones `s<i>_hips`, `s<i>_spine`, `s<i>_head`, `s<i>_arm_l`, `s<i>_arm_r`, `s<i>_leg_l`, `s<i>_leg_r` for every soldier `i`. The animations are `idle`, `walk`, `run`, `aim`, `fire`, `prone` (loops) and `death_1`, `death_2`, `enter_building` (play once). Placeholders bind body parts rigidly to bones; final art may skin a mesh to the same bones and must keep the bone and animation names.
+   - In the game, `InfantryAnimator` picks the animation from the sim state through an `AnimationTree` (dead → a death, hold → prone, moving → run, or walk on attack-move, just fired → fire, has a target → aim, else idle). `enter_building` waits for garrisons.
+   - Hand-made animations must be original or CC0; record every source in the manifest.
 6. **Provenance:** every output file gets a row in `ASSET_MANIFEST.csv`. The script adds rows for generated files; add rows yourself for hand-made or third-party files.
 7. **Check in the game:** run the sandbox and look at it at real zoom levels, on a phone if you can.
 

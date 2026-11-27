@@ -547,7 +547,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 ### P2-15 · Export script for hand-made `.blend` files — ✅ 2026-11-27 (Claude Code: `tools/export_blend.sh`, provenance sidecar per file, self-test `tools/test_export_blend.sh`)
 - **Accept:** `blender/export_blend.py` exports `art_source/**/<id>.blend` to `.glb` and renders icons and sheets with the same settings as the placeholders, then updates the manifest.
 
-### P2-16 · Infantry skeleton and animations — ⬜
+### P2-16 · Infantry skeleton and animations — ✅ 2026-11-27 (Claude Code: shared `squad_rig` with 9 generated animations in every infantry model; `InfantryAnimator` drives an AnimationTree from sim state; poses in `docs/screenshots/infantry/`)
 - **Accept:** a shared rig plus an animation set (idle, walk, run, aim, fire, prone, 2 deaths, enter building) from CC0 or original sources; a Godot `AnimationTree` hooks them to sim states.
 
 ### P2-17 · UI art pass — ✅ 2026-11-27 (Claude Code: `UiTheme` with the OFL font Inter, framed panels and buttons, bigger command-grid buttons with icons and hotkey tags; screenshots in `docs/screenshots/ui/`)

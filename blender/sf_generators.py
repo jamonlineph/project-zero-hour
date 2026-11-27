@@ -10,6 +10,7 @@ and "barrel" (tilts up and down), with origins set at their pivots. A
 negative X rotation raises the front (-Y) of a part.
 """
 
+import sf_rig  # noqa: E402
 from sf_common import TEAM_MATERIAL, box, cylinder, empty, get_material, set_origin, sphere
 
 
@@ -143,27 +144,38 @@ def wheeled(spec, palette):
 
 
 def infantry(spec, palette):
-    """A small squad of low-poly soldiers, scaled up for readability."""
+    """A small squad of low-poly soldiers, scaled up for readability, on the
+    shared infantry rig with its animations (sf_rig, P2-16)."""
     m = _materials(spec, palette)
     figures = spec.get("figures", 4)
     s = spec.get("scale", 1.3)
     spacing = 0.9 * s
     cols = 2
+    origins = []
     for i in range(figures):
         ox = ((i % cols) - (cols - 1) / 2) * spacing
         oy = ((i // cols) - ((figures - 1) // cols) / 2) * spacing
-        legs = box(f"soldier_{i}", (0.32 * s, 0.22 * s, 0.85 * s), (ox, oy, 0.425 * s), m["dark"])
-        box(f"torso_{i}", (0.42 * s, 0.26 * s, 0.6 * s), (ox, oy, 1.15 * s), m["body"], legs)
-        box(f"vest_{i}", (0.44 * s, 0.2 * s, 0.32 * s), (ox, oy + 0.06 * s, 1.18 * s), m["team"], legs)
-        sphere(f"head_{i}", 0.13 * s, (ox, oy, 1.6 * s), m["body"], parent=legs)
-        sphere(f"helmet_{i}", 0.15 * s, (ox, oy, 1.66 * s), m["body"], scale=(1.0, 1.0, 0.65), parent=legs)
-        weapon = spec.get("weapon", "rifle")
+        origins.append((ox, oy))
+    arm = sf_rig.build_rig(origins, s)
+    weapon = spec.get("weapon", "rifle")
+    for i, (ox, oy) in enumerate(origins):
+        def part(obj, bone):
+            sf_rig.attach(obj, arm, sf_rig.bone_name(i, bone))
+        part(box(f"leg_l_{i}", (0.15 * s, 0.22 * s, 0.85 * s), (ox - 0.09 * s, oy, 0.425 * s), m["dark"]), "leg_l")
+        part(box(f"leg_r_{i}", (0.15 * s, 0.22 * s, 0.85 * s), (ox + 0.09 * s, oy, 0.425 * s), m["dark"]), "leg_r")
+        part(box(f"torso_{i}", (0.42 * s, 0.26 * s, 0.6 * s), (ox, oy, 1.15 * s), m["body"]), "spine")
+        part(box(f"vest_{i}", (0.44 * s, 0.2 * s, 0.32 * s), (ox, oy + 0.06 * s, 1.18 * s), m["team"]), "spine")
+        part(sphere(f"head_{i}", 0.13 * s, (ox, oy, 1.6 * s), m["body"]), "head")
+        part(sphere(f"helmet_{i}", 0.15 * s, (ox, oy, 1.66 * s), m["body"], scale=(1.0, 1.0, 0.65)), "head")
+        part(box(f"arm_l_{i}", (0.1 * s, 0.34 * s, 0.12 * s), (ox - 0.24 * s, oy - 0.16 * s, 1.25 * s), m["body"]), "arm_l")
+        part(box(f"arm_r_{i}", (0.1 * s, 0.34 * s, 0.12 * s), (ox + 0.24 * s, oy - 0.16 * s, 1.25 * s), m["body"]), "arm_r")
         if weapon == "launcher" and i % 2 == 0:
-            cylinder(f"launcher_{i}", 0.09 * s, 1.1 * s, (ox + 0.2 * s, oy - 0.1 * s, 1.5 * s), m["accent"], axis="Y", parent=legs)
+            part(cylinder(f"launcher_{i}", 0.09 * s, 1.1 * s, (ox + 0.2 * s, oy - 0.1 * s, 1.5 * s), m["accent"], axis="Y"), "arm_r")
         elif weapon == "drone_case" and i % 2 == 0:
-            box(f"case_{i}", (0.5 * s, 0.25 * s, 0.6 * s), (ox, oy + 0.3 * s, 1.2 * s), m["accent"], legs)
+            part(box(f"case_{i}", (0.5 * s, 0.25 * s, 0.6 * s), (ox, oy + 0.3 * s, 1.2 * s), m["accent"]), "spine")
         else:
-            box(f"rifle_{i}", (0.06 * s, 0.75 * s, 0.08 * s), (ox + 0.22 * s, oy - 0.25 * s, 1.15 * s), m["metal"], legs)
+            part(box(f"rifle_{i}", (0.06 * s, 0.75 * s, 0.08 * s), (ox + 0.22 * s, oy - 0.25 * s, 1.15 * s), m["metal"]), "arm_r")
+    sf_rig.add_animations(arm, figures)
 
 
 def drone(spec, palette):

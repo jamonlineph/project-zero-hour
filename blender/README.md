@@ -27,6 +27,7 @@ Set `BLENDER=/path/to/blender` if Blender isn't on your PATH. Tested with Blende
 | `sf_generators.py` | One generator per archetype: `tracked`, `wheeled`, `infantry`, `drone`, `building` |
 | `sf_common.py` | Shapes, materials, glTF export, camera/lights, sprite-sheet stitching, manifest |
 | `specs/placeholders.json` | Asset specs: id, category, archetype, faction, sizes in meters, options |
+| `sf_rig.py` | The shared infantry rig and its 9 animations (P2-16) |
 | `export_blend.py` | Exports hand-made `art_source/**/<id>.blend` files the same way (P2-15) |
 | `tests/make_test_blends.py` | Fixtures for `tools/test_export_blend.sh` |
 

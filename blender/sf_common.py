@@ -139,14 +139,21 @@ def export_glb(path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     for obj in bpy.context.scene.objects:
         obj.select_set(obj.type not in {"CAMERA", "LIGHT"})
+    rigged = any(o.type == "ARMATURE" for o in bpy.context.scene.objects)
+    extra = {}
+    if rigged:
+        # Each NLA track becomes one glTF animation (sf_rig, P2-16).
+        extra = {"export_animations": True, "export_animation_mode": "NLA_TRACKS",
+                 "export_force_sampling": True}
     bpy.ops.export_scene.gltf(
         filepath=path,
         export_format="GLB",
         use_selection=True,
-        export_apply=True,
+        export_apply=not rigged,   # applying modifiers drops the armature binding
         export_yup=True,
         export_cameras=False,
         export_lights=False,
+        **extra,
     )
 
 

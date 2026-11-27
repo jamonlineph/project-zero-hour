@@ -119,6 +119,8 @@ func play_events(events: Array[Dictionary]) -> void:
 				var shooter: UnitView = _views.get(ev["attacker"], null)
 				if shooter == null or not shooter.visible:
 					continue
+				if shooter.animator != null:
+					shooter.animator.fired()
 				var from: Vector3 = shooter.muzzle_position()
 				effects.play(CombatEffects.Kind.MUZZLE, from)
 				var weapon: WeaponDef = content.weapons.get(str(ev["weapon"]), null) if content != null else null
