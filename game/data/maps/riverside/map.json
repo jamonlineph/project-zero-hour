@@ -140,7 +140,7 @@
       6
     ]
   ],
-  "_civilian_doc": "Town houses [x_m, y_m, w_m, h_m, roof_height_m]: they block like obstacles and are drawn as houses (garrisoning comes later).",
+  "_civilian_doc": "Town houses [x_m, y_m, w_m, h_m, roof_height_m]: neutral buildings that block movement and that infantry can garrison (P3-05).",
   "civilian_buildings_m": [
     [
       84,

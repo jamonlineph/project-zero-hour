@@ -12,15 +12,18 @@
   - `civilian_buildings_m` (optional): town houses `[x, y, w, h, roof_height]` in meters. MatchSetup places them as neutral `civilian_house` buildings infantry can garrison (P3-05); `HouseModel` draws them at their size
   - `bridges_m` (optional): bridge decks `[x, y, w, h]` drawn over river crossings. View only: the crossing itself is ground the channels leave uncarved
   - `skirmish` (optional, default false): offered in the skirmish menu
+  - `biome` (optional, default `temperate`): `temperate`, `desert` or `winter` (`MapDef.BIOMES`). View only (P3-23): `Biomes` holds each one's ground, water and house colors and how obstacles are drawn (temperate rocks and hedges, desert sandstone mesas, winter pine forests). Obstacles are drawn at exactly their rectangles, so what you see still blocks
 - `height.r16`: raw 16-bit little-endian heights, one sample per 2 m cell, row by row from the map's (0, 0) corner. Raw bytes rather than a PNG, because Godot re-encodes imported images (to 8-bit textures); raw data is read exactly the same on every platform, which the deterministic sim needs.
 - The sim gets integer heights (`SimMap.height_at`) and the passability grid; `TerrainView` builds the ground mesh from the same heights, so what you see is what the sim uses.
 - Later: `splat.png` (terrain texture weights), `props.json` (decorations), neutral buildings and triggers.
 - Sizes: 256×256 m (1v1), 384×384 m (2v2), 512×512 m (4 players). The sandbox is 128×128 m.
 - Maps today:
   - **Riverside** (`riverside`, 256×256 m, the vertical-slice map and the default skirmish map): farmland on both sides of a river running north-south through the middle, two bridges 116 m apart, and a small town on both banks between them. Per side: a safe supply site by the base, two farm expansions (north and south) and a contested site in the town square.
+  - **Desert Crossroads** (`desert_crossroads`, 256×256 m, desert): both bases in the south with a block of mesas between them, so armies meet on the northern road through an oasis town (8 houses round a pond) or on the narrow southern track. Per side: a safe site by the base, a west expansion behind a ridge, a north-west one and a contested one at the oasis.
+  - **Frostwood** (`frostwood`, 256×256 m, winter): pine forests split the ground into lanes; a logging village (6 houses) sits between the northern bases, and a frozen lake whose thin ice holds no one fills the south middle. Per side: a safe site by the base, a south-west expansion, one on the south shore and a contested one by the village.
   - **Twin Ridge** (`twin_ridge`, 128×128 m): a small, fast map; the `ai_duel` and determinism-check scenario.
   - **sandbox**: developer test map, not mirrored, not offered for skirmish.
-- Every skirmish map is checked by `test_maps.gd` to be an exact mirror (heights, passability, starts, obstacles, houses and supply sites).
+- Every skirmish map is checked by `test_maps.gd` to be an exact mirror (heights, passability, starts, obstacles, houses and supply sites) and to have every base, supply site and house reachable from both starts.
 
 ## Map design rules
 

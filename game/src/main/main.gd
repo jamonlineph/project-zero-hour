@@ -277,23 +277,8 @@ func _build_environment() -> void:
 	terrain = TerrainView.new()
 	terrain.build(map_def, fog)
 	add_child(terrain)
+	HouseModel.biome = map_def.biome
 	var features := MapFeaturesView.new()
 	features.build(map_def, fog, terrain.height_at)
 	add_child(features)
 
-	# Rocks are drawn from the map's obstacles, so what you see is what blocks
-	# movement. Heights are view-only decoration, so ordinary random numbers are
-	# fine here (never in the sim).
-	var rng := RandomNumberGenerator.new()
-	rng.seed = SEED
-	var rock_mat: ShaderMaterial = fog.make_material(Color(0.45, 0.43, 0.40))
-	for o: PackedInt32Array in map_def.obstacles_m:
-		var rock := MeshInstance3D.new()
-		var box := BoxMesh.new()
-		box.size = Vector3(o[2], rng.randf_range(1.5, 4.0), o[3])
-		rock.mesh = box
-		rock.material_override = rock_mat
-		var cx: float = o[0] + o[2] * 0.5
-		var cz: float = o[1] + o[3] * 0.5
-		rock.position = Vector3(cx, map_def.height_at_m(cx, cz) + box.size.y * 0.5 - 0.3, cz)
-		add_child(rock)

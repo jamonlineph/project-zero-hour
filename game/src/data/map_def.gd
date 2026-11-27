@@ -27,6 +27,10 @@ var civilian_buildings_m: Array[PackedInt32Array] = []
 var bridges_m: Array[PackedInt32Array] = []
 ## Offered in the skirmish menu (P2-12).
 var skirmish: bool = false
+## The look (P3-23): "temperate", "desert" or "winter" (view only, Biomes).
+var biome: String = "temperate"
+## The looks a map can pick (the view styles each one: Biomes, P3-23).
+const BIOMES: PackedStringArray = ["temperate", "desert", "winter"]
 
 
 func has_water() -> bool:

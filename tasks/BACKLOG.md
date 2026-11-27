@@ -615,7 +615,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 | P3-20 | Accessibility options ([controls-and-ui.md](../docs/design/controls-and-ui.md)) — 🔄 colorblind-safe team colors done 2026-11-27 (Claude Code); UI scale and key remapping exist; subtitles, hold-to-confirm and reduced shake wait for the features they apply to |
 | P3-21 | Turn on DCO sign-off once outside contributors join |
 | P3-22 | Save and load — ✅ v1 2026-11-27 (Claude Code): a save is the replay plus the state hash; loading fast-forwards and checks the hash (`SaveGame`, `SaveLoader`, "Save game" in the pause menu, "Load game" in the main menu). Later: true snapshots if loading long matches is too slow on phones |
-| P3-23 | Maps 2–12 (three biomes) |
+| P3-23 | Maps 2–12 (three biomes) — 🔄 split 2026-11-27 (Claude Code): **P3-23a** 🔄 (AI fairness runs pending) biomes in the view (`Biomes`, map `biome` field, obstacles drawn as rocks / mesas / pine forests, MultiMesh trees) and two 1v1 maps, Desert Crossroads and Frostwood (mirrored, every site and house reachable, `test_maps.gd`); **P3-23b** ⬜ 2v2 maps (384×384 m) once skirmish takes 4 players; **P3-23c** ⬜ more 1v1 maps toward 12 in all, one feature each (bridges, high ground, a city center); **P3-23d** ⬜ props and textures (palms, boulders, snowdrifts, a splat map) |
 | P3-24 | Open beta: Play open testing, F-Droid metadata, GitHub releases |
 
 ## Phase 4: Polish (epics)

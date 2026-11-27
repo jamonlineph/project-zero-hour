@@ -11,6 +11,15 @@ Captured on a machine without a GPU, through a virtual display and software Open
 | `riverside_town.png` | Riverside (P2-12): the town on both banks of the river (`--watch=riverside --camera=128,128,90 --reveal`) |
 | `riverside_bridge.png` | Riverside: the north bridge (`--camera=128,72,45`) |
 
+## Maps and biomes (`maps/`, P3-23a)
+
+| File | What |
+|---|---|
+| `desert_crossroads_mesas.png` | Desert Crossroads: the west base and the sandstone mesas between the bases (`--watch=desert_crossroads --camera=96,180,90 --reveal`) |
+| `desert_crossroads_oasis.png` | Desert Crossroads: the oasis town round its pond (`--camera=128,96,90`) |
+| `frostwood_forest_lake.png` | Frostwood: pine forests, the village and the frozen lake (`--watch=frostwood --camera=128,120,170 --reveal`) |
+| `frostwood_village.png` | Frostwood: the logging village between the northern bases (`--camera=128,80,90`) |
+
 ## Features (`features/`)
 
 | File | What |

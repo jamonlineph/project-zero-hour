@@ -53,6 +53,9 @@ static func load_map(db: ContentDb, path: String) -> void:
 	m.civilian_buildings_m = _int_rows(db, src, "civilian_buildings_m", 5, path)
 	m.bridges_m = _int_rows(db, src, "bridges_m", 4, path)
 	m.skirmish = bool(src.get("skirmish", false))
+	m.biome = str(src.get("biome", "temperate"))
+	if not MapDef.BIOMES.has(m.biome):
+		db.errors.append("%s: unknown biome '%s' (temperate, desert or winter)" % [path, m.biome])
 	m.max_step_cm = int(src.get("max_step_cm", m.max_step_cm))
 	if src.has("water_level_cm"):
 		m.water_level_cm = int(src["water_level_cm"])

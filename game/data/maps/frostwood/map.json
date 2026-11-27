@@ -1,0 +1,68 @@
+{
+  "id": "frostwood",
+  "name": "Frostwood",
+  "_doc": "A 1v1 winter map (P3-23): pine forests split the ground into lanes, a logging village sits between the northern bases, and a frozen lake whose thin ice holds no one fills the south middle. Mirrored across x = 128 (terrain_gen.mirror_x makes the heights exact).",
+  "skirmish": true,
+  "biome": "winter",
+  "width_m": 256,
+  "height_m": 256,
+  "_terrain_doc": "height.r16 is built from terrain_gen by tools/make_heightmap.py: rolling snowfields and the lake carved in the south middle (below water_level_cm: impassable).",
+  "height": "height.r16",
+  "height_scale_cm": 800,
+  "max_step_cm": 100,
+  "water_level_cm": 120,
+  "terrain_gen": {
+    "base_m": 2.0,
+    "hills": [
+      [20, 20, 14, 1.0],
+      [60, 120, 18, 1.4],
+      [30, 230, 16, 1.0],
+      [96, 30, 10, 0.6]
+    ],
+    "raise_obstacles_m": 0.5,
+    "channels": [
+      [102, 152, 52, 56, 0.4]
+    ],
+    "bank_m": 8,
+    "mirror_x": true
+  },
+  "_obstacles_doc": "Pine forests [x_m, y_m, w_m, h_m], west side first, then their mirrors.",
+  "obstacles_m": [
+    [72, 8, 14, 28],
+    [56, 92, 32, 12],
+    [14, 124, 24, 26],
+    [72, 140, 16, 40],
+    [26, 196, 36, 14],
+    [100, 112, 12, 12],
+    [170, 8, 14, 28],
+    [168, 92, 32, 12],
+    [218, 124, 24, 26],
+    [168, 140, 16, 40],
+    [194, 196, 36, 14],
+    [144, 112, 12, 12]
+  ],
+  "_civilian_doc": "Logging village houses [x_m, y_m, w_m, h_m, roof_height_m]: neutral buildings that block movement and that infantry can garrison (P3-05).",
+  "civilian_buildings_m": [
+    [100, 44, 10, 8, 5],
+    [104, 66, 8, 10, 6],
+    [112, 90, 10, 8, 5],
+    [146, 44, 10, 8, 5],
+    [144, 66, 8, 10, 6],
+    [134, 90, 10, 8, 5]
+  ],
+  "start_positions_m": [
+    [36, 56],
+    [220, 56]
+  ],
+  "_supply_doc": "Per side: a safe site by the base, a south-west expansion, one on the south shore, and a contested one by the village.",
+  "supply_sites_m": [
+    [56, 64, 30000],
+    [40, 172, 15000],
+    [100, 232, 15000],
+    [116, 128, 15000],
+    [200, 64, 30000],
+    [216, 172, 15000],
+    [156, 232, 15000],
+    [140, 128, 15000]
+  ]
+}

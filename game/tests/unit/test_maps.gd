@@ -1,6 +1,6 @@
 extends TestCase
-# Skirmish maps (P2-11b, P2-12): exact mirror fairness, and Riverside's river,
-# bridges and town.
+# Skirmish maps (P2-11b, P2-12, P3-23): exact mirror fairness, reachability,
+# biomes, and Riverside's river, bridges and town.
 
 var _content: ContentDb
 
@@ -38,6 +38,8 @@ func test_riverside_and_twin_ridge_are_skirmish_maps() -> void:
 		ids.append(m.id)
 	assert_true(ids.has("riverside"), "Riverside is not offered for skirmish")
 	assert_true(ids.has("twin_ridge"))
+	assert_true(ids.has("desert_crossroads"))
+	assert_true(ids.has("frostwood"))
 	assert_false(ids.has("sandbox"), "the sandbox is not mirror-fair")
 
 
@@ -96,20 +98,52 @@ func test_riverside_river_blocks_except_at_the_bridges() -> void:
 		assert_true(open * 2 >= 10, "the bridge at y %d m is only %d m wide" % [b[1], open * 2])
 
 
-func test_riverside_everything_is_reachable_from_both_starts() -> void:
-	var m: MapDef = _db().get_map("riverside")
-	var map: SimMap = m.make_sim_map()
-	var start: Vector2i = m.start_positions[0] / 2 + Vector2i(8, 0)   # in front of the HQ
-	var reached := _flood(map, start)
-	var east: Vector2i = m.start_positions[1] / 2 - Vector2i(8, 0)
-	assert_true(reached.has(east), "the east base can't be reached from the west")
-	for s: PackedInt32Array in m.supply_sites:
-		# The site's own 2x2 cells are blocked; a neighbor must be reachable.
-		var ok: bool = false
-		for d: Vector2i in [Vector2i(-2, 0), Vector2i(1, 0), Vector2i(0, -2), Vector2i(0, 1)]:
-			if reached.has(Vector2i(s[0] / 2, s[1] / 2) + d):
-				ok = true
-		assert_true(ok, "supply site at (%d, %d) m can't be reached" % [s[0], s[1]])
+func test_skirmish_maps_everything_is_reachable_from_both_starts() -> void:
+	for m: MapDef in _skirmish_maps():
+		var map: SimMap = m.make_sim_map()
+		var start: Vector2i = m.start_positions[0] / 2 + Vector2i(8, 0)   # in front of the HQ
+		assert_true(map.is_passable(start.x, start.y), "%s: the ground in front of the west HQ is blocked" % m.id)
+		var reached := _flood(map, start)
+		var east: Vector2i = m.start_positions[1] / 2 - Vector2i(8, 0)
+		assert_true(reached.has(east), "%s: the east base can't be reached from the west" % m.id)
+		for s: PackedInt32Array in m.supply_sites:
+			# The site's own 2x2 cells are blocked; a neighbor must be reachable.
+			var ok: bool = false
+			for d: Vector2i in [Vector2i(-2, 0), Vector2i(1, 0), Vector2i(0, -2), Vector2i(0, 1)]:
+				if reached.has(Vector2i(s[0] / 2, s[1] / 2) + d):
+					ok = true
+			assert_true(ok, "%s: supply site at (%d, %d) m can't be reached" % [m.id, s[0], s[1]])
+		# Infantry must be able to walk up to every house to garrison it (P3-05).
+		for h: PackedInt32Array in m.civilian_buildings_m:
+			var door: bool = false
+			for x: int in range(h[0] / 2 - 1, (h[0] + h[2]) / 2 + 1):
+				for y: int in [h[1] / 2 - 1, (h[1] + h[3]) / 2]:
+					if reached.has(Vector2i(x, y)):
+						door = true
+			assert_true(door, "%s: the house at (%d, %d) m can't be reached" % [m.id, h[0], h[1]])
+
+
+func test_maps_name_a_known_biome() -> void:
+	var biomes: Dictionary[String, String] = {}
+	for id: String in _db().maps:
+		var m: MapDef = _db().maps[id]
+		assert_true(MapDef.BIOMES.has(m.biome), "%s: unknown biome %s" % [id, m.biome])
+		biomes[m.biome] = id
+	for b: String in MapDef.BIOMES:
+		assert_true(biomes.has(b), "no map uses the %s biome" % b)
+		assert_true(Biomes.ALL.has(b), "the view has no palette for the %s biome" % b)
+	assert_eq(_db().get_map("desert_crossroads").biome, "desert")
+	assert_eq(_db().get_map("frostwood").biome, "winter")
+	assert_eq(_db().get_map("riverside").biome, "temperate", "a map without a biome should be temperate")
+
+
+func test_biome_palettes_have_every_key() -> void:
+	for b: String in Biomes.ALL:
+		var pal: Dictionary = Biomes.ALL[b]
+		for key: String in Biomes.TEMPERATE:
+			assert_true(pal.has(key), "the %s palette has no '%s'" % [b, key])
+		assert_true(["rock", "mesa", "trees"].has(pal["obstacle"]), "%s: unknown obstacle style" % b)
+	assert_eq(Biomes.palette("nowhere"), Biomes.TEMPERATE)
 
 
 func test_houses_block_movement() -> void:

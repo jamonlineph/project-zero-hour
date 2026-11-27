@@ -1,0 +1,71 @@
+{
+  "id": "desert_crossroads",
+  "name": "Desert Crossroads",
+  "_doc": "A 1v1 desert map (P3-23): both bases sit in the south, with a block of sandstone mesas between them, so armies meet on the northern road through an oasis town or on the narrow southern track. Mirrored across x = 128 (terrain_gen.mirror_x makes the heights exact).",
+  "skirmish": true,
+  "biome": "desert",
+  "width_m": 256,
+  "height_m": 256,
+  "_terrain_doc": "height.r16 is built from terrain_gen by tools/make_heightmap.py: low dunes, mesas raised above the sand, and the oasis pond carved in the middle (deep water, impassable).",
+  "height": "height.r16",
+  "height_scale_cm": 800,
+  "max_step_cm": 100,
+  "water_level_cm": 120,
+  "terrain_gen": {
+    "base_m": 2.0,
+    "hills": [
+      [24, 40, 18, 1.2],
+      [70, 100, 12, 0.7],
+      [20, 240, 10, 0.5],
+      [86, 236, 12, 0.6],
+      [44, 150, 10, 0.6]
+    ],
+    "raise_obstacles_m": 1.5,
+    "channels": [
+      [116, 82, 24, 24, 0.3]
+    ],
+    "bank_m": 6,
+    "mirror_x": true
+  },
+  "_obstacles_doc": "Sandstone mesas [x_m, y_m, w_m, h_m], west side first, then their mirrors.",
+  "obstacles_m": [
+    [106, 186, 22, 26],
+    [60, 34, 22, 22],
+    [16, 84, 28, 14],
+    [66, 126, 14, 14],
+    [96, 140, 10, 16],
+    [110, 232, 18, 6],
+    [128, 186, 22, 26],
+    [174, 34, 22, 22],
+    [212, 84, 28, 14],
+    [176, 126, 14, 14],
+    [150, 140, 10, 16],
+    [128, 232, 18, 6]
+  ],
+  "_civilian_doc": "Oasis town houses [x_m, y_m, w_m, h_m, roof_height_m]: neutral buildings that block movement and that infantry can garrison (P3-05).",
+  "civilian_buildings_m": [
+    [94, 74, 10, 8, 5],
+    [92, 92, 8, 10, 6],
+    [94, 112, 10, 8, 5],
+    [114, 60, 10, 8, 6],
+    [152, 74, 10, 8, 5],
+    [156, 92, 8, 10, 6],
+    [152, 112, 10, 8, 5],
+    [132, 60, 10, 8, 6]
+  ],
+  "start_positions_m": [
+    [40, 200],
+    [216, 200]
+  ],
+  "_supply_doc": "Per side: a safe site by the base, a west expansion behind the ridge, a north-west one, and a contested one at the oasis.",
+  "supply_sites_m": [
+    [62, 190, 30000],
+    [30, 120, 15000],
+    [40, 66, 15000],
+    [108, 126, 15000],
+    [194, 190, 30000],
+    [226, 120, 15000],
+    [216, 66, 15000],
+    [148, 126, 15000]
+  ]
+}

@@ -2,14 +2,11 @@ class_name TerrainView
 extends MeshInstance3D
 ## The ground mesh (P1-30), built from the same heights the sim uses
 ## (MapDef.heights_cm): one vertex per 2 m cell center, plus a border ring so
-## the mesh reaches the map edges. Vertex colors: grass on flat ground, rock
-## on steep slopes, darker earth in hollows. The material darkens under the
+## the mesh reaches the map edges. Vertex colors from the map's biome
+## (Biomes, P3-23): ground on flat land, rock on steep slopes, darker earth in
+## hollows, mud by water. The material darkens under the
 ## fog of war (FogOfWar.make_material). View only.
 
-const GRASS := Color(0.36, 0.42, 0.28)
-const ROCK := Color(0.45, 0.43, 0.40)
-const EARTH := Color(0.33, 0.30, 0.22)
-const MUD := Color(0.30, 0.27, 0.20)    ## river banks and beds (P2-12)
 
 var map_def: MapDef
 
@@ -36,6 +33,7 @@ func build(def: MapDef, fog: FogOfWar) -> void:
 	if def.heights_cm.is_empty():
 		low = 0.0
 		high = 0.0
+	var pal: Dictionary = Biomes.palette(def.biome)
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var cols: int = xs.size()
@@ -44,7 +42,7 @@ func build(def: MapDef, fog: FogOfWar) -> void:
 			var x: float = xs[i]
 			var z: float = zs[j]
 			var y: float = def.height_at_m(x, z)
-			st.set_color(_color(def, x, z, y, low, high))
+			st.set_color(_color(def, x, z, y, low, high, pal))
 			st.set_uv(Vector2(x, z))
 			st.add_vertex(Vector3(x, y, z))
 	for j: int in zs.size() - 1:
@@ -72,16 +70,20 @@ func height_at(x: float, z: float) -> float:
 	return map_def.height_at_m(x, z) if map_def != null else 0.0
 
 
-static func _color(def: MapDef, x: float, z: float, y: float, low: float, high: float) -> Color:
+static func _color(def: MapDef, x: float, z: float, y: float, low: float, high: float,
+		pal: Dictionary = Biomes.TEMPERATE) -> Color:
 	var dx: float = def.height_at_m(x + 1.0, z) - def.height_at_m(x - 1.0, z)
 	var dz: float = def.height_at_m(x, z + 1.0) - def.height_at_m(x, z - 1.0)
 	var slope: float = clampf(Vector2(dx, dz).length() / 2.0, 0.0, 1.0)   # rise per meter
-	var c: Color = GRASS.lerp(ROCK, smoothstep(0.25, 0.6, slope))
+	var c: Color = (pal["grass"] as Color).lerp(pal["rock"], smoothstep(0.25, 0.6, slope))
+	# A faint, smooth light-and-dark pattern so flat ground isn't one flat color.
+	var tint: float = 0.03 * (sin(x * 0.071 + z * 0.023) + cos(z * 0.053 - x * 0.031))
+	c = c.lightened(tint) if tint > 0.0 else c.darkened(-tint)
 	if def.has_water():
 		# Banks turn to mud over the last half meter above the water.
 		var above: float = y - def.water_level_cm / 100.0
-		return MUD.lerp(c, smoothstep(0.0, 0.5, above))
+		return (pal["mud"] as Color).lerp(c, smoothstep(0.0, 0.5, above))
 	if high - low > 0.1:
 		var t: float = (y - low) / (high - low)
-		c = EARTH.lerp(c, smoothstep(0.0, 0.35, t))
+		c = (pal["earth"] as Color).lerp(c, smoothstep(0.0, 0.35, t))
 	return c
