@@ -145,15 +145,16 @@ func test_ai_keeps_at_most_max_spotters_recon_drones() -> void:
 	w.get_player(1).credits = 20000
 	w.spawn_building(_content().get_building("us_drone_center"), 1, 30, 40, true)
 	var ai: AiPlayer = AiPlayer.from_preset(_content(), "us_default", 1)
-	assert_eq(ai.max_spotters, 2)
+	assert_eq(AiPlayer.from_preset(_content(), "kp_default", 2).max_spotters, 2, "the default cap changed")
+	assert_eq(ai.max_spotters, 3, "America's preset keeps 3 for its kill chain (P2-11e)")
 	assert_true(_produced(ai.think(w), "us_recon_drone") >= 1, "no drone was queued with none in the field")
 	var w2 := _base_world()
 	w2.get_player(1).credits = 20000
 	w2.spawn_building(_content().get_building("us_drone_center"), 1, 30, 40, true)
-	for i: int in 2:
+	for i: int in ai.max_spotters:
 		w2.spawn_unit(_content().get_unit("us_recon_drone"), 1, Fx.from_int(60 + i * 4), Fx.from_int(100))
 	var ai2: AiPlayer = AiPlayer.from_preset(_content(), "us_default", 1)
-	assert_eq(_produced(ai2.think(w2), "us_recon_drone"), 0, "queued a third recon drone")
+	assert_eq(_produced(ai2.think(w2), "us_recon_drone"), 0, "queued a recon drone over the cap")
 
 
 func test_a_stalled_army_attacks_without_a_full_wave() -> void:

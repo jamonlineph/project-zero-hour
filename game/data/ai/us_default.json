@@ -22,6 +22,7 @@
     "us_rocket_artillery": 1
   },
   "max_gatherers": 4,
+  "max_spotters": 3,
   "gatherer_unit": "us_logistics_truck",
   "attack_wave_size": 7,
   "first_attack_after_s": 200,

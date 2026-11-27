@@ -44,6 +44,8 @@ var _first_attack: int = 0       ## this match's first attack tick (+-15 s)
 ## An army that hasn't grown for this long attacks anyway, so a broke AI
 ## doesn't wait forever for a full wave (P2-12: a Twin Ridge duel stalled).
 const STALL_TICKS: int = 90 * SimWorld.TICK_RATE
+## How far ahead of the army spotters fly while it attacks (meters).
+const SPOTTER_LEAD_M: int = 30
 var _army_size: int = 0
 var _grew_at: int = 0
 var _target_id: int = 0
@@ -265,7 +267,7 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 		else:
 			fighters.append(e)
 			army_ids.append(e.id)
-	_escort(spotters, fighters, cmds)
+	_escort(world, spotters, fighters, cmds)
 	if army_ids.is_empty():
 		_attacking = false
 		_army_size = 0
@@ -303,9 +305,11 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 		cmds.append(SimCommand.make_attack_move(idle, target.x, target.y))
 
 
-## Sends spotters that drifted more than 12 m from the army's center back
-## over it. Drones heading home to recharge are left alone.
-func _escort(spotters: Array[SimEntity], fighters: Array[SimEntity], cmds: Array[SimCommand]) -> void:
+## Keeps spotters over the army: at its center, or while attacking
+## SPOTTER_LEAD_M ahead of it toward the target, as forward observers for
+## kill-chain weapons (P2-11e). Sends those that drifted more than 12 m from
+## that point back to it. Drones heading home to recharge are left alone.
+func _escort(world: SimWorld, spotters: Array[SimEntity], fighters: Array[SimEntity], cmds: Array[SimCommand]) -> void:
 	if spotters.is_empty() or fighters.is_empty():
 		return
 	var cx: int = 0
@@ -315,6 +319,13 @@ func _escort(spotters: Array[SimEntity], fighters: Array[SimEntity], cmds: Array
 		cy += f.y
 	cx /= fighters.size()
 	cy /= fighters.size()
+	var target: SimEntity = world.get_entity(_target_id) if _attacking else null
+	if target != null and not target.dead:
+		var dist: int = Fx.length(target.x - cx, target.y - cy)
+		var lead: int = mini(SPOTTER_LEAD_M * Fx.ONE, dist)
+		if dist > 0:
+			cx += ((target.x - cx) * lead) / dist
+			cy += ((target.y - cy) * lead) / dist
 	var reach: int = 12 * Fx.ONE
 	var ids: Array[int] = []
 	for e: SimEntity in spotters:
