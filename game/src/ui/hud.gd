@@ -28,6 +28,8 @@ var _debug: Label
 var _help: Label
 var _banner: Label
 var _selection_panel: Label
+var _minimap_frame: Panel     ## framed backgrounds (P2-17)
+var _selection_frame: Panel
 var _place_buttons: HBoxContainer
 var _selected_count: int = 0
 var _last_hash: int = 0
@@ -35,6 +37,7 @@ var _refresh: float = 0.0
 
 
 func _ready() -> void:
+	UiTheme.apply_to_layer(self)
 	selection_box = SelectionBox.new()
 	selection_box.name = "SelectionBox"
 	add_child(selection_box)
@@ -66,15 +69,23 @@ func _ready() -> void:
 	_help.custom_minimum_size.x = 560.0
 	add_child(_help)
 
+	_minimap_frame = Panel.new()
+	_minimap_frame.name = "MinimapFrame"
+	_minimap_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_minimap_frame)
 	minimap = Minimap.new()
 	minimap.name = "Minimap"
 	minimap.custom_minimum_size = Vector2(180, 180)
 	minimap.size = Vector2(180, 180)
 	add_child(minimap)
 
+	_selection_frame = Panel.new()
+	_selection_frame.name = "SelectionFrame"
+	_selection_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_selection_frame)
 	_selection_panel = Label.new()
 	_selection_panel.name = "SelectionPanel"
-	_selection_panel.add_theme_font_size_override("font_size", 14)
+	_selection_panel.add_theme_font_size_override("font_size", 16)
 	_selection_panel.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_selection_panel.custom_minimum_size = Vector2(360, 100)
 	add_child(_selection_panel)
@@ -111,6 +122,10 @@ func _ready() -> void:
 	_banner = Label.new()
 	_banner.name = "Banner"
 	_banner.add_theme_font_size_override("font_size", 64)
+	_banner.add_theme_font_override("font", UiTheme.bold_font())
+	_banner.add_theme_color_override("font_color", UiTheme.ACCENT)
+	_banner.add_theme_constant_override("outline_size", 8)
+	_banner.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
 	_banner.visible = false
 	add_child(_banner)
 
@@ -327,7 +342,7 @@ func _process(delta: float) -> void:
 
 func _layout() -> void:
 	var view: Vector2 = get_viewport().get_visible_rect().size
-	_help.custom_minimum_size.x = minf(560.0, view.x * 0.6)
+	_help.custom_minimum_size.x = minf(470.0, view.x * 0.37)   # clear of the power bar
 	_help.size.x = _help.custom_minimum_size.x
 	var margin: float = 10.0
 	minimap.position = Vector2(margin, view.y - minimap.size.y - margin)
@@ -340,6 +355,11 @@ func _layout() -> void:
 	_place_buttons.position = Vector2(view.x - grid_size.x - margin, command_grid.position.y - 60.0)
 	_selection_panel.position = Vector2(minimap.position.x + minimap.size.x + 16.0, view.y - 110.0)
 	_selection_panel.size.x = maxf(160.0, command_grid.position.x - _selection_panel.position.x - 16.0)
+	_minimap_frame.position = minimap.position - Vector2(4, 4)
+	_minimap_frame.size = minimap.size + Vector2(8, 8)
+	_selection_frame.visible = _selection_panel.text != ""
+	_selection_frame.position = _selection_panel.position - Vector2(10, 8)
+	_selection_frame.size = Vector2(_selection_panel.size.x + 20, _selection_panel.get_combined_minimum_size().y + 16)
 	_debug.position.x = view.x - _debug.size.x - margin
 	if _banner.visible:
 		_banner.position = (view - _banner.size) * 0.5

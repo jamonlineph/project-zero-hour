@@ -10,6 +10,10 @@ game/assets/audio/sfx/laser.wav,Project Zero Hour contributors,tools/gen_sounds.
 game/assets/audio/sfx/missile.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/rifle.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
 game/assets/audio/sfx/ui_click.wav,Project Zero Hour contributors,tools/gen_sounds.py (procedural),CC-BY-SA-4.0,script,placeholder
+game/assets/fonts/Inter-Bold.otf,The Inter Project Authors,"https://github.com/rsms/inter (Inter 4.0, Debian fonts-inter package)",OFL-1.1,third-party,UI font (P2-17); OFL.txt is its license
+game/assets/fonts/Inter-Regular.otf,The Inter Project Authors,"https://github.com/rsms/inter (Inter 4.0, Debian fonts-inter package)",OFL-1.1,third-party,UI font (P2-17); OFL.txt is its license
+game/assets/fonts/Inter-SemiBold.otf,The Inter Project Authors,"https://github.com/rsms/inter (Inter 4.0, Debian fonts-inter package)",OFL-1.1,third-party,UI font (P2-17); OFL.txt is its license
+game/assets/fonts/OFL.txt,The Inter Project Authors,"https://github.com/rsms/inter (Inter 4.0, Debian fonts-inter package)",OFL-1.1,third-party,license text for the Inter font files
 game/assets/icons/buildings/kp_barracks.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_barracks)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_command_hq.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_command_hq)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_drone_launch_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_drone_launch_site)",CC-BY-SA-4.0,script,placeholder

@@ -29,6 +29,7 @@ var director: CameraDirector
 
 func _ready() -> void:
 	InputActions.register()
+	UiTheme.apply(get_tree())
 	content = ContentDb.new()
 	if not content.load_all():
 		for message: String in content.errors:
@@ -79,6 +80,19 @@ func _ready() -> void:
 	rts_camera.set_bounds(Rect2(0, 0, map_def.width_m, map_def.height_m))
 	rts_camera.ground_height = terrain.height_at
 	rts_camera.focus_on(_start_focus())
+	# Developer screenshots: --select=<def_id> selects the local player's units
+	# or buildings of that type, so the command grid shows their buttons.
+	var select_def: String = DevCapture.arg("select")
+	if select_def != "":
+		_select_on_start.call_deferred(select_def)
+	# --open=pause|settings|commander opens that screen (UI screenshots).
+	match DevCapture.arg("open"):
+		"pause":
+			(func() -> void: pause_menu.open_paused()).call_deferred()   # pause_menu is made later in _ready
+		"settings":
+			(func() -> void: pause_menu.open_paused(); pause_menu.open_settings()).call_deferred()
+		"commander":
+			(func() -> void: if hud.power_bar != null: hud.power_bar.open_commander()).call_deferred()
 	var cam: Variant = DevCapture.camera_override()
 	if cam != null:
 		rts_camera.focus_on(Vector3(cam.x, 0.0, cam.y))
@@ -147,6 +161,14 @@ func _process(_delta: float) -> void:
 	if director != null:
 		director.observe(runner.pending_events)
 	runner.pending_events.clear()
+
+
+func _select_on_start(def_id: String) -> void:
+	var ids: Array[int] = []
+	for id: int in world.entity_ids:
+		if world.entities[id].player_id == LOCAL_PLAYER and world.entities[id].def_id == def_id:
+			ids.append(id)
+	selection.select_ids(ids)
 
 
 ## Gameplay-video tools (--director, --speed=, --shot-dir=, --shot-every=).

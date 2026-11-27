@@ -550,7 +550,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 ### P2-16 · Infantry skeleton and animations — ⬜
 - **Accept:** a shared rig plus an animation set (idle, walk, run, aim, fire, prone, 2 deaths, enter building) from CC0 or original sources; a Godot `AnimationTree` hooks them to sim states.
 
-### P2-17 · UI art pass — ⬜
+### P2-17 · UI art pass — ✅ 2026-11-27 (Claude Code: `UiTheme` with the OFL font Inter, framed panels and buttons, bigger command-grid buttons with icons and hotkey tags; screenshots in `docs/screenshots/ui/`)
 - **Accept:** a Godot `Theme`, an OFL font, framed icons, readable at phone size.
 
 ### P2-18 · Audio pass — ⬜

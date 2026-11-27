@@ -30,6 +30,8 @@ func _ready() -> void:
 	center.add_child(box)
 	_title = Label.new()
 	_title.add_theme_font_size_override("font_size", 48)
+	_title.add_theme_font_override("font", UiTheme.bold_font())
+	_title.add_theme_color_override("font_color", UiTheme.ACCENT)
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(_title)
 	_resume = _button(box, "Resume", close)

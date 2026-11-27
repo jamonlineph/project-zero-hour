@@ -20,6 +20,7 @@ var _credits_button: Button
 
 func _ready() -> void:
 	GameSettings.current().apply(get_tree())
+	UiTheme.apply(get_tree())
 	content = ContentDb.new()
 	if not content.load_all():
 		for e: String in content.errors:
@@ -39,11 +40,13 @@ func _ready() -> void:
 	var title := Label.new()
 	title.text = "PROJECT ZERO HOUR"
 	title.add_theme_font_size_override("font_size", 48)
+	title.add_theme_font_override("font", UiTheme.bold_font())
+	title.add_theme_color_override("font_color", UiTheme.ACCENT)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(title)
 	var sub := Label.new()
 	sub.text = "early development build"
-	sub.modulate = Color(1, 1, 1, 0.6)
+	sub.add_theme_color_override("font_color", UiTheme.TEXT_DIM)
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(sub)
 

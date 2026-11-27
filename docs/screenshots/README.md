@@ -11,6 +11,14 @@ Captured on a machine without a GPU, through a virtual display and software Open
 | `riverside_town.png` | Riverside (P2-12): the town on both banks of the river (`--watch=riverside --camera=128,128,90 --reveal`) |
 | `riverside_bridge.png` | Riverside: the north bridge (`--camera=128,72,45`) |
 
+## UI art pass (`ui/`, P2-17)
+
+| File | What |
+|---|---|
+| `main_menu.png` | Main menu in the new theme (Inter font, framed buttons, amber title) |
+| `hud_engineer_selected.png` | In-game HUD with an engineer selected: framed top bar, minimap and selection panel, command grid with icons, costs and hotkey tags (`--select=us_engineer`) |
+| `pause_menu.png`, `settings.png`, `commander_panel.png` | Overlays (`--open=pause`, `--open=settings`, `--open=commander`) |
+
 ## Gameplay phases (`gameplay_phases/`, 2026-11-27)
 
 One computer-vs-computer match on Riverside, seen from North Korea's side (`--watch=riverside --side=kp --director --reveal --seed=1020 --speed=3`, recorded with Godot's movie writer; see `docs/08-testing-and-qa.md`). The video itself is not in the repo (27 MB); rebuild it with that command.

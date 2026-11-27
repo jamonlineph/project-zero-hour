@@ -59,7 +59,15 @@ The keys for camera movement and unit orders can be rebound in Settings (control
   - Buttons are at least 48 dp.
   - Nothing important goes in the corners where notches and rounded screens cut in.
 - **Tablets and Googlebook:** everything shown at once. The layout reflows as the window is resized.
-- **Build icons** are rendered by Blender (`game/assets/icons/`), with cost and hotkey overlaid by the UI.
+- **Build icons** are rendered by Blender (`game/assets/icons/`). Command-grid buttons (88×80) show the icon, the name and cost, and the hotkey as an amber tag in the corner.
+
+## Look (P2-17)
+
+- One `Theme`, built in code by `UiTheme` (`game/src/ui/ui_theme.gd`) and set on the root window; the HUD's controls get it directly because a `CanvasLayer` stops theme inheritance.
+- Classic 2000s military RTS style, all original: dark olive panels and buttons with steel-olive frames, amber for hover, focus, titles and hotkeys.
+- Font: **Inter** (OFL-1.1, `game/assets/fonts/`, license in `OFL.txt`): Regular for text, SemiBold for buttons, Bold for titles.
+- Sizes for the 1280×720 canvas, which phones scale down: body text 18 px (16 px in dense panels, 13 px on grid buttons), buttons at least 44 px tall.
+- Screenshots: `docs/screenshots/ui/`.
 
 ## Accessibility (P3-20)
 
