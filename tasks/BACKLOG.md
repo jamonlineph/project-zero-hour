@@ -520,8 +520,8 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Fixed:** spotters join the army; queued units count; both AIs think on the same tick; footprint snapping and exit-cell ties go toward the map middle (mirror-fair); the AI has its own seeded rng (wave size ±1, first attack ±15 s, unit-mix and target noise). Tests: `test_fairness.gd`.
 
 ### P2-11e · Faction balance on Riverside — ⬜
-- **Seen (2026-11-27, Riverside, normal vs normal, `ai_matches.gd ... map=riverside stats`):** sides are even, but North Korea won 29 of 39 runs, and nearly all of the first runs after the recon-drone cap. Matches last about 11 minutes (Twin Ridge: 5).
-- **Found so far:** America's vehicle depot almost never builds. Its most-needed unit is usually rocket artillery (1300 credits); the depot waits to afford it while the barracks spend the credits first, so in 8 games America built 1 rocket artillery and 16 tanks against North Korea's 39 tanks. North Korea's units cost 10–20% less, so its plant gets through more often.
+- **Seen (2026-11-27, Riverside, normal vs normal, `ai_matches.gd ... map=riverside stats`):** sides are even, but North Korea won 29 of 39 runs, then 68 of 80 after the recon-drone cap. Matches last about 11 minutes (Twin Ridge: 5).
+- **Found so far:** America's vehicle depot almost never builds. Its most-needed unit is usually rocket artillery (1300 credits); the depot waits to afford it while the barracks spend the credits first, so in 8 games America built 1 rocket artillery and 16 tanks against North Korea's 39 tanks (over 20 later games: 1 rocket artillery, 74 tanks against 147). Recon drones are still lost and replaced about 33 times a game even with at most 2 alive; check whether they crash at the end of their endurance while following attack-moves. North Korea's units cost 10–20% less, so its plant gets through more often.
 - **Do:** make the AI save for its most-needed unit (choose for every idle factory first, then buy in order of need and stop when the top choice is unaffordable); then re-measure. Also check Reserve Call-Up (3 free squads every 3 minutes) over long games.
 - **Accept:** neither faction wins more than 60% of 40 Riverside runs, and Twin Ridge stays within 60% too.
 
@@ -531,9 +531,10 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Accept:** each file under about 400 lines; all tests pass with no replay regeneration.
 - **Also:** `game/src/data/content_db.gd` is about 710 lines; split its loaders the same way.
 
-### P2-12 · Map "Riverside" — 🔄 Claude Code 2026-11-27 (map, view and tests done; 40-run fairness check running)
+### P2-12 · Map "Riverside" — ✅ 2026-11-27 (Claude Code: west 42, east 38 of 80 runs; North Korea dominates there, see P2-11e)
 - **Needs:** P1-30
 - **Accept:** a map per `vertical-slice.md` that is fair in AI-vs-AI runs (neither side wins more than 55% of 40 runs).
+- **Result:** first 40 runs: west 22, east 17, 1 unfinished (56%, inside a 40-run sample's ±8% noise); after the AI's recon-drone cap and stall fix, 80 runs: west 42, east 38 (52.5%). Every skirmish map is an exact mirror (`test_maps.gd`).
 
 ### P2-13 · Final art: US slice set — ⬜ (artist or agent + owner review)
 - **Needs:** P2-15

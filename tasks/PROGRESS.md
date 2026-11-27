@@ -4,6 +4,22 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-27: P2-12 Map "Riverside", gameplay video and phase screenshots (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **Riverside** (`riverside`): a 256 m 1v1 map, exactly mirrored across x = 128. A river runs north-south through the middle with two bridges 116 m apart, a small town sits on both banks between them, and farmland with hedgerows and copses fills the rest. Per side: a safe supply site, two farm expansions and a contested site in the town square. It is the default skirmish map; the menu has a map button.
+  - Map format: `terrain_gen.channels` (carved river with sloped banks), `terrain_gen.mirror_x` (exact mirrored heights), `civilian_buildings_m` (blocking houses), `bridges_m` (view-only decks), `skirmish`. The view draws water, bridge decks and houses, and turns river banks to mud.
+  - AI: at most 2 unarmed recon drones at once (`max_spotters`), and an army that hasn't grown for 90 s attacks without a full wave (a Twin Ridge duel deadlocked without it).
+  - Fix: the pause/end screen, settings screen, commander panel and other overlays under the HUD kept a zero size (anchors set without offsets), so the end screen sat in the top-left corner with no shade. The menu smoke test now checks their size. The main menu's spacing was tightened so the new map row fits 720p.
+  - Gameplay video tools: `--director` (camera follows the fighting, tours the bases when quiet, saves a screenshot every few game seconds, quits after the end screen), `--seed=`, `--speed=`, `--side=`, `--watch=<map>`, `--camera=`, and `--reveal` (now also shows every unit). Recipe in `docs/08-testing-and-qa.md`.
+  - Media: Blender rebuilt every placeholder model and icon from source; the icons came out pixel-identical and the models structurally identical, so they were not recommitted. A 2:36 gameplay video (Riverside, North Korea's side, 3× speed, phase captions) and one screenshot per phase are in `docs/screenshots/gameplay_phases/`; the video stays out of the repo (27 MB).
+- Result: Riverside side fairness over 80 runs: west 42, east 38 (52.5%). North Korea won 68 of 80 there, a balance problem logged as **P2-11e** with its cause (America's vehicle depot is starved by the barracks spending first).
+- Tests: `tools/run_tests.sh` -> 247 tests, 0 failed (new `test_maps.gd`, AI drone-cap and stall tests, overlay size checks). `python3 tools/check_repo.py` -> ok. The determinism check is unchanged (3445782503).
+- Not verified: touch play on a phone; the houses can't be garrisoned yet; Riverside's look with real art.
+- Next: P2-11e (Riverside balance; a "save for the most-needed unit" change is drafted), then P2-11d (split `sim_world.gd` and `content_db.gd`).
+- For the owner: watch the video and look through `docs/screenshots/gameplay_phases/`. On Riverside the computer playing America loses most games until P2-11e is done.
+
+---
+
 ## 2026-11-27: P2-11c Faction balance and side fairness (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - AI play: recon drones (spotters) now move with the army, so America's rocket artillery has spotters; units still in a factory queue count toward the mix; both AIs think on the same tick.
