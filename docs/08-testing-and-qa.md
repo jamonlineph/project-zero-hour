@@ -35,7 +35,7 @@ xvfb-run -a -s "-screen 0 1280x720x24" godot --rendering-driver opengl3 --path g
 ```
 
 - `--screenshot=<file>` saves the rendered frame after `--screenshot-frames` frames (default 90), then quits (`DevCapture`). Without `--scenario=` or `--watch=` it captures the main menu.
-- `--watch=<map_id>` starts computer vs computer on any map (for example `--watch=riverside`). `--camera=<x_m>,<z_m>,<distance_m>` aims the camera at a map point, and `--reveal` lifts the fog and shows every unit (view only).
+- `--watch=<map_id>` starts computer vs computer on any map (for example `--watch=riverside`); `--side=kp` makes player 1 (whose HUD you see) North Korea. `--camera=<x_m>,<z_m>,<distance_m>` aims the camera at a map point, and `--reveal` lifts the fog and shows every unit (view only).
 - Gameplay videos use Godot's movie writer plus `--director` (`CameraDirector`), which follows the fighting and tours the bases in quiet moments, then quits 6 s after the end screen. `--seed=<n>` picks the match, `--speed=<x>` speeds the game up, and `--shot-dir=<dir> --shot-every=<s>` saves a screenshot every few game seconds. Engine flags go before `--`:
 
 ```bash

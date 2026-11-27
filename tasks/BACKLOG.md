@@ -519,6 +519,12 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 - **Found:** the US AI never built recon drones (unarmed units weren't counted in its army), so its spotter-guided rocket artillery had no spotters; the AI also didn't count queued units and kept queueing the same type. Mirror matches (same faction on both sides) then showed two side biases: buildings with an odd width snapped 2 m east of the mirror point, and the AI had no randomness, so every seed replayed nearly the same game and tiny order effects decided all of them.
 - **Fixed:** spotters join the army; queued units count; both AIs think on the same tick; footprint snapping and exit-cell ties go toward the map middle (mirror-fair); the AI has its own seeded rng (wave size ±1, first attack ±15 s, unit-mix and target noise). Tests: `test_fairness.gd`.
 
+### P2-11e · Faction balance on Riverside — ⬜
+- **Seen (2026-11-27, Riverside, normal vs normal, `ai_matches.gd ... map=riverside stats`):** sides are even, but North Korea won 29 of 39 runs, and nearly all of the first runs after the recon-drone cap. Matches last about 11 minutes (Twin Ridge: 5).
+- **Found so far:** America's vehicle depot almost never builds. Its most-needed unit is usually rocket artillery (1300 credits); the depot waits to afford it while the barracks spend the credits first, so in 8 games America built 1 rocket artillery and 16 tanks against North Korea's 39 tanks. North Korea's units cost 10–20% less, so its plant gets through more often.
+- **Do:** make the AI save for its most-needed unit (choose for every idle factory first, then buy in order of need and stop when the top choice is unaffordable); then re-measure. Also check Reserve Call-Up (3 free squads every 3 minutes) over long games.
+- **Accept:** neither faction wins more than 60% of 40 Riverside runs, and Twin Ridge stays within 60% too.
+
 ### P2-11d · Split `sim_world.gd` — ⬜
 - **Seen (2026-11-27):** `game/src/sim/sim_world.gd` is about 790 lines, almost twice the 400-line guideline.
 - **Do:** move cohesive parts (spawning, placement and footprints, the spatial queries) into helper scripts without changing behavior; golden replays must stay unchanged.

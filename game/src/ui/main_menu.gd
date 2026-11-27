@@ -68,10 +68,12 @@ func _ready() -> void:
 				_start.call_deferred(content.scenarios[id])
 			else:
 				push_error("Unknown scenario '%s'" % id)
-		# `-- --watch=<map>` starts computer vs computer on that map.
+		# `-- --watch=<map> [--side=<faction>]` starts computer vs computer on
+		# that map; --side picks player 1's faction (the HUD's point of view).
 		elif arg.begins_with("--watch="):
 			var watch_map: String = arg.trim_prefix("--watch=")
-			if content.maps.has(watch_map):
+			faction = DevCapture.arg("side", faction)
+			if content.maps.has(watch_map) and MatchConfig.FACTIONS.has(faction):
 				_start.call_deferred(MatchConfig.skirmish(content, watch_map, faction, content.skirmish_credits[credits_index], true))
 			else:
 				push_error("Unknown map '%s'" % watch_map)
