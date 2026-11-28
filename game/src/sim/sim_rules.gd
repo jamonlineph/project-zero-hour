@@ -34,7 +34,7 @@ var fund_cap_doubler: String = "ae_unlock_fund"
 var interop_faction: String = "eu"
 var interop_radius: int = 25 * Fx.ONE
 var interop_min_types: int = 3
-var interop_reload_percent: int = 15
+var interop_reload_percent: int = 10
 var interop_doubler: String = "eu_unlock_interop"
 
 

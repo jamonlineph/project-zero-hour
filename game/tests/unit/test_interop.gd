@@ -1,6 +1,6 @@
 extends TestCase
 # EU interoperability (P3-12c): an EU unit near two other unit types of its
-# own side reloads 15% faster (30% with the rank-5 unlock); a group of one or
+# own side reloads 10% faster (20% with the rank-5 unlock); a group of one or
 # two types, and other factions, don't.
 
 var _db: ContentDb
@@ -41,7 +41,7 @@ func test_the_rule_is_data() -> void:
 	var r: SimRules = _content().rules
 	assert_eq(r.interop_faction, "eu")
 	assert_eq(r.interop_min_types, 3)
-	assert_eq(r.interop_reload_percent, 15)
+	assert_eq(r.interop_reload_percent, 10)
 	assert_eq(r.interop_radius, Fx.from_int(25))
 	assert_eq(_content().get_power(r.interop_doubler).tier, 5)
 
@@ -56,9 +56,9 @@ func test_three_types_together_reload_faster() -> void:
 	_run(w, SimWorld.TICK_RATE)
 	assert_true(tank.interop, "three types didn't give the bonus")
 	var gun: SimWeapon = tank.weapons[0]
-	assert_eq(InteropSystem.reload_ticks(w, tank, gun), (gun.reload_ticks * 85) / 100)
+	assert_eq(InteropSystem.reload_ticks(w, tank, gun), (gun.reload_ticks * 90) / 100)
 	CommanderPowers.apply_command(w, _choose("eu_unlock_interop"))
-	assert_eq(InteropSystem.reload_ticks(w, tank, gun), (gun.reload_ticks * 70) / 100, "the unlock didn't double it")
+	assert_eq(InteropSystem.reload_ticks(w, tank, gun), (gun.reload_ticks * 80) / 100, "the unlock didn't double it")
 
 
 func test_too_far_apart_or_unarmed_doesnt_count() -> void:

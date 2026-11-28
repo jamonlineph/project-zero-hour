@@ -4,5 +4,5 @@
   "name": "Unlock: Full Interoperability",
   "tier": 5,
   "kind": "unlock",
-  "description": "Mixed groups (3 or more unit types together) reload 30% faster instead of 15%."
+  "description": "Mixed groups (3 or more unit types together) reload 20% faster instead of 10%."
 }

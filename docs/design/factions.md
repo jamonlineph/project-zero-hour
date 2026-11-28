@@ -59,7 +59,7 @@ Four sides, chosen by the owner on 2026-11-26: **America, the United Arab Emirat
 - **Weaknesses:** no single overwhelming strength; slow to mass up; units are costly to replace.
 - **Signature mechanics:**
   - **Battlegroup doctrine:** at the start of a match, pick one of three doctrines (Heavy Armor, Air Mobile, Integrated Air Defense). Each unlocks one unique unit and a passive bonus. In the game since P3-12b (`docs/design/commander.md`).
-  - **Interoperability:** groups that mix three or more unit types fight better together (faster reload). In the game since P3-12c: an armed EU unit with 3+ different armed unit types of its own (itself included) within 25 m reloads 15% faster, 30% with the rank-5 unlock (`rules.json` `interoperability`, `InteropSystem`; the selection panel says "mixed group: faster reload").
+  - **Interoperability:** groups that mix three or more unit types fight better together (faster reload). In the game since P3-12c: an armed EU unit with 3+ different armed unit types of its own (itself included) within 25 m reloads 10% faster, 20% with the rank-5 unlock (15% was too strong: the EU then beat America 75% of the time) (`rules.json` `interoperability`, `InteropSystem`; the selection panel says "mixed group: faster reload").
   - **Field repair and medics:** damaged units heal near repair vehicles and field hospitals.
   - **Sovereign airspace:** air-defense sites share targets with each other and with fighters.
 - **Economy flavor:** logistics trucks repair nearby vehicles while they drive.
