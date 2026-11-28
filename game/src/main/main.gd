@@ -37,7 +37,7 @@ func _ready() -> void:
 	UiTheme.apply(get_tree())
 	add_child(MusicPlayer.new())
 	content = ContentDb.new()
-	if not content.load_all():
+	if not content.load_all(ContentDb.INDEX_PATH, ModLoader.mod_dirs()):   # mods (P3-17)
 		for message: String in content.errors:
 			push_error(message)
 	for arg: String in OS.get_cmdline_user_args():

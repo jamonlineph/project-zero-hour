@@ -212,6 +212,4 @@ func _missing(world: SimWorld, requires: PackedStringArray, cost: int) -> String
 
 
 func _icon(path: String) -> Texture2D:
-	if path != "" and ResourceLoader.exists(path):
-		return load(path)
-	return null
+	return ModAssets.load_icon(path)   # game icons, or a mod's user:// png (P3-17)

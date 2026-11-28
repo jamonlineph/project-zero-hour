@@ -161,7 +161,7 @@ static func load_unit(db: ContentDb, path: String) -> void:
 		db.errors.append("%s: vision_cm must be positive" % path)
 	if path.get_file().get_basename() != u.id:
 		db.errors.append("%s: file name must match id '%s'" % [path, u.id])
-	if db.units.has(u.id):
+	if db.units.has(u.id) and not db.overriding:
 		db.errors.append("%s: duplicate unit id '%s'" % [path, u.id])
 	db.units[u.id] = u
 

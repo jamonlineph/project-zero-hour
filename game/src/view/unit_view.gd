@@ -370,12 +370,10 @@ static func yaw_from_sim_angle(sim_angle: float) -> float:
 
 
 func _make_model(def: UnitDef, radius_m: float, team_color: Color) -> Node3D:
-	if def != null and def.model_path != "" and ResourceLoader.exists(def.model_path):
-		var scene: PackedScene = load(def.model_path)
-		if scene != null:
-			var instance: Node3D = scene.instantiate()
-			TeamColors.apply(instance, team_color)
-			return instance
+	var instance: Node3D = ModAssets.load_model(def.model_path) if def != null else null   # or a mod's .glb (P3-17)
+	if instance != null:
+		TeamColors.apply(instance, team_color)
+		return instance
 	return _make_placeholder(def, radius_m, team_color)
 
 
@@ -384,12 +382,10 @@ func _make_building_model(def: BuildingDef, e: SimEntity, team_color: Color) -> 
 		return HouseModel.make(e.building.w * 2.0, e.building.h * 2.0, e.building.cell_x + e.building.cell_y)
 	if def != null and def.bridge:
 		return BridgeModel.make(e.building.w * 2.0, e.building.h * 2.0)   # P3-11
-	if def != null and def.model_path != "" and ResourceLoader.exists(def.model_path):
-		var scene: PackedScene = load(def.model_path)
-		if scene != null:
-			var instance: Node3D = scene.instantiate()
-			TeamColors.apply(instance, team_color)
-			return instance
+	var instance: Node3D = ModAssets.load_model(def.model_path) if def != null else null   # or a mod's .glb (P3-17)
+	if instance != null:
+		TeamColors.apply(instance, team_color)
+		return instance
 	# Placeholder: a block the size of the footprint with a team-colored band.
 	var size := Vector3(e.building.w * 2.0 * 0.9, 4.0, e.building.h * 2.0 * 0.9)
 	var holder := Node3D.new()

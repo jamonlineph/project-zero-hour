@@ -102,12 +102,19 @@ func start_match() -> void:
 	var content: ContentDb = menu.get("content")
 	var sc: Dictionary = MatchConfig.lan(content, str(menu.get("map_id")), str(menu.get("faction")),
 		str(menu.get("enemy")), content.skirmish_credits[int(menu.get("credits_index"))])
-	var config: Dictionary = {"scenario": sc, "seed": int(Time.get_unix_time_from_system()) % 1000000}
+	var config: Dictionary = {"scenario": sc, "seed": int(Time.get_unix_time_from_system()) % 1000000,
+		"content_hash": content.content_hash}
 	session.start_match(config)
 	_begin(config)
 
 
 func _begin(config: Dictionary) -> void:
+	# Both machines need the same game data and mods (P3-17), or lockstep
+	# would desync at once.
+	var content: ContentDb = menu.get("content") if menu != null else null
+	if content != null and config.has("content_hash") and int(config["content_hash"]) != content.content_hash:
+		_status.text = "The host has different game data or mods. Use the same version and mods on both devices."
+		return
 	MatchConfig.net = session
 	MatchConfig.net_seed = int(config.get("seed", 0))
 	MatchConfig.pending = config.get("scenario", {})

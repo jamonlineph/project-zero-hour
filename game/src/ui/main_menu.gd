@@ -34,7 +34,7 @@ func _ready() -> void:
 	UiTheme.apply(get_tree())
 	add_child(MusicPlayer.new())
 	content = ContentDb.new()
-	if not content.load_all():
+	if not content.load_all(ContentDb.INDEX_PATH, ModLoader.mod_dirs()):   # mods (P3-17)
 		for e: String in content.errors:
 			push_error(e)
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -57,7 +57,7 @@ func _ready() -> void:
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(title)
 	var sub := Label.new()
-	sub.text = "early development build"
+	sub.text = "early development build" + ("   ·   mods: %s" % ", ".join(content.mods) if not content.mods.is_empty() else "")
 	sub.add_theme_color_override("font_color", UiTheme.TEXT_DIM)
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(sub)

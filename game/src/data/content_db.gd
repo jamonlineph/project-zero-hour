@@ -33,11 +33,17 @@ var rules: SimRules = SimRules.new()
 ## refuse to mix different content (P1-20).
 var content_hash: int = 0
 var errors: PackedStringArray = []
+## Mod folders loaded on top of the game, in load order (P3-17).
+var mods: PackedStringArray = []
+## True while a mod loads: its files may replace ones with the same id.
+var overriding: bool = false
 
 
-## Loads everything listed in the index. Returns false if any error occurred;
-## the messages are in `errors`.
-func load_all(index_path: String = INDEX_PATH) -> bool:
+## Loads everything listed in the index, then each mod folder's index.json
+## in order (P3-17, ModLoader): a mod file with an existing id replaces it,
+## a new id adds to the game. Returns false if any error occurred; the
+## messages are in `errors`.
+func load_all(index_path: String = INDEX_PATH, mod_dirs: PackedStringArray = []) -> bool:
 	units.clear()
 	buildings.clear()
 	weapons.clear()
@@ -52,33 +58,13 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	damage_matrix = DamageMatrix.new()
 	rules = SimRules.new()
 	errors.clear()
+	mods.clear()
 	_hasher = SimHash.new()
 	var index: Variant = read_json(index_path)
 	if not index is Dictionary:
 		errors.append("%s: expected a JSON object" % index_path)
 		return false
-	if (index as Dictionary).has("rules"):
-		RulesLoader.load_rules(self, str(index["rules"]))
-	if index.has("ai_personalities"):
-		var pers: Variant = read_json(str(index["ai_personalities"]))
-		ai_personalities = pers if pers is Dictionary else {}
-	# Order matters: units refer to weapons; weapons refer to damage types.
-	if (index as Dictionary).has("damage_matrix"):
-		_load_damage_matrix(str(index["damage_matrix"]))
-	for path: Variant in (index as Dictionary).get("weapons", []):
-		_load_weapon(str(path))
-	for path: Variant in (index as Dictionary).get("units", []):
-		_load_unit(str(path))
-	for path: Variant in (index as Dictionary).get("buildings", []):
-		BuildingLoader.load_building(self, str(path))
-	for path: Variant in (index as Dictionary).get("maps", []):
-		_load_map(str(path))
-	for path: Variant in (index as Dictionary).get("upgrades", []):
-		_load_upgrade(str(path))
-	for path: Variant in (index as Dictionary).get("strikes", []):
-		_load_strike(str(path))
-	for path: Variant in (index as Dictionary).get("powers", []):
-		_load_power(str(path))
+	_load_index(index, "")
 	var check_path: String = str((index as Dictionary).get("determinism_check", ""))
 	if check_path != "":
 		var check: Variant = read_json(check_path)
@@ -86,13 +72,50 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 			determinism_check = check
 		else:
 			errors.append("%s: expected a JSON object" % check_path)
-	for path: Variant in (index as Dictionary).get("scenarios", []):
-		_load_scenario(str(path))
-	for path: Variant in (index as Dictionary).get("ai", []):
-		_load_ai_preset(str(path))
+	for dir: String in mod_dirs:
+		var mod_index: Variant = read_json(dir.path_join("index.json"))
+		if mod_index is Dictionary:
+			overriding = true
+			_load_index(mod_index, dir)
+			overriding = false
+			mods.append(dir.get_file())
 	_check_references()
 	content_hash = _hasher.value
 	return errors.is_empty()
+
+
+## Loads one index's files. Paths in a mod's index are relative to its
+## folder (`base`); the game's are res:// paths.
+func _load_index(index: Dictionary, base: String) -> void:
+	var at := func(p: Variant) -> String:
+		var s: String = str(p)
+		return s if base == "" or s.begins_with("res://") or s.begins_with("user://") else base.path_join(s)
+	if index.has("rules"):
+		RulesLoader.load_rules(self, at.call(index["rules"]))
+	if index.has("ai_personalities"):
+		var pers: Variant = read_json(at.call(index["ai_personalities"]))
+		ai_personalities = pers if pers is Dictionary else {}
+	# Order matters: units refer to weapons; weapons refer to damage types.
+	if index.has("damage_matrix"):
+		_load_damage_matrix(at.call(index["damage_matrix"]))
+	for path: Variant in index.get("weapons", []):
+		_load_weapon(at.call(path))
+	for path: Variant in index.get("units", []):
+		_load_unit(at.call(path))
+	for path: Variant in index.get("buildings", []):
+		BuildingLoader.load_building(self, at.call(path))
+	for path: Variant in index.get("maps", []):
+		_load_map(at.call(path))
+	for path: Variant in index.get("upgrades", []):
+		_load_upgrade(at.call(path))
+	for path: Variant in index.get("strikes", []):
+		_load_strike(at.call(path))
+	for path: Variant in index.get("powers", []):
+		_load_power(at.call(path))
+	for path: Variant in index.get("scenarios", []):
+		_load_scenario(at.call(path))
+	for path: Variant in index.get("ai", []):
+		_load_ai_preset(at.call(path))
 
 
 func get_unit(id: String) -> UnitDef:

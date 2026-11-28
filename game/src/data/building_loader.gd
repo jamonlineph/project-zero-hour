@@ -72,6 +72,6 @@ static func load_building(db: ContentDb, path: String) -> void:
 		b.icon_path = str((visual as Dictionary).get("icon", ""))
 	if path.get_file().get_basename() != b.id:
 		db.errors.append("%s: file name must match id '%s'" % [path, b.id])
-	if db.buildings.has(b.id) or db.units.has(b.id):
+	if (db.buildings.has(b.id) and not db.overriding) or db.units.has(b.id):   # mods may replace (P3-17)
 		db.errors.append("%s: duplicate id '%s'" % [path, b.id])
 	db.buildings[b.id] = b
