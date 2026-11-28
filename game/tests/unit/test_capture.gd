@@ -83,6 +83,22 @@ func test_infantry_capture_it_and_the_enemy_can_take_it_back() -> void:
 	assert_eq(oil.player_id, 2, "the enemy couldn't take it back")
 
 
+func test_two_sides_at_once_contest_it() -> void:
+	var w := _world()
+	var oil := _neutral(w, "oil_field")
+	var ours := _unit(w, "us_rifle_squad", 1, 120, 128)
+	var theirs := _unit(w, "kp_infantry_squad", 2, 120, 112)
+	ours.weapons.clear()
+	theirs.weapons.clear()
+	_capture(w, [ours], oil)
+	_capture(w, [theirs], oil)
+	_run(w, 20 * SimWorld.TICK_RATE)
+	assert_eq(oil.player_id, 0, "a contested oil field changed hands (player %d)" % oil.player_id)
+	theirs.dead = true
+	_run(w, 20 * SimWorld.TICK_RATE)
+	assert_eq(oil.player_id, 1, "it wasn't captured once the contest ended")
+
+
 func test_leaving_starts_the_capture_over() -> void:
 	var w := _world()
 	var oil := _neutral(w, "oil_field")

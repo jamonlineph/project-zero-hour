@@ -7,9 +7,10 @@ extends RefCounted
 ##   side's. Once within ENTER_RANGE of its walls they stop and capture.
 ## - A building being captured gains a tick of progress for every tick a
 ##   capturer stands by it; at its capture_ticks it changes hands and its
-##   capturers go idle. The first capturer (lowest id) decides whose capture
-##   it is; a capture by someone else, or a tick with nobody capturing,
-##   starts it over. Enemies take it back the same way.
+##   capturers go idle. Capturers of two sides at once contest it: nobody
+##   gains progress until one side is gone (before, the lowest entity id won
+##   the tie, which favored player 1). A capture by someone else, or a tick
+##   with nobody capturing, starts it over. Enemies take it back the same way.
 ## - Captured buildings work for their owner (income, power, healing,
 ##   sight) but don't keep a player alive (VictorySystem).
 
@@ -36,6 +37,7 @@ static func apply_command(world: SimWorld, c: SimCommand) -> void:
 
 static func step(world: SimWorld) -> void:
 	var capturer: Dictionary[int, int] = {}   # building id -> player capturing it this tick
+	var contested: Dictionary[int, bool] = {}   # building id -> capturers of two sides
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
 		if e.dead or e.order != SimEntity.Order.CAPTURE:
@@ -56,11 +58,15 @@ static func step(world: SimWorld) -> void:
 			e.mover.stop()
 		if not capturer.has(s.id):
 			capturer[s.id] = e.player_id
+		elif capturer[s.id] != e.player_id:
+			contested[s.id] = true
 	for id: int in world.entity_ids:
 		var s: SimEntity = world.entities[id]
 		if s.building == null or s.building.capture_ticks <= 0 or s.dead:
 			continue
 		var b: SimBuilding = s.building
+		if contested.has(s.id):
+			continue   # held where it was until one side is gone
 		var who: int = capturer.get(s.id, 0)
 		if who == 0:
 			b.capture_player = 0
