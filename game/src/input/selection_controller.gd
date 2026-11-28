@@ -35,7 +35,7 @@ var guard_armed: bool = false
 var spoof_armed: bool = false
 ## A targeted commander power waiting for its point (P2-09b), or "".
 var power_armed: String = ""
-## A unit ability waiting for its target click (P3-02f, AbilityInput).
+## A unit ability waiting for its target click (P3-02f, ArmedClicks).
 var ability_armed: String = ""
 ## Building placement gets every pointer event first while it is active.
 var placement: PlacementController
@@ -125,39 +125,10 @@ func order_move(screen_pos: Vector2) -> void:
 	game_view.show_move_marker(point)
 
 
-## Runs a pending attack-move, patrol or guard order at a click or tap.
-## Returns true if one was pending.
+## Runs a pending order (attack-move, patrol, power, ability, spoof, guard)
+## at a click or tap. Returns true if one was pending (ArmedClicks).
 func handle_armed_click(screen_pos: Vector2) -> bool:
-	if attack_move_armed:
-		order_attack_move(screen_pos)
-		return true
-	if patrol_armed:
-		order_patrol(screen_pos)
-		return true
-	if power_armed != "":
-		var power: String = power_armed
-		power_armed = ""
-		var at: Variant = rts_camera.screen_to_ground(screen_pos)
-		if at != null:
-			runner.submit(SimCommand.make_use_power(power, Fx.from_float((at as Vector3).x), Fx.from_float((at as Vector3).z)))
-		return true
-	if ability_armed != "":
-		AbilityInput.click(self, screen_pos)
-		return true
-	if spoof_armed:
-		spoof_armed = false
-		var ground: Variant = rts_camera.screen_to_ground(screen_pos)
-		if ground != null and not selected.is_empty():
-			var p: Vector3 = ground
-			runner.submit(SimCommand.make_spoof(selected, Fx.from_float(p.x), Fx.from_float(p.z)))
-		return true
-	if guard_armed:
-		guard_armed = false
-		var ward: int = pick_own_entity(screen_pos)
-		if ward != 0:
-			order_guard(ward)
-		return true
-	return false
+	return ArmedClicks.handle(self, screen_pos)
 
 
 func disarm() -> void:
