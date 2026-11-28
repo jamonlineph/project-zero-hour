@@ -4,6 +4,20 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-28: P3-03 superweapons, P3-08 capturable buildings, P3-25, faction fixes (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P3-03 superweapons:** one per faction (5,000 credits, rank 3, one each), built on building abilities: a 4-minute charge everyone sees under the top bar, then interceptable strikes anywhere. The AI builds and fires them. `BuildingLoader` split out of `ContentDb`.
+  - **P3-08 capturable buildings:** oil field, solar farm, field hospital, data center, rail depot, cell tower. Infantry capture by standing next to them; enemies take them back. Placed mirrored on Riverside, Desert Crossroads and Frostwood; the AI captures them.
+  - **P3-25:** `selection_controller.gd` split (`ArmedClicks`).
+  - **Why the UAE and EU lost:** their logistics hubs had no free truck (America's and North Korea's do), so their early income ran at half speed; and the AI never counted unarmed support (medics, swarm trucks, jammers) and kept building it. Both fixed, with tests. The AI also now uses field repair and cyber defense.
+  - **Balance:** after those fixes the new factions were too strong; trimmed in steps. Latest Riverside runs against America and North Korea: UAE about 40%, EU about 65% (15–20 games each, noisy).
+- Tests: `tools/run_tests.sh` -> 321 tests, 0 failed (+ both smoke tests). `python3 tools/check_repo.py` -> ok (209 assets).
+- Not verified: four-faction balance with large samples; superweapon and capture flow by touch on a phone.
+- Next: P3-04 aircraft and airbases; P3-14 LAN multiplayer; P3-13 AI v2 (hard difficulty).
+- For the owner: the four superweapons and six capturable buildings are first-pass designs from the docs; say if any effect should change.
+
+---
+
 ## 2026-11-28: P3-12a EU, UAE mechanics (P3-02b/c/f), P1-30b, balance work (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P3-12a EU:** all four factions are now playable in skirmish. 13 units (with combat medics and a patrol fighter), 8 buildings, 5 powers, 3 upgrades, `eu_default`, placeholder art. New mechanics: healing auras (`HealSystem`: medics heal infantry 3%/s, trucks repair vehicles 1%/s), `repair_area` and `cyber_defense` power kinds. The AI keeps unarmed helpers (medics) in the middle of its army. `test_eu.gd`.
