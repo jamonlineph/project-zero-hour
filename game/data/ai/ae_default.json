@@ -11,6 +11,7 @@
     "ae_logistics_hub",
     "ae_drone_complex",
     "ae_power_plant",
+    "ae_airbase",
     "ae_sam_site"
   ],
   "unit_mix": {
@@ -21,7 +22,8 @@
     "ae_ifv": 1,
     "ae_recon_drone": 1,
     "ae_rocket_artillery": 1,
-    "ae_swarm_launcher": 1
+    "ae_swarm_launcher": 1,
+    "ae_attack_heli": 1
   },
   "max_gatherers": 4,
   "max_spotters": 3,

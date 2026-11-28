@@ -42,7 +42,7 @@ static func step(world: SimWorld) -> void:
 		for w: SimWeapon in e.weapons:
 			if w.cooldown > 0:
 				w.cooldown -= 1
-			if w.stock_max > 0 and w.stock < w.stock_max:
+			if w.stock_max > 0 and w.stock < w.stock_max and w.restock_ticks > 0:   # ammo (restock 0) refills only at an airbase
 				w.restock_progress += 1
 				if w.restock_progress >= w.restock_ticks:
 					w.restock_progress = 0

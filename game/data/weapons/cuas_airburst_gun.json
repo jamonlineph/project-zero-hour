@@ -8,5 +8,8 @@
   "projectile": "instant",
   "splash_radius_cm": 300,
   "splash_edge_percent": 50,
-  "targets": ["drone"]
+  "targets": [
+    "drone",
+    "air"
+  ]
 }

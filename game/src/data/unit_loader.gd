@@ -35,6 +35,10 @@ static func load_weapon(db: ContentDb, path: String) -> void:
 	if src.has("stock"):
 		w.stock = db.req_int(src, "stock", path, 1)
 		w.restock_ticks = db.req_int(src, "restock_s", path, 1) * SimWorld.TICK_RATE
+	elif src.has("ammo"):
+		# Aircraft ammo (P3-04a): a stock that only refills at the airbase.
+		w.stock = db.req_int(src, "ammo", path, 1)
+		w.restock_ticks = 0
 	if src.has("cone_deg"):
 		var cone_deg: int = db.req_int(src, "cone_deg", path, 1)
 		w.cone_half = (cone_deg * Fx.ANGLE_FULL) / 720
@@ -88,6 +92,8 @@ static func load_unit(db: ContentDb, path: String) -> void:
 	u.fiber_optic = bool(src.get("fiber_optic", false))
 	u.spotter = bool(src.get("spotter", false))
 	u.crusher = bool(src.get("crusher", false))
+	if src.has("rearm_s"):
+		u.rearm_ticks = ContentDb.ms_to_ticks(int(src["rearm_s"]) * 1000)
 	if src.has("heal_aura"):
 		var ha: Variant = src["heal_aura"]
 		if not ha is Dictionary:

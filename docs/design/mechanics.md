@@ -39,7 +39,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Stealth and detection | Stealthed units are invisible until they fire or a detector is near | P3-09 | ⬜ |
 | Mines and obstacles | Engineers lay mines, trenches and tank obstacles | P3-10 | ⬜ |
 | Bridges | Destructible; builders repair them | P3-11 | ⬜ |
-| Aircraft | Limited ammo, return to the airbase to rearm; helicopters hover | P3-04 | ⬜ |
+| Aircraft | Limited ammo, return to the airbase to rearm; helicopters hover. In the game (P3-04a): attack helicopters for America, the UAE and the EU (missiles and a cannon with `ammo`), built at an airbase; empty, they fly home, rearm and repair there (`AirSystem`). Rifles, machine guns and autocannons can shoot at aircraft (small arms do 10%) | P3-04 | 🔄 (P3-04a done; jets and North Korea's airstrip in P3-04b) |
 
 ## 2026 systems (what makes this game different)
 

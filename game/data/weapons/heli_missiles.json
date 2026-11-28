@@ -1,0 +1,14 @@
+{
+  "id": "heli_missiles",
+  "status": "first-pass stats (P3-04a)",
+  "damage": 150,
+  "damage_type": "anti_tank",
+  "range_cm": 5500,
+  "reload_ms": 1500,
+  "projectile": "guided",
+  "targets": [
+    "ground"
+  ],
+  "projectile_speed_cm_per_s": 9000,
+  "ammo": 8
+}

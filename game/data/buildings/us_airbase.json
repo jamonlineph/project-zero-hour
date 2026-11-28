@@ -1,0 +1,27 @@
+{
+  "id": "us_airbase",
+  "faction": "us",
+  "name": "Airbase",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-04a)",
+  "max_hp": 2500,
+  "cost": 1500,
+  "footprint_cells": [
+    7,
+    6
+  ],
+  "build_time_ms": 20000,
+  "power": -3,
+  "vision_cm": 6000,
+  "requires": [
+    "us_vehicle_depot"
+  ],
+  "produces": [
+    "us_attack_heli"
+  ],
+  "_doc": "Aircraft built here come back here to rearm and repair (AirSystem).",
+  "visual": {
+    "model": "res://assets/models/buildings/us_airbase.glb",
+    "icon": "res://assets/icons/buildings/us_airbase.png"
+  }
+}

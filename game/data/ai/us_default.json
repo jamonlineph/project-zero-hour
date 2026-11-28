@@ -11,6 +11,7 @@
     "us_logistics_hub",
     "us_drone_center",
     "us_microreactor",
+    "us_airbase",
     "us_sam_site"
   ],
   "unit_mix": {
@@ -19,7 +20,8 @@
     "us_at_team": 1,
     "us_ifv": 1,
     "us_recon_drone": 1,
-    "us_rocket_artillery": 1
+    "us_rocket_artillery": 1,
+    "us_attack_heli": 1
   },
   "max_gatherers": 4,
   "max_spotters": 3,

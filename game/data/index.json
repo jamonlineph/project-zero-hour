@@ -37,7 +37,9 @@
     "res://data/weapons/eu_hmg.json",
     "res://data/weapons/eu_ifv_autocannon.json",
     "res://data/weapons/tank_cannon_120_l55.json",
-    "res://data/weapons/eu_howitzer_155.json"
+    "res://data/weapons/eu_howitzer_155.json",
+    "res://data/weapons/heli_missiles.json",
+    "res://data/weapons/heli_cannon.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",
@@ -89,7 +91,10 @@
     "res://data/units/eu_howitzer.json",
     "res://data/units/eu_cuas_truck.json",
     "res://data/units/eu_recon_drone.json",
-    "res://data/units/eu_patrol_fighter.json"
+    "res://data/units/eu_patrol_fighter.json",
+    "res://data/units/us_attack_heli.json",
+    "res://data/units/ae_attack_heli.json",
+    "res://data/units/eu_attack_heli.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",
@@ -134,7 +139,10 @@
     "res://data/buildings/field_hospital.json",
     "res://data/buildings/data_center.json",
     "res://data/buildings/rail_depot.json",
-    "res://data/buildings/cell_tower.json"
+    "res://data/buildings/cell_tower.json",
+    "res://data/buildings/us_airbase.json",
+    "res://data/buildings/ae_airbase.json",
+    "res://data/buildings/eu_airbase.json"
   ],
   "maps": [
     "res://data/maps/sandbox/map.json",

@@ -6,5 +6,9 @@
   "range_cm": 3000,
   "reload_ms": 1000,
   "projectile": "instant",
-  "targets": ["ground", "drone"]
+  "targets": [
+    "ground",
+    "drone",
+    "air"
+  ]
 }

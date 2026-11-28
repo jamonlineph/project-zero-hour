@@ -11,6 +11,7 @@
     "eu_logistics_hub",
     "eu_drone_center",
     "eu_power_station",
+    "eu_airbase",
     "eu_sam_site"
   ],
   "unit_mix": {
@@ -21,7 +22,8 @@
     "eu_apc": 1,
     "eu_medics": 1,
     "eu_recon_drone": 1,
-    "eu_howitzer": 1
+    "eu_howitzer": 1,
+    "eu_attack_heli": 1
   },
   "max_gatherers": 4,
   "max_spotters": 2,

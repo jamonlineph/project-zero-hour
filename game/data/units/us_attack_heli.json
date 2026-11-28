@@ -1,0 +1,25 @@
+{
+  "id": "us_attack_heli",
+  "faction": "us",
+  "role": "attack_heli",
+  "name": "Attack Helicopter",
+  "armor_class": "aircraft",
+  "status": "first-pass numbers (P3-04a)",
+  "max_hp": 900,
+  "cost": 1500,
+  "speed_cm_per_s": 1800,
+  "radius_cm": 300,
+  "vision_cm": 6000,
+  "build_time_ms": 18000,
+  "requires": [],
+  "weapons": [
+    "heli_missiles",
+    "heli_cannon"
+  ],
+  "flying": true,
+  "rearm_s": 16,
+  "visual": {
+    "model": "res://assets/models/units/us_attack_heli.glb",
+    "icon": "res://assets/icons/units/us_attack_heli.png"
+  }
+}

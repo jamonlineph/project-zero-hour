@@ -258,6 +258,7 @@ func step() -> void:
 	GarrisonSystem.step(self)
 	CaptureSystem.step(self)
 	DroneSystem.step(self)
+	AirSystem.step(self)
 	JammingSystem.step(self)
 	KillChainSystem.step(self)
 	StrikeSystem.step(self)
