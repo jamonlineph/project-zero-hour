@@ -146,9 +146,12 @@ class _Mine:
 				builders.append(e)
 			elif e.gatherer != null:
 				gatherers.append(e)
-			elif e.mover != null and e.ttl == 0 and (not e.weapons.is_empty() or e.spotter):
-				# Spotters (recon drones) move with the army, so kill-chain
-				# weapons have someone marking their targets (P2-11c).
+			elif e.mover != null and e.ttl == 0 and e.cost > 0:
+				# Everything we built that fights or helps: armed units,
+				# spotters (they mark kill-chain targets, P2-11c) and unarmed
+				# support such as medics, swarm trucks and jammers. Until
+				# 2026-11-28 unarmed support wasn't counted, so the AI kept
+				# building it. Launched drones (cost 0) aren't army.
 				army.append(e)
 		if hq == null and not buildings.is_empty():
 			hq = buildings[0]
