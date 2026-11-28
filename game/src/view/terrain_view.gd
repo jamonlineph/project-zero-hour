@@ -61,6 +61,7 @@ func build(def: MapDef, fog: FogOfWar) -> void:
 	mesh = st.commit()
 	var mat: ShaderMaterial = fog.make_material(Color.WHITE)
 	mat.set_shader_parameter("use_vertex_color", true)
+	mat.set_shader_parameter("detail_strength", 1.0)   # ground grain (P3-23d)
 	material_override = mat
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 

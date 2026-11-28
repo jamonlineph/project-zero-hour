@@ -16,7 +16,8 @@
   - `biome` (optional, default `temperate`): `temperate`, `desert` or `winter` (`MapDef.BIOMES`). View only (P3-23): `Biomes` holds each one's ground, water and house colors and how obstacles are drawn (temperate rocks and hedges, desert sandstone mesas, winter pine forests). Obstacles are drawn at exactly their rectangles, so what you see still blocks
 - `height.r16`: raw 16-bit little-endian heights, one sample per 2 m cell, row by row from the map's (0, 0) corner. Raw bytes rather than a PNG, because Godot re-encodes imported images (to 8-bit textures); raw data is read exactly the same on every platform, which the deterministic sim needs.
 - The sim gets integer heights (`SimMap.height_at`) and the passability grid; `TerrainView` builds the ground mesh from the same heights, so what you see is what the sim uses.
-- Later: `splat.png` (terrain texture weights), `props.json` (decorations), neutral buildings and triggers.
+- Scenery (P3-23d, view only): the terrain shader adds procedural grain and patches, and `PropsView` scatters props by biome (temperate bushes and stones; desert stones, dry shrubs and palms by water; winter snowdrifts and young firs), seeded by the map id, never in a base (42 m), on water, or on buildings, obstacles, bridges and supply sites. Units drive through them.
+- Later: `splat.png` (terrain texture weights) and hand-placed `props.json` decorations with the final art.
 - Sizes: 256×256 m (1v1), 384×384 m (2v2), 512×512 m (4 players). The sandbox is 128×128 m.
 - **2v2 skirmish (P3-23b):** the menu's Mode button switches between 1v1 maps (two start positions) and 2v2 maps (four). In a 2v2 you (player 1, blue) and a computer ally of your faction (player 3, yellow) face two computers of the enemy faction (players 2 and 4). Allies share vision; a team loses when all its players are defeated. On a 2v2 map, each odd start must mirror the one before it (`test_maps.gd`).
 - Maps today:

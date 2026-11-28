@@ -317,4 +317,7 @@ func _build_environment() -> void:
 	var features := MapFeaturesView.new()
 	features.build(map_def, fog, terrain.height_at)
 	add_child(features)
+	var props := PropsView.new()   # scattered scenery (P3-23d)
+	props.build(map_def, fog)
+	add_child(props)
 
