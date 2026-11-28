@@ -860,6 +860,10 @@ msgstr ""
 msgid "On"
 msgstr ""
 
+#: game/src/main/main.gd
+msgid "Out of sync with the other player at tick %d. A replay was saved to %s: please send it with a bug report."
+msgstr ""
+
 #: game/src/ui/main_menu.gd
 msgid "PROJECT ZERO HOUR"
 msgstr ""

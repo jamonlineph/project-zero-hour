@@ -171,4 +171,5 @@ T = {
  'Sell?\\ntap again': '¿Vender?\\ntoca otra vez',
  'Sell\\n+%d': 'Vender\\n+%d',
  'Sell for %d credits (half the price, less if damaged)': 'Vender por %d créditos (la mitad del precio, menos si está dañado)',
+ 'Out of sync with the other player at tick %d. A replay was saved to %s: please send it with a bug report.': 'Desincronizado con el otro jugador en el tick %d. Se guardó una repetición en %s: envíala con un informe de error.',
 }

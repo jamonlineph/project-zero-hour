@@ -85,7 +85,9 @@ func _ready() -> void:
 		runner.local_players = [local_player]
 		net.attach(runner)
 		net.desynced.connect(func(t: int, _m: int, _o: int) -> void:
-			hud.show_notice("Out of sync with the other player at tick %d (a bug: please send the replay)." % t, 12.0))
+			# NetSession kept the evidence (P3-14b): this machine's replay.
+			hud.show_notice(Loc.t("Out of sync with the other player at tick %d. A replay was saved to %s: please send it with a bug report.") \
+				% [t, ProjectSettings.globalize_path(net.last_desync_replay)], 15.0))
 		net.peer_left.connect(func() -> void: hud.show_notice("The other player left the game.", 12.0))
 	runner.add_ai_from_scenario(content, scenario)
 	runner.scenario_data = scenario

@@ -81,6 +81,19 @@ func _run() -> void:
 	_check(ra.world.state_hash() == rb.world.state_hash(), "the two machines disagree")
 	_check(desyncs.is_empty(), "desync reported at %s" % str(desyncs))
 	_check(ra.command_log.size() > 5, "the AIs gave almost no orders")
+	# P3-14b: a desync (forced here) is reported and saves a replay.
+	host.replay_dir = "user://test_desync_replays"
+	ra.world.get_player(1).credits += 1
+	var forced: bool = await _pump(host, client, func() -> bool:
+		while ra.world.tick < target + 3 * SimWorld.TICK_RATE and ra.try_step():
+			pass
+		while rb.world.tick < target + 3 * SimWorld.TICK_RATE and rb.try_step():
+			pass
+		return not desyncs.is_empty(), 60000)
+	_check(forced, "a forced desync wasn't reported")
+	_check(host.last_desync_replay != "" and FileAccess.file_exists(host.last_desync_replay), "no replay was saved on the desync")
+	if host.last_desync_replay != "":
+		DirAccess.remove_absolute(host.last_desync_replay)
 	host.close()
 	client.close()
 	ra.free()

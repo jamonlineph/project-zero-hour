@@ -9,7 +9,9 @@ extends Node
 ##   client player 2. The host sends the match (scenario and seed) with
 ##   start_match(); both then build the same world.
 ## - Both send their state hash every second (SimRunner.hash_logged); a
-##   mismatch is a desync (`desynced`), which means a determinism bug.
+##   mismatch is a desync (`desynced`), which means a determinism bug. The
+##   first one saves this machine's replay (P3-14b) to `replay_dir`, so it
+##   can be compared with the other machine's.
 ## - The session gets its own MultiplayerAPI rooted at itself, so two
 ##   sessions can live in one process (the loopback test) and it survives
 ##   scene changes when kept under the tree root.
@@ -28,6 +30,9 @@ var runner: SimRunner
 var _api: SceneMultiplayer
 var _their_hashes: Dictionary[int, int] = {}
 var _early: Array[Array] = []   ## batches that arrived before attach(): [player, tick, cmds]
+var replay_dir: String = "user://replays"
+var last_desync_replay: String = ""   ## where the replay of the first desync went, or ""
+
 
 
 func _enter_tree() -> void:
@@ -138,4 +143,8 @@ func _check_hash(tick: int) -> void:
 	var theirs: int = _their_hashes[tick]
 	_their_hashes.erase(tick)
 	if mine != theirs:
+		if last_desync_replay == "" and runner != null:
+			DirAccess.make_dir_recursive_absolute(replay_dir)
+			var path: String = replay_dir.path_join("desync_tick%d_p%d.json" % [tick, local_player_id])
+			last_desync_replay = path if runner.make_replay().save(path) == OK else ""
 		desynced.emit(tick, mine, theirs)
