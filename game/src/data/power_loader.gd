@@ -30,6 +30,7 @@ static func load_power(db: ContentDb, path: String) -> void:
 	p.needs_spotted = bool(src.get("needs_spotted", false))
 	p.group = str(src.get("group", ""))
 	p.grants_upgrade = str(src.get("grants_upgrade", ""))
+	p.extra_in_group = str(src.get("extra_in_group", ""))
 	if path.get_file().get_basename() != p.id:
 		db.errors.append("%s: file name must match id '%s'" % [path, p.id])
 	db.powers[p.id] = p

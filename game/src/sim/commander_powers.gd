@@ -15,13 +15,20 @@ static func points(player: SimPlayer) -> int:
 	return player.rank - player.powers.size()
 
 
-## True if the player already chose a power of this group (P3-12b).
+## True if the player can't choose another power of this group (P3-12b):
+## one is allowed, plus one for each chosen power with extra_in_group.
 static func in_group(world: SimWorld, player: SimPlayer, group: String) -> bool:
+	var chosen: int = 0
+	var allowed: int = 1
 	for id: String in player.powers:
 		var p: PowerDef = world.content.get_power(id)
-		if p != null and p.group == group:
-			return true
-	return false
+		if p == null:
+			continue
+		if p.group == group:
+			chosen += 1
+		if p.extra_in_group == group:
+			allowed += 1
+	return chosen >= allowed
 
 
 static func apply_command(world: SimWorld, c: SimCommand) -> void:

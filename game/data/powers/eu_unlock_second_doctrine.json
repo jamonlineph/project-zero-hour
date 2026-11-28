@@ -1,0 +1,9 @@
+{
+  "id": "eu_unlock_second_doctrine",
+  "faction": "eu",
+  "name": "Unlock: Second Doctrine",
+  "tier": 3,
+  "kind": "unlock",
+  "extra_in_group": "doctrine",
+  "description": "Lets you choose a second battlegroup doctrine: its unit and its bonus."
+}

@@ -249,6 +249,7 @@
     "res://data/powers/eu_doctrine_air_defense.json",
     "res://data/powers/eu_unlock_interop.json",
     "res://data/powers/ae_emergency_procurement.json",
-    "res://data/powers/ae_laser_shield.json"
+    "res://data/powers/ae_laser_shield.json",
+    "res://data/powers/eu_unlock_second_doctrine.json"
   ]
 }

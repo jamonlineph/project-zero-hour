@@ -24,4 +24,7 @@ var unit_id: String = ""        ## reinforce, wingmen, decoys, unlock
 var group: String = ""
 ## A global upgrade the player gets when choosing it (a doctrine's bonus).
 var grants_upgrade: String = ""
+## Choosing it allows one more power of this group (P3-12b: the EU's rank-3
+## unlock for a second doctrine).
+var extra_in_group: String = ""
 var needs_spotted: bool = false ## strike: the point must be seen by a friendly spotter

@@ -79,6 +79,20 @@ func test_one_doctrine_rules_out_the_others() -> void:
 	assert_true(p.powers.has("eu_field_repair"), "other powers stay open")
 
 
+func test_the_rank_3_unlock_allows_a_second_doctrine() -> void:
+	var w := _world(4)
+	_choose(w, "eu_doctrine_heavy_armor")
+	_choose(w, "eu_doctrine_air_mobile")
+	var p: SimPlayer = w.get_player(1)
+	assert_false(p.powers.has("eu_doctrine_air_mobile"), "a second doctrine without the unlock")
+	_choose(w, "eu_unlock_second_doctrine")
+	_choose(w, "eu_doctrine_air_mobile")
+	assert_true(p.powers.has("eu_doctrine_air_mobile"), "the unlock didn't allow a second doctrine")
+	assert_true(p.upgrades.has("eu_air_mobile_doctrine"), "the second doctrine's bonus wasn't granted")
+	_choose(w, "eu_doctrine_air_defense")
+	assert_false(p.powers.has("eu_doctrine_air_defense"), "a third doctrine was allowed")
+
+
 func test_a_doctrine_unlocks_its_unit() -> void:
 	var w := _world(1)
 	var works: SimEntity = w.get_entity(w.spawn_building(_content().get_building("eu_vehicle_works"), 1, 20, 20, true))
