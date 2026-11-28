@@ -5,7 +5,8 @@
     "us": {"body": [0.46, 0.43, 0.32]},
     "ae": {"body": [0.62, 0.55, 0.42]},
     "kp": {"body": [0.28, 0.33, 0.22]},
-    "eu": {"body": [0.38, 0.40, 0.36]}
+    "eu": {"body": [0.38, 0.40, 0.36]},
+    "neutral": {"body": [0.56, 0.55, 0.50]}
   },
   "assets": [
     {"id": "us_mbt", "category": "units", "archetype": "tracked", "faction": "us", "length": 7.9, "width": 3.6, "height": 2.4, "aps": true, "tri_budget": 3000},
@@ -92,6 +93,10 @@
     {"id": "us_hypersonic_battery", "category": "buildings", "archetype": "building", "faction": "us", "style": "sam", "width": 10.0, "depth": 10.0, "height": 4.5, "tri_budget": 2500},
     {"id": "ae_strike_package", "category": "buildings", "archetype": "building", "faction": "ae", "width": 14.0, "depth": 10.0, "height": 3.0, "details": ["pad", "mast", "garage"], "tri_budget": 4000},
     {"id": "kp_heavy_missile_site", "category": "buildings", "archetype": "building", "faction": "kp", "style": "sam", "width": 10.0, "depth": 10.0, "height": 5.0, "tri_budget": 2500},
-    {"id": "eu_cruise_battery", "category": "buildings", "archetype": "building", "faction": "eu", "style": "sam", "width": 10.0, "depth": 10.0, "height": 4.0, "tri_budget": 2500}
+    {"id": "eu_cruise_battery", "category": "buildings", "archetype": "building", "faction": "eu", "style": "sam", "width": 10.0, "depth": 10.0, "height": 4.0, "tri_budget": 2500},
+    {"id": "oil_field", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 8.0, "depth": 8.0, "height": 2.5, "details": ["tanks", "stacks"], "tri_budget": 3000},
+    {"id": "solar_farm", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 10.0, "depth": 8.0, "height": 1.2, "details": ["pad"], "tri_budget": 2000},
+    {"id": "field_hospital", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 10.0, "depth": 8.0, "height": 3.0, "details": ["flag", "vents"], "tri_budget": 3000},
+    {"id": "data_center", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 8.0, "depth": 8.0, "height": 4.0, "details": ["dish", "mast", "vents"], "tri_budget": 3000}
   ]
 }

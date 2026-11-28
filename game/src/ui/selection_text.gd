@@ -28,6 +28,11 @@ static func describe(world: SimWorld, selected: Array[int]) -> String:
 			text = "Supply site   %d credits left" % e.supply.remaining
 		if e.garrison != null:
 			text += "\nInside: %d / %d" % [e.garrison.occupants.size(), e.garrison.capacity]
+		if e.building != null and e.building.capture_ticks > 0:
+			var b: SimBuilding = e.building
+			text += "\n%s" % ("Neutral: infantry can capture it" if e.player_id == 0 else "Captured")
+			if b.capture_player != 0:
+				text += "   capturing %d%%" % ((100 * b.capture_progress) / b.capture_ticks)
 		return text
 	var counts: Dictionary[String, int] = {}
 	for id: int in selected:

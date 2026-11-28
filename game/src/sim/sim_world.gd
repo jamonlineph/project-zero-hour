@@ -256,6 +256,7 @@ func step() -> void:
 	# document the order in docs/02-architecture.md.
 	OrderSystem.step(self)
 	GarrisonSystem.step(self)
+	CaptureSystem.step(self)
 	DroneSystem.step(self)
 	JammingSystem.step(self)
 	KillChainSystem.step(self)
@@ -264,6 +265,7 @@ func step() -> void:
 	CommanderPowers.expire(self)
 	PowerSystem.step(self)
 	FundSystem.step(self)
+	IncomeSystem.step(self)
 	ConstructionSystem.step(self)
 	ProductionSystem.step(self)
 	Upgrades.step(self)

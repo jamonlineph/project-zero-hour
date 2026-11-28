@@ -1,0 +1,24 @@
+{
+  "id": "solar_farm",
+  "faction": "neutral",
+  "name": "Solar Farm",
+  "armor_class": "structure",
+  "_doc": "Capturable (P3-08a): 6 free power for its owner.",
+  "status": "first-pass numbers (P3-08a)",
+  "max_hp": 1000,
+  "cost": 0,
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "build_time_ms": 1000,
+  "power": 6,
+  "vision_cm": 3000,
+  "requires": [],
+  "produces": [],
+  "capture_s": 6,
+  "visual": {
+    "model": "res://assets/models/buildings/solar_farm.glb",
+    "icon": "res://assets/icons/buildings/solar_farm.png"
+  }
+}

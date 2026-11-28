@@ -27,6 +27,9 @@ var civilian_buildings_m: Array[PackedInt32Array] = []
 var bridges_m: Array[PackedInt32Array] = []
 ## Offered in the skirmish menu (P2-12).
 var skirmish: bool = false
+## Neutral capturable buildings (P3-08a): [{"def": id, "x": x_m, "y": y_m}],
+## placed by MatchSetup centered on the point.
+var neutral_buildings: Array[Dictionary] = []
 ## The look (P3-23): "temperate", "desert" or "winter" (view only, Biomes).
 var biome: String = "temperate"
 ## The looks a map can pick (the view styles each one: Biomes, P3-23).

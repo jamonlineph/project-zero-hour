@@ -38,6 +38,13 @@ static func load_building(db: ContentDb, path: String) -> void:
 			db.errors.append("%s: unknown weapon '%s'" % [path, str(weapon_id)])
 		else:
 			b.weapons.append(w)
+	b.capture_ticks = ContentDb.ms_to_ticks(int(src.get("capture_s", 0)) * 1000) if int(src.get("capture_s", 0)) > 0 else 0
+	b.income = int(src.get("income_per_10s", 0))
+	if src.has("heal_aura") and src["heal_aura"] is Dictionary:
+		var ha: Dictionary = src["heal_aura"]
+		b.heal_radius = Fx.from_ratio(int(ha.get("radius_cm", 0)), 100)
+		b.heal_percent_per_s = int(ha.get("percent_per_s", 0))
+		b.heal_classes = db.string_list(ha, "classes", path)
 	b.limit = int(src.get("limit", 0))
 	b.requires_rank = int(src.get("requires_rank", 1))
 	for a: Variant in src.get("abilities", []):

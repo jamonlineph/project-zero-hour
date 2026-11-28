@@ -62,6 +62,14 @@ func test_skirmish_maps_are_exact_mirrors() -> void:
 			"%s: obstacles are not mirrored" % m.id)
 		assert_eq(_mirrored_rects(m.civilian_buildings_m, m.width_m, true),
 			_mirrored_rects(m.civilian_buildings_m, m.width_m, false), "%s: houses are not mirrored" % m.id)
+		var nbs: Array[String] = []
+		var nbs_mirrored: Array[String] = []
+		for nb: Dictionary in m.neutral_buildings:
+			nbs.append("%s %d %d" % [nb["def"], nb["x"], nb["y"]])
+			nbs_mirrored.append("%s %d %d" % [nb["def"], m.width_m - int(nb["x"]), nb["y"]])
+		nbs.sort()
+		nbs_mirrored.sort()
+		assert_eq(nbs_mirrored, nbs, "%s: neutral buildings are not mirrored" % m.id)
 		var sites: Array[String] = []
 		var mirrored: Array[String] = []
 		for s: PackedInt32Array in m.supply_sites:
@@ -113,6 +121,15 @@ func test_skirmish_maps_everything_is_reachable_from_both_starts() -> void:
 				if reached.has(Vector2i(s[0] / 2, s[1] / 2) + d):
 					ok = true
 			assert_true(ok, "%s: supply site at (%d, %d) m can't be reached" % [m.id, s[0], s[1]])
+		# Every neutral building can be walked up to and captured (P3-08a).
+		for nb: Dictionary in m.neutral_buildings:
+			var c := Vector2i(int(nb["x"]) / 2, int(nb["y"]) / 2)
+			var near: bool = false
+			for r: int in range(2, 6):
+				for d: Vector2i in [Vector2i(r, 0), Vector2i(-r, 0), Vector2i(0, r), Vector2i(0, -r)]:
+					if reached.has(c + d):
+						near = true
+			assert_true(near, "%s: the %s at (%d, %d) m can't be reached" % [m.id, nb["def"], nb["x"], nb["y"]])
 		# Infantry must be able to walk up to every house to garrison it (P3-05).
 		for h: PackedInt32Array in m.civilian_buildings_m:
 			var door: bool = false

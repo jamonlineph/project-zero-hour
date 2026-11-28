@@ -66,7 +66,8 @@ func test_medics_heal_nearby_infantry_only() -> void:
 	for e: SimEntity in [squad, far, apc, enemy]:
 		e.hp = e.max_hp / 2
 	_run(w, SimWorld.TICK_RATE * 2 + 1)
-	assert_eq(squad.hp, squad.max_hp / 2 + 2 * (squad.max_hp * 3 / 100), "3% a second")
+	var pct: int = _content().get_unit("eu_medics").heal_percent_per_s
+	assert_eq(squad.hp, squad.max_hp / 2 + 2 * (squad.max_hp * pct / 100), "%d%% a second" % pct)
 	assert_eq(far.hp, far.max_hp / 2, "healed from beyond the aura")
 	assert_eq(apc.hp, apc.max_hp / 2, "medics repaired a vehicle")
 	assert_eq(enemy.hp, enemy.max_hp / 2, "medics healed an enemy")
@@ -82,7 +83,7 @@ func test_auras_dont_stack_and_trucks_repair_vehicles() -> void:
 	squad.hp = 100
 	tank.hp = 500
 	_run(w, SimWorld.TICK_RATE + 1)
-	assert_eq(squad.hp, 100 + squad.max_hp * 3 / 100, "two medics healed twice")
+	assert_eq(squad.hp, 100 + squad.max_hp * _content().get_unit("eu_medics").heal_percent_per_s / 100, "two medics healed twice")
 	assert_eq(tank.hp, 500 + tank.max_hp / 100, "the truck didn't repair the tank by 1%")
 
 

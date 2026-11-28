@@ -202,8 +202,14 @@ func order_attack_move(screen_pos: Vector2) -> void:
 ## enemy there; send gatherers to a supply site; send builders to finish or
 ## repair one of our buildings; send infantry into a building they can
 ## garrison (P3-05); set the rally point when only buildings are selected;
-## otherwise move.
+## otherwise move. Infantry capture a neutral or enemy capturable building
+## instead of attacking it (P3-08a).
 func order_at(screen_pos: Vector2) -> void:
+	var prize: int = _pick(screen_pos, func(e: SimEntity) -> bool:
+		return e.building != null and e.building.capture_ticks > 0 and e.player_id != local_player_id)
+	if prize != 0 and _selected_any(func(e: SimEntity) -> bool: return e.armor_class == "infantry"):
+		runner.submit(SimCommand.make_capture(selected, prize))
+		return
 	var enemy: int = _pick_unit(screen_pos, false)
 	if enemy != 0:
 		order_attack(enemy)

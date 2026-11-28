@@ -24,8 +24,9 @@ static func step(world: SimWorld) -> void:
 		var e: SimEntity = world.entities[id]
 		if e.dead or e.player_id == 0 or e.strike != null or e.sensor or e.ttl > 0:   # strikes in flight don't keep a player alive
 			continue
-		# A town house someone sits in isn't their building (P3-05).
-		var town: bool = e.garrison != null and e.garrison.neutral
+		# A town house someone sits in isn't their building (P3-05), and
+		# neither is a captured neutral building (P3-08a).
+		var town: bool = (e.garrison != null and e.garrison.neutral) or (e.building != null and e.building.capture_ticks > 0)
 		var counts: bool = world.victory_rule == "units" or (e.building != null and not town) or e.builder != null
 		if counts:
 			assets[e.player_id] = assets.get(e.player_id, 0) + 1
@@ -41,6 +42,8 @@ static func step(world: SimWorld) -> void:
 				if e.garrison != null and e.garrison.neutral:
 					e.player_id = 0   # the house stays; the units inside are lost
 					e.garrison.occupants.clear()
+				elif e.building != null and e.building.capture_ticks > 0:
+					e.player_id = 0   # a captured building turns neutral again (P3-08a)
 				else:
 					e.dead = true
 	var teams: Dictionary[int, bool] = {}

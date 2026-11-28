@@ -270,6 +270,15 @@
       16
     ]
   ],
+  "_neutral_doc": "Capturable neutral buildings [building_id, x_m, y_m] (P3-08a), centered on the point; west side first, then mirrors, then any on the middle line.",
+  "neutral_buildings": [
+    ["oil_field", 22, 230],
+    ["data_center", 100, 20],
+    ["field_hospital", 72, 150],
+    ["oil_field", 234, 230],
+    ["data_center", 156, 20],
+    ["field_hospital", 184, 150]
+  ],
   "start_positions_m": [
     [
       36,

@@ -75,3 +75,5 @@ In the game (P3-03): each is a building (5,000 credits, commander rank 3, one pe
 | Rail depot | Faster vehicle production |
 | Solar farm | Free power |
 | Cell tower | Extends the kill-chain spotting range |
+
+In the game (P3-08a): `oil_field` (60 credits every 10 s), `solar_farm` (6 power), `field_hospital` (heals its owner's infantry within 25 m by 3% a second) and `data_center` (120 m of sight). Infantry capture one by standing next to it for 6–8 s (`capture_s`); leaving, or another side's capturer arriving first, starts it over, and enemies take it back the same way. Captured buildings don't keep a player alive and turn neutral again when their owner is defeated. The skirmish maps place them mirrored (`neutral_buildings` in map.json). The rail depot and cell tower come in P3-08b.

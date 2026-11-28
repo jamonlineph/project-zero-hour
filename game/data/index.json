@@ -128,7 +128,11 @@
     "res://data/buildings/us_hypersonic_battery.json",
     "res://data/buildings/ae_strike_package.json",
     "res://data/buildings/kp_heavy_missile_site.json",
-    "res://data/buildings/eu_cruise_battery.json"
+    "res://data/buildings/eu_cruise_battery.json",
+    "res://data/buildings/oil_field.json",
+    "res://data/buildings/solar_farm.json",
+    "res://data/buildings/field_hospital.json",
+    "res://data/buildings/data_center.json"
   ],
   "maps": [
     "res://data/maps/sandbox/map.json",

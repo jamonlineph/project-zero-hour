@@ -1,0 +1,31 @@
+{
+  "id": "field_hospital",
+  "faction": "neutral",
+  "name": "Field Hospital",
+  "armor_class": "structure",
+  "_doc": "Capturable (P3-08a): heals its owner's infantry within 25 m, 3% a second.",
+  "status": "first-pass numbers (P3-08a)",
+  "max_hp": 1400,
+  "cost": 0,
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "build_time_ms": 1000,
+  "power": 0,
+  "vision_cm": 3500,
+  "requires": [],
+  "produces": [],
+  "capture_s": 8,
+  "heal_aura": {
+    "radius_cm": 2500,
+    "percent_per_s": 3,
+    "classes": [
+      "infantry"
+    ]
+  },
+  "visual": {
+    "model": "res://assets/models/buildings/field_hospital.glb",
+    "icon": "res://assets/icons/buildings/field_hospital.png"
+  }
+}

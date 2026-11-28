@@ -1,0 +1,25 @@
+{
+  "id": "oil_field",
+  "faction": "neutral",
+  "name": "Oil Field",
+  "armor_class": "structure",
+  "_doc": "Capturable (P3-08a): pays its owner 60 credits every 10 s.",
+  "status": "first-pass numbers (P3-08a)",
+  "max_hp": 1500,
+  "cost": 0,
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "build_time_ms": 1000,
+  "power": 0,
+  "vision_cm": 3000,
+  "requires": [],
+  "produces": [],
+  "capture_s": 8,
+  "income_per_10s": 60,
+  "visual": {
+    "model": "res://assets/models/buildings/oil_field.glb",
+    "icon": "res://assets/icons/buildings/oil_field.png"
+  }
+}

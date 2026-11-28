@@ -7,7 +7,7 @@ enum Type {
 	MOVE = 1, STOP = 2, ATTACK = 3, ATTACK_MOVE = 4, HOLD = 5,
 	BUILD = 6, PRODUCE = 7, CANCEL = 8, RALLY = 9, GATHER = 10, SELL = 11, REPAIR = 12,
 	GUARD = 13, PATROL = 14, SPOOF = 15, RESEARCH = 16, UPGRADE_UNIT = 17,
-	CHOOSE_POWER = 18, USE_POWER = 19, GARRISON = 20, UNLOAD = 21, USE_ABILITY = 22,
+	CHOOSE_POWER = 18, USE_POWER = 19, GARRISON = 20, UNLOAD = 21, USE_ABILITY = 22, CAPTURE = 23,
 }
 
 var tick: int = 0               ## tick on which the command is applied
@@ -130,6 +130,15 @@ static func make_use_ability(ids: Array[int], ability_id: String, tx: int, ty: i
 	c.target_x = tx
 	c.target_y = ty
 	c.target_entity = target
+	return c
+
+
+## Infantry capture a neutral or enemy capturable building (P3-08a).
+static func make_capture(ids: Array[int], building_id: int) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.CAPTURE
+	c.entity_ids = ids.duplicate()
+	c.target_entity = building_id
 	return c
 
 

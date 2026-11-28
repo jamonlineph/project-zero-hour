@@ -37,6 +37,7 @@ The keys for camera movement and unit orders can be rebound in Settings (control
 | Zoom / rotate / pan | Two fingers: pinch, twist, drag | ✅ |
 | Deselect | "Clear" button in the touch bar (bottom left, above the minimap) | ✅ |
 | Attack-move, stop, hold | Buttons in the command grid when units are selected | ✅ |
+| Capture (P3-08a) | Right-click or tap a neutral or enemy capturable building (oil field, solar farm, field hospital, data center) with infantry selected; the selection panel shows "capturing n%" | ✅ |
 | Superweapons (P3-03) | Select your superweapon building: its button shows the charge time left, then "Launch" (tap or click the target anywhere on the map). Every player sees every superweapon's countdown under the top bar, on the right | ✅ |
 | Unit abilities (P3-02f) | Buttons in the command grid's last row (for example the special forces' "Call Strike" and "Disable Building"), greyed out while cooling down; then tap or click the point or the building | ✅ |
 | Control groups | Group buttons 1–5 in the touch bar: tap to select (twice quickly jumps), hold 0.5 s to store | ✅ |

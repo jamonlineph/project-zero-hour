@@ -318,6 +318,7 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 		_target_id = 0
 	if not _attacking:
 		AiTactics.occupy_town(world, mine.hq, mine.army, mine.garrisoned, cmds)
+		AiTactics.capture(world, player_id, mine.hq, mine.army, cmds)
 		return
 	var target: SimEntity = world.get_entity(_target_id)
 	var retarget: bool = target == null or target.dead

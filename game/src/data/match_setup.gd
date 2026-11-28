@@ -45,6 +45,12 @@ static func build_from(content: ContentDb, sc: Dictionary, seed_value: int) -> S
 	if house != null:
 		for r: PackedInt32Array in map_def.civilian_buildings_m:
 			world.spawn_structure(house, r[0], r[1], r[2], r[3])
+	# Neutral capturable buildings (P3-08a), centered on their points.
+	for nb: Dictionary in map_def.neutral_buildings:
+		var nd: BuildingDef = content.get_building(str(nb["def"]))
+		if nd != null:
+			var origin: Vector2i = world.footprint_origin(nd, Fx.from_int(int(nb["x"])), Fx.from_int(int(nb["y"])))
+			world.spawn_building(nd, 0, origin.x, origin.y, true)
 	for s: Variant in sc.get("spawns", []):
 		_spawn(world, content, s as Dictionary)
 	return world

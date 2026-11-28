@@ -12,6 +12,7 @@
   - `civilian_buildings_m` (optional): town houses `[x, y, w, h, roof_height]` in meters. MatchSetup places them as neutral `civilian_house` buildings infantry can garrison (P3-05); `HouseModel` draws them at their size
   - `bridges_m` (optional): bridge decks `[x, y, w, h]` drawn over river crossings. View only: the crossing itself is ground the channels leave uncarved
   - `skirmish` (optional, default false): offered in the skirmish menu
+  - `neutral_buildings` (optional): capturable buildings `[building_id, x, y]` in meters, placed neutral and centered on the point (P3-08a). On a mirrored map, give each one its mirror, or put it on the middle line with an even footprint width so it mirrors onto itself
   - `biome` (optional, default `temperate`): `temperate`, `desert` or `winter` (`MapDef.BIOMES`). View only (P3-23): `Biomes` holds each one's ground, water and house colors and how obstacles are drawn (temperate rocks and hedges, desert sandstone mesas, winter pine forests). Obstacles are drawn at exactly their rectangles, so what you see still blocks
 - `height.r16`: raw 16-bit little-endian heights, one sample per 2 m cell, row by row from the map's (0, 0) corner. Raw bytes rather than a PNG, because Godot re-encodes imported images (to 8-bit textures); raw data is read exactly the same on every platform, which the deterministic sim needs.
 - The sim gets integer heights (`SimMap.height_at`) and the passability grid; `TerrainView` builds the ground mesh from the same heights, so what you see is what the sim uses.

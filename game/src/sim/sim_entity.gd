@@ -7,7 +7,7 @@ extends RefCounted
 ## read and change entities; nothing outside the sim writes to them.
 
 ## What the unit was told to do (P1-10; GUARD and PATROL from P1-24b).
-enum Order { IDLE = 0, MOVE = 1, ATTACK = 2, ATTACK_MOVE = 3, HOLD = 4, GUARD = 5, PATROL = 6, GARRISON = 7 }
+enum Order { IDLE = 0, MOVE = 1, ATTACK = 2, ATTACK_MOVE = 3, HOLD = 4, GUARD = 5, PATROL = 6, GARRISON = 7, CAPTURE = 8 }
 
 var id: int = 0
 var player_id: int = 0          ## 0 = neutral

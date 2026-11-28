@@ -1,12 +1,17 @@
 class_name AiTactics
 extends RefCounted
 ## Small unit tactics for the skirmish AI (split out of AiPlayer): spotters as
-## forward observers (P2-11e) and holding town houses (P3-05).
+## forward observers (P2-11e), holding town houses (P3-05), abilities
+## (P3-02f), superweapons (P3-03) and capturing buildings (P3-08a).
 
 ## How far ahead of the army spotters fly while it attacks (meters).
 const SPOTTER_LEAD_M: int = 30
 ## Infantry squads the AI keeps in town houses on its half of the map (P3-05).
 const TOWN_SQUADS: int = 2
+## How far from its HQ the AI goes to capture buildings, and how many
+## captures it runs at once (P3-08a).
+const CAPTURE_REACH_M: int = 120
+const CAPTURES_AT_ONCE: int = 1
 
 
 ## Keeps spotters over the army: at its center, or while attacking
@@ -129,4 +134,36 @@ static func fire_superweapons(world: SimWorld, buildings: Array[SimEntity], targ
 		for a: AbilityDef in AbilitySystem.abilities_of(world, b):
 			if a.kind == "superweapon" and world.tick >= int(b.ability_ready.get(a.id, 0)):
 				cmds.append(SimCommand.make_use_ability([b.id], a.id, target.x, target.y))
+
+
+## Sends an idle infantry squad to capture the nearest capturable building
+## that isn't ours within CAPTURE_REACH_M of the HQ (P3-08a), at most
+## CAPTURES_AT_ONCE at a time (ties: lower id).
+static func capture(world: SimWorld, player_id: int, hq: SimEntity, army: Array[SimEntity], cmds: Array[SimCommand]) -> void:
+	if hq == null:
+		return
+	var busy: int = 0
+	var squad: SimEntity = null
+	for e: SimEntity in army:
+		if e.order == SimEntity.Order.CAPTURE:
+			busy += 1
+		elif squad == null and e.armor_class == "infantry" and e.inside_id == 0 and e.order == SimEntity.Order.IDLE \
+				and not e.weapons.is_empty():
+			squad = e
+	if busy >= CAPTURES_AT_ONCE or squad == null:
+		return
+	var best: SimEntity = null
+	var best_d: int = 0
+	for id: int in world.entity_ids:
+		var s: SimEntity = world.entities[id]
+		if not CaptureSystem.capturable_by(world, s, player_id):
+			continue
+		var d: int = Fx.length(s.x - hq.x, s.y - hq.y)
+		if d > CAPTURE_REACH_M * Fx.ONE:
+			continue
+		if best == null or d < best_d:
+			best = s
+			best_d = d
+	if best != null:
+		cmds.append(SimCommand.make_capture([squad.id], best.id))
 

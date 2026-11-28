@@ -21,6 +21,7 @@ var entity_id: int = 0
 var _ring: MeshInstance3D
 var _model: Node3D
 var _static: bool = false       ## buildings and supply sites never turn
+var _shown_owner: int = 0       ## owner whose color a capturable building shows (P3-08a)
 var kind: Kind = Kind.VEHICLE
 var status: UnitStatus
 var _selected: bool = false
@@ -329,6 +330,10 @@ func _model_height() -> float:
 ## Moves the node between the previous and current tick positions.
 ## alpha is 0..1: how far we are into the current tick.
 func update_from_sim(e: SimEntity, alpha: float) -> void:
+	if _static and e.building != null and e.building.capture_ticks > 0 and e.player_id != _shown_owner:
+		# A captured building takes its new owner's color (P3-08a).
+		_shown_owner = e.player_id
+		TeamColors.apply(_model, TeamColors.for_player(e.player_id))
 	if _static and e.garrison != null:
 		# Who holds it shows as a flag (houses) and as pips (P3-05).
 		HouseModel.set_holder(_model, TeamColors.for_player(e.player_id) if e.player_id != 0 else null)

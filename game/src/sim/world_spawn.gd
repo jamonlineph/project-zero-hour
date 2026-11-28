@@ -89,6 +89,7 @@ static func make_building(def: BuildingDef, id: int, player_id: int, cx: int, cy
 	b.w = fw
 	b.h = fh
 	b.built = built
+	b.capture_ticks = def.capture_ticks
 	b.total = def.build_ticks * 2
 	b.progress = b.total if built else 0
 	b.power = def.power

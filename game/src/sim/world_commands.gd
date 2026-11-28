@@ -41,6 +41,8 @@ static func apply_all(world: SimWorld, cmds: Array) -> void:
 				GarrisonSystem.apply_command(world, c)
 			SimCommand.Type.USE_ABILITY:
 				AbilitySystem.apply_command(world, c)
+			SimCommand.Type.CAPTURE:
+				CaptureSystem.apply_command(world, c)
 			_:
 				push_error("SimWorld: unknown command type %d" % c.type)
 

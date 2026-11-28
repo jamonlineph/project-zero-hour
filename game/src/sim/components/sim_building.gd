@@ -26,6 +26,11 @@ var research_progress: int = 0
 ## Shut down by a "disable" ability until this tick (P3-02f): no production,
 ## research, power or fire.
 var disabled_until: int = 0
+## Capturable buildings (P3-08a, CaptureSystem): ticks a capture takes (0 =
+## can't be captured), who is capturing it and how far they got.
+var capture_ticks: int = 0
+var capture_player: int = 0
+var capture_progress: int = 0
 
 
 ## True while a "disable" ability holds this building down (P3-02f).
@@ -55,3 +60,7 @@ func write_hash(h_: SimHash) -> void:
 		h_.add_int(research_progress)
 	if disabled_until != 0:   # only after a disable ability (P3-02f)
 		h_.add_int(disabled_until)
+	if capture_ticks != 0:   # only capturable buildings (P3-08a)
+		h_.add_int(capture_ticks)
+		h_.add_int(capture_player)
+		h_.add_int(capture_progress)

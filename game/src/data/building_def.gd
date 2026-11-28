@@ -24,6 +24,13 @@ var limit: int = 0              ## most a player may have at once (0 = any numbe
 var requires_rank: int = 1      ## commander rank needed to build it (P3-03)
 ## Abilities (P3-03: the superweapon is one; AbilitySystem).
 var abilities: Array[AbilityDef] = []
+## Neutral capturable buildings (P3-08a): capture time (0 = not capturable),
+## credits paid to the owner every 10 s, and a healing aura (HealSystem).
+var capture_ticks: int = 0
+var income: int = 0
+var heal_radius: int = 0
+var heal_percent_per_s: int = 0
+var heal_classes: PackedStringArray = []
 var weapons: Array[WeaponDef] = []
 var model_path: String = ""
 var icon_path: String = ""

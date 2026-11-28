@@ -53,6 +53,11 @@ static func load_map(db: ContentDb, path: String) -> void:
 	m.civilian_buildings_m = _int_rows(db, src, "civilian_buildings_m", 5, path)
 	m.bridges_m = _int_rows(db, src, "bridges_m", 4, path)
 	m.skirmish = bool(src.get("skirmish", false))
+	for nb: Variant in src.get("neutral_buildings", []):
+		if nb is Array and (nb as Array).size() == 3:
+			m.neutral_buildings.append({"def": str(nb[0]), "x": int(nb[1]), "y": int(nb[2])})
+		else:
+			db.errors.append("%s: neutral buildings must be [building_id, x_m, y_m]" % path)
 	m.biome = str(src.get("biome", "temperate"))
 	if not MapDef.BIOMES.has(m.biome):
 		db.errors.append("%s: unknown biome '%s' (temperate, desert or winter)" % [path, m.biome])

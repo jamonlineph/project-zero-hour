@@ -605,7 +605,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 | P3-05 | Garrisoning buildings, and clearing them — ✅ v1 2026-11-27 (Claude Code): `GarrisonSystem`, GARRISON/UNLOAD commands, town houses as neutral buildings, bunkers and trenches hold 2, thermobaric clearing, right-click to enter, "Exit all", house flags, AI holds town houses; `test_garrison.gd`. Later: a garrison indicator on the minimap, transports (P3-06) |
 | P3-06 | Transports and firing ports |
 | P3-07 | Crushing — ✅ 2026-11-27 (Claude Code): `CrushSystem`; main battle tanks (`"crusher": true`) run down enemy infantry touching their front while they move (100% max hp per second, `crush_percent_per_s`, damage type `crush` in the matrix); `test_crushing.gd`. Light obstacles wait for map props (P3-23d) |
-| P3-08 | Neutral capturable buildings |
+| P3-08 | Neutral capturable buildings — 🔄 split 2026-11-28 (Claude Code): **P3-08a** ✅ (`CaptureSystem`, `IncomeSystem`, CAPTURE command, building heal auras, `neutral_buildings` on Riverside, Desert Crossroads and Frostwood, AI `AiTactics.capture`, recolor on capture; `test_capture.gd`) capturing (infantry stand next to it for a few seconds; enemies can take it back), oil field (income), solar farm (power), field hospital (heals infantry), data center (sight), placed on the skirmish maps, AI captures; **P3-08b** ⬜ rail depot (faster vehicles) and cell tower (kill-chain range) |
 | P3-09 | Stealth and detection |
 | P3-10 | Mines, trenches and obstacles |
 | P3-11 | Bridges (destructible, repairable) |

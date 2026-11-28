@@ -53,6 +53,14 @@
     [152, 112, 10, 8, 5],
     [132, 60, 10, 8, 6]
   ],
+  "_neutral_doc": "Capturable neutral buildings [building_id, x_m, y_m] (P3-08a), centered on the point; west side first, then mirrors, then any on the middle line.",
+  "neutral_buildings": [
+    ["oil_field", 24, 150],
+    ["solar_farm", 70, 226],
+    ["oil_field", 232, 150],
+    ["solar_farm", 186, 226],
+    ["data_center", 128, 40]
+  ],
   "start_positions_m": [
     [40, 200],
     [216, 200]
