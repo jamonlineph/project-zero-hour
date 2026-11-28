@@ -630,7 +630,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 |---|---|
 | P4-01 | Balance passes using AI-vs-AI statistics and beta replays |
 | P4-02 | Low-end performance pass |
-| P4-03 | Gauntlet mode (7 AI commanders with personalities) |
+| P4-03 | Gauntlet mode (7 AI commanders with personalities) — ✅ v1 2026-11-28 (Claude Code): seven commanders in `game/data/gauntlet.json` (faction, personality, difficulty, map, intro), the Gauntlet screen from the main menu, wins recorded at the end of a match (`Gauntlet`, `GauntletMenu`, `test_gauntlet.gd`). Later: faction-flavored personalities of their own, a reward screen |
 | P4-04 | Operations campaign (original story) |
 | P4-05 | Store listing assets: screenshots, trailer captured in-game |
 | P4-06 | Credits screen and legal notices — ✅ v1 2026-11-28 (Claude Code): Credits in the main menu (`CreditsMenu`): the game, its licenses, every asset author and license from `game/data/credits.json` (generated from the manifest by `tools/gen_credits.py`; `check_repo` fails when it is stale), and the Godot Engine license and third-party notices. Left for the owner: a privacy policy (P4-07) |

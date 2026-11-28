@@ -1,0 +1,19 @@
+{
+  "_doc": "Gauntlet mode (P4-03): seven computer commanders in order, each a faction, an AI personality (game/data/ai/personalities.json), a difficulty and a map. Beat one to face the next. Call signs only: they are fictional commanders.",
+  "commanders": [
+    {"call_sign": "Viper", "faction": "kp", "personality": "rusher", "difficulty": "easy", "map": "twin_ridge",
+     "intro": "Viper throws everything at you before your factories are warm. Hold the first rush."},
+    {"call_sign": "Bastion", "faction": "eu", "personality": "turtle", "difficulty": "easy", "map": "riverside",
+     "intro": "Bastion digs in behind bunkers and air defense. Break the wall before the big wave comes."},
+    {"call_sign": "Circuit", "faction": "ae", "personality": "tech", "difficulty": "normal", "map": "desert_crossroads",
+     "intro": "Circuit researches everything and fills the sky with aircraft. Bring anti-air."},
+    {"call_sign": "Glacier", "faction": "eu", "personality": "balanced", "difficulty": "normal", "map": "frostwood",
+     "intro": "Glacier fights by the book in the pine forests. No tricks, no mistakes."},
+    {"call_sign": "Ferryman", "faction": "kp", "personality": "turtle", "difficulty": "normal", "map": "three_bridges",
+     "intro": "Ferryman holds the canal. Three bridges, and every one of them is covered."},
+    {"call_sign": "Hammer", "faction": "us", "personality": "rusher", "difficulty": "hard", "map": "old_town",
+     "intro": "Hammer storms the old town street by street. Fast, relentless and well supplied."},
+    {"call_sign": "Zero", "faction": "ae", "personality": "balanced", "difficulty": "hard", "map": "riverside",
+     "intro": "Zero is the last commander. Hard, patient, and never short of credits."}
+  ]
+}

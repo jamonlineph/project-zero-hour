@@ -46,7 +46,7 @@
 | Sandbox | Developer scene (current) | 0 |
 | Skirmish | You against 1–3 AI players; choose faction, color, team, difficulty, starting credits | 1 |
 | Multiplayer | LAN (direct) and online (relay); 1v1 to 2v2, then up to 4 players; replays saved automatically | 3 |
-| Gauntlet | Beat a ladder of 7 original AI commanders. Each has a personality (for example "Artillery Grinder", "Drone Swarmer") and fights on its own map | 4 |
+| Gauntlet | Beat a ladder of 7 original AI commanders. Each has a personality (for example "Artillery Grinder", "Drone Swarmer") and fights on its own map. ✅ v1 (P4-03): `game/data/gauntlet.json` lists seven fictional commanders by call sign (Viper, Bastion, Circuit, Glacier, Ferryman, Hammer, Zero), each a faction, an AI personality, a difficulty (easy to hard) and a map. You fight them in order with the menu's faction and credits; a win unlocks the next (progress in `user://gauntlet.json`) | 4 |
 | Operations | Short scripted missions per faction with objectives and briefings; original story set in a fictional 2026 crisis | 4 (may slip past 1.0) |
 
 ## Victory conditions

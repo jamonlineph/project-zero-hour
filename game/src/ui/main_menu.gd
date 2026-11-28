@@ -99,8 +99,16 @@ func _ready() -> void:
 	_button(box, "Start skirmish vs computer", start_skirmish).name = "StartSkirmish"
 	_button(box, "Watch computer vs computer", start_watch).name = "Watch"
 	_button(box, "LAN game (two devices)", open_lan).name = "Lan"
-	_button(box, "Sandbox (developer test map)", start_sandbox).name = "Sandbox"
-	_button(box, "Load game", open_load).name = "LoadGame"
+	_button(box, "Gauntlet: seven commanders", open_gauntlet).name = "Gauntlet"
+	# Load and the sandbox share a row (P4-03 made room for the Gauntlet).
+	var extra := HBoxContainer.new()
+	extra.add_theme_constant_override("separation", 8)
+	box.add_child(extra)
+	_button(extra, "Load game", open_load).name = "LoadGame"
+	_button(extra, "Sandbox", start_sandbox).name = "Sandbox"
+	for b: Node in extra.get_children():
+		(b as Button).custom_minimum_size = Vector2(206, 46)
+		(b as Button).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	# Settings and credits share a row (P4-06).
 	var more := HBoxContainer.new()
 	more.add_theme_constant_override("separation", 8)
@@ -127,6 +135,8 @@ func _ready() -> void:
 			open_lan.call_deferred()
 		elif arg == "--open=credits":
 			open_credits.call_deferred()
+		elif arg == "--open=gauntlet":
+			open_gauntlet.call_deferred()
 		# `-- --watch=<map> [--side=<faction>]` starts computer vs computer on
 		# that map; --side picks player 1's faction (the HUD's point of view).
 		elif arg.begins_with("--watch="):
@@ -184,6 +194,14 @@ func open_load() -> LoadMenu:
 func load_game(data: Dictionary) -> void:
 	MatchConfig.load_save = data
 	_start(data.get("scenario_data", {}))
+
+
+func open_gauntlet() -> GauntletMenu:
+	var g := GauntletMenu.new()
+	g.name = "GauntletMenu"
+	g.menu = self
+	add_child(g)
+	return g
 
 
 func open_credits() -> CreditsMenu:

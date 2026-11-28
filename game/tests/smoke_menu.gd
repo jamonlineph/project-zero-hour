@@ -54,6 +54,14 @@ func _run() -> void:
 			failures.append("the credits don't show the engine's license")
 		credits.queue_free()
 		await process_frame
+		# Gauntlet (P4-03): the screen lists seven commanders; the next one can be fought.
+		var gauntlet: Control = menu.call("open_gauntlet")
+		await process_frame
+		var fight: Button = gauntlet.find_child("Fight_%d" % mini(Gauntlet.beaten(), 6), true, false)
+		if fight == null or (Gauntlet.beaten() < 7 and fight.disabled):
+			failures.append("the Gauntlet screen has no fight button for the next commander")
+		gauntlet.queue_free()
+		await process_frame
 		# 2v2 (P3-23b): the mode button switches to a four-start map and back.
 		var mode_button: Button = menu.find_child("Mode", true, false)
 		mode_button.pressed.emit()

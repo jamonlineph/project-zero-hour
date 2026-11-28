@@ -14,6 +14,7 @@ const SEED: int = 20261125   ## match seed; developer videos can pass --seed=<n>
 var content: ContentDb
 var map_def: MapDef
 var scenario_id: String = DEFAULT_SCENARIO
+var _gauntlet_step: int = -1   ## a Gauntlet match's step (P4-03), or -1
 var world: SimWorld
 var runner: SimRunner
 var game_view: GameView
@@ -51,6 +52,7 @@ func _ready() -> void:
 	if not save_data.is_empty():
 		scenario = save_data.get("scenario_data", {})
 	scenario_id = str(scenario.get("id", scenario_id))
+	_gauntlet_step = int(scenario.get("gauntlet_step", -1))
 	var seed_value: int = int(DevCapture.arg("seed", str(SEED)))
 	var net: NetSession = MatchConfig.net
 	if net != null:
@@ -186,7 +188,10 @@ func _process(_delta: float) -> void:
 	if world.game_over and not _game_over_shown:
 		_game_over_shown = true
 		var my_team: int = world.team_of(local_player)
-		pause_menu.open_game_over("Draw" if world.winner_team == 0 else ("Victory" if world.winner_team == my_team else "Defeat"))
+		var won: bool = world.winner_team != 0 and world.winner_team == my_team
+		pause_menu.open_game_over("Draw" if world.winner_team == 0 else ("Victory" if won else "Defeat"))
+		if won and _gauntlet_step >= 0:
+			Gauntlet.record_win(_gauntlet_step)   # the next commander unlocks (P4-03)
 	game_view.play_events(runner.pending_events)
 	if director != null:
 		director.observe(runner.pending_events)
