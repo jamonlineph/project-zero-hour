@@ -1,0 +1,654 @@
+# Project Zero Hour, language: es. Built by tools/i18n/build_po.py from
+# tools/i18n/es.py and the template; edit the table, not this file.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: es\n"
+
+#: game/src/ui/selection_text.gd
+msgid "   building %d%%"
+msgstr "   construyendo %d%%"
+
+#: game/src/ui/selection_text.gd
+msgid "   capturing %d%%"
+msgstr "   capturando %d%%"
+
+#: game/src/ui/selection_text.gd
+msgid "   carrying %d"
+msgstr "   carga %d"
+
+#: game/src/ui/main_menu.gd
+msgid "   ·   mods: %s"
+msgstr "   ·   mods: %s"
+
+#: game/src/ui/hud.gd
+msgid "  (+%d fund)"
+msgstr "  (+%d fondo)"
+
+#: game/src/ui/hud.gd
+msgid "  Credits %d%s     Power %d / %d%s     Rank %s     %d:%02d"
+msgstr "  Créditos %d%s     Energía %d / %d%s     Rango %s     %d:%02d"
+
+#: game/src/ui/selection_text.gd
+msgid " + %d more"
+msgstr " + %d más"
+
+#: game/src/ui/lan_menu.gd
+msgid " Press Start."
+msgstr " Pulsa Empezar."
+
+#: game/src/ui/lan_menu.gd
+msgid " Waiting for the host to start."
+msgstr " Esperando a que el anfitrión empiece."
+
+#: game/src/ui/settings_menu.gd
+msgid "%d fps"
+msgstr "%d fps"
+
+#: game/src/ui/selection_text.gd
+msgid "%d selected: %s%s"
+msgstr "%d seleccionados: %s%s"
+
+#: game/src/ui/gauntlet_menu.gd
+msgid "%d. %s: %s, %s, %s, on %s\n%s"
+msgstr "%d. %s: %s, %s, %s, en %s\n%s"
+
+#: game/src/ui/selection_text.gd
+msgid "%s   %d / %d hp"
+msgstr "%s   %d / %d PV"
+
+#: game/src/ui/load_menu.gd
+msgid "%s   ·   %s   ·   %d:%02d into the match"
+msgstr "%s   ·   %s   ·   %d:%02d de partida"
+
+#: game/src/ui/command_grid.gd
+msgid "%s  (hotkey %s)"
+msgstr "%s  (atajo %s)"
+
+#: game/src/ui/command_menus.gd
+msgid "%s (%d credits)%s"
+msgstr "%s (%d créditos)%s"
+
+#: game/src/ui/command_menus.gd
+msgid "%s (%d credits). Right-click or Shift+key cancels one.%s"
+msgstr "%s (%d créditos). Clic derecho o Mayús+tecla cancela uno.%s"
+
+#: game/src/ui/command_menus.gd
+msgid "%s Then tap or click the %s."
+msgstr "%s Luego toca o haz clic en %s."
+
+#: game/src/ui/settings_menu.gd
+msgid "%s volume"
+msgstr "Volumen: %s"
+
+#: game/src/ui/credits_menu.gd
+msgid "%s: %s (%s). License: %s\n"
+msgstr "%s: %s (%s). Licencia: %s\n"
+
+#: game/src/ui/upgrade_menu.gd
+msgid "%s\n%d each"
+msgstr "%s\n%d cada uno"
+
+#: game/src/ui/upgrade_menu.gd
+msgid "%s\nDone"
+msgstr "%s\nHecho"
+
+#: game/src/ui/upgrade_menu.gd
+msgid ". Needs commander rank %d."
+msgstr ". Requiere rango de comandante %d."
+
+#: game/src/ui/main_menu.gd
+msgid "2v2 with ally"
+msgstr "2c2 con aliado"
+
+#: game/src/ui/gauntlet_menu.gd
+msgid "All seven commanders beaten. Well done, commander."
+msgstr "Los siete comandantes, derrotados. Bien hecho, comandante."
+
+#: game/src/data/match_config.gd
+msgid "America"
+msgstr "Estados Unidos"
+
+#: game/src/ui/command_menus.gd
+msgid "Attack-move"
+msgstr "Avanzar atacando"
+
+#: game/src/ui/credits_menu.gd game/src/ui/gauntlet_menu.gd game/src/ui/lan_menu.gd game/src/ui/load_menu.gd game/src/ui/settings_menu.gd
+msgid "Back"
+msgstr "Volver"
+
+#: game/data/ai/personalities.json
+msgid "Balanced"
+msgstr "Equilibrado"
+
+#: game/src/ui/settings_menu.gd
+msgid "Battery saver (30 fps, lower resolution, no shadows)"
+msgstr "Ahorro de batería (30 fps, menos resolución, sin sombras)"
+
+#: game/src/ui/gauntlet_menu.gd
+msgid "Beaten"
+msgstr "Derrotado"
+
+#: game/src/ui/lan_menu.gd
+msgid "Both devices must be on the same network."
+msgstr "Los dos dispositivos deben estar en la misma red."
+
+#: game/src/ui/upgrade_menu.gd
+msgid "Buy %s for %d selected unit(s)"
+msgstr "Comprar %s para %d unidad(es) seleccionada(s)"
+
+#: game/src/ui/hud.gd
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: game/src/ui/commander_panel.gd
+msgid "Choose"
+msgstr "Elegir"
+
+#: game/src/ui/commander_panel.gd
+msgid "Chosen"
+msgstr "Elegido"
+
+#: game/src/ui/commander_panel.gd
+msgid "Close"
+msgstr "Cerrar"
+
+#: game/src/ui/settings_menu.gd
+msgid "Colorblind-safe team colors"
+msgstr "Colores de equipo para daltónicos"
+
+#: game/src/ui/power_bar.gd
+msgid "Commander"
+msgstr "Comandante"
+
+#: game/src/ui/commander_panel.gd
+msgid "Commander: rank %d, %d point%s to spend"
+msgstr "Comandante: rango %d, %d punto%s por gastar"
+
+#: game/src/ui/power_bar.gd
+msgid "Commander\n%d point%s"
+msgstr "Comandante\n%d punto%s"
+
+#: game/src/ui/main_menu.gd
+msgid "Computer: %s"
+msgstr "Ordenador: %s"
+
+#: game/src/ui/lan_menu.gd
+msgid "Connecting to %s..."
+msgstr "Conectando con %s..."
+
+#: game/src/ui/settings_menu.gd
+msgid "Controls"
+msgstr "Controles"
+
+#: game/src/ui/lan_menu.gd
+msgid "Could not connect to %s."
+msgstr "No se pudo conectar con %s."
+
+#: game/src/ui/lan_menu.gd
+msgid "Could not host (port %d busy?)."
+msgstr "No se pudo crear la partida (¿puerto %d ocupado?)."
+
+#: game/src/ui/pause_menu.gd
+msgid "Could not save"
+msgstr "No se pudo guardar"
+
+#: game/src/ui/pause_menu.gd
+msgid "Could not save (%s)"
+msgstr "No se pudo guardar (%s)"
+
+#: game/src/ui/credits_menu.gd game/src/ui/main_menu.gd
+msgid "Credits"
+msgstr "Créditos"
+
+#: game/src/ui/credits_menu.gd
+msgid "Credits file missing."
+msgstr "Falta el archivo de créditos."
+
+#: game/src/ui/main_menu.gd
+msgid "Credits: %d"
+msgstr "Créditos: %d"
+
+#: game/src/ui/hud.gd
+msgid "DEFEAT"
+msgstr "DERROTA"
+
+#: game/src/ui/hud.gd
+msgid "DRAW"
+msgstr "EMPATE"
+
+#: game/src/main/main.gd
+msgid "Defeat"
+msgstr "Derrota"
+
+#: game/data/maps/desert_crossroads/map.json
+msgid "Desert Crossroads"
+msgstr "Cruce del Desierto"
+
+#: game/src/ui/settings_menu.gd
+msgid "Determinism check (compare a phone with a desktop)"
+msgstr "Prueba de determinismo (comparar un móvil con un ordenador)"
+
+#: game/src/ui/settings_menu.gd
+msgid "Developer"
+msgstr "Desarrollo"
+
+#: game/src/ui/settings_menu.gd
+msgid "Display"
+msgstr "Pantalla"
+
+#: game/src/main/main.gd
+msgid "Draw"
+msgstr "Empate"
+
+#: game/src/data/match_config.gd
+msgid "EU"
+msgstr "UE"
+
+#: game/src/ui/main_menu.gd
+msgid "Easy"
+msgstr "Fácil"
+
+#: game/src/ui/main_menu.gd
+msgid "Enemy: %s"
+msgstr "Enemigo: %s"
+
+#: game/src/ui/credits_menu.gd
+msgid "Engine licenses"
+msgstr "Licencias del motor"
+
+#: game/src/ui/command_menus.gd
+msgid "Everyone inside comes out"
+msgstr "Todos los de dentro salen"
+
+#: game/src/ui/command_menus.gd
+msgid "Everyone inside gets out"
+msgstr "Todos los de dentro se bajan"
+
+#: game/src/ui/command_menus.gd
+msgid "Exit all"
+msgstr "Salir todos"
+
+#: game/src/ui/gauntlet_menu.gd
+msgid "Fight"
+msgstr "Combatir"
+
+#: game/src/ui/settings_menu.gd
+msgid "Frame rate limit"
+msgstr "Límite de fotogramas"
+
+#: game/data/maps/frostwood/map.json
+msgid "Frostwood"
+msgstr "Bosque Helado"
+
+#: game/src/ui/pause_menu.gd
+msgid "Game saved"
+msgstr "Partida guardada"
+
+#: game/src/ui/gauntlet_menu.gd game/src/ui/main_menu.gd
+msgid "Gauntlet: seven commanders"
+msgstr "Desafío: siete comandantes"
+
+#: game/src/ui/command_menus.gd
+msgid "Guard"
+msgstr "Escoltar"
+
+#: game/src/ui/main_menu.gd
+msgid "Hard"
+msgstr "Difícil"
+
+#: game/src/ui/command_menus.gd
+msgid "Hold"
+msgstr "Mantener posición"
+
+#: game/src/ui/lan_menu.gd
+msgid "Host a game on this device"
+msgstr "Crear una partida en este dispositivo"
+
+#: game/src/ui/lan_menu.gd
+msgid "Host address, e.g. 192.168.1.20"
+msgstr "Dirección del anfitrión, p. ej. 192.168.1.20"
+
+#: game/src/ui/lan_menu.gd
+msgid "Hosting. The other player joins with: %s"
+msgstr "Partida creada. El otro jugador se une con: %s"
+
+#: game/src/ui/settings_menu.gd
+msgid "Interface size"
+msgstr "Tamaño de la interfaz"
+
+#: game/src/ui/lan_menu.gd
+msgid "Join"
+msgstr "Unirse"
+
+#: game/src/ui/lan_menu.gd
+msgid "LAN game"
+msgstr "Partida en red local"
+
+#: game/src/ui/main_menu.gd
+msgid "LAN game (two devices)"
+msgstr "Red local (dos dispositivos)"
+
+#: game/src/ui/settings_menu.gd
+msgid "Language"
+msgstr "Idioma"
+
+#: game/src/ui/credits_menu.gd
+msgid "License: %s\n"
+msgstr "Licencia: %s\n"
+
+#: game/src/ui/load_menu.gd game/src/ui/main_menu.gd
+msgid "Load game"
+msgstr "Cargar partida"
+
+#: game/src/main/main.gd
+msgid "Loading saved game… %d%%"
+msgstr "Cargando partida guardada… %d%%"
+
+#: game/src/ui/gauntlet_menu.gd
+msgid "Locked"
+msgstr "Bloqueado"
+
+#: game/src/ui/main_menu.gd
+msgid "Map: %s   (tap to change)"
+msgstr "Mapa: %s   (toca para cambiar)"
+
+#: game/src/ui/hud.gd
+msgid "Menu"
+msgstr "Menú"
+
+#: game/src/ui/main_menu.gd
+msgid "Mode: %s"
+msgstr "Modo: %s"
+
+#: game/src/ui/load_menu.gd
+msgid "No saved games yet. Save from the pause menu during a match."
+msgstr "Aún no hay partidas guardadas. Guarda desde el menú de pausa durante una partida."
+
+#: game/src/ui/main_menu.gd
+msgid "Normal"
+msgstr "Normal"
+
+#: game/src/data/match_config.gd
+msgid "North Korea"
+msgstr "Corea del Norte"
+
+#: game/src/ui/settings_menu.gd
+msgid "Off"
+msgstr "No"
+
+#: game/data/maps/old_town/map.json
+msgid "Old Town"
+msgstr "Casco Antiguo"
+
+#: game/src/ui/settings_menu.gd
+msgid "On"
+msgstr "Sí"
+
+#: game/src/ui/main_menu.gd
+msgid "PROJECT ZERO HOUR"
+msgstr "PROJECT ZERO HOUR"
+
+#: game/src/ui/settings_menu.gd
+msgid "Pan at the screen edge (mouse)"
+msgstr "Desplazar en el borde de la pantalla (ratón)"
+
+#: game/src/ui/command_menus.gd
+msgid "Patrol"
+msgstr "Patrullar"
+
+#: game/src/ui/pause_menu.gd
+msgid "Paused"
+msgstr "En pausa"
+
+#: game/data/maps/pine_ridge/map.json
+msgid "Pine Ridge (2v2)"
+msgstr "Cresta de Pinos (2c2)"
+
+#: game/src/ui/hud.gd
+msgid "Place"
+msgstr "Colocar"
+
+#: game/src/ui/superweapon_timers.gd
+msgid "Player %d"
+msgstr "Jugador %d"
+
+#: game/src/ui/settings_menu.gd
+msgid "Press a key..."
+msgstr "Pulsa una tecla..."
+
+#: game/src/ui/settings_menu.gd
+msgid "Quality preset"
+msgstr "Calidad"
+
+#: game/src/ui/main_menu.gd
+msgid "Quit"
+msgstr "Salir"
+
+#: game/src/ui/pause_menu.gd
+msgid "Quit to menu"
+msgstr "Salir al menú"
+
+#: game/src/ui/main_menu.gd
+msgid "Random"
+msgstr "Aleatorio"
+
+#: game/src/ui/commander_panel.gd
+msgid "Rank %d"
+msgstr "Rango %d"
+
+#: game/src/ui/settings_menu.gd
+msgid "Render scale"
+msgstr "Escala de renderizado"
+
+#: game/src/ui/pause_menu.gd
+msgid "Replay saved"
+msgstr "Repetición guardada"
+
+#: game/src/ui/upgrade_menu.gd
+msgid "Research %s (%d credits)%s"
+msgstr "Investigar %s (%d créditos)%s"
+
+#: game/src/ui/settings_menu.gd
+msgid "Reset"
+msgstr "Restablecer"
+
+#: game/src/ui/settings_menu.gd
+msgid "Reset all keys"
+msgstr "Restablecer todas las teclas"
+
+#: game/src/ui/pause_menu.gd
+msgid "Resume"
+msgstr "Continuar"
+
+#: game/data/maps/riverside/map.json
+msgid "Riverside"
+msgstr "Ribera"
+
+#: game/src/ui/commander_panel.gd
+msgid "Ruled out"
+msgstr "Descartado"
+
+#: game/src/ui/settings_menu.gd
+msgid "Running %d%%"
+msgstr "En curso %d%%"
+
+#: game/data/ai/personalities.json
+msgid "Rusher"
+msgstr "Asaltante"
+
+#: game/src/ui/main_menu.gd
+msgid "Sandbox"
+msgstr "Zona de pruebas"
+
+#: game/src/ui/pause_menu.gd
+msgid "Save game"
+msgstr "Guardar partida"
+
+#: game/src/ui/pause_menu.gd
+msgid "Save replay"
+msgstr "Guardar repetición"
+
+#: game/src/ui/main_menu.gd game/src/ui/pause_menu.gd game/src/ui/settings_menu.gd
+msgid "Settings"
+msgstr "Ajustes"
+
+#: game/src/ui/settings_menu.gd
+msgid "Shadows"
+msgstr "Sombras"
+
+#: game/src/ui/settings_menu.gd
+msgid "Sound"
+msgstr "Sonido"
+
+#: game/src/ui/command_menus.gd
+msgid "Spoof"
+msgstr "Engañar"
+
+#: game/src/ui/gauntlet_menu.gd
+msgid "Start over"
+msgstr "Empezar de nuevo"
+
+#: game/src/ui/main_menu.gd
+msgid "Start skirmish vs computer"
+msgstr "Escaramuza contra el ordenador"
+
+#: game/src/ui/lan_menu.gd
+msgid "Start the match"
+msgstr "Empezar la partida"
+
+#: game/src/ui/command_menus.gd
+msgid "Stop"
+msgstr "Detener"
+
+#: game/src/ui/main_menu.gd
+msgid "Style: %s"
+msgstr "Estilo: %s"
+
+#: game/src/ui/selection_text.gd
+msgid "Supply site   %d credits left"
+msgstr "Punto de suministro   quedan %d créditos"
+
+#: game/src/ui/touch_bar.gd
+msgid "Tap: select group %d. Hold: store the selection as group %d"
+msgstr "Toca: seleccionar el grupo %d. Mantén: guardar la selección como grupo %d"
+
+#: game/data/ai/personalities.json
+msgid "Tech"
+msgstr "Tecnológico"
+
+#: game/src/ui/lan_menu.gd
+msgid "The host has different game data or mods. Use the same version and mods on both devices."
+msgstr "El anfitrión tiene otros datos de juego o mods. Usa la misma versión y los mismos mods en los dos dispositivos."
+
+#: game/src/ui/lan_menu.gd
+msgid "The other player is here."
+msgstr "El otro jugador está aquí."
+
+#: game/src/ui/lan_menu.gd
+msgid "The other player left."
+msgstr "El otro jugador se ha ido."
+
+#: game/src/ui/command_menus.gd
+msgid "Then tap or click the far end of the route"
+msgstr "Luego toca o haz clic en el final de la ruta"
+
+#: game/src/ui/command_menus.gd
+msgid "Then tap or click the target point"
+msgstr "Luego toca o haz clic en el punto objetivo"
+
+#: game/src/ui/command_menus.gd
+msgid "Then tap or click the unit or building to guard (key G)"
+msgstr "Luego toca o haz clic en la unidad o el edificio que escoltar (tecla G)"
+
+#: game/src/ui/command_menus.gd
+msgid "Then tap or click: enemy drones there fly off course and may attack their own side"
+msgstr "Luego toca o haz clic: los drones enemigos de esa zona pierden el rumbo y pueden atacar a su propio bando"
+
+#: game/data/maps/three_bridges/map.json
+msgid "Three Bridges"
+msgstr "Tres Puentes"
+
+#: game/data/ai/personalities.json
+msgid "Turtle"
+msgstr "Tortuga"
+
+#: game/data/maps/twin_ridge/map.json
+msgid "Twin Ridge"
+msgstr "Cresta Doble"
+
+#: game/src/ui/lan_menu.gd
+msgid "Type the host's address first."
+msgstr "Escribe primero la dirección del anfitrión."
+
+#: game/src/data/match_config.gd
+msgid "UAE"
+msgstr "EAU"
+
+#: game/src/ui/settings_menu.gd
+msgid "Unlimited"
+msgstr "Sin límite"
+
+#: game/src/ui/command_menus.gd
+msgid "Unload"
+msgstr "Descargar"
+
+#: game/src/ui/hud.gd
+msgid "VICTORY"
+msgstr "VICTORIA"
+
+#: game/src/main/main.gd
+msgid "Victory"
+msgstr "Victoria"
+
+#: game/src/ui/main_menu.gd
+msgid "Watch computer vs computer"
+msgstr "Ver ordenador contra ordenador"
+
+#: game/src/ui/main_menu.gd
+msgid "You: %s"
+msgstr "Tú: %s"
+
+#: game/src/ui/credits_menu.gd
+msgid "[b]%s[/b]\nMade by %s.\n%s\n\n"
+msgstr "[b]%s[/b]\nHecho por %s.\n%s\n\n"
+
+#: game/src/ui/credits_menu.gd
+msgid "[b]Godot Engine[/b]\n%s\n\n[b]Third-party components in the engine[/b]\n"
+msgstr "[b]Godot Engine[/b]\n%s\n\n[b]Componentes de terceros del motor[/b]\n"
+
+#: game/src/ui/credits_menu.gd
+msgid "[b]Licenses[/b]\nCode: %s\nArt, sound, maps and data: %s\n\n"
+msgstr "[b]Licencias[/b]\nCódigo: %s\nArte, sonido, mapas y datos: %s\n\n"
+
+#: game/src/ui/selection_text.gd
+msgid "\n%d in mixed groups: faster reload"
+msgstr "\n%d en grupos mixtos: recarga más rápida"
+
+#: game/src/ui/selection_text.gd
+msgid "\nCollapsed: builders can repair it (open again at %d%%)"
+msgstr "\nDerrumbado: los constructores pueden repararlo (se abre al %d%%)"
+
+#: game/src/ui/selection_text.gd
+msgid "\nInside: %d / %d"
+msgstr "\nDentro: %d / %d"
+
+#: game/src/ui/selection_text.gd
+msgid "\nQueue: %s (%d%%)%s"
+msgstr "\nCola: %s (%d%%)%s"
+
+#: game/src/ui/main_menu.gd
+msgid "early development build"
+msgstr "versión temprana de desarrollo"
+
+#: game/src/ui/command_menus.gd
+msgid "needs %s"
+msgstr "requiere %s"
+
+#: game/src/ui/command_menus.gd
+msgid "target point"
+msgstr "punto objetivo"
+
+#: game/src/ui/lan_menu.gd
+msgid "this device's address"
+msgstr "la dirección de este dispositivo"

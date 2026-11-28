@@ -76,13 +76,13 @@ func _session() -> NetSession:
 func host() -> void:
 	var err: Error = _session().host()
 	if err != OK:
-		_status.text = "Could not host (port %d busy?)." % NetSession.PORT
+		_status.text = Loc.t("Could not host (port %d busy?).") % NetSession.PORT
 		return
 	var addresses: PackedStringArray = []
 	for a: String in IP.get_local_addresses():
 		if a.count(".") == 3 and not a.begins_with("127."):
 			addresses.append(a)
-	_status.text = "Hosting. The other player joins with: %s" % (", ".join(addresses) if not addresses.is_empty() else "this device's address")
+	_status.text = Loc.t("Hosting. The other player joins with: %s") % (", ".join(addresses) if not addresses.is_empty() else "this device's address")
 
 
 func join(address: String) -> void:
@@ -90,9 +90,9 @@ func join(address: String) -> void:
 		_status.text = "Type the host's address first."
 		return
 	if _session().join(address) != OK:
-		_status.text = "Could not connect to %s." % address
+		_status.text = Loc.t("Could not connect to %s.") % address
 		return
-	_status.text = "Connecting to %s..." % address
+	_status.text = Loc.t("Connecting to %s...") % address
 
 
 ## Host: sends the match to the other player and starts it here too.

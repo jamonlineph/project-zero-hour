@@ -63,20 +63,20 @@ func refresh() -> void:
 	var player: SimPlayer = world.get_player(player_id)
 	_shown = Vector2i(player.rank, player.powers.size())
 	var points: int = CommanderPowers.points(player)
-	_title.text = "Commander: rank %d, %d point%s to spend" % [player.rank, points, "" if points == 1 else "s"]
+	_title.text = Loc.t("Commander: rank %d, %d point%s to spend") % [player.rank, points, "" if points == 1 else "s"]
 	var tier: int = -1
 	for def: PowerDef in world.content.powers_for(player.faction):
 		if def.tier != tier:
 			tier = def.tier
 			var h := Label.new()
-			h.text = "Rank %d" % tier
+			h.text = Loc.t("Rank %d") % tier
 			h.add_theme_font_size_override("font_size", 20)
 			h.modulate = Color(0.75, 0.95, 0.8)
 			_list.add_child(h)
 		var row := HBoxContainer.new()
 		_list.add_child(row)
 		var text := Label.new()
-		text.text = "%s: %s" % [def.name, def.description]
+		text.text = "%s: %s" % [Loc.t(def.name), Loc.t(def.description)]
 		text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row.add_child(text)
@@ -88,7 +88,7 @@ func refresh() -> void:
 			b.text = "Chosen"
 			b.disabled = true
 		elif player.rank < def.tier:
-			b.text = "Rank %d" % def.tier
+			b.text = Loc.t("Rank %d") % def.tier
 			b.disabled = true
 		elif def.group != "" and CommanderPowers.in_group(world, player, def.group):
 			b.text = "Ruled out"   # another doctrine was chosen (P3-12b)

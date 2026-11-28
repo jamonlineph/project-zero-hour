@@ -102,7 +102,7 @@ func _ability_entries(slots: int) -> Array[Dictionary]:
 				var left: int = maxi(0, int(e.ability_ready.get(a.id, 0)) - world.tick) / SimWorld.TICK_RATE
 				label = "%s\n%d:%02d" % [a.name, left / 60, left % 60]
 			out.append({"label": label, "enabled": ready,
-				"tooltip": "%s Then tap or click the %s." % [a.description, "building" if a.kind == "disable" else "target point"],
+				"tooltip": Loc.t("%s Then tap or click the %s.") % [a.description, "building" if a.kind == "disable" else "target point"],
 				"action": func() -> void:
 					_selection.disarm()
 					_selection.ability_armed = aid})
@@ -159,10 +159,10 @@ func _build_menu(world: SimWorld) -> Array[Dictionary]:
 		if not ok and reason == "":
 			reason = " - " + why   # rank or limit (superweapons, P3-03)
 		entries.append({
-			"label": "%s\n%d" % [def.name, def.cost],
+			"label": "%s\n%d" % [Loc.t(def.name), def.cost],
 			"icon": _icon(def.icon_path),
 			"enabled": ok,
-			"tooltip": "%s (%d credits)%s" % [def.name, def.cost, "" if ok else reason],
+			"tooltip": Loc.t("%s (%d credits)%s") % [Loc.t(def.name), def.cost, "" if ok else reason],
 			"action": func() -> void: _placement.begin(def.id),
 		})
 	return entries
@@ -181,10 +181,10 @@ func _production_menu(world: SimWorld, building: SimEntity) -> Array[Dictionary]
 			and building.building.queue.size() < SimBuilding.MAX_QUEUE
 		var bid: int = building.id
 		entries.append({
-			"label": "%s\n%d%s" % [def.name, cost, " (x%d)" % queued if queued > 0 else ""],
+			"label": "%s\n%d%s" % [Loc.t(def.name), cost, " (x%d)" % queued if queued > 0 else ""],
 			"icon": _icon(def.icon_path),
 			"enabled": ok,
-			"tooltip": "%s (%d credits). Right-click or Shift+key cancels one.%s" % [def.name, cost, "" if ok else _missing(world, def.requires, cost)],
+			"tooltip": Loc.t("%s (%d credits). Right-click or Shift+key cancels one.%s") % [Loc.t(def.name), cost, "" if ok else _missing(world, def.requires, cost)],
 			"action": func() -> void: _runner.submit(SimCommand.make_produce(bid, unit_id)),
 			"alt_action": func() -> void: _cancel_last(bid, unit_id),
 		})
@@ -207,7 +207,7 @@ func _missing(world: SimWorld, requires: PackedStringArray, cost: int) -> String
 	for r: String in requires:
 		if not world.has_requirements(_selection.local_player_id, [r]):
 			var def: BuildingDef = world.content.get_building(r)
-			parts.append("needs " + (def.name if def != null else r))
+			parts.append(Loc.t("needs %s") % (Loc.t(def.name) if def != null else r))
 	return " - " + ", ".join(parts) if not parts.is_empty() else ""
 
 

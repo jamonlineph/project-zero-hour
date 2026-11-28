@@ -54,8 +54,9 @@ func refresh() -> void:
 		_list.add_child(line)
 		var text := Label.new()
 		var map: MapDef = (menu.get("content") as ContentDb).get_map(str(c["map"])) if menu != null else null
-		text.text = "%d. %s: %s, %s, %s, on %s\n%s" % [i + 1, c["call_sign"], MatchConfig.FACTIONS.get(str(c["faction"]), c["faction"]),
-			str(c["personality"]).capitalize(), str(c["difficulty"]).capitalize(), map.name if map != null else c["map"], c["intro"]]
+		text.text = Loc.t("%d. %s: %s, %s, %s, on %s\n%s") % [i + 1, c["call_sign"], Loc.t(MatchConfig.FACTIONS.get(str(c["faction"]), c["faction"])),
+			Loc.t(str(c["personality"]).capitalize()), Loc.t(str(c["difficulty"]).capitalize()),
+			Loc.t(map.name) if map != null else c["map"], Loc.t(str(c["intro"]))]
 		text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		text.modulate = Color(1, 1, 1, 1) if i <= done else Color(1, 1, 1, 0.45)

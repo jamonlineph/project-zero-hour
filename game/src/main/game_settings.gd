@@ -35,6 +35,8 @@ var edge_pan: bool = true
 var battery_saver: bool = false
 ## Accessibility (P3-20): team colors that stay apart with color blindness.
 var colorblind_colors: bool = false
+## Interface language (P3-18, Loc.LANGUAGES); "" follows the device.
+var language: String = ""
 ## Bus name -> linear volume 0..1.
 var volumes: Dictionary[String, float] = {"Master": 1.0, "Music": 0.7, "SFX": 1.0, "UI": 0.8, "Voice": 1.0}
 ## Action -> physical keycode, only for actions the player rebound.
@@ -107,6 +109,7 @@ func apply(tree: SceneTree) -> void:
 			AudioServer.set_bus_mute(index, volumes[bus] <= 0.0)
 	apply_bindings()
 	TeamColors.colorblind = colorblind_colors
+	Loc.use(language)
 
 
 ## Replaces the key of every rebound action (InputActions has the defaults).
@@ -146,6 +149,7 @@ func save_to(path: String) -> Error:
 	cfg.set_value("video", "battery_saver", battery_saver)
 	cfg.set_value("accessibility", "colorblind_colors", colorblind_colors)
 	cfg.set_value("ui", "ui_scale", ui_scale)
+	cfg.set_value("ui", "language", language)
 	cfg.set_value("controls", "edge_pan", edge_pan)
 	for bus: String in volumes:
 		cfg.set_value("audio", bus, volumes[bus])
@@ -175,6 +179,9 @@ func load_from(path: String) -> void:
 	battery_saver = bool(cfg.get_value("video", "battery_saver", battery_saver))
 	colorblind_colors = bool(cfg.get_value("accessibility", "colorblind_colors", colorblind_colors))
 	ui_scale = clampf(float(cfg.get_value("ui", "ui_scale", ui_scale)), 0.5, 2.0)
+	language = str(cfg.get_value("ui", "language", language))
+	if not Loc.LANGUAGES.has(language):
+		language = ""
 	edge_pan = bool(cfg.get_value("controls", "edge_pan", edge_pan))
 	for bus: String in BUSES:
 		volumes[bus] = clampf(float(cfg.get_value("audio", bus, volumes.get(bus, 1.0))), 0.0, 1.0)

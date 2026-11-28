@@ -11,33 +11,33 @@ static func describe(world: SimWorld, selected: Array[int]) -> String:
 		var e: SimEntity = world.get_entity(selected[0])
 		if e == null:
 			return ""
-		var text: String = "%s   %d / %d hp" % [name_of(world, e.def_id), e.hp, e.max_hp]
+		var text: String = Loc.t("%s   %d / %d hp") % [name_of(world, e.def_id), e.hp, e.max_hp]
 		if e.vet_rank > 0:
 			text += "   veteran " + "*".repeat(e.vet_rank)
 		if e.building != null:
 			if not e.building.built:
-				text += "   building %d%%" % ((100 * e.building.progress) / maxi(1, e.building.total))
+				text += Loc.t("   building %d%%") % ((100 * e.building.progress) / maxi(1, e.building.total))
 			elif not e.building.queue.is_empty():
 				var def: UnitDef = world.content.get_unit(e.building.queue[0])
 				var pct: int = (100 * e.building.queue_progress) / maxi(1, def.build_ticks if def != null else 1)
-				text += "\nQueue: %s (%d%%)%s" % [name_of(world, e.building.queue[0]), pct,
-					" + %d more" % (e.building.queue.size() - 1) if e.building.queue.size() > 1 else ""]
+				text += Loc.t("\nQueue: %s (%d%%)%s") % [name_of(world, e.building.queue[0]), pct,
+					Loc.t(" + %d more") % (e.building.queue.size() - 1) if e.building.queue.size() > 1 else ""]
 		if e.interop:
 			text += "   mixed group: faster reload"
 		if e.gatherer != null and e.gatherer.carried > 0:
-			text += "   carrying %d" % e.gatherer.carried
+			text += Loc.t("   carrying %d") % e.gatherer.carried
 		if e.supply != null:
-			text = "Supply site   %d credits left" % e.supply.remaining
+			text = Loc.t("Supply site   %d credits left") % e.supply.remaining
 		if e.garrison != null:
-			text += "\nInside: %d / %d" % [e.garrison.occupants.size(), e.garrison.capacity]
+			text += Loc.t("\nInside: %d / %d") % [e.garrison.occupants.size(), e.garrison.capacity]
 		if e.building != null and e.building.bridge:
-			text += "\nCollapsed: builders can repair it (open again at %d%%)" % BridgeSystem.REOPEN_PERCENT \
+			text += Loc.t("\nCollapsed: builders can repair it (open again at %d%%)") % BridgeSystem.REOPEN_PERCENT \
 				if e.building.collapsed else "\nAttack order (A, then click it) to destroy it"
 		if e.building != null and e.building.capture_ticks > 0:
 			var b: SimBuilding = e.building
 			text += "\n%s" % ("Neutral: infantry can capture it" if e.player_id == 0 else "Captured")
 			if b.capture_player != 0:
-				text += "   capturing %d%%" % ((100 * b.capture_progress) / b.capture_ticks)
+				text += Loc.t("   capturing %d%%") % ((100 * b.capture_progress) / b.capture_ticks)
 		return text
 	var counts: Dictionary[String, int] = {}
 	for id: int in selected:
@@ -52,8 +52,8 @@ static func describe(world: SimWorld, selected: Array[int]) -> String:
 		var e: SimEntity = world.get_entity(id)
 		if e != null and e.interop:
 			mixed += 1
-	return "%d selected: %s%s" % [selected.size(), ", ".join(parts),
-		"\n%d in mixed groups: faster reload" % mixed if mixed > 0 else ""]
+	return Loc.t("%d selected: %s%s") % [selected.size(), ", ".join(parts),
+		Loc.t("\n%d in mixed groups: faster reload") % mixed if mixed > 0 else ""]
 
 
 static func name_of(world: SimWorld, def_id: String) -> String:
@@ -61,6 +61,6 @@ static func name_of(world: SimWorld, def_id: String) -> String:
 		return def_id
 	var u: UnitDef = world.content.get_unit(def_id)
 	if u != null:
-		return u.name
+		return Loc.t(u.name)   # P3-18
 	var b: BuildingDef = world.content.get_building(def_id)
-	return b.name if b != null else def_id
+	return Loc.t(b.name) if b != null else def_id

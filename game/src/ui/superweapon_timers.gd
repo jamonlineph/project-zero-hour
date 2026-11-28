@@ -26,7 +26,7 @@ func refresh(world: SimWorld) -> void:
 			if a.kind != "superweapon":
 				continue
 			var faction: String = world.get_player(e.player_id).faction
-			var who: String = str(MatchConfig.FACTIONS.get(faction, "Player %d" % e.player_id))
+			var who: String = Loc.t(str(MatchConfig.FACTIONS[faction])) if MatchConfig.FACTIONS.has(faction) else Loc.t("Player %d") % e.player_id
 			var left: int = maxi(0, int(e.ability_ready.get(a.id, 0)) - world.tick) / SimWorld.TICK_RATE
 			lines.append("%s %s  %s  " % [who, a.name, "READY" if left == 0 else "%d:%02d" % [left / 60, left % 60]])
 	text = "\n".join(lines)

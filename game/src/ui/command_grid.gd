@@ -67,7 +67,7 @@ func set_entries(entries: Array[Dictionary]) -> void:
 		_hotkeys[i].visible = true
 		b.icon = e.get("icon", null)
 		b.disabled = not bool(e.get("enabled", true))
-		b.tooltip_text = "%s  (hotkey %s)" % [str(e.get("tooltip", e.get("label", ""))), SLOT_LABELS[i]]
+		b.tooltip_text = Loc.t("%s  (hotkey %s)") % [str(e.get("tooltip", e.get("label", ""))), SLOT_LABELS[i]]
 		b.modulate = Color.WHITE
 
 

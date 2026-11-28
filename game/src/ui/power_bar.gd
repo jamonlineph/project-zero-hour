@@ -37,7 +37,7 @@ func refresh() -> void:
 	var world: SimWorld = runner.world
 	var player: SimPlayer = world.get_player(player_id)
 	var points: int = CommanderPowers.points(player)
-	commander_button.text = "Commander\n%d point%s" % [points, "" if points == 1 else "s"] if points > 0 else "Commander"
+	commander_button.text = Loc.t("Commander\n%d point%s") % [points, "" if points == 1 else "s"] if points > 0 else "Commander"
 	var usable := PackedStringArray()
 	for id: String in player.powers:
 		var def: PowerDef = world.content.get_power(id)
@@ -58,8 +58,8 @@ func refresh() -> void:
 		var left: int = int(player.power_ready.get(id, 0)) - world.tick
 		var b: Button = _power_buttons[id]
 		b.disabled = left > 0
-		b.text = def.name if left <= 0 else "%s\n%d s" % [def.name, ceili(left / float(SimWorld.TICK_RATE))]
-		b.tooltip_text = def.description
+		b.text = Loc.t(def.name) if left <= 0 else "%s\n%d s" % [Loc.t(def.name), ceili(left / float(SimWorld.TICK_RATE))]
+		b.tooltip_text = Loc.t(def.description)
 
 
 ## Uses a power now, or arms it for the next click when it needs a point.

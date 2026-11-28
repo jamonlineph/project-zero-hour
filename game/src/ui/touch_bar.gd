@@ -29,7 +29,7 @@ func setup(selection_controller: SelectionController) -> void:
 	box_toggle.toggle_mode = true
 	box_toggle.toggled.connect(func(on: bool) -> void: selection.touch.box_mode = on)
 	for n: int in range(1, GROUPS + 1):
-		var b := _make(str(n), "Tap: select group %d. Hold: store the selection as group %d" % [n, n])
+		var b := _make(str(n), Loc.t("Tap: select group %d. Hold: store the selection as group %d") % [n, n])
 		b.name = "Group%d" % n
 		b.button_down.connect(func() -> void: _press_ms[n] = Time.get_ticks_msec())
 		b.button_up.connect(func() -> void: release_group(n, Time.get_ticks_msec()))

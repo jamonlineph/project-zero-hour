@@ -228,11 +228,11 @@ func _process(delta: float) -> void:
 	var p: SimPlayer = world.get_player(_runner.local_player_id)
 	var secs: int = world.tick / SimWorld.TICK_RATE
 	_fund_shown = maxf(0.0, _fund_shown - delta)
-	_top.text = "  Credits %d%s     Power %d / %d%s     Rank %s     %d:%02d" % [
-		p.credits, "  (+%d fund)" % _fund_gain if _fund_shown > 0.0 else "",
+	_top.text = Loc.t("  Credits %d%s     Power %d / %d%s     Rank %s     %d:%02d") % [
+		p.credits, Loc.t("  (+%d fund)") % _fund_gain if _fund_shown > 0.0 else "",
 		p.power_used, p.power_produced, "  LOW POWER" if p.low_power() else "",
 		"*".repeat(p.rank) + ".".repeat(5 - p.rank), secs / 60, secs % 60]
-	_debug.text = "tick %d | %d fps | state %08x  " % [world.tick, Engine.get_frames_per_second(), _last_hash]
+	_debug.text = Loc.t("tick %d | %d fps | state %08x  ") % [world.tick, Engine.get_frames_per_second(), _last_hash]
 	_superweapons.refresh(world)
 	_refresh -= delta
 	if _refresh <= 0.0:

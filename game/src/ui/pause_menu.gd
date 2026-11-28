@@ -90,7 +90,7 @@ func _all_local() -> bool:
 func save_replay() -> void:
 	var path: String = "user://replays/replay_%d.json" % Time.get_unix_time_from_system()
 	var err: Error = runner.make_replay().save(path)
-	_title.text = "Replay saved" if err == OK else "Could not save (%s)" % error_string(err)
+	_title.text = "Replay saved" if err == OK else Loc.t("Could not save (%s)") % error_string(err)
 
 
 func open_settings() -> SettingsMenu:

@@ -17,17 +17,17 @@ static func research_entries(runner: SimRunner, player_id: int, building: SimEnt
 		var mine: bool = building.building.research_id == def.id
 		var ok: bool = not done and not busy and player.credits >= def.cost and player.rank >= def.requires_rank \
 			and world.has_requirements(player_id, def.requires) and not Upgrades.researching(world, player_id, def.id)
-		var label: String = "%s\n%d" % [def.name, def.cost]
+		var label: String = "%s\n%d" % [Loc.t(def.name), def.cost]
 		if done:
-			label = "%s\nDone" % def.name
+			label = Loc.t("%s\nDone") % Loc.t(def.name)
 		elif mine:
-			label = "%s\n%d%%" % [def.name, (100 * building.building.research_progress) / maxi(1, def.research_ticks)]
+			label = "%s\n%d%%" % [Loc.t(def.name), (100 * building.building.research_progress) / maxi(1, def.research_ticks)]
 		var bid: int = building.id
 		var up: String = def.id
 		out.append({
 			"label": label,
 			"enabled": ok,
-			"tooltip": "Research %s (%d credits)%s" % [def.name, def.cost, _why_not(def, player, done, busy)],
+			"tooltip": Loc.t("Research %s (%d credits)%s") % [Loc.t(def.name), def.cost, _why_not(def, player, done, busy)],
 			"action": func() -> void: runner.submit(SimCommand.make_research(bid, up)),
 		})
 	return out
@@ -54,9 +54,9 @@ static func kit_entries(runner: SimRunner, player_id: int, selected: Array[int],
 		var ok: bool = player.credits >= def.cost and player.rank >= def.requires_rank \
 			and world.has_requirements(player_id, def.requires)
 		out.append({
-			"label": "%s\n%d each" % [def.name, def.cost],
+			"label": Loc.t("%s\n%d each") % [Loc.t(def.name), def.cost],
 			"enabled": ok,
-			"tooltip": "Buy %s for %d selected unit(s)" % [def.name, targets.size()],
+			"tooltip": Loc.t("Buy %s for %d selected unit(s)") % [Loc.t(def.name), targets.size()],
 			"action": func() -> void: runner.submit(SimCommand.make_upgrade_unit(targets, up_id)),
 		})
 	return out
@@ -68,7 +68,7 @@ static func _why_not(def: UpgradeDef, player: SimPlayer, done: bool, busy: bool)
 	if busy:
 		return ". This building is busy researching."
 	if player.rank < def.requires_rank:
-		return ". Needs commander rank %d." % def.requires_rank
+		return Loc.t(". Needs commander rank %d.") % def.requires_rank
 	if player.credits < def.cost:
 		return ". Not enough credits."
 	return ""

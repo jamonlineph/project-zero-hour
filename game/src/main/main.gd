@@ -228,7 +228,7 @@ func _continue_loading() -> void:
 		_loading_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 		hud.add_child(_loading_label)
 	if not loader.advance(450):
-		_loading_label.text = "Loading saved game… %d%%" % int(loader.progress() * 100.0)
+		_loading_label.text = Loc.t("Loading saved game… %d%%") % int(loader.progress() * 100.0)
 		return
 	var ok: bool = loader.matches()
 	loader = null

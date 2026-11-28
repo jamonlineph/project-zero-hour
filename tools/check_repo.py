@@ -83,6 +83,20 @@ def main():
     if current != gen_credits.text():
         problems.append("game/data/credits.json is out of date: run python3 tools/gen_credits.py")
 
+    # The translation template and the built translations (P3-18).
+    import extract_strings
+    pot = os.path.join(REPO, "game", "locale", "messages.pot")
+    if (open(pot, encoding="utf-8").read() if os.path.exists(pot) else "") != extract_strings.build():
+        problems.append("game/locale/messages.pot is out of date: run python3 tools/extract_strings.py")
+    sys.path.insert(0, os.path.join(REPO, "tools", "i18n"))
+    import build_po
+    for name in sorted(os.listdir(os.path.join(REPO, "tools", "i18n"))):
+        if name.endswith(".py") and name != "build_po.py":
+            code = name[:-3]
+            po = os.path.join(REPO, "game", "locale", code + ".po")
+            if (open(po, encoding="utf-8").read() if os.path.exists(po) else "") != build_po.build(code)[0]:
+                problems.append("game/locale/%s.po is out of date: run python3 tools/i18n/build_po.py %s" % (code, code))
+
     if problems:
         print("check_repo: %d problem(s)" % len(problems))
         for p in problems:

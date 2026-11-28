@@ -71,7 +71,7 @@ func _build_rows() -> void:
 		settings.apply_preset(order[(i + 1) % order.size()])).name = "QualityPreset"
 	_cycle("Render scale", "%d%%" % roundi(settings.render_scale * 100.0), func() -> void:
 		settings.render_scale = _next(GameSettings.RENDER_SCALES, settings.render_scale))
-	_cycle("Frame rate limit", "Unlimited" if settings.fps_cap == 0 else "%d fps" % settings.fps_cap, func() -> void:
+	_cycle("Frame rate limit", "Unlimited" if settings.fps_cap == 0 else Loc.t("%d fps") % settings.fps_cap, func() -> void:
 		var i: int = GameSettings.FPS_CHOICES.find(settings.fps_cap)
 		settings.fps_cap = GameSettings.FPS_CHOICES[(i + 1) % GameSettings.FPS_CHOICES.size()])
 	_cycle("Shadows", "On" if settings.shadows else "Off", func() -> void: settings.shadows = not settings.shadows)
@@ -81,6 +81,9 @@ func _build_rows() -> void:
 		settings.ui_scale = _next(GameSettings.UI_SCALES, settings.ui_scale))
 	_cycle("Colorblind-safe team colors", "On" if settings.colorblind_colors else "Off",
 		func() -> void: settings.colorblind_colors = not settings.colorblind_colors).name = "ColorblindColors"
+	_cycle("Language", Loc.LANGUAGES.get(settings.language, settings.language), func() -> void:
+		var codes: Array = Loc.LANGUAGES.keys()
+		settings.language = codes[(codes.find(settings.language) + 1) % codes.size()]).name = "Language"
 	_header("Controls")
 	_cycle("Pan at the screen edge (mouse)", "On" if settings.edge_pan else "Off",
 		func() -> void: settings.edge_pan = not settings.edge_pan)
@@ -93,7 +96,7 @@ func _build_rows() -> void:
 	for bus: String in GameSettings.BUSES:
 		_slider(bus, bus)
 	_header("Developer")
-	var check_label: String = "Run" if _check == null else "Running %d%%" % roundi(_check.progress() * 100.0)
+	var check_label: String = "Run" if _check == null else Loc.t("Running %d%%") % roundi(_check.progress() * 100.0)
 	if _check_result != "":
 		check_label = _check_result
 	_cycle("Determinism check (compare a phone with a desktop)", check_label, start_determinism_check).name = "DeterminismCheck"
@@ -120,7 +123,7 @@ func _slider(label: String, bus: String) -> void:
 	var row := HBoxContainer.new()
 	_rows.add_child(row)
 	var l := Label.new()
-	l.text = "%s volume" % label
+	l.text = Loc.t("%s volume") % label
 	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	l.add_theme_font_size_override("font_size", 18)
 	row.add_child(l)

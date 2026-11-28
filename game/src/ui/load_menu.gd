@@ -55,7 +55,7 @@ func refresh() -> void:
 	for s: Dictionary in saves:
 		var b := Button.new()
 		var minutes: int = int(s["game_seconds"]) / 60
-		b.text = "%s   ·   %s   ·   %d:%02d into the match" % [str(s["saved_at"]).replace("T", " "),
+		b.text = Loc.t("%s   ·   %s   ·   %d:%02d into the match") % [str(s["saved_at"]).replace("T", " "),
 			str(s["map"]).capitalize(), minutes, int(s["game_seconds"]) % 60]
 		b.custom_minimum_size = Vector2(540, 50)
 		b.pressed.connect(func() -> void: chosen.emit(SaveGame.read(str(s["path"]))))

@@ -284,13 +284,13 @@ func _cycle_credits() -> void:
 
 func _refresh_labels() -> void:
 	var map: MapDef = content.get_map(map_id)
-	_map_button.text = "Map: %s   (tap to change)" % (map.name if map != null else map_id)
-	_faction_button.text = "You: %s" % MatchConfig.FACTIONS[faction]
-	_enemy_button.text = "Enemy: %s" % MatchConfig.FACTIONS[enemy]
-	_credits_button.text = "Credits: %d" % content.skirmish_credits[credits_index]
-	_mode_button.text = "Mode: %s" % ("2v2 with ally" if team_mode else "1v1")
-	_difficulty_button.text = "Computer: %s" % difficulty.capitalize()
-	_style_button.text = "Style: %s" % personality.capitalize()
+	_map_button.text = Loc.t("Map: %s   (tap to change)") % (Loc.t(map.name) if map != null else map_id)
+	_faction_button.text = Loc.t("You: %s") % Loc.t(MatchConfig.FACTIONS[faction])
+	_enemy_button.text = Loc.t("Enemy: %s") % Loc.t(MatchConfig.FACTIONS[enemy])
+	_credits_button.text = Loc.t("Credits: %d") % content.skirmish_credits[credits_index]
+	_mode_button.text = Loc.t("Mode: %s") % (Loc.t("2v2 with ally") if team_mode else "1v1")
+	_difficulty_button.text = Loc.t("Computer: %s") % Loc.t(difficulty.capitalize())
+	_style_button.text = Loc.t("Style: %s") % Loc.t(personality.capitalize())
 
 
 func _button(parent: Control, text: String, action: Callable) -> Button:

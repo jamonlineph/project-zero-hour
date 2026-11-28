@@ -55,12 +55,12 @@ func show_credits() -> void:
 		_text.text = "Credits file missing."
 		return
 	var d: Dictionary = c
-	var t: String = "[b]%s[/b]\nMade by %s.\n%s\n\n" % [d.get("game", ""), d.get("made_by", ""), d.get("note", "")]
-	t += "[b]Licenses[/b]\nCode: %s\nArt, sound, maps and data: %s\n\n" % [d.get("code_license", ""), d.get("asset_license", "")]
+	var t: String = Loc.t("[b]%s[/b]\nMade by %s.\n%s\n\n") % [d.get("game", ""), d.get("made_by", ""), d.get("note", "")]
+	t += Loc.t("[b]Licenses[/b]\nCode: %s\nArt, sound, maps and data: %s\n\n") % [d.get("code_license", ""), d.get("asset_license", "")]
 	t += "[b]Assets[/b]\n"
 	for a: Variant in d.get("assets", []):
 		var e: Dictionary = a
-		t += "%s: %s (%s). License: %s\n" % [e.get("author", ""), e.get("what", ""), e.get("source", ""), e.get("license", "")]
+		t += Loc.t("%s: %s (%s). License: %s\n") % [e.get("author", ""), e.get("what", ""), e.get("source", ""), e.get("license", "")]
 	t += "\n[b]Made with[/b]\n"
 	for tool: Variant in d.get("tools", []):
 		t += "%s\n" % str(tool)
@@ -73,13 +73,13 @@ func show_engine_licenses() -> void:
 	if _licenses.text == "Credits":
 		show_credits()
 		return
-	var t: String = "[b]Godot Engine[/b]\n%s\n\n[b]Third-party components in the engine[/b]\n" % Engine.get_license_text()
+	var t: String = Loc.t("[b]Godot Engine[/b]\n%s\n\n[b]Third-party components in the engine[/b]\n") % Engine.get_license_text()
 	for info: Dictionary in Engine.get_copyright_info():
 		t += "\n[b]%s[/b]\n" % info.get("name", "")
 		for part: Dictionary in info.get("parts", []):
 			for line: String in part.get("copyright", []):
 				t += "© %s\n" % line
-			t += "License: %s\n" % part.get("license", "")
+			t += Loc.t("License: %s\n") % part.get("license", "")
 	_text.text = t
 	_text.scroll_to_line(0)
 	_licenses.text = "Credits"
