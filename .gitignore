@@ -26,3 +26,5 @@ Thumbs.db
 
 # Godot binary downloaded by tools/ci/download_godot.sh
 /godot-bin
+# Balance spreadsheets (tools/balance_sheet.py): a working copy; game/data is the source of truth.
+/balance/

@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: python3 tools/check_repo.py
+      - run: python3 tools/balance_sheet.py self-test
 
   godot-tests:
     name: Godot tests (headless)

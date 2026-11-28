@@ -616,7 +616,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 | P3-16 | Map editor v1 (desktop-first) |
 | P3-17 | Mod support (data packs that override JSON and assets) |
 | P3-18 | Localization through translation keys and Weblate |
-| P3-19 | Spreadsheet → JSON balance import tool |
+| P3-19 | Spreadsheet → JSON balance import tool — ✅ 2026-11-28 (Claude Code): `tools/balance_sheet.py` exports units, weapons and buildings to CSV and imports edited sheets back, touching only the tuned columns and only files whose values changed; `self-test` round trip runs in CI |
 | P3-20 | Accessibility options ([controls-and-ui.md](../docs/design/controls-and-ui.md)) — 🔄 colorblind-safe team colors done 2026-11-27 (Claude Code); UI scale and key remapping exist; subtitles, hold-to-confirm and reduced shake wait for the features they apply to |
 | P3-25 | Split `selection_controller.gd` (423 lines after P3-02f; guideline about 400): move armed-click handling (attack-move, patrol, guard, spoof, power, ability) into its own script — ✅ 2026-11-28 (Claude Code): `ArmedClicks` (absorbs `AbilityInput`); 394 lines |
 | P3-21 | Turn on DCO sign-off once outside contributors join |
