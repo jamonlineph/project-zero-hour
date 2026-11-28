@@ -112,6 +112,7 @@ Keep this list in sync with the code whenever you add a system.
   - A small relay server, because phones are almost always behind NAT.
   - LAN games use direct UDP.
   - We'll use Godot's ENet or WebSocket peers.
+- **LAN today (P3-14a):** `NetSession` (an ENet peer with its own `SceneMultiplayer`, kept under the tree root across the scene change). The host listens on port 7340 and is player 1; the client joins by address and is player 2. The host sends the match (scenario and seed) with `start_match()`; each side attaches its `SimRunner`, which emits every sealed local batch (`batch_sealed`) for the session to send, and every second's hash (`hash_logged`) for the session to compare (`desynced`). Input delay is 3 ticks (200 ms). Not yet: more than 2 players, reconnecting, adaptive delay, saving a replay on desync (P3-14b), and the relay server (P3-15).
 - **Cheating:** lockstep can't hide information, so map hacks are possible. Accept this for an open-source game and focus on fairness through server-side replay checks for ranked play later.
 
 ## 5. The view

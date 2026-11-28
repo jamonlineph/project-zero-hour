@@ -85,6 +85,16 @@ func test_easy_is_slower_and_attacks_later() -> void:
 	assert_false(normal.counters.is_empty())
 
 
+func test_hard_reacts_faster_gathers_more_and_attacks_sooner() -> void:
+	var hard: AiPlayer = AiPlayer.from_preset(_content(), "kp_default", 2, "hard")
+	var normal: AiPlayer = AiPlayer.from_preset(_content(), "kp_default", 2, "normal")
+	assert_eq(hard.difficulty, "hard")
+	assert_true(hard.think_interval < normal.think_interval)
+	assert_eq(hard.max_gatherers, normal.max_gatherers + 2)
+	assert_true(hard.first_attack_tick < normal.first_attack_tick)
+	assert_false(hard.counters.is_empty(), "hard should counter-build")
+
+
 func test_counter_bonus_follows_what_the_ai_sees() -> void:
 	var w := SimWorld.new(3, 200, 200)
 	w.content = _content()

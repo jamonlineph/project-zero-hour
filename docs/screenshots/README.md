@@ -47,8 +47,9 @@ Captured on a machine without a GPU, through a virtual display and software Open
 
 | File | What |
 |---|---|
-| `main_menu.png` | Main menu in the new theme (Inter font, framed buttons, amber title); since P3-02a with "You" and "Enemy" side by side |
+| `main_menu.png` | Main menu in the new theme (Inter font, framed buttons, amber title); since P3-02a with "You" and "Enemy" side by side, since P3-14a with "LAN game" |
 | `hud_engineer_selected.png` | In-game HUD with an engineer selected: framed top bar, minimap and selection panel, command grid with icons, costs and hotkey tags (`--select=us_engineer`) |
+| `lan_game.png` | The LAN game screen: host, or join by address (P3-14a, `--open=lan`) |
 | `pause_menu.png`, `settings.png`, `commander_panel.png` | Overlays (`--open=pause`, `--open=settings`, `--open=commander`) |
 | `load_game.png` | The load screen with two saves (P3-22, `--open=load`) |
 

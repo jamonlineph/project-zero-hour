@@ -6,6 +6,7 @@
 |---|---|---|
 | Unit tests | `game/tests/unit/test_*.gd` | Fixed-point math, RNG, commands, movement, content loading |
 | Determinism tests | `game/tests/unit/test_determinism.gd` | Same seed + commands → identical state hash every tick; command order inside a tick doesn't matter |
+| LAN smoke test | `game/tests/smoke_lan.gd` | Two `NetSession`s in one process connect over ENet on localhost (port 7351); the host sends the match; each side's player is an AI; after 40 s both machines have the same state hash and no desync was reported (P3-14a) |
 | Smoke test | `game/tests/smoke_main.gd` | The real main scene loads headless; units use their Blender models with team colors; selecting and ordering a move works; no errors are logged |
 | Golden replays | `game/tests/replays/*.json`, checked by `test_replays.gd` | Recorded matches replay to identical state hashes. After an intended change to sim rules or game data, run `tools/regen_golden_replays.sh` and say why in the commit |
 | Repo checks | `tools/check_repo.py` | Every asset has provenance; no banned file types; no huge files |

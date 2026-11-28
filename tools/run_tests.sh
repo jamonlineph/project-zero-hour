@@ -22,4 +22,7 @@ echo "== Smoke test (main scene)"
 echo "== Smoke test (menus)"
 "$GODOT" --headless --path game --script res://tests/smoke_menu.gd
 
+echo "== Smoke test (LAN lockstep)"
+"$GODOT" --headless --path game --script res://tests/smoke_lan.gd
+
 echo "== All tests passed"

@@ -30,7 +30,7 @@ var attack_wave_size: int = 6
 var first_attack_tick: int = 2700
 var think_interval: int = 15
 var defend_radius: int = 45 * Fx.ONE
-var difficulty: String = "normal"   ## "easy" or "normal"
+var difficulty: String = "normal"   ## "easy", "normal" or "hard" (P3-13a)
 var counters: Dictionary[String, PackedStringArray] = {}
 var power_priority: PackedStringArray = []
 var research: PackedStringArray = []
@@ -87,6 +87,13 @@ static func from_preset(content: ContentDb, id: String, player: int, level: Stri
 		ai.max_gatherers = maxi(2, ai.max_gatherers - 1)
 		ai.counters.clear()
 		ai.research.clear()
+	elif level == "hard":
+		# Hard (P3-13a): no cheating on sight or income; it reacts faster,
+		# runs a bigger economy and attacks sooner.
+		ai.think_interval = maxi(1, (ai.think_interval * 2) / 3)
+		ai.max_gatherers += 2
+		ai.first_attack_tick = maxi(60 * SimWorld.TICK_RATE, ai.first_attack_tick - 30 * SimWorld.TICK_RATE)
+		ai.attack_wave_size = maxi(3, ai.attack_wave_size - 1)
 	return ai
 
 

@@ -14,4 +14,5 @@ Run-Step "Importing assets" @("--headless", "--path", "game", "--import")
 Run-Step "Unit tests" @("--headless", "--path", "game", "--script", "res://tests/run_tests.gd")
 Run-Step "Smoke test (main scene)" @("--headless", "--path", "game", "--script", "res://tests/smoke_main.gd")
 Run-Step "Smoke test (menus)" @("--headless", "--path", "game", "--script", "res://tests/smoke_menu.gd")
+Run-Step "Smoke test (LAN lockstep)" @("--headless", "--path", "game", "--script", "res://tests/smoke_lan.gd")
 Write-Host "== All tests passed"

@@ -21,6 +21,11 @@ var _credits_button: Button
 
 
 func _ready() -> void:
+	# Back from a LAN match: that session is over (P3-14a).
+	if MatchConfig.net != null:
+		MatchConfig.net.close()
+		MatchConfig.net.queue_free()
+		MatchConfig.net = null
 	GameSettings.current().apply(get_tree())
 	UiTheme.apply(get_tree())
 	add_child(MusicPlayer.new())
@@ -37,7 +42,7 @@ func _ready() -> void:
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(center)
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 8)   # fits 720p with the map row (P2-12)
+	box.add_theme_constant_override("separation", 6)   # fits 720p with the map and LAN rows
 	center.add_child(box)
 
 	var title := Label.new()
@@ -64,13 +69,14 @@ func _ready() -> void:
 	_enemy_button = _button(sides, "", _cycle_enemy)
 	_enemy_button.name = "Enemy"
 	for b: Button in [_faction_button, _enemy_button]:
-		b.custom_minimum_size = Vector2(206, 50)
+		b.custom_minimum_size = Vector2(206, 46)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_credits_button = _button(box, "", _cycle_credits)
 	_difficulty_button = _button(box, "", _cycle_difficulty)
 	_difficulty_button.name = "Difficulty"
 	_button(box, "Start skirmish vs computer", start_skirmish).name = "StartSkirmish"
 	_button(box, "Watch computer vs computer", start_watch).name = "Watch"
+	_button(box, "LAN game (two devices)", open_lan).name = "Lan"
 	_button(box, "Sandbox (developer test map)", start_sandbox).name = "Sandbox"
 	_button(box, "Load game", open_load).name = "LoadGame"
 	_button(box, "Settings", open_settings).name = "Settings"
@@ -87,6 +93,8 @@ func _ready() -> void:
 				push_error("Unknown scenario '%s'" % id)
 		elif arg == "--open=load":
 			open_load.call_deferred()
+		elif arg == "--open=lan":
+			open_lan.call_deferred()
 		# `-- --watch=<map> [--side=<faction>]` starts computer vs computer on
 		# that map; --side picks player 1's faction (the HUD's point of view).
 		elif arg.begins_with("--watch="):
@@ -110,6 +118,14 @@ func start_watch() -> void:
 
 func start_sandbox() -> void:
 	_start(content.scenarios.get("sandbox", {}))
+
+
+func open_lan() -> LanMenu:
+	var lan := LanMenu.new()
+	lan.name = "LanMenu"
+	lan.menu = self
+	add_child(lan)
+	return lan
 
 
 func open_load() -> LoadMenu:
@@ -168,7 +184,8 @@ func _cycle_map() -> void:
 
 
 func _cycle_difficulty() -> void:
-	difficulty = "easy" if difficulty == "normal" else "normal"
+	var levels: Array[String] = ["easy", "normal", "hard"]
+	difficulty = levels[(levels.find(difficulty) + 1) % levels.size()]
 	_refresh_labels()
 
 
@@ -189,7 +206,7 @@ func _refresh_labels() -> void:
 func _button(parent: Control, text: String, action: Callable) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.custom_minimum_size = Vector2(420, 50)
+	b.custom_minimum_size = Vector2(420, 46)   # 46: eleven rows fit 720p (P3-14a)
 	b.add_theme_font_size_override("font_size", 20)
 	b.pressed.connect(action)
 	parent.add_child(b)

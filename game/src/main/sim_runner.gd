@@ -11,6 +11,10 @@ extends Node
 ## every command is recorded so the match can be saved as a replay.
 
 signal ticked(tick: int)
+## A local player's batch for a tick is sealed (NetSession sends it, P3-14).
+signal batch_sealed(player_id: int, tick: int, cmds: Array[SimCommand])
+## A state hash was logged (NetSession compares it with the other side's).
+signal hash_logged(tick: int, hash_value: int)
 
 const MAX_STEPS_PER_FRAME: int = 4
 const HASH_INTERVAL: int = SimWorld.TICK_RATE
@@ -119,6 +123,7 @@ func try_step() -> bool:
 	pending_events.append_array(world.events)
 	if world.tick % HASH_INTERVAL == 0:
 		hash_log[world.tick] = world.state_hash()
+		hash_logged.emit(world.tick, hash_log[world.tick])
 	ticked.emit(world.tick)
 	return true
 
@@ -193,6 +198,7 @@ func _seal_local_batches() -> void:
 				cmds.append(c)
 			_outbox.clear()
 		_store(p, t, cmds)
+		batch_sealed.emit(p, t, cmds)
 
 
 func _store(player_id: int, tick: int, cmds: Array[SimCommand]) -> void:

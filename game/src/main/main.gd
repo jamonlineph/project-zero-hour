@@ -5,7 +5,9 @@ extends Node3D
 
 ## Default scenario; override with: godot --path game -- --scenario=skirmish_vs_ai
 const DEFAULT_SCENARIO: String = "sandbox"
-const LOCAL_PLAYER: int = 1
+## The player on this machine: 1, or 2 when this machine joined a LAN game
+## (P3-14a).
+var local_player: int = 1
 const ENEMY_PLAYER: int = 2
 const SEED: int = 20261125   ## match seed; developer videos can pass --seed=<n>
 
@@ -50,6 +52,10 @@ func _ready() -> void:
 		scenario = save_data.get("scenario_data", {})
 	scenario_id = str(scenario.get("id", scenario_id))
 	var seed_value: int = int(DevCapture.arg("seed", str(SEED)))
+	var net: NetSession = MatchConfig.net
+	if net != null:
+		local_player = net.local_player_id
+		seed_value = MatchConfig.net_seed
 	if not save_data.is_empty():
 		seed_value = int(save_data.get("seed", seed_value))
 	world = MatchSetup.build_from(content, scenario, seed_value) if not scenario.is_empty() else null
@@ -66,11 +72,19 @@ func _ready() -> void:
 	runner = SimRunner.new()
 	runner.name = "SimRunner"
 	runner.world = world
-	runner.local_player_id = LOCAL_PLAYER
+	runner.local_player_id = local_player
 	runner.scenario_id = scenario_id
 	runner.seed_value = seed_value
 	runner.process_priority = -10   # step the sim before the view reads it
 	add_child(runner)
+	if net != null:
+		# LAN (P3-14a): both humans must deliver every tick's batch.
+		runner.players = [1, 2]
+		runner.local_players = [local_player]
+		net.attach(runner)
+		net.desynced.connect(func(t: int, _m: int, _o: int) -> void:
+			hud.show_notice("Out of sync with the other player at tick %d (a bug: please send the replay)." % t, 12.0))
+		net.peer_left.connect(func() -> void: hud.show_notice("The other player left the game.", 12.0))
 	runner.add_ai_from_scenario(content, scenario)
 	runner.scenario_data = scenario
 	runner.start()
@@ -83,7 +97,7 @@ func _ready() -> void:
 	game_view.setup(world, content)
 	game_view.ground_height = terrain.height_at
 	game_view.reveal_all = DevCapture.reveal_requested()
-	game_view.local_player_id = LOCAL_PLAYER
+	game_view.local_player_id = local_player
 	add_child(game_view)
 	game_view.sync(0.0)
 
@@ -119,7 +133,7 @@ func _ready() -> void:
 
 	selection = SelectionController.new()
 	selection.name = "SelectionController"
-	selection.setup(runner, game_view, rts_camera, hud.selection_box, LOCAL_PLAYER)
+	selection.setup(runner, game_view, rts_camera, hud.selection_box, local_player)
 	selection.selection_changed.connect(hud.on_selection_changed)
 	selection.selection_changed.connect(func(ids: Array[int]) -> void:
 		if not ids.is_empty():
@@ -171,7 +185,7 @@ func _process(_delta: float) -> void:
 	game_view.sync(runner.alpha)
 	if world.game_over and not _game_over_shown:
 		_game_over_shown = true
-		var my_team: int = world.team_of(LOCAL_PLAYER)
+		var my_team: int = world.team_of(local_player)
 		pause_menu.open_game_over("Draw" if world.winner_team == 0 else ("Victory" if world.winner_team == my_team else "Defeat"))
 	game_view.play_events(runner.pending_events)
 	if director != null:
@@ -182,7 +196,7 @@ func _process(_delta: float) -> void:
 func _select_on_start(def_id: String) -> void:
 	var ids: Array[int] = []
 	for id: int in world.entity_ids:
-		if world.entities[id].player_id == LOCAL_PLAYER and world.entities[id].def_id == def_id:
+		if world.entities[id].player_id == local_player and world.entities[id].def_id == def_id:
 			ids.append(id)
 	selection.select_ids(ids)
 
@@ -229,7 +243,7 @@ func _start_focus() -> Vector3:
 	var fallback: SimEntity = null
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
-		if e.player_id != LOCAL_PLAYER:
+		if e.player_id != local_player:
 			continue
 		if e.def_id.ends_with("_command_hq"):
 			return Vector3(Fx.to_float(e.x), 0.0, Fx.to_float(e.y))
@@ -271,7 +285,7 @@ func _build_environment() -> void:
 	# Terrain materials darken under the local player's fog of war (P1-27).
 	fog = FogOfWar.new()
 	fog.reveal_all = DevCapture.reveal_requested()
-	fog.setup(world, LOCAL_PLAYER)
+	fog.setup(world, local_player)
 	add_child(fog)
 
 	terrain = TerrainView.new()

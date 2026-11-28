@@ -8,6 +8,9 @@ extends RefCounted
 static var pending: Dictionary = {}
 ## A save (SaveGame.read) to load instead of a new match (P3-22), or empty.
 static var load_save: Dictionary = {}
+## The LAN session for the next match and its seed (P3-14a), or null.
+static var net: NetSession = null
+static var net_seed: int = 0
 ## Faction ids that are playable in skirmish, with display names
 ## (docs/design/factions.md).
 const FACTIONS: Dictionary = {"us": "America", "ae": "UAE", "kp": "North Korea", "eu": "EU"}
@@ -17,6 +20,16 @@ const FACTIONS: Dictionary = {"us": "America", "ae": "UAE", "kp": "North Korea",
 ## North Korean player.
 static func default_enemy(faction: String) -> String:
 	return "us" if faction == "kp" else "kp"
+
+
+## A LAN 1v1 (P3-14a): two humans, no AI; player 1 hosts.
+static func lan(content: ContentDb, map_id: String, host_faction: String, client_faction: String, credits: int) -> Dictionary:
+	var sc: Dictionary = skirmish(content, map_id, host_faction, credits, false, "normal", client_faction)
+	(sc["players"] as Array)[1].erase("ai")
+	(sc["players"] as Array)[1].erase("difficulty")
+	sc["id"] = "lan"
+	sc["name"] = "LAN game"
+	return sc
 
 
 ## A 1v1 skirmish: player 1 (human, or AI when watching) against an AI.
