@@ -4,7 +4,7 @@ extends RefCounted
 ## res://data/powers/<id>.json. See docs/design/commander.md.
 
 const KINDS: PackedStringArray = ["reveal", "strike", "drone_sweep", "reinforce", "jam_area",
-		"wingmen", "cyber", "decoys", "unlock", "repair_area", "cyber_defense", "procurement_rush"]
+		"wingmen", "cyber", "decoys", "unlock", "repair_area", "cyber_defense", "procurement_rush", "laser_shield"]
 
 var id: String = ""
 var faction: String = ""

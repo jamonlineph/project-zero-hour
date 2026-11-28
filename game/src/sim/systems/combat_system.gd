@@ -187,12 +187,15 @@ static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> 
 
 static func _step_projectiles(world: SimWorld) -> void:
 	var still_flying: Array[SimProjectile] = []
+	var shield_sites: Array[Array] = LaserShield.sites(world)   # P3-02f
 	for p: SimProjectile in world.projectiles:
 		p.prev_x = p.x
 		p.prev_y = p.y
 		KillChainSystem.check_guidance(world, p)
 		if ProtectionSystem.try_intercept(world, p):
 			continue   # shot down by active protection
+		if not shield_sites.is_empty() and LaserShield.intercepts(world, shield_sites, p):
+			continue   # burned down by a laser shield
 		if p.guided:
 			var t: SimEntity = world.get_entity(p.target_id)
 			if t != null and not t.dead:

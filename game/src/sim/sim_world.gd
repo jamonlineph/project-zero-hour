@@ -293,6 +293,7 @@ func step() -> void:
 	LaunchSystem.step(self)
 	CrushSystem.step(self)
 	InteropSystem.step(self)
+	LaserShield.step(self)
 	CombatSystem.step(self)
 	ProtectionSystem.step(self)
 	VeterancySystem.step(self)

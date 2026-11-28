@@ -74,6 +74,14 @@ static func _aim(world: SimWorld, ai: AiPlayer, def: PowerDef, hq: SimEntity, ar
 				if world.jam_level(ai.player_id, e.x, e.y) > 0:
 					return Vector2i.ZERO
 			return null
+		"laser_shield":
+			# Over the own base once enemies come near it (P3-02f).
+			if hq == null:
+				return null
+			for t: SimEntity in world.query_enemies(ai.player_id, hq.x, hq.y, ai.defend_radius * 2):
+				if not t.dead and t.building == null and world.can_see(ai.player_id, t.x, t.y):
+					return Vector2i(hq.x, hq.y)
+			return null
 		"procurement_rush":
 			# Only with an off-map order waiting and no rush pending (P3-02e).
 			if world.get_player(ai.player_id).procurement_rush:

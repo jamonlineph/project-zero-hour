@@ -46,7 +46,7 @@ In the game (P2-09): powers are data in `game/data/powers/`; the Commander butto
 | Rank 3 | Drone swarm strike (24 small drones attack an area) · Laser shield (air-defense sites in an area also shoot down drones and shells for 30 s) · Unlock: presidential guard detachment |
 | Rank 5 | Stand-off missile strike (2 jets fire 4 missiles; interceptable) · Unlock: sovereign fund cap doubled |
 
-In the game (P3-02a): satellite pass (`ae_satellite_pass`), drone swarm strike (`ae_drone_swarm`: 24 `swarm_drone` strikes), the presidential guard unlock (`ae_unlock_guard`) and the stand-off strike (`ae_standoff_strike`: 4 `standoff_missile` strikes from the map edge). The sovereign-fund unlock (`ae_unlock_fund`) doubles the fund's cap (P3-02b). Emergency procurement (`ae_emergency_procurement`, kind `procurement_rush`, P3-02e): the next off-map order is flown in in half the time. The laser shield waits for its mechanic (P3-02f).
+In the game (P3-02a): satellite pass (`ae_satellite_pass`), drone swarm strike (`ae_drone_swarm`: 24 `swarm_drone` strikes), the presidential guard unlock (`ae_unlock_guard`) and the stand-off strike (`ae_standoff_strike`: 4 `standoff_missile` strikes from the map edge). The sovereign-fund unlock (`ae_unlock_fund`) doubles the fund's cap (P3-02b). Emergency procurement (`ae_emergency_procurement`, kind `procurement_rush`, P3-02e): the next off-map order is flown in in half the time. The laser shield (`ae_laser_shield`, kind `laser_shield`, P3-02f): for 30 s, the UAE's air-defense sites inside a 60 m area also burn down enemy shells, rockets and missiles that come within 35 m of them, and hurt enemy drones there by a quarter of their health a second (`LaserShield`). The AI raises it over its base when enemies come near.
 
 ### EU
 

@@ -1,0 +1,11 @@
+{
+  "id": "ae_laser_shield",
+  "faction": "ae",
+  "name": "Laser Shield",
+  "tier": 3,
+  "kind": "laser_shield",
+  "cooldown_s": 180,
+  "radius_cm": 6000,
+  "duration_s": 30,
+  "description": "For 30 s, your air-defense sites in the area also burn down enemy shells, rockets, missiles and drones that come within 35 m."
+}

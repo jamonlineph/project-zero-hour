@@ -17,6 +17,10 @@ var power_ready: Dictionary[String, int] = {}   ## power id -> first tick it can
 var blinded_until: int = 0      ## enemy cyberattack: minimap and radar off until this tick
 var jam_immune_until: int = 0   ## cyber defense (P3-12a): jamming and spoofing don't affect us until this tick
 var procurement_rush: bool = false   ## emergency procurement (P3-02e): the next delivery comes in half the time
+var shield_x: int = 0           ## laser shield (P3-02f, LaserShield): its area and end tick
+var shield_y: int = 0
+var shield_radius: int = 0
+var shield_until: int = 0
 
 
 func low_power() -> bool:
@@ -46,6 +50,11 @@ func write_hash(h: SimHash) -> void:
 		h.add_int(jam_immune_until)
 	if procurement_rush:   # only while one is pending (P3-02e)
 		h.add_bool(procurement_rush)
+	if shield_until != 0:   # only after a laser shield (P3-02f)
+		h.add_int(shield_x)
+		h.add_int(shield_y)
+		h.add_int(shield_radius)
+		h.add_int(shield_until)
 	if not upgrades.is_empty():   # only then, so older replays hash as before
 		for u: String in upgrades:
 			h.add_string(u)
