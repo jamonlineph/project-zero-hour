@@ -1,0 +1,13 @@
+{
+  "id": "eu_at_missile",
+  "status": "first-pass stats (P3-12a)",
+  "damage": 150,
+  "damage_type": "anti_tank",
+  "range_cm": 4800,
+  "reload_ms": 4300,
+  "projectile": "guided",
+  "targets": [
+    "ground"
+  ],
+  "projectile_speed_cm_per_s": 8000
+}

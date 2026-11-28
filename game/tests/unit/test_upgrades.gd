@@ -52,7 +52,7 @@ func _power(w: SimWorld, player: int) -> void:
 
 
 func test_upgrades_load_with_valid_references() -> void:
-	assert_eq(_content().upgrades.size(), 9)
+	assert_eq(_content().upgrades.size(), 12)
 	var u: UpgradeDef = _content().get_upgrade("us_composite_armor")
 	assert_eq(u.scope, "global")
 	assert_eq(u.researched_at, "us_vehicle_depot")
@@ -61,6 +61,7 @@ func test_upgrades_load_with_valid_references() -> void:
 	var kit: UpgradeDef = _content().get_upgrade("ae_ifv_aps_kit")
 	assert_eq(kit.scope, "unit")
 	assert_true(kit.applies_to.has("ae_ifv") and kit.applies_to.has("ae_mbt"))
+	assert_eq(_content().get_upgrade("eu_modular_armor").researched_at, "eu_vehicle_works")
 
 
 func test_research_takes_time_costs_credits_and_upgrades_existing_and_new_units() -> void:

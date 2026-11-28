@@ -1,0 +1,11 @@
+{
+  "id": "eu_cruise_strike",
+  "faction": "eu",
+  "name": "Stealth Cruise Strike",
+  "tier": 5,
+  "kind": "strike",
+  "description": "4 low-flying cruise missiles on one target. Air defense can shoot them down.",
+  "cooldown_s": 300,
+  "strike": "cruise_missile",
+  "count": 4
+}

@@ -1,0 +1,27 @@
+{
+  "id": "eu_sam_site",
+  "faction": "eu",
+  "name": "Air-Defense Site",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 1200,
+  "cost": 1100,
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "build_time_ms": 15000,
+  "power": -3,
+  "vision_cm": 9000,
+  "requires": [
+    "eu_logistics_hub"
+  ],
+  "produces": [],
+  "weapons": [
+    "sam_interceptor"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/eu_sam_site.glb",
+    "icon": "res://assets/icons/buildings/eu_sam_site.png"
+  }
+}

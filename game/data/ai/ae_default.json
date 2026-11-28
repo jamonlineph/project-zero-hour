@@ -15,9 +15,9 @@
   ],
   "unit_mix": {
     "ae_mbt": 3,
-    "ae_raider": 2,
+    "ae_at_team": 2,
     "ae_rifle_squad": 2,
-    "ae_at_team": 1,
+    "ae_raider": 1,
     "ae_ifv": 1,
     "ae_recon_drone": 1,
     "ae_rocket_artillery": 1,
@@ -36,9 +36,8 @@
       "ae_mbt"
     ],
     "infantry": [
-      "ae_raider",
       "ae_ifv",
-      "ae_swarm_launcher"
+      "ae_rocket_artillery"
     ],
     "light_vehicle": [
       "ae_mbt"

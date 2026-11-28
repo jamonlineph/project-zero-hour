@@ -1,0 +1,24 @@
+{
+  "id": "eu_patrol_fighter",
+  "faction": "eu",
+  "role": "air_patrol",
+  "name": "Patrol Fighter",
+  "armor_class": "aircraft",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 400,
+  "cost": 0,
+  "speed_cm_per_s": 2600,
+  "radius_cm": 250,
+  "vision_cm": 5000,
+  "build_time_ms": 1000,
+  "requires": [],
+  "weapons": [
+    "wingman_cannon"
+  ],
+  "flying": true,
+  "_doc": "Cost 0: only from the air policing power.",
+  "visual": {
+    "model": "res://assets/models/units/eu_patrol_fighter.glb",
+    "icon": "res://assets/icons/units/eu_patrol_fighter.png"
+  }
+}

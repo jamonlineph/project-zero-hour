@@ -1,0 +1,26 @@
+{
+  "id": "eu_drone_center",
+  "faction": "eu",
+  "name": "Drone Center",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 1400,
+  "cost": 1200,
+  "footprint_cells": [
+    5,
+    5
+  ],
+  "build_time_ms": 14000,
+  "power": -2,
+  "vision_cm": 5000,
+  "requires": [
+    "eu_logistics_hub"
+  ],
+  "produces": [
+    "eu_recon_drone"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/eu_drone_center.glb",
+    "icon": "res://assets/icons/buildings/eu_drone_center.png"
+  }
+}

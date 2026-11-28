@@ -86,6 +86,17 @@ static func _use(world: SimWorld, c: SimCommand, def: PowerDef) -> bool:
 			var patrol := SimCommand.make_patrol(ids, x, y)
 			patrol.player_id = c.player_id
 			UnitCommands.apply(world, patrol)
+		"repair_area":
+			# Field repair (P3-12a): own vehicles in the area get `percent` of
+			# their max hp back at once.
+			for t: SimEntity in world.query_radius(x, y, def.radius):
+				if t.player_id == c.player_id and not t.dead and t.building == null \
+						and t.armor_class in ["light_vehicle", "heavy_armor"]:
+					t.hp = mini(t.max_hp, t.hp + (t.max_hp * def.percent) / 100)
+		"cyber_defense":
+			# Your drones and guided weapons ignore jamming and spoofing (P3-12a).
+			var me: SimPlayer = world.get_player(c.player_id)
+			me.jam_immune_until = maxi(me.jam_immune_until, world.tick + def.duration_ticks)
 		"cyber":
 			for pid: int in world.players:
 				if world.are_enemies(c.player_id, pid):

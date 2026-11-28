@@ -67,6 +67,27 @@
     {"id": "ae_fortified_post", "category": "buildings", "archetype": "building", "faction": "ae", "style": "bunker", "width": 6.0, "depth": 6.0, "height": 2.6, "tri_budget": 1500},
     {"id": "ae_sam_site", "category": "buildings", "archetype": "building", "faction": "ae", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.8, "tri_budget": 2500},
     {"id": "ae_swarm_launcher", "category": "units", "archetype": "wheeled", "faction": "ae", "length": 7.4, "width": 2.5, "height": 2.8, "axles": 3, "cargo": "launcher", "tri_budget": 2000},
-    {"id": "ae_swarm_drone", "category": "units", "archetype": "drone", "faction": "ae", "size": 0.7, "tri_budget": 400}
+    {"id": "ae_swarm_drone", "category": "units", "archetype": "drone", "faction": "ae", "size": 0.7, "tri_budget": 400},
+    {"id": "eu_mbt", "category": "units", "archetype": "tracked", "faction": "eu", "length": 8.2, "width": 3.7, "height": 2.5, "turret_scale": 1.05, "barrel_length": 5.0, "turret_extras": ["sight"], "tri_budget": 3000},
+    {"id": "eu_ifv", "category": "units", "archetype": "tracked", "faction": "eu", "length": 6.8, "width": 3.2, "height": 2.7, "turret_scale": 0.7, "barrel_length": 2.6, "barrel_radius": 0.06, "extras": ["rear_door"], "turret_extras": ["sight"], "tri_budget": 3000},
+    {"id": "eu_apc", "category": "units", "archetype": "wheeled", "faction": "eu", "length": 7.9, "width": 3.0, "height": 2.6, "axles": 4, "cargo": "hmg", "tri_budget": 2500},
+    {"id": "eu_engineer", "category": "units", "archetype": "tracked", "faction": "eu", "length": 7.4, "width": 3.6, "height": 2.4, "turret": false, "extras": ["dozer_blade", "crane"], "tri_budget": 2500},
+    {"id": "eu_logistics_truck", "category": "units", "archetype": "wheeled", "faction": "eu", "length": 8.0, "width": 2.5, "height": 3.0, "axles": 3, "cargo": "crates", "tri_budget": 2000},
+    {"id": "eu_howitzer", "category": "units", "archetype": "wheeled", "faction": "eu", "length": 9.0, "width": 2.6, "height": 3.0, "axles": 3, "cargo": "gun", "barrel_length": 5.5, "barrel_radius": 0.1, "tri_budget": 2500},
+    {"id": "eu_cuas_truck", "category": "units", "archetype": "wheeled", "faction": "eu", "length": 7.0, "width": 2.5, "height": 2.8, "axles": 3, "cargo": "gun", "barrel_length": 1.8, "tri_budget": 2500},
+    {"id": "eu_recon_drone", "category": "units", "archetype": "drone", "faction": "eu", "size": 3.2, "wing": true, "tri_budget": 800},
+    {"id": "eu_patrol_fighter", "category": "units", "archetype": "drone", "faction": "eu", "size": 5.0, "wing": true, "tri_budget": 800},
+    {"id": "eu_rifle_squad", "category": "units", "archetype": "infantry", "faction": "eu", "figures": 4, "tri_budget": 3200},
+    {"id": "eu_at_team", "category": "units", "archetype": "infantry", "faction": "eu", "figures": 2, "weapon": "launcher", "tri_budget": 1800},
+    {"id": "eu_medics", "category": "units", "archetype": "infantry", "faction": "eu", "figures": 2, "tri_budget": 1800},
+    {"id": "eu_loitering_team", "category": "units", "archetype": "infantry", "faction": "eu", "figures": 2, "weapon": "drone_case", "tri_budget": 1800},
+    {"id": "eu_command_hq", "category": "buildings", "archetype": "building", "faction": "eu", "width": 14.0, "depth": 12.0, "height": 6.0, "details": ["mast", "dish", "flag"], "tri_budget": 5000},
+    {"id": "eu_power_station", "category": "buildings", "archetype": "building", "faction": "eu", "width": 8.0, "depth": 8.0, "height": 4.0, "details": ["stacks", "vents"], "tri_budget": 3000},
+    {"id": "eu_barracks", "category": "buildings", "archetype": "building", "faction": "eu", "width": 10.0, "depth": 8.0, "height": 3.5, "details": ["flag", "vents"], "tri_budget": 3000},
+    {"id": "eu_logistics_hub", "category": "buildings", "archetype": "building", "faction": "eu", "width": 12.0, "depth": 10.0, "height": 4.5, "details": ["garage", "tanks"], "tri_budget": 4000},
+    {"id": "eu_vehicle_works", "category": "buildings", "archetype": "building", "faction": "eu", "width": 14.0, "depth": 12.0, "height": 6.0, "details": ["garage", "stacks", "mast"], "tri_budget": 5000},
+    {"id": "eu_drone_center", "category": "buildings", "archetype": "building", "faction": "eu", "width": 10.0, "depth": 10.0, "height": 3.5, "details": ["pad", "dish"], "tri_budget": 4000},
+    {"id": "eu_bunker", "category": "buildings", "archetype": "building", "faction": "eu", "style": "bunker", "width": 6.0, "depth": 6.0, "height": 2.5, "tri_budget": 1500},
+    {"id": "eu_sam_site", "category": "buildings", "archetype": "building", "faction": "eu", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.6, "tri_budget": 2500}
   ]
 }

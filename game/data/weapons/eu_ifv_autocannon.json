@@ -1,0 +1,13 @@
+{
+  "id": "eu_ifv_autocannon",
+  "status": "first-pass stats (P3-12a)",
+  "damage": 32,
+  "damage_type": "autocannon",
+  "range_cm": 4200,
+  "reload_ms": 1000,
+  "projectile": "instant",
+  "targets": [
+    "ground",
+    "drone"
+  ]
+}

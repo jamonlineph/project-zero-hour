@@ -1,0 +1,12 @@
+{
+  "id": "eu_air_policing",
+  "faction": "eu",
+  "name": "Air Policing Patrol",
+  "tier": 1,
+  "kind": "wingmen",
+  "description": "2 fighters guard an area for 45 s.",
+  "cooldown_s": 240,
+  "unit": "eu_patrol_fighter",
+  "count": 2,
+  "duration_s": 45
+}

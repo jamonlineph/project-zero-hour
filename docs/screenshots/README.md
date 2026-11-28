@@ -11,12 +11,14 @@ Captured on a machine without a GPU, through a virtual display and software Open
 | `riverside_town.png` | Riverside (P2-12): the town on both banks of the river (`--watch=riverside --camera=128,128,90 --reveal`) |
 | `riverside_bridge.png` | Riverside: the north bridge (`--camera=128,72,45`) |
 
-## Factions (`factions/`, P3-02a)
+## Factions (`factions/`, P3-02a, P3-12a)
 
 | File | What |
 |---|---|
 | `uae_base.png` | A UAE base on Desert Crossroads at 1:40, computer vs computer (`--watch=desert_crossroads --side=ae --enemy=kp`) |
 | `uae_icons.png` | UAE build icons: 8x8 fighting vehicle, desert raider, tank, special forces, HQ, drone industry complex |
+| `eu_base.png` | An EU base on Frostwood at 2:00, computer vs computer (`--watch=frostwood --side=eu --enemy=ae`, P3-12a) |
+| `eu_icons.png` | EU build icons: tank, 8x8 carrier, truck howitzer, combat medics, MALE recon drone, vehicle works |
 
 ## Maps and biomes (`maps/`, P3-23a)
 

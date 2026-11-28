@@ -1,0 +1,23 @@
+{
+  "id": "eu_apc",
+  "faction": "eu",
+  "role": "light_vehicle",
+  "name": "8x8 Armored Carrier",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 720,
+  "cost": 720,
+  "speed_cm_per_s": 850,
+  "turn_rate_deg_per_s": 120,
+  "radius_cm": 280,
+  "vision_cm": 5000,
+  "build_time_ms": 11000,
+  "requires": [],
+  "weapons": [
+    "eu_hmg"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/eu_apc.glb",
+    "icon": "res://assets/icons/units/eu_apc.png"
+  }
+}

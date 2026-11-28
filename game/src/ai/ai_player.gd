@@ -265,14 +265,18 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 	var army_ids: Array[int] = []
 	var fighters: Array[SimEntity] = []
 	var spotters: Array[SimEntity] = []
+	var support: Array[SimEntity] = []   ## unarmed helpers such as medics (P3-12a)
 	for e: SimEntity in mine.army:
-		if e.weapons.is_empty():
+		if e.weapons.is_empty() and e.spotter:
 			spotters.append(e)
+		elif e.weapons.is_empty():
+			support.append(e)
 		else:
 			fighters.append(e)
 			army_ids.append(e.id)
 	var lead_target: SimEntity = world.get_entity(_target_id) if _attacking else null
 	AiTactics.escort(lead_target, spotters, fighters, cmds)
+	AiTactics.escort(null, support, fighters, cmds)   # medics stay in the middle of the army
 	AiTactics.use_abilities(world, fighters, cmds)
 	if army_ids.is_empty():
 		_attacking = false

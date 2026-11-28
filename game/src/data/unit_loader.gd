@@ -88,6 +88,14 @@ static func load_unit(db: ContentDb, path: String) -> void:
 	u.fiber_optic = bool(src.get("fiber_optic", false))
 	u.spotter = bool(src.get("spotter", false))
 	u.crusher = bool(src.get("crusher", false))
+	if src.has("heal_aura"):
+		var ha: Variant = src["heal_aura"]
+		if not ha is Dictionary:
+			db.errors.append("%s: 'heal_aura' must be an object" % path)
+		else:
+			u.heal_radius = Fx.from_ratio(int(ha.get("radius_cm", 0)), 100)
+			u.heal_percent_per_s = int(ha.get("percent_per_s", 0))
+			u.heal_classes = db.string_list(ha, "classes", path)
 	for a: Variant in src.get("abilities", []):
 		var ad: AbilityDef = _ability(db, a, path)
 		if ad != null:

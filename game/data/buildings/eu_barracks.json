@@ -1,0 +1,29 @@
+{
+  "id": "eu_barracks",
+  "faction": "eu",
+  "name": "Barracks",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 1600,
+  "cost": 550,
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "build_time_ms": 12000,
+  "power": -1,
+  "vision_cm": 5000,
+  "requires": [
+    "eu_power_station"
+  ],
+  "produces": [
+    "eu_rifle_squad",
+    "eu_at_team",
+    "eu_medics",
+    "eu_loitering_team"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/eu_barracks.glb",
+    "icon": "res://assets/icons/buildings/eu_barracks.png"
+  }
+}

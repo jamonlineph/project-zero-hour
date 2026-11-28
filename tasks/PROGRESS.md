@@ -4,6 +4,20 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-28: P3-12a EU, UAE mechanics (P3-02b/c/f), P1-30b, balance work (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P3-12a EU:** all four factions are now playable in skirmish. 13 units (with combat medics and a patrol fighter), 8 buildings, 5 powers, 3 upgrades, `eu_default`, placeholder art. New mechanics: healing auras (`HealSystem`: medics heal infantry 3%/s, trucks repair vehicles 1%/s), `repair_area` and `cyber_defense` power kinds. The AI keeps unarmed helpers (medics) in the middle of its army. `test_eu.gd`.
+  - **UAE:** sovereign fund (P3-02b, `FundSystem`), swarm-drone truck (P3-02c, `LaunchSystem`: real drone units), special-forces abilities (P3-02f: `AbilitySystem`, USE_ABILITY, "Call Strike" and "Disable Building", HUD buttons, AI use).
+  - **P1-30b:** the 72 "material is null" errors came from wreck darkening stacked on team-color duplicates; wrecks now swap surface materials (0 errors); the smoke test guards it.
+  - **Balance (P2-11f):** America counters infantry with rocket artillery too; mixed groups move at their slowest member's pace (`SimMover.group_speed`). US vs North Korea on the same seeds moved from 15–25 to about even.
+  - **UAE balance (P3-02g, open):** units now match North Korea's cost-efficiency and the AI mix leans on tanks and missile teams; still 7 wins of 40.
+- Tests: `tools/run_tests.sh` -> 303 tests, 0 failed (+ both smoke tests). `python3 tools/check_repo.py` -> ok.
+- Not verified: four-faction balance beyond the runs above; the EU AI has not been measured against the others (P3-12d); a real-GPU check of the wreck fix.
+- Next: P3-12d/P3-02g balance with AI runs; P3-25 split `selection_controller.gd`; P3-03 superweapons; P3-04 aircraft.
+- For the owner: determinism hash is now 789762363 (group speed). The UAE wins only about 1 game in 6 against the AI factions so far.
+
+---
+
 ## 2026-11-27: P3-02a UAE base roster, P1-30b bisect, HUD split (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P3-02 split** into a–g in the backlog. **P3-02a:** the UAE is playable in skirmish. 12 units (engineer, contracted truck, rifle squad, missile team, special forces as a spotter, presidential guard unlock, desert raider, 8x8 IFV, tank, rocket launcher, laser vehicle, recon drone), 8 buildings, 9 weapons, 3 upgrades, 4 powers (satellite pass, 24-drone swarm strike, guard unlock, 4-missile stand-off strike) and the `ae_default` AI preset. Placeholder art for all 20 from the Blender specs, including two new wheeled options: `gun` (turreted 8x8) and `hmg` (open buggy). The menu has "You" and "Enemy" side by side; any faction can face any other. `ai_matches.gd` takes `vs=<f1>,<f2>`.

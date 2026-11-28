@@ -1,0 +1,23 @@
+{
+  "id": "eu_cuas_truck",
+  "faction": "eu",
+  "role": "counter_drone",
+  "name": "Gun-Drone Interceptor Truck",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 480,
+  "cost": 850,
+  "speed_cm_per_s": 700,
+  "turn_rate_deg_per_s": 120,
+  "radius_cm": 260,
+  "vision_cm": 5500,
+  "build_time_ms": 13000,
+  "requires": [],
+  "weapons": [
+    "cuas_airburst_gun"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/eu_cuas_truck.glb",
+    "icon": "res://assets/icons/units/eu_cuas_truck.png"
+  }
+}

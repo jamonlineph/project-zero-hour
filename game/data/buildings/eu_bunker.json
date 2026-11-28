@@ -1,0 +1,28 @@
+{
+  "id": "eu_bunker",
+  "faction": "eu",
+  "name": "Bunker",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 1700,
+  "cost": 650,
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "build_time_ms": 10000,
+  "power": 0,
+  "vision_cm": 4500,
+  "requires": [
+    "eu_barracks"
+  ],
+  "produces": [],
+  "weapons": [
+    "bunker_machine_gun"
+  ],
+  "garrison_capacity": 2,
+  "visual": {
+    "model": "res://assets/models/buildings/eu_bunker.glb",
+    "icon": "res://assets/icons/buildings/eu_bunker.png"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "eu_field_repair",
+  "faction": "eu",
+  "name": "Field Repair",
+  "tier": 1,
+  "kind": "repair_area",
+  "description": "Your vehicles in an area get 40% of their health back.",
+  "cooldown_s": 180,
+  "radius_cm": 3000,
+  "percent": 40
+}

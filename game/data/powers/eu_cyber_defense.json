@@ -1,0 +1,10 @@
+{
+  "id": "eu_cyber_defense",
+  "faction": "eu",
+  "name": "Cyber Defense",
+  "tier": 3,
+  "kind": "cyber_defense",
+  "description": "For 30 s your drones and guided weapons ignore jamming and spoofing.",
+  "cooldown_s": 240,
+  "duration_s": 30
+}

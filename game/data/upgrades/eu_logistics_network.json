@@ -1,0 +1,18 @@
+{
+  "id": "eu_logistics_network",
+  "_doc": "Faster logistics trucks.",
+  "faction": "eu",
+  "name": "Logistics Network",
+  "scope": "global",
+  "cost": 800,
+  "research_time_ms": 30000,
+  "researched_at": "eu_logistics_hub",
+  "requires": [],
+  "requires_rank": 3,
+  "applies_to": [
+    "eu_logistics_truck"
+  ],
+  "effects": {
+    "speed_percent": 20
+  }
+}

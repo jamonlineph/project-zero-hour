@@ -1,0 +1,11 @@
+{
+  "id": "eu_coalition_artillery",
+  "faction": "eu",
+  "name": "Coalition Artillery Strike",
+  "tier": 3,
+  "kind": "strike",
+  "description": "An off-map battery fires 12 precision shells on an area. Air defense can shoot them down.",
+  "cooldown_s": 240,
+  "strike": "precision_shell",
+  "count": 12
+}

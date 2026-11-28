@@ -1,0 +1,23 @@
+{
+  "id": "eu_howitzer",
+  "faction": "eu",
+  "role": "artillery",
+  "name": "Truck Howitzer",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 450,
+  "cost": 1100,
+  "speed_cm_per_s": 750,
+  "turn_rate_deg_per_s": 100,
+  "radius_cm": 290,
+  "vision_cm": 4000,
+  "build_time_ms": 16000,
+  "requires": [],
+  "weapons": [
+    "eu_howitzer_155"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/eu_howitzer.glb",
+    "icon": "res://assets/icons/units/eu_howitzer.png"
+  }
+}

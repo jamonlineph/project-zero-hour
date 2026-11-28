@@ -56,6 +56,8 @@ In the game (P3-02a): satellite pass (`ae_satellite_pass`), drone swarm strike (
 | Rank 3 | Coalition artillery strike (an off-map battery fires 12 precision shells) · Cyber defense (your units ignore jamming and spoofing for 30 s) · Unlock: second doctrine unit |
 | Rank 5 | Stealth cruise strike (4 low-flying missiles at one target; interceptable) · Unlock: interoperability bonus doubled |
 
+In the game (P3-12a): air policing (`eu_air_policing`: 2 `eu_patrol_fighter` for 45 s), field repair (`eu_field_repair`, kind `repair_area`: own vehicles in a 30 m area get 40% of their health back at once), the coalition artillery strike (`eu_coalition_artillery`: 12 `precision_shell` strikes), cyber defense (`eu_cyber_defense`, kind `cyber_defense`: for 30 s jamming and spoofing don't affect your drones and guided weapons) and the stealth cruise strike (`eu_cruise_strike`: 4 `cruise_missile` strikes). The two unlocks wait for doctrines and interoperability (P3-12b–c).
+
 ## Superweapons (P3-03)
 
 - Each faction has one superweapon: see [units-and-buildings.md](units-and-buildings.md).

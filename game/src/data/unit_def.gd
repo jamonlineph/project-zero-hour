@@ -32,6 +32,11 @@ var launch_range: int = 0       ## fixed-point meters
 var launch_cooldown_ticks: int = 0
 ## Special abilities (P3-02f, AbilitySystem; data: "abilities").
 var abilities: Array[AbilityDef] = []
+## Healing aura (P3-12a, HealSystem; data: "heal_aura": {radius_cm,
+## percent_per_s, classes}). 0 radius = none.
+var heal_radius: int = 0
+var heal_percent_per_s: int = 0
+var heal_classes: PackedStringArray = []
 var aps_charges: int = 0        ## active protection charges (P2-06)
 var cage_hits: int = 0          ## drone hits cage armor softens (P2-06)
 var decoy_of: String = ""       ## decoys: the unit id it imitates (P2-08)

@@ -1,0 +1,59 @@
+{
+  "id": "eu_default",
+  "faction": "eu",
+  "_doc": "Skirmish AI preset (docs/design/ai-opponent.md). The EU fields tough, well-rounded groups with medics.",
+  "build_order": [
+    "eu_power_station",
+    "eu_logistics_hub",
+    "eu_barracks",
+    "eu_vehicle_works",
+    "eu_power_station",
+    "eu_logistics_hub",
+    "eu_drone_center",
+    "eu_power_station",
+    "eu_sam_site"
+  ],
+  "unit_mix": {
+    "eu_mbt": 3,
+    "eu_rifle_squad": 2,
+    "eu_at_team": 1,
+    "eu_ifv": 1,
+    "eu_apc": 1,
+    "eu_medics": 1,
+    "eu_recon_drone": 1,
+    "eu_howitzer": 1
+  },
+  "max_gatherers": 4,
+  "max_spotters": 2,
+  "gatherer_unit": "eu_logistics_truck",
+  "attack_wave_size": 7,
+  "first_attack_after_s": 200,
+  "think_interval_ticks": 15,
+  "defend_radius_m": 45,
+  "counters": {
+    "heavy_armor": [
+      "eu_at_team",
+      "eu_mbt"
+    ],
+    "infantry": [
+      "eu_apc",
+      "eu_howitzer"
+    ],
+    "light_vehicle": [
+      "eu_mbt"
+    ],
+    "drone": [
+      "eu_cuas_truck"
+    ]
+  },
+  "power_priority": [
+    "eu_field_repair",
+    "eu_air_policing",
+    "eu_coalition_artillery",
+    "eu_cyber_defense",
+    "eu_cruise_strike"
+  ],
+  "research": [
+    "eu_modular_armor"
+  ]
+}

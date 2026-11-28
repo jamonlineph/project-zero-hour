@@ -1,0 +1,27 @@
+{
+  "id": "eu_medics",
+  "faction": "eu",
+  "role": "medic",
+  "name": "Combat Medic Team",
+  "armor_class": "infantry",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 220,
+  "cost": 400,
+  "speed_cm_per_s": 400,
+  "radius_cm": 140,
+  "vision_cm": 4500,
+  "build_time_ms": 9000,
+  "requires": [],
+  "weapons": [],
+  "heal_aura": {
+    "radius_cm": 1500,
+    "percent_per_s": 3,
+    "classes": [
+      "infantry"
+    ]
+  },
+  "visual": {
+    "model": "res://assets/models/units/eu_medics.glb",
+    "icon": "res://assets/icons/units/eu_medics.png"
+  }
+}

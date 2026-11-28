@@ -1,0 +1,24 @@
+{
+  "id": "eu_command_hq",
+  "faction": "eu",
+  "name": "Coalition HQ",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 5200,
+  "cost": 3000,
+  "footprint_cells": [
+    7,
+    6
+  ],
+  "build_time_ms": 60000,
+  "power": 5,
+  "vision_cm": 6000,
+  "requires": [],
+  "produces": [
+    "eu_engineer"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/eu_command_hq.glb",
+    "icon": "res://assets/icons/buildings/eu_command_hq.png"
+  }
+}

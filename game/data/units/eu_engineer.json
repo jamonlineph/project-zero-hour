@@ -1,0 +1,22 @@
+{
+  "id": "eu_engineer",
+  "faction": "eu",
+  "role": "builder",
+  "name": "Engineer Tank",
+  "armor_class": "heavy_armor",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 800,
+  "cost": 1000,
+  "speed_cm_per_s": 600,
+  "turn_rate_deg_per_s": 100,
+  "radius_cm": 260,
+  "vision_cm": 4000,
+  "build_time_ms": 10000,
+  "requires": [],
+  "weapons": [],
+  "builder": true,
+  "visual": {
+    "model": "res://assets/models/units/eu_engineer.glb",
+    "icon": "res://assets/icons/units/eu_engineer.png"
+  }
+}

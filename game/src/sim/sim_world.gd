@@ -113,6 +113,8 @@ func is_spotted(player_id: int, x: int, y: int) -> bool:
 ## Strongest hostile jamming field covering (x, y) for `victim_player`'s
 ## drones and guided weapons; 0 = none (P2-03). Fields don't stack.
 func jam_level(victim_player: int, x: int, y: int) -> int:
+	if victim_player != 0 and tick < get_player(victim_player).jam_immune_until:
+		return 0   # cyber defense (P3-12a)
 	var level: int = 0
 	for j: SimEntity in active_jammers:
 		if not are_enemies(j.player_id, victim_player):
@@ -263,6 +265,7 @@ func step() -> void:
 	ConstructionSystem.step(self)
 	ProductionSystem.step(self)
 	Upgrades.step(self)
+	HealSystem.step(self)
 	GatherSystem.step(self)
 	PathingSystem.step(self)
 	MovementSystem.step(self)

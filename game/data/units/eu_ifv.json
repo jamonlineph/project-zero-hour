@@ -1,0 +1,23 @@
+{
+  "id": "eu_ifv",
+  "faction": "eu",
+  "role": "armored_transport",
+  "name": "Infantry Fighting Vehicle",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 760,
+  "cost": 850,
+  "speed_cm_per_s": 760,
+  "turn_rate_deg_per_s": 110,
+  "radius_cm": 280,
+  "vision_cm": 5000,
+  "build_time_ms": 12000,
+  "requires": [],
+  "weapons": [
+    "eu_ifv_autocannon"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/eu_ifv.glb",
+    "icon": "res://assets/icons/units/eu_ifv.png"
+  }
+}

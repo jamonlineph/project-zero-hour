@@ -1,0 +1,25 @@
+{
+  "id": "eu_logistics_hub",
+  "faction": "eu",
+  "name": "Logistics Hub",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 1900,
+  "cost": 1500,
+  "footprint_cells": [
+    6,
+    5
+  ],
+  "build_time_ms": 15000,
+  "power": -1,
+  "vision_cm": 5000,
+  "requires": [
+    "eu_command_hq"
+  ],
+  "produces": [],
+  "dropoff": true,
+  "visual": {
+    "model": "res://assets/models/buildings/eu_logistics_hub.glb",
+    "icon": "res://assets/icons/buildings/eu_logistics_hub.png"
+  }
+}

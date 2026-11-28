@@ -1,0 +1,16 @@
+{
+  "id": "eu_howitzer_155",
+  "status": "first-pass stats (P3-12a)",
+  "damage": 170,
+  "damage_type": "high_explosive",
+  "range_cm": 14000,
+  "reload_ms": 7000,
+  "projectile": "ballistic",
+  "targets": [
+    "ground"
+  ],
+  "min_range_cm": 1500,
+  "projectile_speed_cm_per_s": 7000,
+  "splash_radius_cm": 800,
+  "splash_edge_percent": 40
+}

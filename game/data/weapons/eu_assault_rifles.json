@@ -1,0 +1,13 @@
+{
+  "id": "eu_assault_rifles",
+  "status": "first-pass stats (P3-12a)",
+  "damage": 13,
+  "damage_type": "small_arms",
+  "range_cm": 3000,
+  "reload_ms": 1000,
+  "projectile": "instant",
+  "targets": [
+    "ground",
+    "drone"
+  ]
+}

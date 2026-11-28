@@ -1,0 +1,31 @@
+{
+  "id": "eu_vehicle_works",
+  "faction": "eu",
+  "name": "Vehicle Works",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 2700,
+  "cost": 2000,
+  "footprint_cells": [
+    7,
+    6
+  ],
+  "build_time_ms": 20000,
+  "power": -2,
+  "vision_cm": 5000,
+  "requires": [
+    "eu_logistics_hub"
+  ],
+  "produces": [
+    "eu_mbt",
+    "eu_logistics_truck",
+    "eu_apc",
+    "eu_ifv",
+    "eu_howitzer",
+    "eu_cuas_truck"
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/eu_vehicle_works.glb",
+    "icon": "res://assets/icons/buildings/eu_vehicle_works.png"
+  }
+}

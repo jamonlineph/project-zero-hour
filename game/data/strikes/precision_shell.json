@@ -1,0 +1,18 @@
+{
+  "id": "precision_shell",
+  "name": "Precision Shell",
+  "kind": "missile",
+  "_doc": "EU coalition artillery strike (P3-12a): guided shells from an off-map battery; air defense can shoot them down.",
+  "max_hp": 20,
+  "speed_cm_per_s": 9000,
+  "radius_cm": 40,
+  "vision_cm": 0,
+  "payload": {
+    "damage": 140,
+    "damage_type": "high_explosive",
+    "splash_radius_cm": 500,
+    "splash_edge_percent": 40,
+    "count": 1,
+    "spread_cm": 1500
+  }
+}

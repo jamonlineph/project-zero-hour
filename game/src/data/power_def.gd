@@ -4,7 +4,7 @@ extends RefCounted
 ## res://data/powers/<id>.json. See docs/design/commander.md.
 
 const KINDS: PackedStringArray = ["reveal", "strike", "drone_sweep", "reinforce", "jam_area",
-		"wingmen", "cyber", "decoys", "unlock"]
+		"wingmen", "cyber", "decoys", "unlock", "repair_area", "cyber_defense"]
 
 var id: String = ""
 var faction: String = ""
@@ -17,6 +17,7 @@ var cooldown_ticks: int = 0
 var radius: int = 0             ## fixed-point meters (reveal, jamming, sweep vision)
 var duration_ticks: int = 0
 var count: int = 1
+var percent: int = 0            ## repair_area: percent of max hp restored (P3-12a)
 var strike_id: String = ""
 var unit_id: String = ""        ## reinforce, wingmen, decoys, unlock
 var needs_spotted: bool = false ## strike: the point must be seen by a friendly spotter

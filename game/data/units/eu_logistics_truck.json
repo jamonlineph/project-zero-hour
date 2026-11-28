@@ -1,0 +1,34 @@
+{
+  "id": "eu_logistics_truck",
+  "faction": "eu",
+  "role": "gatherer",
+  "name": "Logistics Truck",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 600,
+  "cost": 600,
+  "speed_cm_per_s": 650,
+  "turn_rate_deg_per_s": 130,
+  "radius_cm": 220,
+  "vision_cm": 3500,
+  "build_time_ms": 8000,
+  "requires": [],
+  "weapons": [],
+  "gatherer": {
+    "capacity": 300,
+    "load_ms": 3000,
+    "unload_ms": 2000
+  },
+  "heal_aura": {
+    "radius_cm": 1500,
+    "percent_per_s": 1,
+    "classes": [
+      "light_vehicle",
+      "heavy_armor"
+    ]
+  },
+  "visual": {
+    "model": "res://assets/models/units/eu_logistics_truck.glb",
+    "icon": "res://assets/icons/units/eu_logistics_truck.png"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "eu_at_team",
+  "faction": "eu",
+  "role": "anti_tank_infantry",
+  "name": "Missile Team",
+  "armor_class": "infantry",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 220,
+  "cost": 400,
+  "speed_cm_per_s": 340,
+  "radius_cm": 140,
+  "vision_cm": 4800,
+  "build_time_ms": 8000,
+  "requires": [],
+  "weapons": [
+    "eu_at_missile"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/eu_at_team.glb",
+    "icon": "res://assets/icons/units/eu_at_team.png"
+  }
+}

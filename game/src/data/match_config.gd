@@ -8,9 +8,9 @@ extends RefCounted
 static var pending: Dictionary = {}
 ## A save (SaveGame.read) to load instead of a new match (P3-22), or empty.
 static var load_save: Dictionary = {}
-## Faction ids that are playable in skirmish, with display names. The EU
-## (`eu`) joins when its roster is built (docs/design/factions.md).
-const FACTIONS: Dictionary = {"us": "America", "ae": "UAE", "kp": "North Korea"}
+## Faction ids that are playable in skirmish, with display names
+## (docs/design/factions.md).
+const FACTIONS: Dictionary = {"us": "America", "ae": "UAE", "kp": "North Korea", "eu": "EU"}
 
 
 ## The opponent picked when none is given: North Korea, or America for a

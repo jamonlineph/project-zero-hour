@@ -66,7 +66,8 @@ static func _spoof(world: SimWorld, c: SimCommand) -> void:
 		for v: SimEntity in victims:
 			if v.dead or v.drone == null or v.drone.fiber_optic:
 				continue
-			_spoof_one(world, v)
+			if world.tick >= world.get_player(v.player_id).jam_immune_until:   # cyber defense (P3-12a)
+				_spoof_one(world, v)
 		return
 
 

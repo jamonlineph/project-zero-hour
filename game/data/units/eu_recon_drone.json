@@ -1,0 +1,22 @@
+{
+  "id": "eu_recon_drone",
+  "faction": "eu",
+  "role": "recon_drone",
+  "name": "MALE Recon Drone",
+  "armor_class": "drone",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 90,
+  "cost": 400,
+  "speed_cm_per_s": 1300,
+  "radius_cm": 120,
+  "vision_cm": 8000,
+  "build_time_ms": 8000,
+  "requires": [],
+  "weapons": [],
+  "endurance_s": 160,
+  "spotter": true,
+  "visual": {
+    "model": "res://assets/models/units/eu_recon_drone.glb",
+    "icon": "res://assets/icons/units/eu_recon_drone.png"
+  }
+}

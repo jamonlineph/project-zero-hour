@@ -9,7 +9,7 @@ Four sides, chosen by the owner on 2026-11-26: **America, the United Arab Emirat
 | `us` | America | Expensive and precise: see first, strike from far away | Now (vertical slice) |
 | `kp` | North Korea | Mass and firepower: artillery, jamming and fortifications | Now (vertical slice) |
 | `ae` | United Arab Emirates | Rich and fast: buys the best, strikes with drones and special forces | Playable since P3-02a (base roster); signature mechanics in P3-02b–f |
-| `eu` | European Union | A coalition: well-rounded, tough, adapts its doctrine | Phase 3 |
+| `eu` | European Union | A coalition: well-rounded, tough, adapts its doctrine | Playable since P3-12a (base roster); doctrines and interoperability in P3-12b–c |
 
 ## America (`us`): expensive and precise
 

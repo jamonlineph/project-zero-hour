@@ -1,0 +1,18 @@
+{
+  "id": "cruise_missile",
+  "name": "Cruise Missile",
+  "kind": "missile",
+  "_doc": "EU rank-5 strike (P3-12a): low-flying missiles on one target; air defense can shoot them down.",
+  "max_hp": 100,
+  "speed_cm_per_s": 5000,
+  "radius_cm": 80,
+  "vision_cm": 1500,
+  "payload": {
+    "damage": 380,
+    "damage_type": "high_explosive",
+    "splash_radius_cm": 700,
+    "splash_edge_percent": 40,
+    "count": 1,
+    "spread_cm": 600
+  }
+}

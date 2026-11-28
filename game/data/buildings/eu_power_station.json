@@ -1,0 +1,22 @@
+{
+  "id": "eu_power_station",
+  "faction": "eu",
+  "name": "Power Station",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 1300,
+  "cost": 850,
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "build_time_ms": 10000,
+  "power": 10,
+  "vision_cm": 5000,
+  "requires": [],
+  "produces": [],
+  "visual": {
+    "model": "res://assets/models/buildings/eu_power_station.glb",
+    "icon": "res://assets/icons/buildings/eu_power_station.png"
+  }
+}

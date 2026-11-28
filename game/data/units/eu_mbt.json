@@ -1,0 +1,24 @@
+{
+  "id": "eu_mbt",
+  "faction": "eu",
+  "role": "main_battle_tank",
+  "name": "Main Battle Tank",
+  "armor_class": "heavy_armor",
+  "crusher": true,
+  "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
+  "max_hp": 1300,
+  "cost": 1100,
+  "speed_cm_per_s": 720,
+  "turn_rate_deg_per_s": 90,
+  "radius_cm": 320,
+  "vision_cm": 5200,
+  "build_time_ms": 15000,
+  "requires": [],
+  "weapons": [
+    "tank_cannon_120_l55"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/eu_mbt.glb",
+    "icon": "res://assets/icons/units/eu_mbt.png"
+  }
+}
