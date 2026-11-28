@@ -46,7 +46,7 @@ Four sides, chosen by the owner on 2026-11-26: **America, the United Arab Emirat
 - **Signature mechanics:**
   - **Procurement:** units can be ordered off-map for a premium; a transport aircraft delivers them to a landing pad (it can be shot down).
   - **Sovereign fund:** unspent credits earn a small interest every minute, up to a cap. Saving pays off, but so does spending well. In the game (P3-02b): 3% of unspent credits every 60 s, at most 300 per payment, 600 with the rank-5 unlock (`sovereign_fund` in rules.json, `FundSystem`); the top bar shows "(+N fund)" for a few seconds.
-  - **Swarm drones:** trucks that launch groups of small drones that hunt together.
+  - **Swarm drones:** trucks that launch groups of small drones that hunt together. In the game (P3-02c): the swarm-drone truck (`ae_swarm_launcher`, from the drone industry complex) launches 5 drones at the nearest ground enemy it can see within 90 m, every 40 s. They are real flying units (30 hp, 30 s of flight, small explosive charges), so lasers, jammers and rifles can shoot them down; they crash when their flight time ends.
   - **Desert raiders:** fast wheeled vehicles that move faster off-road.
   - **Special forces:** elite infantry that can call in precision strikes and disable buildings.
 - **Economy flavor:** contracted logistics trucks are fast and cheap but unarmored.

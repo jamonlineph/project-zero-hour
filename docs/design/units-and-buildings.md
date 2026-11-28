@@ -5,7 +5,7 @@ Rosters as **role × faction** tables. Every faction fills the same roles in its
 - Names here are working names. "X-class" marks a real-world reference and **never appears in the game**.
 - IDs (`us_mbt` and so on) are the data file names in `game/data/units/` and `game/data/buildings/`. Prefixes: `us_` America, `ae_` UAE, `kp_` North Korea, `eu_` EU.
 - First-pass numbers for the Phase 2 matchup (America vs North Korea) are in [vertical-slice.md](vertical-slice.md). Ids marked ✓ already exist with placeholder art.
-- The UAE's first roster (P3-02a) is in `game/data/` with first-pass numbers: fewer, pricier, faster units. Its raider is simply fast until terrain types exist (P3-02d); the swarm-drone truck, procurement and special-forces abilities come in P3-02c, P3-02e and P3-02f.
+- The UAE's first roster (P3-02a) is in `game/data/` with first-pass numbers: fewer, pricier, faster units. Its raider is simply fast until terrain types exist (P3-02d); the swarm-drone truck came in P3-02c; procurement and special-forces abilities come in P3-02e and P3-02f.
 
 ## Units
 
@@ -24,7 +24,7 @@ Rosters as **role × faction** tables. Every faction fills the same roles in its
 | Anti-air | M-SHORAD-class `shorad` | Pantsir-class `shorad` | Pongae-class missile vehicle `shorad` | IRIS-T-class `shorad` |
 | Counter-drone | Laser vehicle `laser_cuas` ✓ | Laser vehicle `laser_cuas` ✓ | Jamming vehicle `ew_vehicle` ✓ (jamming field) | Gun-drone interceptor truck `cuas_truck` |
 | Recon drone | Small recon drone `recon_drone` ✓ | Recon drone `recon_drone` ✓ | Recon drone `recon_drone` ✓ | Eurodrone-class MALE drone `recon_drone` |
-| Strike drones | Loitering munition team `loitering_team` | Swarm-drone truck `swarm_launcher` (Hunter-class) | Loitering munition team `loitering_team` ✓ | Loitering munition team `loitering_team` |
+| Strike drones | Loitering munition team `loitering_team` | Swarm-drone truck `swarm_launcher` ✓ (Hunter-class) | Loitering munition team `loitering_team` ✓ | Loitering munition team `loitering_team` |
 | Attack helicopter | Apache-class `attack_heli` (launches drones) | Apache-class `attack_heli` | — | Tiger-class `attack_heli` |
 | Air transport | MV-75-class tiltrotor `tiltrotor` | Chinook-class `transport_heli` (used by Procurement) | Old transport helicopter `transport_heli` | NH90-class `transport_heli` |
 | Fighter / strike | F-35-class `stealth_fighter` + drone wingmen `wingman_drone` | Rafale-class `fighter` | Old strike jet `strike_jet` (cheap, fragile) | Eurofighter-class `fighter` |

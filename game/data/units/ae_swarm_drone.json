@@ -1,0 +1,24 @@
+{
+  "id": "ae_swarm_drone",
+  "faction": "ae",
+  "role": "swarm_drone",
+  "name": "Swarm Drone",
+  "armor_class": "drone",
+  "status": "first-pass numbers (P3-02c): launched by the swarm-drone truck, never built",
+  "_doc": "Cost 0: only launched (LaunchSystem). Crashes when its endurance runs out.",
+  "max_hp": 30,
+  "cost": 0,
+  "speed_cm_per_s": 1800,
+  "radius_cm": 60,
+  "vision_cm": 3000,
+  "build_time_ms": 1000,
+  "requires": [],
+  "weapons": [
+    "swarm_charge"
+  ],
+  "endurance_s": 30,
+  "visual": {
+    "model": "res://assets/models/units/ae_swarm_drone.glb",
+    "icon": "res://assets/icons/units/ae_swarm_drone.png"
+  }
+}

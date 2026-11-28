@@ -1,7 +1,7 @@
 {
   "id": "ae_ifv_autocannon",
   "status": "first-pass stats (P3-02a)",
-  "damage": 28,
+  "damage": 30,
   "damage_type": "autocannon",
   "range_cm": 4200,
   "reload_ms": 900,

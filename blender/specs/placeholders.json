@@ -65,6 +65,8 @@
     {"id": "ae_vehicle_depot", "category": "buildings", "archetype": "building", "faction": "ae", "width": 14.0, "depth": 12.0, "height": 6.0, "details": ["garage", "vents", "dish"], "tri_budget": 4000},
     {"id": "ae_drone_complex", "category": "buildings", "archetype": "building", "faction": "ae", "width": 10.0, "depth": 10.0, "height": 4.0, "details": ["pad", "dish", "mast"], "tri_budget": 3000},
     {"id": "ae_fortified_post", "category": "buildings", "archetype": "building", "faction": "ae", "style": "bunker", "width": 6.0, "depth": 6.0, "height": 2.6, "tri_budget": 1500},
-    {"id": "ae_sam_site", "category": "buildings", "archetype": "building", "faction": "ae", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.8, "tri_budget": 2500}
+    {"id": "ae_sam_site", "category": "buildings", "archetype": "building", "faction": "ae", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.8, "tri_budget": 2500},
+    {"id": "ae_swarm_launcher", "category": "units", "archetype": "wheeled", "faction": "ae", "length": 7.4, "width": 2.5, "height": 2.8, "axles": 3, "cargo": "launcher", "tri_budget": 2000},
+    {"id": "ae_swarm_drone", "category": "units", "archetype": "drone", "faction": "ae", "size": 0.7, "tri_budget": 400}
   ]
 }

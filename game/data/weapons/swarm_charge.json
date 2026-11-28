@@ -1,0 +1,12 @@
+{
+  "id": "swarm_charge",
+  "status": "first-pass stats (P3-02c)",
+  "damage": 30,
+  "damage_type": "high_explosive",
+  "range_cm": 1200,
+  "reload_ms": 2000,
+  "projectile": "instant",
+  "targets": [
+    "ground"
+  ]
+}

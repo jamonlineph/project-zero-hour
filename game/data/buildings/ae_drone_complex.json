@@ -17,7 +17,8 @@
     "ae_logistics_hub"
   ],
   "produces": [
-    "ae_recon_drone"
+    "ae_recon_drone",
+    "ae_swarm_launcher"
   ],
   "visual": {
     "model": "res://assets/models/buildings/ae_drone_complex.glb",

@@ -24,6 +24,12 @@ var endurance_ticks: int = 0    ## drones: flight time on a full charge (data: e
 var fiber_optic: bool = false   ## drones: immune to jamming and spoofing
 var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
 var crusher: bool = false       ## hurts enemies it drives over (P3-07, CrushSystem)
+## Swarm launchers (P3-02c, LaunchSystem; data: "launcher": {unit, count,
+## range_cm, cooldown_s}). Empty unit = not a launcher.
+var launch_unit: String = ""
+var launch_count: int = 0
+var launch_range: int = 0       ## fixed-point meters
+var launch_cooldown_ticks: int = 0
 var aps_charges: int = 0        ## active protection charges (P2-06)
 var cage_hits: int = 0          ## drone hits cage armor softens (P2-06)
 var decoy_of: String = ""       ## decoys: the unit id it imitates (P2-08)

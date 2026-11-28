@@ -37,6 +37,7 @@ var drone: SimDrone = null      ## drones only: endurance and launcher (P2-01)
 var jammer: SimJammer = null    ## jamming field and spoofing (P2-03)
 var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
 var crusher: bool = false       ## hurts enemies it drives over (P3-07); from the def, so not hashed
+var launcher: SimLauncher = null   ## swarm-drone launcher (P3-02c)
 var strike: SimStrike = null    ## a missile or strike aircraft in flight (P2-07)
 var decoy_of: String = ""       ## a decoy imitating this unit id (P2-08)
 var revealed_mask: int = 0      ## decoys: bit per team that has seen through it
@@ -94,6 +95,8 @@ func write_hash(h: SimHash) -> void:
 		h.add_bool(true)
 	if strike != null:
 		strike.write_hash(h)
+	if launcher != null:   # only launchers, so older replays hash as before
+		launcher.write_hash(h)
 	if sensor or ttl != 0:
 		h.add_bool(sensor)
 		h.add_int(ttl)

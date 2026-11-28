@@ -1,10 +1,10 @@
 {
   "id": "ae_at_missile",
   "status": "first-pass stats (P3-02a)",
-  "damage": 145,
+  "damage": 150,
   "damage_type": "anti_tank",
   "range_cm": 4800,
-  "reload_ms": 4200,
+  "reload_ms": 4000,
   "projectile": "guided",
   "targets": [
     "ground"

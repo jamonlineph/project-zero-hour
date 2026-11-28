@@ -1,7 +1,7 @@
 {
   "id": "ae_assault_rifles",
   "status": "first-pass stats (P3-02a)",
-  "damage": 13,
+  "damage": 14,
   "damage_type": "small_arms",
   "range_cm": 3000,
   "reload_ms": 1000,

@@ -4,8 +4,8 @@
   "role": "gatherer",
   "name": "Contracted Truck",
   "armor_class": "light_vehicle",
-  "status": "first-pass numbers (P3-02a, docs/design/factions.md: rich and fast)",
-  "max_hp": 400,
+  "status": "first-pass numbers (P3-02g: cost-efficiency matched to North Korea's, class by class)",
+  "max_hp": 550,
   "cost": 500,
   "speed_cm_per_s": 820,
   "turn_rate_deg_per_s": 140,
@@ -15,7 +15,7 @@
   "requires": [],
   "weapons": [],
   "gatherer": {
-    "capacity": 300,
+    "capacity": 350,
     "load_ms": 2500,
     "unload_ms": 2000
   },

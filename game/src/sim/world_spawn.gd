@@ -33,6 +33,12 @@ static func make_unit(world: SimWorld, def: UnitDef, id: int, player_id: int, x:
 		e.drone.fiber_optic = def.fiber_optic
 	e.spotter = def.spotter
 	e.crusher = def.crusher
+	if def.launch_unit != "":
+		e.launcher = SimLauncher.new()
+		e.launcher.unit_id = def.launch_unit
+		e.launcher.count = def.launch_count
+		e.launcher.range = def.launch_range
+		e.launcher.cooldown_ticks = def.launch_cooldown_ticks
 	e.aps_max = def.aps_charges
 	e.aps_charges = def.aps_charges
 	e.cage_hits = def.cage_hits

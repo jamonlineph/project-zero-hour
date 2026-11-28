@@ -1,10 +1,10 @@
 {
   "id": "tank_cannon_120_autoloader",
   "status": "first-pass stats (P3-02a)",
-  "damage": 150,
+  "damage": 155,
   "damage_type": "anti_tank",
   "range_cm": 5000,
-  "reload_ms": 2500,
+  "reload_ms": 2600,
   "projectile": "instant",
   "targets": [
     "ground"

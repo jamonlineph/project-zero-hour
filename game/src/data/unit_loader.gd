@@ -88,6 +88,15 @@ static func load_unit(db: ContentDb, path: String) -> void:
 	u.fiber_optic = bool(src.get("fiber_optic", false))
 	u.spotter = bool(src.get("spotter", false))
 	u.crusher = bool(src.get("crusher", false))
+	if src.has("launcher"):
+		var l: Variant = src["launcher"]
+		if not l is Dictionary or not (l as Dictionary).has("unit"):
+			db.errors.append("%s: 'launcher' must be an object with a unit" % path)
+		else:
+			u.launch_unit = str(l["unit"])
+			u.launch_count = maxi(1, int(l.get("count", 1)))
+			u.launch_range = Fx.from_ratio(int(l.get("range_cm", 0)), 100)
+			u.launch_cooldown_ticks = ContentDb.ms_to_ticks(int(l.get("cooldown_s", 30)) * 1000)
 	u.aps_charges = int(src.get("aps_charges", 0))
 	u.cage_hits = int(src.get("cage_hits", 0))
 	u.decoy_of = str(src.get("decoy_of", ""))

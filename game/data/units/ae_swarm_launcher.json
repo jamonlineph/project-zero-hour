@@ -1,0 +1,27 @@
+{
+  "id": "ae_swarm_launcher",
+  "faction": "ae",
+  "role": "strike_drones",
+  "name": "Swarm-Drone Truck",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-02c)",
+  "max_hp": 450,
+  "cost": 1300,
+  "speed_cm_per_s": 750,
+  "turn_rate_deg_per_s": 110,
+  "radius_cm": 260,
+  "vision_cm": 5000,
+  "build_time_ms": 16000,
+  "requires": [],
+  "weapons": [],
+  "launcher": {
+    "unit": "ae_swarm_drone",
+    "count": 5,
+    "range_cm": 9000,
+    "cooldown_s": 40
+  },
+  "visual": {
+    "model": "res://assets/models/units/ae_swarm_launcher.glb",
+    "icon": "res://assets/icons/units/ae_swarm_launcher.png"
+  }
+}

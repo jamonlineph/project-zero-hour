@@ -29,7 +29,8 @@
     "res://data/weapons/ae_ifv_autocannon.json",
     "res://data/weapons/tank_cannon_120_autoloader.json",
     "res://data/weapons/ae_rocket_pod.json",
-    "res://data/weapons/ae_cuas_laser.json"
+    "res://data/weapons/ae_cuas_laser.json",
+    "res://data/weapons/swarm_charge.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",
@@ -66,7 +67,9 @@
     "res://data/units/ae_mbt.json",
     "res://data/units/ae_rocket_artillery.json",
     "res://data/units/ae_laser_cuas.json",
-    "res://data/units/ae_recon_drone.json"
+    "res://data/units/ae_recon_drone.json",
+    "res://data/units/ae_swarm_launcher.json",
+    "res://data/units/ae_swarm_drone.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",
