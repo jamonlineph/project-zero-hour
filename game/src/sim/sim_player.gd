@@ -16,6 +16,7 @@ var powers: PackedStringArray = []     ## chosen commander powers and unlocks (P
 var power_ready: Dictionary[String, int] = {}   ## power id -> first tick it can be used again
 var blinded_until: int = 0      ## enemy cyberattack: minimap and radar off until this tick
 var jam_immune_until: int = 0   ## cyber defense (P3-12a): jamming and spoofing don't affect us until this tick
+var procurement_rush: bool = false   ## emergency procurement (P3-02e): the next delivery comes in half the time
 
 
 func low_power() -> bool:
@@ -43,6 +44,8 @@ func write_hash(h: SimHash) -> void:
 		h.add_int(blinded_until)
 	if jam_immune_until != 0:   # only after a cyber defense (P3-12a)
 		h.add_int(jam_immune_until)
+	if procurement_rush:   # only while one is pending (P3-02e)
+		h.add_bool(procurement_rush)
 	if not upgrades.is_empty():   # only then, so older replays hash as before
 		for u: String in upgrades:
 			h.add_string(u)

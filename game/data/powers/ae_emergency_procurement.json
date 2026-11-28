@@ -1,0 +1,9 @@
+{
+  "id": "ae_emergency_procurement",
+  "faction": "ae",
+  "name": "Emergency Procurement",
+  "tier": 1,
+  "kind": "procurement_rush",
+  "cooldown_s": 120,
+  "description": "The next off-map order from the procurement office arrives in half the time."
+}

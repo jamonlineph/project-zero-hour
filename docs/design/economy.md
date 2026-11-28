@@ -52,3 +52,4 @@ Infantry capture them in 5 s if no enemy infantry contests them.
 
 - The procurement office lists a few top-tier units that can be ordered off-map at +30% cost.
 - A transport aircraft delivers them to a landing pad after 30 s. It can be shot down, and the order is lost.
+- In the game since P3-02e: the Defense Procurement Office (`ae_procurement_office`, its own landing pad) orders tanks, IFVs, rocket artillery and attack helicopters (`procurement_percent` 30, `delivery_s` 30). Orders queue at the office without using a factory; when one is due, a `ae_cargo_flight` (an aircraft strike with 900 hp) flies in from the UAE's map edge and drops the unit at the office (or where it was headed, if the office is gone). Cancelling refunds the full price. The UAE AI builds one late and buys there with its spare credits.

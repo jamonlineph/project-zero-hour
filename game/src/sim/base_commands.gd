@@ -94,11 +94,11 @@ static func _produce(world: SimWorld, c: SimCommand) -> void:
 		return
 	var def: UnitDef = world.content.get_unit(c.def_id)
 	var player: SimPlayer = world.get_player(c.player_id)
-	if def == null or player.credits < def.cost or not world.has_requirements(c.player_id, def.requires):
+	if def == null or player.credits < ProductionSystem.price(world, b.def_id, def) or not world.has_requirements(c.player_id, def.requires):
 		return
 	if def.requires_unlock != "" and not player.powers.has(def.requires_unlock):
 		return   # a commander unlock is needed first (P2-09)
-	player.credits -= def.cost
+	player.credits -= ProductionSystem.price(world, b.def_id, def)
 	b.building.queue.append(def.id)
 
 
@@ -111,7 +111,9 @@ static func _cancel(world: SimWorld, c: SimCommand) -> void:
 	if c.index == 0:
 		b.building.queue_progress = 0
 	if world.content != null:
-		world.get_player(c.player_id).credits += world.content.cost_of(unit_id)
+		var def: UnitDef = world.content.get_unit(unit_id)
+		world.get_player(c.player_id).credits += ProductionSystem.price(world, b.def_id, def) if def != null \
+			else world.content.cost_of(unit_id)
 
 
 static func _rally(world: SimWorld, c: SimCommand) -> void:

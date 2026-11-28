@@ -1,0 +1,33 @@
+{
+  "id": "ae_procurement_office",
+  "faction": "ae",
+  "name": "Defense Procurement Office",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-02e)",
+  "_doc": "Off-map orders (P3-02e, docs/design/economy.md): top-tier units at +30% cost, flown in by a cargo flight to the office's landing pad 30 s after ordering. The flight can be shot down, and the order is lost. Orders don't use a factory, so they add to the UAE's production.",
+  "max_hp": 2200,
+  "cost": 1400,
+  "footprint_cells": [
+    6,
+    6
+  ],
+  "build_time_ms": 18000,
+  "power": -2,
+  "vision_cm": 5000,
+  "requires": [
+    "ae_vehicle_depot"
+  ],
+  "produces": [
+    "ae_mbt",
+    "ae_ifv",
+    "ae_rocket_artillery",
+    "ae_attack_heli"
+  ],
+  "procurement_percent": 30,
+  "delivery_s": 30,
+  "delivery_strike": "ae_cargo_flight",
+  "visual": {
+    "model": "res://assets/models/buildings/ae_procurement_office.glb",
+    "icon": "res://assets/icons/buildings/ae_procurement_office.png"
+  }
+}

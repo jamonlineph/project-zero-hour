@@ -74,6 +74,17 @@ static func _aim(world: SimWorld, ai: AiPlayer, def: PowerDef, hq: SimEntity, ar
 				if world.jam_level(ai.player_id, e.x, e.y) > 0:
 					return Vector2i.ZERO
 			return null
+		"procurement_rush":
+			# Only with an off-map order waiting and no rush pending (P3-02e).
+			if world.get_player(ai.player_id).procurement_rush:
+				return null
+			for id: int in world.entity_ids:
+				var o: SimEntity = world.entities[id]
+				if o.player_id == ai.player_id and o.building != null and not o.building.queue.is_empty() \
+						and ProductionSystem.price(world, o.def_id, world.content.get_unit(o.building.queue[0])) \
+						> world.content.get_unit(o.building.queue[0]).cost:
+					return Vector2i.ZERO
+			return null
 		"decoys":
 			if hq == null:
 				return null

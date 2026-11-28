@@ -31,6 +31,7 @@ game/assets/icons/buildings/ae_drone_complex.png,Project Zero Hour contributors,
 game/assets/icons/buildings/ae_fortified_post.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_fortified_post)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ae_logistics_hub.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_logistics_hub)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ae_power_plant.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_power_plant)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/ae_procurement_office.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_procurement_office)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ae_sam_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_sam_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ae_strike_package.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_strike_package)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ae_vehicle_depot.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_vehicle_depot)",CC-BY-SA-4.0,script,placeholder
@@ -143,6 +144,7 @@ game/assets/models/buildings/ae_drone_complex.glb,Project Zero Hour contributors
 game/assets/models/buildings/ae_fortified_post.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_fortified_post)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_logistics_hub.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_logistics_hub)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_power_plant.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_power_plant)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/ae_procurement_office.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_procurement_office)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_sam_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_sam_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_strike_package.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_strike_package)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_vehicle_depot.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_vehicle_depot)",CC-BY-SA-4.0,script,placeholder

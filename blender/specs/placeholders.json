@@ -120,6 +120,7 @@
     {"id": "ae_fighter", "category": "units", "archetype": "drone", "faction": "ae", "size": 7.0, "wing": true, "tri_budget": 1200},
     {"id": "eu_fighter", "category": "units", "archetype": "drone", "faction": "eu", "size": 7.0, "wing": true, "tri_budget": 1200},
     {"id": "kp_strike_jet", "category": "units", "archetype": "drone", "faction": "kp", "size": 6.0, "wing": true, "tri_budget": 1200},
-    {"id": "kp_airstrip", "category": "buildings", "archetype": "building", "faction": "kp", "width": 16.0, "depth": 10.0, "height": 3.0, "details": ["pad", "mast", "garage"], "tri_budget": 4000}
+    {"id": "kp_airstrip", "category": "buildings", "archetype": "building", "faction": "kp", "width": 16.0, "depth": 10.0, "height": 3.0, "details": ["pad", "mast", "garage"], "tri_budget": 4000},
+    {"id": "ae_procurement_office", "category": "buildings", "archetype": "building", "faction": "ae", "width": 12.0, "depth": 12.0, "height": 3.5, "details": ["pad", "mast"], "tri_budget": 4000}
   ]
 }

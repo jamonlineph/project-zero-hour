@@ -25,17 +25,46 @@ static func step(world: SimWorld) -> void:
 			b.queue_progress = 0
 			continue
 		b.queue_progress += 1
+		var bdef: BuildingDef = world.content.get_building(e.def_id)
+		var needed: int = def.build_ticks
+		if bdef != null and bdef.procurement_percent > 0:
+			# An off-map order (P3-02e): a fixed delivery time, halved by
+			# emergency procurement.
+			needed = bdef.delivery_ticks
+			if world.get_player(e.player_id).procurement_rush:
+				b.queue_progress += 1
 		# A captured rail depot (P3-08b): `pct` percent more progress for
 		# vehicles, spread evenly over the ticks.
 		var pct: int = bonus.get(e.player_id, 0)
 		if pct > 0 and def.armor_class in ["light_vehicle", "heavy_armor"] \
 				and (world.tick * pct) / 100 != ((world.tick - 1) * pct) / 100:
 			b.queue_progress += 1
-		if b.queue_progress < def.build_ticks:
+		if b.queue_progress < needed:
 			continue
 		b.queue.remove_at(0)
 		b.queue_progress = 0
-		spawn_from(world, e, def)
+		if bdef != null and bdef.procurement_percent > 0:
+			_order_delivery(world, e, bdef, def)
+		else:
+			spawn_from(world, e, def)
+
+
+## What `def` costs at a building: its price, plus the procurement premium at
+## a procurement office (P3-02e).
+static func price(world: SimWorld, building_def_id: String, def: UnitDef) -> int:
+	var bdef: BuildingDef = world.content.get_building(building_def_id) if world.content != null else null
+	if bdef == null or bdef.procurement_percent <= 0:
+		return def.cost
+	return (def.cost * (100 + bdef.procurement_percent)) / 100
+
+
+## Launches the cargo flight that brings an off-map order to its office.
+static func _order_delivery(world: SimWorld, office: SimEntity, bdef: BuildingDef, def: UnitDef) -> void:
+	world.get_player(office.player_id).procurement_rush = false
+	var id: int = StrikeSystem.launch(world, world.content.get_strike(bdef.delivery_strike), office.player_id, office.x, office.y)
+	if id != 0:
+		world.get_entity(id).strike.cargo = def.id
+		world.get_entity(id).strike.cargo_home = office.id
 
 
 ## Each player's best vehicle production bonus from buildings they own and

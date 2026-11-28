@@ -167,7 +167,8 @@
     "res://data/buildings/eu_airbase.json",
     "res://data/buildings/kp_minefield.json",
     "res://data/buildings/bridge.json",
-    "res://data/buildings/kp_airstrip.json"
+    "res://data/buildings/kp_airstrip.json",
+    "res://data/buildings/ae_procurement_office.json"
   ],
   "maps": [
     "res://data/maps/sandbox/map.json",
@@ -218,7 +219,8 @@
     "res://data/strikes/cruise_missile.json",
     "res://data/strikes/hypersonic_missile.json",
     "res://data/strikes/strike_package_jet.json",
-    "res://data/strikes/heavy_ballistic_missile.json"
+    "res://data/strikes/heavy_ballistic_missile.json",
+    "res://data/strikes/ae_cargo_flight.json"
   ],
   "powers": [
     "res://data/powers/us_satellite_pass.json",
@@ -245,6 +247,7 @@
     "res://data/powers/eu_doctrine_heavy_armor.json",
     "res://data/powers/eu_doctrine_air_mobile.json",
     "res://data/powers/eu_doctrine_air_defense.json",
-    "res://data/powers/eu_unlock_interop.json"
+    "res://data/powers/eu_unlock_interop.json",
+    "res://data/powers/ae_emergency_procurement.json"
   ]
 }

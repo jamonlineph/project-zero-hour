@@ -35,6 +35,12 @@ var heal_classes: PackedStringArray = []
 ## rail depot makes its owner's vehicles build this many percent faster.
 var spotter: bool = false
 var vehicle_build_bonus_percent: int = 0
+## Procurement (P3-02e, UAE): orders here cost this much more and are flown
+## in by `delivery_strike` (a cargo flight) after delivery_ticks, instead of
+## being built. 0 = an ordinary factory.
+var procurement_percent: int = 0
+var delivery_ticks: int = 0
+var delivery_strike: String = ""
 ## Minefields (P3-10a): units walk over it (no footprint on the map), it is
 ## hidden from enemies, and it goes off under an enemy ground unit.
 var walkable: bool = false

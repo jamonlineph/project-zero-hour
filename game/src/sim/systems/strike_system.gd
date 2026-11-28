@@ -60,7 +60,10 @@ static func step(world: SimWorld) -> void:
 		if not arrived:
 			continue
 		if not s.delivered:
-			_deliver(world, e, world.content.get_strike(s.def_id))
+			if s.cargo != "":
+				_drop_cargo(world, e)
+			else:
+				_deliver(world, e, world.content.get_strike(s.def_id))
 			s.delivered = true
 			if s.aircraft:
 				e.mover.order_move(s.exit_x, s.exit_y)
@@ -83,6 +86,21 @@ static func _deliver(world: SimWorld, e: SimEntity, def: StrikeDef) -> void:
 			y = clampi(y + Fx.mul(Fx.sin_a(angle), dist), 0, world.map_height)
 		CombatSystem.impact(world, e.player_id, e.id, 0, x, y, def.damage, def.damage_type,
 				def.splash_radius, def.splash_edge_percent, ground)
+
+
+## A cargo flight (P3-02e) drops its unit at the office it was ordered at,
+## or where it was headed if that office is gone.
+static func _drop_cargo(world: SimWorld, e: SimEntity) -> void:
+	var def: UnitDef = world.content.get_unit(e.strike.cargo)
+	if def == null:
+		return
+	var office: SimEntity = world.get_entity(e.strike.cargo_home)
+	var id: int = 0
+	if office != null and not office.dead and office.player_id == e.player_id:
+		id = ProductionSystem.spawn_from(world, office, def)
+	else:
+		id = world.spawn_unit(def, e.player_id, e.strike.dest_x, e.strike.dest_y)
+	world.events.append({"type": "delivered", "id": id, "def_id": def.id, "player": e.player_id})
 
 
 ## The map edge on the launching player's side: the side nearer their first

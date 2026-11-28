@@ -19,7 +19,7 @@ static func load_power(db: ContentDb, path: String) -> void:
 	p.kind = db.req_string(src, "kind", path)
 	if not PowerDef.KINDS.has(p.kind):
 		db.errors.append("%s: unknown kind '%s'" % [path, p.kind])
-	p.targeted = bool(src.get("targeted", not p.kind in ["reinforce", "cyber", "unlock", "cyber_defense"]))
+	p.targeted = bool(src.get("targeted", not p.kind in ["reinforce", "cyber", "unlock", "cyber_defense", "procurement_rush"]))
 	p.cooldown_ticks = int(src.get("cooldown_s", 0)) * SimWorld.TICK_RATE
 	p.radius = Fx.from_ratio(int(src.get("radius_cm", 0)), 100)
 	p.duration_ticks = int(src.get("duration_s", 0)) * SimWorld.TICK_RATE

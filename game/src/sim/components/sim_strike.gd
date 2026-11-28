@@ -9,6 +9,8 @@ var dest_y: int = 0
 var exit_x: int = 0
 var exit_y: int = 0
 var delivered: bool = false
+var cargo: String = ""        ## procurement (P3-02e): the unit this flight drops off, or ""
+var cargo_home: int = 0       ## the procurement office it was ordered at
 
 
 func write_hash(h: SimHash) -> void:
@@ -19,3 +21,6 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(exit_x)
 	h.add_int(exit_y)
 	h.add_bool(delivered)
+	if cargo != "":   # only cargo flights (P3-02e)
+		h.add_string(cargo)
+		h.add_int(cargo_home)

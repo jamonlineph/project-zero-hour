@@ -157,6 +157,8 @@ func _check_references() -> void:
 			if not buildings.has(r):
 				errors.append("unit %s requires unknown building '%s'" % [u.id, r])
 	for b: BuildingDef in buildings.values():
+		if b.delivery_strike != "" and not strikes.has(b.delivery_strike):
+			errors.append("building %s delivers by unknown strike '%s'" % [b.id, b.delivery_strike])
 		for r: String in b.requires:
 			if not buildings.has(r):
 				errors.append("building %s requires unknown building '%s'" % [b.id, r])

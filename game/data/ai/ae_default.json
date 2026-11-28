@@ -12,7 +12,8 @@
     "ae_drone_complex",
     "ae_power_plant",
     "ae_airbase",
-    "ae_sam_site"
+    "ae_sam_site",
+    "ae_procurement_office"
   ],
   "unit_mix": {
     "ae_mbt": 3,
@@ -57,7 +58,8 @@
     "ae_drone_swarm",
     "ae_unlock_guard",
     "ae_standoff_strike",
-    "ae_unlock_fund"
+    "ae_unlock_fund",
+    "ae_emergency_procurement"
   ],
   "research": [
     "ae_export_armor"

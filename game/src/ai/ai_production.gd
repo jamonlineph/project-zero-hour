@@ -60,10 +60,11 @@ static func produce(world: SimWorld, ai: AiPlayer, army: Array[SimEntity], build
 		return a["score"] > c["score"] or (a["score"] == c["score"] and a["building"] < c["building"]))
 	for choice: Dictionary in choices:
 		var def: UnitDef = world.content.get_unit(choice["unit"])
-		if credits < def.cost:
+		var cost: int = ProductionSystem.price(world, world.get_entity(choice["building"]).def_id, def)   # P3-02e
+		if credits < cost:
 			break
 		cmds.append(SimCommand.make_produce(choice["building"], choice["unit"]))
-		credits -= def.cost
+		credits -= cost
 
 
 static func unarmed_spotter(world: SimWorld, unit_id: String) -> bool:

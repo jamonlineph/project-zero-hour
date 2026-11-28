@@ -176,14 +176,15 @@ func _production_menu(world: SimWorld, building: SimEntity) -> Array[Dictionary]
 		if def == null:
 			continue
 		var queued: int = building.building.queue.count(unit_id)
-		var ok: bool = player.credits >= def.cost and world.has_requirements(_selection.local_player_id, def.requires) \
+		var cost: int = ProductionSystem.price(world, building.def_id, def)   # procurement premium (P3-02e)
+		var ok: bool = player.credits >= cost and world.has_requirements(_selection.local_player_id, def.requires) \
 			and building.building.queue.size() < SimBuilding.MAX_QUEUE
 		var bid: int = building.id
 		entries.append({
-			"label": "%s\n%d%s" % [def.name, def.cost, " (x%d)" % queued if queued > 0 else ""],
+			"label": "%s\n%d%s" % [def.name, cost, " (x%d)" % queued if queued > 0 else ""],
 			"icon": _icon(def.icon_path),
 			"enabled": ok,
-			"tooltip": "%s (%d credits). Right-click or Shift+key cancels one.%s" % [def.name, def.cost, "" if ok else _missing(world, def.requires, def.cost)],
+			"tooltip": "%s (%d credits). Right-click or Shift+key cancels one.%s" % [def.name, cost, "" if ok else _missing(world, def.requires, cost)],
 			"action": func() -> void: _runner.submit(SimCommand.make_produce(bid, unit_id)),
 			"alt_action": func() -> void: _cancel_last(bid, unit_id),
 		})

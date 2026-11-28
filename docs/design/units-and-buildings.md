@@ -5,7 +5,7 @@ Rosters as **role × faction** tables. Every faction fills the same roles in its
 - Names here are working names. "X-class" marks a real-world reference and **never appears in the game**.
 - IDs (`us_mbt` and so on) are the data file names in `game/data/units/` and `game/data/buildings/`. Prefixes: `us_` America, `ae_` UAE, `kp_` North Korea, `eu_` EU.
 - First-pass numbers for the Phase 2 matchup (America vs North Korea) are in [vertical-slice.md](vertical-slice.md). Ids marked ✓ already exist with placeholder art.
-- The UAE's first roster (P3-02a) is in `game/data/` with first-pass numbers: fewer, pricier, faster units. Its raider is simply fast until terrain types exist (P3-02d); the swarm-drone truck came in P3-02c; procurement comes in P3-02e.
+- The UAE's first roster (P3-02a) is in `game/data/` with first-pass numbers: fewer, pricier, faster units. Its raider is simply fast until terrain types exist (P3-02d); the swarm-drone truck came in P3-02c; procurement (the Defense Procurement Office) in P3-02e.
 - The EU's first roster (P3-12a) is in `game/data/` too: tough, well-rounded units, combat medics and logistics trucks with healing auras (`heal_aura`), and a patrol fighter for the air-policing power. Its three doctrine units arrived in P3-12b (below); the interoperability bonus comes in P3-12c.
 
 ## Units

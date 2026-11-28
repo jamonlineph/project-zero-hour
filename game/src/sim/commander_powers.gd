@@ -106,6 +106,10 @@ static func _use(world: SimWorld, c: SimCommand, def: PowerDef) -> bool:
 				if t.player_id == c.player_id and not t.dead and t.building == null \
 						and t.armor_class in ["light_vehicle", "heavy_armor"]:
 					t.hp = mini(t.max_hp, t.hp + (t.max_hp * def.percent) / 100)
+		"procurement_rush":
+			# Emergency procurement (P3-02e): the next off-map order is flown in
+			# in half the time.
+			world.get_player(c.player_id).procurement_rush = true
 		"cyber_defense":
 			# Your drones and guided weapons ignore jamming and spoofing (P3-12a).
 			var me: SimPlayer = world.get_player(c.player_id)

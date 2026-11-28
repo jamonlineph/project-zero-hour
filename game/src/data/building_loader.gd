@@ -56,6 +56,10 @@ static func load_building(db: ContentDb, path: String) -> void:
 		b.mine_trigger = Fx.from_ratio(int(mine.get("trigger_cm", 200)), 100)
 		b.mine_splash = Fx.from_ratio(int(mine.get("splash_cm", 0)), 100)
 	b.vehicle_build_bonus_percent = int(src.get("vehicle_build_bonus_percent", 0))
+	b.procurement_percent = int(src.get("procurement_percent", 0))
+	if b.procurement_percent > 0:
+		b.delivery_ticks = ContentDb.ms_to_ticks(db.req_int(src, "delivery_s", path, 1) * 1000)
+		b.delivery_strike = db.req_string(src, "delivery_strike", path)
 	b.limit = int(src.get("limit", 0))
 	b.requires_rank = int(src.get("requires_rank", 1))
 	for a: Variant in src.get("abilities", []):

@@ -1,0 +1,15 @@
+{
+  "id": "ae_cargo_flight",
+  "name": "Cargo Flight",
+  "kind": "aircraft",
+  "_doc": "Procurement delivery (P3-02e): flies in from the UAE's map edge, drops its unit at the procurement office and flies home. Shot down on the way, the order is lost.",
+  "max_hp": 900,
+  "speed_cm_per_s": 2600,
+  "radius_cm": 500,
+  "vision_cm": 3000,
+  "payload": {
+    "damage": 0,
+    "damage_type": "high_explosive",
+    "count": 1
+  }
+}
