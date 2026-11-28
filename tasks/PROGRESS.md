@@ -4,6 +4,26 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-28: P3-23c two new maps, P3-04b jets, contested captures (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P3-23c maps:**
+    - **Three Bridges** (desert): a canal with three destructible bridges.
+    - **Old Town** (temperate): a city center of 32 garrisonable houses around a square with a data center on the middle line.
+    - Both are exact mirrors. The river test now covers every map with bridges.
+  - **Contested captures:** capturers of two sides at one building hold its progress. Before, the lowest entity id won the tie, which favored player 1.
+  - **P3-04b jets:**
+    - America's stealth fighter, the UAE's multirole fighter, the EU's air-superiority fighter, and North Korea's strike jet from a new hardened airstrip, all with placeholder art.
+    - A jet flies home once its order is done and nothing is left to shoot. Parked with no order, it holds its fire.
+    - A weapon out of ammo drops its target, so an attack-move closes in for the next weapon. An attack order ends when no loaded weapon can hit the target.
+    - The AI presets build jets.
+- Tests: `tools/run_tests.sh` -> 372 tests, 0 failed, smoke ok; `check_repo` ok (251 assets). Determinism check regenerated for the new content. The replays record the new content hash.
+- Not verified:
+  - Jets fly like helicopters when they fire (they stop and hover); strafing passes are left for later.
+  - The jets' effect on faction balance hasn't been measured.
+  - Side and player-order fairness on the new maps is noisy; see P3-23e.
+- Next: P3-23e fairness with 40+ runs per mirror, P3-14b/P3-23b 2v2, P3-02e UAE procurement, P3-10b tank obstacles.
+- For the owner: none.
+
 ## 2026-11-28: P3-12b doctrines, P3-12c interoperability, P3-11 bridges, P3-13b AI personalities (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P3-12b EU doctrines:** three exclusive rank-1 powers (power `group`). Each unlocks one unit (breakthrough tank, air-assault squad, long-range air-defense vehicle, with art) and grants a passive upgrade (`grants_upgrade`; upgrades marked `granted` are never researched). The AI skips units it hasn't unlocked (this was a latent bug for every `requires_unlock` unit) and doctrines another one ruled out. The commander panel shows "Ruled out" and refreshes itself when rank or choices change.
