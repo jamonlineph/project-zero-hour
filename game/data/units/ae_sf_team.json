@@ -16,6 +16,27 @@
     "ae_sf_carbines"
   ],
   "spotter": true,
+  "abilities": [
+    {
+      "id": "sf_precision_strike",
+      "kind": "strike",
+      "name": "Call Strike",
+      "description": "Calls 2 guided rockets on a point the team can see within 70 m. Air defense can shoot them down.",
+      "range_cm": 7000,
+      "cooldown_s": 90,
+      "strike": "guided_rocket",
+      "count": 2
+    },
+    {
+      "id": "sf_disable",
+      "kind": "disable",
+      "name": "Disable Building",
+      "description": "Sabotages an enemy building within 8 m of its walls: no production, research, power or fire for 25 s.",
+      "range_cm": 800,
+      "cooldown_s": 60,
+      "duration_s": 25
+    }
+  ],
   "visual": {
     "model": "res://assets/models/units/ae_sf_team.glb",
     "icon": "res://assets/icons/units/ae_sf_team.png"

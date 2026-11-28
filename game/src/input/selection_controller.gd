@@ -35,6 +35,8 @@ var guard_armed: bool = false
 var spoof_armed: bool = false
 ## A targeted commander power waiting for its point (P2-09b), or "".
 var power_armed: String = ""
+## A unit ability waiting for its target click (P3-02f, AbilityInput).
+var ability_armed: String = ""
 ## Building placement gets every pointer event first while it is active.
 var placement: PlacementController
 ## Command-grid hotkeys (CommandGrid.handle_key): checked before our own keys.
@@ -139,6 +141,9 @@ func handle_armed_click(screen_pos: Vector2) -> bool:
 		if at != null:
 			runner.submit(SimCommand.make_use_power(power, Fx.from_float((at as Vector3).x), Fx.from_float((at as Vector3).z)))
 		return true
+	if ability_armed != "":
+		AbilityInput.click(self, screen_pos)
+		return true
 	if spoof_armed:
 		spoof_armed = false
 		var ground: Variant = rts_camera.screen_to_ground(screen_pos)
@@ -161,6 +166,7 @@ func disarm() -> void:
 	guard_armed = false
 	spoof_armed = false
 	power_armed = ""
+	ability_armed = ""
 
 
 ## Patrol between where the units are and the ground point there.
@@ -186,6 +192,11 @@ func order_guard(ward_id: int) -> void:
 func pick_own_entity(screen_pos: Vector2) -> int:
 	return _pick(screen_pos, func(e: SimEntity) -> bool:
 		return e.player_id == local_player_id and (e.mover != null or e.building != null))
+
+
+## The entity under the pointer that passes `predicate`, or 0.
+func pick_entity(screen_pos: Vector2, predicate: Callable) -> int:
+	return _pick(screen_pos, predicate)
 
 
 func order_stop() -> void:
@@ -294,7 +305,7 @@ func _on_mouse_button(mb: InputEventMouseButton) -> void:
 				elif not mb.shift_pressed:
 					select_ids([])
 	elif mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
-		if attack_move_armed or patrol_armed or guard_armed or spoof_armed or power_armed != "":
+		if attack_move_armed or patrol_armed or guard_armed or spoof_armed or power_armed != "" or ability_armed != "":
 			disarm()   # right-click cancels a pending order
 			return
 		order_at(mb.position)

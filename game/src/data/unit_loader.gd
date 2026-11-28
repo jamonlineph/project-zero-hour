@@ -88,6 +88,10 @@ static func load_unit(db: ContentDb, path: String) -> void:
 	u.fiber_optic = bool(src.get("fiber_optic", false))
 	u.spotter = bool(src.get("spotter", false))
 	u.crusher = bool(src.get("crusher", false))
+	for a: Variant in src.get("abilities", []):
+		var ad: AbilityDef = _ability(db, a, path)
+		if ad != null:
+			u.abilities.append(ad)
 	if src.has("launcher"):
 		var l: Variant = src["launcher"]
 		if not l is Dictionary or not (l as Dictionary).has("unit"):
@@ -140,3 +144,27 @@ static func load_unit(db: ContentDb, path: String) -> void:
 	if db.units.has(u.id):
 		db.errors.append("%s: duplicate unit id '%s'" % [path, u.id])
 	db.units[u.id] = u
+
+
+## One entry of a unit's "abilities" list (P3-02f), or null if it's broken.
+static func _ability(db: ContentDb, src: Variant, path: String) -> AbilityDef:
+	if not src is Dictionary:
+		db.errors.append("%s: each ability must be an object" % path)
+		return null
+	var d: Dictionary = src
+	var a := AbilityDef.new()
+	a.id = str(d.get("id", ""))
+	a.kind = str(d.get("kind", ""))
+	if a.id == "" or not AbilityDef.KINDS.has(a.kind):
+		db.errors.append("%s: ability '%s' needs an id and a kind (%s)" % [path, a.id, ", ".join(AbilityDef.KINDS)])
+		return null
+	a.name = str(d.get("name", a.id))
+	a.description = str(d.get("description", ""))
+	a.range = Fx.from_ratio(int(d.get("range_cm", 0)), 100)
+	a.cooldown_ticks = ContentDb.ms_to_ticks(int(d.get("cooldown_s", 60)) * 1000)
+	a.strike_id = str(d.get("strike", ""))
+	a.count = maxi(1, int(d.get("count", 1)))
+	a.duration_ticks = ContentDb.ms_to_ticks(int(d.get("duration_s", 0)) * 1000)
+	if a.kind == "strike" and a.strike_id == "":
+		db.errors.append("%s: strike ability '%s' needs a strike" % [path, a.id])
+	return a

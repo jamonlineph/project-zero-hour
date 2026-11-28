@@ -15,6 +15,7 @@ static func step(world: SimWorld) -> void:
 			continue
 		var p: SimPlayer = world.get_player(e.player_id)
 		if e.building.power >= 0:
-			p.power_produced += e.building.power
+			if not e.building.is_disabled(world.tick):   # a disabled plant makes nothing (P3-02f)
+				p.power_produced += e.building.power
 		else:
 			p.power_used -= e.building.power

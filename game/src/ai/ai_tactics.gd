@@ -68,3 +68,42 @@ static func occupy_town(world: SimWorld, hq: SimEntity, army: Array[SimEntity], 
 		if e.armor_class == "infantry" and e.order == SimEntity.Order.IDLE:
 			cmds.append(SimCommand.make_garrison([e.id], best.id))
 			return
+
+
+## Units with ready abilities use them (P3-02f): a strike on the nearest
+## enemy building, else unit, they can see in range; a disable on an enemy
+## building they stand next to. One ability per unit per think.
+static func use_abilities(world: SimWorld, units: Array[SimEntity], cmds: Array[SimCommand]) -> void:
+	if world.content == null:
+		return
+	for e: SimEntity in units:
+		var def: UnitDef = world.content.get_unit(e.def_id)
+		if def == null or def.abilities.is_empty() or e.inside_id != 0:
+			continue
+		for a: AbilityDef in def.abilities:
+			if world.tick < int(e.ability_ready.get(a.id, 0)):
+				continue
+			var reach: int = a.range + (SimWorld.MAX_UNIT_RADIUS if a.kind == "disable" else 0)
+			var target: SimEntity = _ability_target(world, e, a, reach)
+			if target != null:
+				cmds.append(SimCommand.make_use_ability([e.id], a.id, target.x, target.y, target.id))
+				break
+
+
+static func _ability_target(world: SimWorld, e: SimEntity, a: AbilityDef, reach: int) -> SimEntity:
+	var best: SimEntity = null
+	var best_score: int = 0
+	for t: SimEntity in world.query_enemies(e.player_id, e.x, e.y, reach):
+		if t.dead or t.inside_id != 0 or (t.mover != null and t.mover.flying):
+			continue
+		if a.kind == "disable" and (t.building == null or t.building.is_disabled(world.tick)):
+			continue
+		if not world.can_see(e.player_id, t.x, t.y):
+			continue
+		# Buildings first, then the nearest; ids break ties.
+		var score: int = Fx.length(t.x - e.x, t.y - e.y) - (1000 * Fx.ONE if t.building != null else 0)
+		if best == null or score < best_score or (score == best_score and t.id < best.id):
+			best = t
+			best_score = score
+	return best
+

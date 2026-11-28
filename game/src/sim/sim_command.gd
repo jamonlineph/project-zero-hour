@@ -7,7 +7,7 @@ enum Type {
 	MOVE = 1, STOP = 2, ATTACK = 3, ATTACK_MOVE = 4, HOLD = 5,
 	BUILD = 6, PRODUCE = 7, CANCEL = 8, RALLY = 9, GATHER = 10, SELL = 11, REPAIR = 12,
 	GUARD = 13, PATROL = 14, SPOOF = 15, RESEARCH = 16, UPGRADE_UNIT = 17,
-	CHOOSE_POWER = 18, USE_POWER = 19, GARRISON = 20, UNLOAD = 21,
+	CHOOSE_POWER = 18, USE_POWER = 19, GARRISON = 20, UNLOAD = 21, USE_ABILITY = 22,
 }
 
 var tick: int = 0               ## tick on which the command is applied
@@ -117,6 +117,19 @@ static func make_unload(structure_id: int) -> SimCommand:
 	var c := SimCommand.new()
 	c.type = Type.UNLOAD
 	c.target_entity = structure_id
+	return c
+
+
+## A unit ability (P3-02f): def_id is the ability id; the target is a point
+## and, for abilities aimed at something, an entity.
+static func make_use_ability(ids: Array[int], ability_id: String, tx: int, ty: int, target: int = 0) -> SimCommand:
+	var c := SimCommand.new()
+	c.type = Type.USE_ABILITY
+	c.entity_ids = ids.duplicate()
+	c.def_id = ability_id
+	c.target_x = tx
+	c.target_y = ty
+	c.target_entity = target
 	return c
 
 

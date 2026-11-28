@@ -63,7 +63,7 @@ static func step(world: SimWorld) -> void:
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
 		var b: SimBuilding = e.building
-		if b == null or e.dead or not b.built or b.research_id == "":
+		if b == null or e.dead or not b.built or b.research_id == "" or b.is_disabled(world.tick):
 			continue
 		var player: SimPlayer = world.get_player(e.player_id)
 		if player.low_power() and world.tick % 2 == 1:

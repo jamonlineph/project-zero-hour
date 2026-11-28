@@ -23,6 +23,14 @@ var rally_x: int = 0            ## fixed-point meters
 var rally_y: int = 0
 var research_id: String = ""   ## upgrade being researched here (P2-05)
 var research_progress: int = 0
+## Shut down by a "disable" ability until this tick (P3-02f): no production,
+## research, power or fire.
+var disabled_until: int = 0
+
+
+## True while a "disable" ability holds this building down (P3-02f).
+func is_disabled(tick: int) -> bool:
+	return tick < disabled_until
 
 
 func write_hash(h_: SimHash) -> void:
@@ -45,3 +53,5 @@ func write_hash(h_: SimHash) -> void:
 	if research_id != "":   # only then, so older replays hash as before
 		h_.add_string(research_id)
 		h_.add_int(research_progress)
+	if disabled_until != 0:   # only after a disable ability (P3-02f)
+		h_.add_int(disabled_until)

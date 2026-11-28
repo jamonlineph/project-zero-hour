@@ -37,6 +37,7 @@ The keys for camera movement and unit orders can be rebound in Settings (control
 | Zoom / rotate / pan | Two fingers: pinch, twist, drag | ✅ |
 | Deselect | "Clear" button in the touch bar (bottom left, above the minimap) | ✅ |
 | Attack-move, stop, hold | Buttons in the command grid when units are selected | ✅ |
+| Unit abilities (P3-02f) | Buttons in the command grid's last row (for example the special forces' "Call Strike" and "Disable Building"), greyed out while cooling down; then tap or click the point or the building | ✅ |
 | Control groups | Group buttons 1–5 in the touch bar: tap to select (twice quickly jumps), hold 0.5 s to store | ✅ |
 | Box-select mode | "Box" toggle in the touch bar, so a one-finger drag selects instead of pans | ✅ |
 | Context order | Hold a finger still for 0.6 s: a radial menu with attack-move here, move here, patrol here, stop, hold, rally here, and "guard this" when held on your own unit or building | ✅ |

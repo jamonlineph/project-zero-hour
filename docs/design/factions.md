@@ -48,7 +48,7 @@ Four sides, chosen by the owner on 2026-11-26: **America, the United Arab Emirat
   - **Sovereign fund:** unspent credits earn a small interest every minute, up to a cap. Saving pays off, but so does spending well. In the game (P3-02b): 3% of unspent credits every 60 s, at most 300 per payment, 600 with the rank-5 unlock (`sovereign_fund` in rules.json, `FundSystem`); the top bar shows "(+N fund)" for a few seconds.
   - **Swarm drones:** trucks that launch groups of small drones that hunt together. In the game (P3-02c): the swarm-drone truck (`ae_swarm_launcher`, from the drone industry complex) launches 5 drones at the nearest ground enemy it can see within 90 m, every 40 s. They are real flying units (30 hp, 30 s of flight, small explosive charges), so lasers, jammers and rifles can shoot them down; they crash when their flight time ends.
   - **Desert raiders:** fast wheeled vehicles that move faster off-road.
-  - **Special forces:** elite infantry that can call in precision strikes and disable buildings.
+  - **Special forces:** elite infantry that can call in precision strikes and disable buildings. In the game (P3-02f): the special-forces team has two abilities, "Call Strike" (2 guided rockets on a point it can see within 70 m, every 90 s) and "Disable Building" (an enemy building within 8 m of its walls makes, trains, researches and fires nothing for 25 s; every 60 s). The AI uses both.
 - **Economy flavor:** contracted logistics trucks are fast and cheap but unarmored.
 - **Look:** clean modern wheeled vehicles, desert sand and pale grey.
 

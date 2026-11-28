@@ -30,6 +30,8 @@ var launch_unit: String = ""
 var launch_count: int = 0
 var launch_range: int = 0       ## fixed-point meters
 var launch_cooldown_ticks: int = 0
+## Special abilities (P3-02f, AbilitySystem; data: "abilities").
+var abilities: Array[AbilityDef] = []
 var aps_charges: int = 0        ## active protection charges (P2-06)
 var cage_hits: int = 0          ## drone hits cage armor softens (P2-06)
 var decoy_of: String = ""       ## decoys: the unit id it imitates (P2-08)

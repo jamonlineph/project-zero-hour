@@ -273,6 +273,7 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 			army_ids.append(e.id)
 	var lead_target: SimEntity = world.get_entity(_target_id) if _attacking else null
 	AiTactics.escort(lead_target, spotters, fighters, cmds)
+	AiTactics.use_abilities(world, fighters, cmds)
 	if army_ids.is_empty():
 		_attacking = false
 		_army_size = 0

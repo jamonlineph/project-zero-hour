@@ -56,7 +56,7 @@ func _unit_orders() -> Array[Dictionary]:
 	var top: Array[Dictionary] = UpgradeMenu.kit_entries(_runner, _selection.local_player_id, _selection.selected, 4)
 	while top.size() < 4:
 		top.append(none)
-	return [
+	var out: Array[Dictionary] = [
 		top[0], top[1], top[2], top[3],
 		{"label": "Attack-move", "tooltip": "Then tap or click the target point", "action": func() -> void: _selection.attack_move_armed = true},
 		{"label": "Stop", "action": _selection.order_stop},
@@ -71,6 +71,37 @@ func _unit_orders() -> Array[Dictionary]:
 				_selection.guard_armed = true},
 		_spoof_entry(),
 	]
+	out.append_array(_ability_entries(2))
+	return out
+
+
+## Buttons for the selected units' abilities (P3-02f), at most `slots`, each
+## greyed out until one of the units has it ready.
+func _ability_entries(slots: int) -> Array[Dictionary]:
+	var world: SimWorld = _runner.world
+	var out: Array[Dictionary] = []
+	var seen: Dictionary[String, bool] = {}
+	for id: int in _selection.selected:
+		var e: SimEntity = world.get_entity(id)
+		var def: UnitDef = world.content.get_unit(e.def_id) if e != null and world.content != null else null
+		if def == null:
+			continue
+		for a: AbilityDef in def.abilities:
+			if seen.has(a.id) or out.size() >= slots:
+				continue
+			seen[a.id] = true
+			var ready: bool = false
+			for sid: int in _selection.selected:
+				var s: SimEntity = world.get_entity(sid)
+				if s != null and s.def_id == e.def_id and world.tick >= int(s.ability_ready.get(a.id, 0)):
+					ready = true
+			var aid: String = a.id
+			out.append({"label": a.name, "enabled": ready,
+				"tooltip": "%s Then tap or click the %s." % [a.description, "building" if a.kind == "disable" else "target point"],
+				"action": func() -> void:
+					_selection.disarm()
+					_selection.ability_armed = aid})
+	return out
 
 
 ## "Spoof" for selected jamming vehicles (P2-03), greyed out while cooling down.

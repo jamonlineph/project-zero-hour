@@ -30,7 +30,8 @@ static func step(world: SimWorld) -> void:
 		if e.weapons.is_empty():
 			continue
 		# Unfinished buildings can't fire; built ones need power.
-		if e.building != null and (not e.building.built or world.get_player(e.player_id).low_power()):
+		if e.building != null and (not e.building.built or world.get_player(e.player_id).low_power() \
+				or e.building.is_disabled(world.tick)):
 			continue
 		# Jammed drones can't fire; spoofed ones fire only at their spoofed target.
 		if e.drone != null and e.drone.jammed:
