@@ -97,7 +97,7 @@ static func load_unit(db: ContentDb, path: String) -> void:
 			u.heal_percent_per_s = int(ha.get("percent_per_s", 0))
 			u.heal_classes = db.string_list(ha, "classes", path)
 	for a: Variant in src.get("abilities", []):
-		var ad: AbilityDef = _ability(db, a, path)
+		var ad: AbilityDef = parse_ability(db, a, path)
 		if ad != null:
 			u.abilities.append(ad)
 	if src.has("launcher"):
@@ -154,8 +154,9 @@ static func load_unit(db: ContentDb, path: String) -> void:
 	db.units[u.id] = u
 
 
-## One entry of a unit's "abilities" list (P3-02f), or null if it's broken.
-static func _ability(db: ContentDb, src: Variant, path: String) -> AbilityDef:
+## One entry of an "abilities" list (units P3-02f, buildings P3-03), or null
+## if it's broken.
+static func parse_ability(db: ContentDb, src: Variant, path: String) -> AbilityDef:
 	if not src is Dictionary:
 		db.errors.append("%s: each ability must be an object" % path)
 		return null
@@ -173,6 +174,6 @@ static func _ability(db: ContentDb, src: Variant, path: String) -> AbilityDef:
 	a.strike_id = str(d.get("strike", ""))
 	a.count = maxi(1, int(d.get("count", 1)))
 	a.duration_ticks = ContentDb.ms_to_ticks(int(d.get("duration_s", 0)) * 1000)
-	if a.kind == "strike" and a.strike_id == "":
+	if (a.kind == "strike" or a.kind == "superweapon") and a.strike_id == "":
 		db.errors.append("%s: strike ability '%s' needs a strike" % [path, a.id])
 	return a

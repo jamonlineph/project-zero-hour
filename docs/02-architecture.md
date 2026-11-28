@@ -75,7 +75,7 @@ Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from 
 - `SimWorld.step()` runs them in a fixed order:
 
 1. Clear `events`; save `prev_x`, `prev_y` and `prev_facing` (for view interpolation).
-2. Apply this tick's commands (`WorldCommands`, by player then sequence number). Unit abilities (USE_ABILITY, P3-02f) take effect here (`AbilitySystem`): the lowest-id selected unit with the ability ready and in range uses it.
+2. Apply this tick's commands (`WorldCommands`, by player then sequence number). Unit abilities (USE_ABILITY, P3-02f) take effect here (`AbilitySystem`): the lowest-id selected unit with the ability ready and in range uses it. Buildings can have abilities too: a superweapon (P3-03) is a building ability whose cooldown is its charge, started when construction finishes.
 2b. Orders: carry out MOVE / ATTACK / ATTACK_MOVE / HOLD / GUARD / PATROL (`OrderSystem`; GUARD and PATROL commands are applied by `UnitCommands`), then garrisons: units entering, occupants kept at their building, units coming out of destroyed buildings (`GarrisonSystem`, P3-05).
 2b'. Drones: endurance, return to the launcher at 20%, recharge when docked, crash at 0 (`DroneSystem`). Flying movers get straight-line paths and are skipped by separation.
 2b''. Jamming (`JammingSystem`): rebuilds the list of active jammers; enemy drones inside a field lose control and drift; spoofed drones fly to their spoofed point. Guided shots into a hostile field lose lock half the time (`CombatSystem`, via `SimWorld.jam_level`).

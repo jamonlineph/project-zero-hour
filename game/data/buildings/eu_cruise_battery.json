@@ -1,0 +1,37 @@
+{
+  "id": "eu_cruise_battery",
+  "faction": "eu",
+  "name": "Cruise Missile Battery",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-03)",
+  "max_hp": 3000,
+  "cost": 5000,
+  "footprint_cells": [
+    5,
+    5
+  ],
+  "build_time_ms": 45000,
+  "power": -4,
+  "vision_cm": 5000,
+  "requires": [
+    "eu_vehicle_works"
+  ],
+  "produces": [],
+  "requires_rank": 3,
+  "limit": 1,
+  "abilities": [
+    {
+      "id": "eu_cruise_salvo",
+      "kind": "superweapon",
+      "name": "Cruise Missile Salvo",
+      "description": "Twelve low-flying cruise missiles on the area. Short-range air defense near the target can stop them.",
+      "cooldown_s": 240,
+      "strike": "cruise_missile",
+      "count": 12
+    }
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/eu_cruise_battery.glb",
+    "icon": "res://assets/icons/buildings/eu_cruise_battery.png"
+  }
+}

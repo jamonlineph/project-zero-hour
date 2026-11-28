@@ -31,10 +31,12 @@ game/assets/icons/buildings/ae_fortified_post.png,Project Zero Hour contributors
 game/assets/icons/buildings/ae_logistics_hub.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_logistics_hub)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ae_power_plant.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_power_plant)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ae_sam_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_sam_site)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/ae_strike_package.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_strike_package)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ae_vehicle_depot.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_vehicle_depot)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/eu_barracks.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_barracks)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/eu_bunker.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_bunker)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/eu_command_hq.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_command_hq)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/eu_cruise_battery.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_cruise_battery)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/eu_drone_center.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_drone_center)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/eu_logistics_hub.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_logistics_hub)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/eu_power_station.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_power_station)",CC-BY-SA-4.0,script,placeholder
@@ -43,6 +45,7 @@ game/assets/icons/buildings/eu_vehicle_works.png,Project Zero Hour contributors,
 game/assets/icons/buildings/kp_barracks.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_barracks)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_command_hq.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_command_hq)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_drone_launch_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_drone_launch_site)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/kp_heavy_missile_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_heavy_missile_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_logistics_hub.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_logistics_hub)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_power_plant.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_power_plant)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_sam_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_sam_site)",CC-BY-SA-4.0,script,placeholder
@@ -52,6 +55,7 @@ game/assets/icons/buildings/us_barracks.png,Project Zero Hour contributors,"blen
 game/assets/icons/buildings/us_bunker.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_bunker)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/us_command_hq.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_command_hq)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/us_drone_center.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_drone_center)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/us_hypersonic_battery.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_hypersonic_battery)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/us_logistics_hub.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_logistics_hub)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/us_microreactor.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_microreactor)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/us_sam_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_sam_site)",CC-BY-SA-4.0,script,placeholder
@@ -112,10 +116,12 @@ game/assets/models/buildings/ae_fortified_post.glb,Project Zero Hour contributor
 game/assets/models/buildings/ae_logistics_hub.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_logistics_hub)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_power_plant.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_power_plant)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_sam_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_sam_site)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/ae_strike_package.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_strike_package)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_vehicle_depot.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_vehicle_depot)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/eu_barracks.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_barracks)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/eu_bunker.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_bunker)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/eu_command_hq.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_command_hq)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/eu_cruise_battery.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_cruise_battery)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/eu_drone_center.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_drone_center)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/eu_logistics_hub.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_logistics_hub)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/eu_power_station.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_power_station)",CC-BY-SA-4.0,script,placeholder
@@ -124,6 +130,7 @@ game/assets/models/buildings/eu_vehicle_works.glb,Project Zero Hour contributors
 game/assets/models/buildings/kp_barracks.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_barracks)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_command_hq.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_command_hq)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_drone_launch_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_drone_launch_site)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/kp_heavy_missile_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_heavy_missile_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_logistics_hub.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_logistics_hub)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_power_plant.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_power_plant)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_sam_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_sam_site)",CC-BY-SA-4.0,script,placeholder
@@ -133,6 +140,7 @@ game/assets/models/buildings/us_barracks.glb,Project Zero Hour contributors,"ble
 game/assets/models/buildings/us_bunker.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_bunker)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/us_command_hq.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_command_hq)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/us_drone_center.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_drone_center)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/us_hypersonic_battery.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_hypersonic_battery)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/us_logistics_hub.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_logistics_hub)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/us_microreactor.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_microreactor)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/us_sam_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_sam_site)",CC-BY-SA-4.0,script,placeholder

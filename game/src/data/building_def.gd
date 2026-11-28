@@ -20,6 +20,10 @@ var dropoff: bool = false
 var free_unit: String = ""
 ## Infantry units it can hold (P3-05); 0 = can't be garrisoned.
 var garrison_capacity: int = 0
+var limit: int = 0              ## most a player may have at once (0 = any number; superweapons: 1)
+var requires_rank: int = 1      ## commander rank needed to build it (P3-03)
+## Abilities (P3-03: the superweapon is one; AbilitySystem).
+var abilities: Array[AbilityDef] = []
 var weapons: Array[WeaponDef] = []
 var model_path: String = ""
 var icon_path: String = ""

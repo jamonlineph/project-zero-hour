@@ -1,0 +1,18 @@
+{
+  "id": "heavy_ballistic_missile",
+  "name": "Heavy Ballistic Missile",
+  "kind": "missile",
+  "_doc": "North Korea's superweapon (P3-03): one missile that splits into 6 warheads at the end.",
+  "max_hp": 700,
+  "speed_cm_per_s": 8000,
+  "radius_cm": 100,
+  "vision_cm": 1500,
+  "payload": {
+    "damage": 380,
+    "damage_type": "high_explosive",
+    "splash_radius_cm": 900,
+    "splash_edge_percent": 40,
+    "count": 6,
+    "spread_cm": 2500
+  }
+}

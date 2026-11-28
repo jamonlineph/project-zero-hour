@@ -34,6 +34,7 @@ var difficulty: String = "normal"   ## "easy" or "normal"
 var counters: Dictionary[String, PackedStringArray] = {}
 var power_priority: PackedStringArray = []
 var research: PackedStringArray = []
+var superweapon: String = ""   ## building built after the build order once the rank allows (P3-03)
 
 var _attacking: bool = false
 ## Own random numbers, seeded from the sim's state at the first think, so each
@@ -77,6 +78,7 @@ static func from_preset(content: ContentDb, id: String, player: int, level: Stri
 		ai.power_priority.append(str(pw))
 	for r: Variant in p.get("research", []):
 		ai.research.append(str(r))
+	ai.superweapon = str(p.get("superweapon", ""))
 	ai.difficulty = level
 	if level == "easy":
 		ai.think_interval *= 2
@@ -180,6 +182,8 @@ func _build(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> int:
 		if not b.building.built:
 			return 0   # one construction at a time
 	var next: String = _next_in_build_order(mine)
+	if next == "":
+		next = _superweapon_to_build(world, mine)
 	if next == "" or idle == null or mine.hq == null:
 		return 0
 	var def: BuildingDef = world.content.get_building(next)
@@ -191,6 +195,18 @@ func _build(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> int:
 	if spot.x >= 0:
 		cmds.append(SimCommand.make_build([idle.id], def.id, spot.x, spot.y))
 	return 0
+
+
+## The preset's superweapon once the commander rank allows it and we have
+## none (P3-03), else "".
+func _superweapon_to_build(world: SimWorld, mine: _Mine) -> String:
+	var def: BuildingDef = world.content.get_building(superweapon) if superweapon != "" else null
+	if def == null or world.get_player(player_id).rank < def.requires_rank:
+		return ""
+	for b: SimEntity in mine.buildings:
+		if b.def_id == superweapon:
+			return ""
+	return superweapon
 
 
 func _someone_builds(mine: _Mine, building_id: int) -> bool:
@@ -260,6 +276,9 @@ func _military(world: SimWorld, mine: _Mine, cmds: Array[SimCommand]) -> void:
 	if mine.hq == null:
 		return
 	_set_rally_points(world, mine, cmds)
+	# Only when one is charged: _pick_target draws on the AI's random numbers.
+	if AiTactics.superweapon_ready(world, mine.buildings):
+		AiTactics.fire_superweapons(world, mine.buildings, _pick_target(world, mine.hq), cmds)
 	# Armed units fight; unarmed spotters (recon drones) hover over the army
 	# instead of leading the charge, where rifles shot them down (P2-11e).
 	var army_ids: Array[int] = []

@@ -54,5 +54,6 @@
   "research": [
     "us_composite_armor"
   ],
-  "_doc_v1": "v1 (P2-11): counters add weight to listed units per 3 visible enemies of an armor class; power_priority is the order points are spent; research is the order upgrades are bought."
+  "_doc_v1": "v1 (P2-11): counters add weight to listed units per 3 visible enemies of an armor class; power_priority is the order points are spent; research is the order upgrades are bought.",
+  "superweapon": "us_hypersonic_battery"
 }

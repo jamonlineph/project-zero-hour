@@ -27,6 +27,7 @@ var _camera: RtsCamera
 var _placement: PlacementController
 var _top: Label
 var _debug: Label
+var _superweapons: SuperweaponTimers
 var _help: Label
 var _banner: Label
 var _selection_panel: Label
@@ -63,6 +64,8 @@ func _ready() -> void:
 	_debug.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	_debug.position.y = 52
 	add_child(_debug)
+	_superweapons = SuperweaponTimers.new()
+	add_child(_superweapons)
 
 	_help = Label.new()
 	_help.name = "Help"
@@ -230,6 +233,7 @@ func _process(delta: float) -> void:
 		p.power_used, p.power_produced, "  LOW POWER" if p.low_power() else "",
 		"*".repeat(p.rank) + ".".repeat(5 - p.rank), secs / 60, secs % 60]
 	_debug.text = "tick %d | %d fps | state %08x  " % [world.tick, Engine.get_frames_per_second(), _last_hash]
+	_superweapons.refresh(world)
 	_refresh -= delta
 	if _refresh <= 0.0:
 		_refresh = REFRESH_SEC

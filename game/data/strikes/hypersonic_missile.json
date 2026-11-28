@@ -1,0 +1,18 @@
+{
+  "id": "hypersonic_missile",
+  "name": "Hypersonic Missile",
+  "kind": "missile",
+  "_doc": "America's superweapon (P3-03): one fast, tough, very heavy hit.",
+  "max_hp": 400,
+  "speed_cm_per_s": 16000,
+  "radius_cm": 60,
+  "vision_cm": 1500,
+  "payload": {
+    "damage": 1600,
+    "damage_type": "high_explosive",
+    "splash_radius_cm": 1500,
+    "splash_edge_percent": 30,
+    "count": 1,
+    "spread_cm": 0
+  }
+}

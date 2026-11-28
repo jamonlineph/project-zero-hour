@@ -107,3 +107,26 @@ static func _ability_target(world: SimWorld, e: SimEntity, a: AbilityDef, reach:
 			best_score = score
 	return best
 
+
+## True if one of our superweapons is charged (P3-03).
+static func superweapon_ready(world: SimWorld, buildings: Array[SimEntity]) -> bool:
+	for b: SimEntity in buildings:
+		if b.ability_ready.is_empty() or not b.building.built:
+			continue
+		for a: AbilityDef in AbilitySystem.abilities_of(world, b):
+			if a.kind == "superweapon" and world.tick >= int(b.ability_ready.get(a.id, 0)):
+				return true
+	return false
+
+
+## Fires every charged superweapon we own at `target` (P3-03).
+static func fire_superweapons(world: SimWorld, buildings: Array[SimEntity], target: SimEntity, cmds: Array[SimCommand]) -> void:
+	if target == null or world.content == null:
+		return
+	for b: SimEntity in buildings:
+		if not b.building.built or b.building.is_disabled(world.tick):
+			continue
+		for a: AbilityDef in AbilitySystem.abilities_of(world, b):
+			if a.kind == "superweapon" and world.tick >= int(b.ability_ready.get(a.id, 0)):
+				cmds.append(SimCommand.make_use_ability([b.id], a.id, target.x, target.y))
+

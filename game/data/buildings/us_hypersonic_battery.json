@@ -1,0 +1,37 @@
+{
+  "id": "us_hypersonic_battery",
+  "faction": "us",
+  "name": "Hypersonic Battery",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-03)",
+  "max_hp": 3000,
+  "cost": 5000,
+  "footprint_cells": [
+    5,
+    5
+  ],
+  "build_time_ms": 45000,
+  "power": -4,
+  "vision_cm": 5000,
+  "requires": [
+    "us_vehicle_depot"
+  ],
+  "produces": [],
+  "requires_rank": 3,
+  "limit": 1,
+  "abilities": [
+    {
+      "id": "us_hypersonic_strike",
+      "kind": "superweapon",
+      "name": "Hypersonic Strike",
+      "description": "One heavy, precise missile with little warning. Very hard to shoot down.",
+      "cooldown_s": 240,
+      "strike": "hypersonic_missile",
+      "count": 1
+    }
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/us_hypersonic_battery.glb",
+    "icon": "res://assets/icons/buildings/us_hypersonic_battery.png"
+  }
+}

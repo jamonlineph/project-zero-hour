@@ -124,7 +124,11 @@
     "res://data/buildings/eu_vehicle_works.json",
     "res://data/buildings/eu_drone_center.json",
     "res://data/buildings/eu_bunker.json",
-    "res://data/buildings/eu_sam_site.json"
+    "res://data/buildings/eu_sam_site.json",
+    "res://data/buildings/us_hypersonic_battery.json",
+    "res://data/buildings/ae_strike_package.json",
+    "res://data/buildings/kp_heavy_missile_site.json",
+    "res://data/buildings/eu_cruise_battery.json"
   ],
   "maps": [
     "res://data/maps/sandbox/map.json",
@@ -165,7 +169,10 @@
     "res://data/strikes/swarm_drone.json",
     "res://data/strikes/standoff_missile.json",
     "res://data/strikes/precision_shell.json",
-    "res://data/strikes/cruise_missile.json"
+    "res://data/strikes/cruise_missile.json",
+    "res://data/strikes/hypersonic_missile.json",
+    "res://data/strikes/strike_package_jet.json",
+    "res://data/strikes/heavy_ballistic_missile.json"
   ],
   "powers": [
     "res://data/powers/us_satellite_pass.json",

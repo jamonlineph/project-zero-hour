@@ -42,6 +42,8 @@ func entries() -> Array[Dictionary]:
 	elif producer != null:
 		out = _production_menu(world, producer)
 		out.append_array(UpgradeMenu.research_entries(_runner, _selection.local_player_id, producer))
+	elif not units:
+		out.append_array(_ability_entries(4))   # a superweapon building's launch (P3-03)
 	if not shelters.is_empty() and not units:
 		out.append({"label": "Exit all", "tooltip": "Everyone inside comes out",
 			"action": func() -> void:
@@ -83,10 +85,9 @@ func _ability_entries(slots: int) -> Array[Dictionary]:
 	var seen: Dictionary[String, bool] = {}
 	for id: int in _selection.selected:
 		var e: SimEntity = world.get_entity(id)
-		var def: UnitDef = world.content.get_unit(e.def_id) if e != null and world.content != null else null
-		if def == null:
+		if e == null or e.player_id != _selection.local_player_id or (e.building != null and not e.building.built):
 			continue
-		for a: AbilityDef in def.abilities:
+		for a: AbilityDef in AbilitySystem.abilities_of(world, e):
 			if seen.has(a.id) or out.size() >= slots:
 				continue
 			seen[a.id] = true
@@ -96,7 +97,11 @@ func _ability_entries(slots: int) -> Array[Dictionary]:
 				if s != null and s.def_id == e.def_id and world.tick >= int(s.ability_ready.get(a.id, 0)):
 					ready = true
 			var aid: String = a.id
-			out.append({"label": a.name, "enabled": ready,
+			var label: String = a.name
+			if a.kind == "superweapon" and not ready:
+				var left: int = maxi(0, int(e.ability_ready.get(a.id, 0)) - world.tick) / SimWorld.TICK_RATE
+				label = "%s\n%d:%02d" % [a.name, left / 60, left % 60]
+			out.append({"label": label, "enabled": ready,
 				"tooltip": "%s Then tap or click the %s." % [a.description, "building" if a.kind == "disable" else "target point"],
 				"action": func() -> void:
 					_selection.disarm()
@@ -129,12 +134,16 @@ func _build_menu(world: SimWorld) -> Array[Dictionary]:
 	for def: BuildingDef in world.content.buildings.values():
 		if def.faction != player.faction or entries.size() >= 12:
 			continue
-		var ok: bool = player.credits >= def.cost and world.has_requirements(_selection.local_player_id, def.requires)
+		var why: String = BaseCommands.blocker(world, _selection.local_player_id, def)
+		var ok: bool = why == ""
+		var reason: String = _missing(world, def.requires, def.cost)
+		if not ok and reason == "":
+			reason = " - " + why   # rank or limit (superweapons, P3-03)
 		entries.append({
 			"label": "%s\n%d" % [def.name, def.cost],
 			"icon": _icon(def.icon_path),
 			"enabled": ok,
-			"tooltip": "%s (%d credits)%s" % [def.name, def.cost, "" if ok else _missing(world, def.requires, def.cost)],
+			"tooltip": "%s (%d credits)%s" % [def.name, def.cost, "" if ok else reason],
 			"action": func() -> void: _placement.begin(def.id),
 		})
 	return entries

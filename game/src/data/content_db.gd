@@ -65,7 +65,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	for path: Variant in (index as Dictionary).get("units", []):
 		_load_unit(str(path))
 	for path: Variant in (index as Dictionary).get("buildings", []):
-		_load_building(str(path))
+		BuildingLoader.load_building(self, str(path))
 	for path: Variant in (index as Dictionary).get("maps", []):
 		_load_map(str(path))
 	for path: Variant in (index as Dictionary).get("upgrades", []):
@@ -113,51 +113,6 @@ func cost_of(id: String) -> int:
 	if buildings.has(id):
 		return buildings[id].cost
 	return 0
-
-
-func _load_building(path: String) -> void:
-	var parsed: Variant = read_json(path)
-	if not parsed is Dictionary:
-		errors.append("%s: expected a JSON object" % path)
-		return
-	var src: Dictionary = parsed
-	var b := BuildingDef.new()
-	b.id = req_string(src, "id", path)
-	b.faction = req_string(src, "faction", path)
-	b.name = req_string(src, "name", path)
-	b.armor_class = str(src.get("armor_class", "structure"))
-	b.max_hp = req_int(src, "max_hp", path, 1)
-	b.cost = req_int(src, "cost", path, 0)
-	var fp: Variant = src.get("footprint_cells", [])
-	if fp is Array and (fp as Array).size() == 2:
-		b.footprint_w = maxi(1, int(fp[0]))
-		b.footprint_h = maxi(1, int(fp[1]))
-	else:
-		errors.append("%s: 'footprint_cells' must be [w, h]" % path)
-	b.build_ticks = ms_to_ticks(req_int(src, "build_time_ms", path, 1))
-	b.power = int(src.get("power", 0))
-	if src.has("vision_cm"):
-		b.vision = Fx.from_ratio(req_int(src, "vision_cm", path, 0), 100)
-	b.requires = string_list(src, "requires", path)
-	b.produces = string_list(src, "produces", path)
-	b.dropoff = bool(src.get("dropoff", false))
-	b.free_unit = str(src.get("free_unit", ""))
-	b.garrison_capacity = int(src.get("garrison_capacity", 0))
-	for weapon_id: Variant in src.get("weapons", []):
-		var w: WeaponDef = get_weapon(str(weapon_id))
-		if w == null:
-			errors.append("%s: unknown weapon '%s'" % [path, str(weapon_id)])
-		else:
-			b.weapons.append(w)
-	var visual: Variant = src.get("visual", {})
-	if visual is Dictionary:
-		b.model_path = str((visual as Dictionary).get("model", ""))
-		b.icon_path = str((visual as Dictionary).get("icon", ""))
-	if path.get_file().get_basename() != b.id:
-		errors.append("%s: file name must match id '%s'" % [path, b.id])
-	if buildings.has(b.id) or units.has(b.id):
-		errors.append("%s: duplicate id '%s'" % [path, b.id])
-	buildings[b.id] = b
 
 
 func _load_scenario(path: String) -> void:

@@ -1,0 +1,37 @@
+{
+  "id": "kp_heavy_missile_site",
+  "faction": "kp",
+  "name": "Heavy Missile Site",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-03)",
+  "max_hp": 3000,
+  "cost": 5000,
+  "footprint_cells": [
+    5,
+    5
+  ],
+  "build_time_ms": 45000,
+  "power": -4,
+  "vision_cm": 5000,
+  "requires": [
+    "kp_vehicle_plant"
+  ],
+  "produces": [],
+  "requires_rank": 3,
+  "limit": 1,
+  "abilities": [
+    {
+      "id": "kp_heavy_missile",
+      "kind": "superweapon",
+      "name": "Heavy Missile",
+      "description": "A heavy ballistic missile that splits into 6 warheads over the target. Shoot it down before it arrives.",
+      "cooldown_s": 240,
+      "strike": "heavy_ballistic_missile",
+      "count": 1
+    }
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/kp_heavy_missile_site.glb",
+    "icon": "res://assets/icons/buildings/kp_heavy_missile_site.png"
+  }
+}

@@ -65,3 +65,4 @@ In the game (P3-12a): air policing (`eu_air_policing`: 2 `eu_patrol_fighter` for
 - Its 4-minute countdown is visible to **all players**.
 - The effect resolves as interceptable sim entities where that makes sense.
 - Building a second superweapon site is not allowed (limit 1).
+- In the game since P3-03; see [units-and-buildings.md](units-and-buildings.md#superweapons-one-per-faction-countdown-visible-to-everyone).

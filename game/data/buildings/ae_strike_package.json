@@ -1,0 +1,37 @@
+{
+  "id": "ae_strike_package",
+  "faction": "ae",
+  "name": "Strike Package Airfield",
+  "armor_class": "structure",
+  "status": "first-pass numbers (P3-03)",
+  "max_hp": 3000,
+  "cost": 5000,
+  "footprint_cells": [
+    7,
+    5
+  ],
+  "build_time_ms": 45000,
+  "power": -4,
+  "vision_cm": 5000,
+  "requires": [
+    "ae_vehicle_depot"
+  ],
+  "produces": [],
+  "requires_rank": 3,
+  "limit": 1,
+  "abilities": [
+    {
+      "id": "ae_strike_package",
+      "kind": "superweapon",
+      "name": "Strike Package",
+      "description": "Four strike jets fly in from off the map and bomb the area. Fighters and air defense can shoot them down.",
+      "cooldown_s": 240,
+      "strike": "strike_package_jet",
+      "count": 4
+    }
+  ],
+  "visual": {
+    "model": "res://assets/models/buildings/ae_strike_package.glb",
+    "icon": "res://assets/icons/buildings/ae_strike_package.png"
+  }
+}

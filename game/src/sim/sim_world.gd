@@ -161,6 +161,8 @@ func spawn_building(def: BuildingDef, player_id: int, cx: int, cy: int, built: b
 		return 0
 	_next_id += 1
 	add_entity(WorldSpawn.make_building(def, id, player_id, cx, cy, built))
+	if built:
+		AbilitySystem.start_charge(self, entities[id])   # a superweapon placed finished (P3-03)
 	return id
 
 

@@ -88,6 +88,10 @@
     {"id": "eu_vehicle_works", "category": "buildings", "archetype": "building", "faction": "eu", "width": 14.0, "depth": 12.0, "height": 6.0, "details": ["garage", "stacks", "mast"], "tri_budget": 5000},
     {"id": "eu_drone_center", "category": "buildings", "archetype": "building", "faction": "eu", "width": 10.0, "depth": 10.0, "height": 3.5, "details": ["pad", "dish"], "tri_budget": 4000},
     {"id": "eu_bunker", "category": "buildings", "archetype": "building", "faction": "eu", "style": "bunker", "width": 6.0, "depth": 6.0, "height": 2.5, "tri_budget": 1500},
-    {"id": "eu_sam_site", "category": "buildings", "archetype": "building", "faction": "eu", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.6, "tri_budget": 2500}
+    {"id": "eu_sam_site", "category": "buildings", "archetype": "building", "faction": "eu", "style": "sam", "width": 6.0, "depth": 6.0, "height": 3.6, "tri_budget": 2500},
+    {"id": "us_hypersonic_battery", "category": "buildings", "archetype": "building", "faction": "us", "style": "sam", "width": 10.0, "depth": 10.0, "height": 4.5, "tri_budget": 2500},
+    {"id": "ae_strike_package", "category": "buildings", "archetype": "building", "faction": "ae", "width": 14.0, "depth": 10.0, "height": 3.0, "details": ["pad", "mast", "garage"], "tri_budget": 4000},
+    {"id": "kp_heavy_missile_site", "category": "buildings", "archetype": "building", "faction": "kp", "style": "sam", "width": 10.0, "depth": 10.0, "height": 5.0, "tri_budget": 2500},
+    {"id": "eu_cruise_battery", "category": "buildings", "archetype": "building", "faction": "eu", "style": "sam", "width": 10.0, "depth": 10.0, "height": 4.0, "tri_budget": 2500}
   ]
 }

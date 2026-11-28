@@ -42,9 +42,7 @@ static func _build(world: SimWorld, c: SimCommand) -> void:
 	for e: SimEntity in WorldCommands.owned(world, c):
 		if e.builder != null:
 			builders.append(e)
-	if builders.is_empty() or player.credits < def.cost:
-		return
-	if not world.has_requirements(c.player_id, def.requires):
+	if builders.is_empty() or blocker(world, c.player_id, def) != "":
 		return
 	var origin: Vector2i = world.footprint_origin(def, c.target_x, c.target_y)
 	if not world.can_place(def, origin):
@@ -56,6 +54,27 @@ static func _build(world: SimWorld, c: SimCommand) -> void:
 	world.events.append({"type": "placed", "id": id, "def_id": def.id, "player": c.player_id})
 	for e: SimEntity in builders:
 		_assign_builder(world, e, id, false)
+
+
+## Why the player can't start this building now, or "" if they can: credits,
+## required buildings, commander rank, or the limit (one superweapon, P3-03).
+static func blocker(world: SimWorld, player_id: int, def: BuildingDef) -> String:
+	var player: SimPlayer = world.get_player(player_id)
+	if player.credits < def.cost:
+		return "not enough credits"
+	if not world.has_requirements(player_id, def.requires):
+		return "missing a required building"
+	if player.rank < def.requires_rank:
+		return "needs commander rank %d" % def.requires_rank
+	if def.limit > 0:
+		var have: int = 0
+		for id: int in world.entity_ids:
+			var e: SimEntity = world.entities[id]
+			if e.player_id == player_id and e.def_id == def.id and not e.dead:
+				have += 1
+		if have >= def.limit:
+			return "only %d allowed" % def.limit
+	return ""
 
 
 static func _assign_builder(world: SimWorld, e: SimEntity, building_id: int, repair: bool) -> void:

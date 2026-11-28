@@ -3,10 +3,11 @@ extends RefCounted
 ## A unit's special ability (P3-02f; data: a unit's "abilities" list). Used
 ## with a USE_ABILITY command; see AbilitySystem.
 
-const KINDS: PackedStringArray = ["strike", "disable"]
+const KINDS: PackedStringArray = ["strike", "disable", "superweapon"]
 
 var id: String = ""
-var kind: String = ""           ## "strike": call strikes on a point; "disable": shut down an enemy building
+var kind: String = ""           ## "strike": call strikes on a point; "disable": shut down an enemy building;
+                                ## "superweapon": strikes anywhere, after a charge (P3-03)
 var name: String = ""
 var description: String = ""
 var range: int = 0              ## fixed-point meters from the unit

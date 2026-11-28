@@ -57,6 +57,7 @@ static func _advance(world: SimWorld, t: SimEntity, steps: int) -> void:
 		return
 	b.built = true
 	world.events.append({"type": "built", "id": t.id, "def_id": t.def_id, "player": t.player_id})
+	AbilitySystem.start_charge(world, t)   # superweapons start charging (P3-03)
 	if b.free_unit != "" and world.content != null:
 		var def: UnitDef = world.content.get_unit(b.free_unit)
 		if def != null:

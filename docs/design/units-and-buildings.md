@@ -50,11 +50,13 @@ Rosters as **role × faction** tables. Every faction fills the same roles in its
 | Ground defense | Hardened bunker `bunker` ✓ (can be garrisoned) | Fortified post `fortified_post` ✓ | Trench line `trench_line` ✓, tank obstacles, minefields (engineer-built) | Bunker `bunker` ✓ |
 | Air defense | Long-range air-defense site `sam_site` ✓ | THAAD-class site `sam_site` ✓ (best against missiles) | Air-defense site `sam_site` ✓ | SAMP/T-class site `sam_site` ✓ (shares targets) |
 | Close-in defense | Gun + laser turret `point_defense` | Laser turret `point_defense` | Anti-aircraft gun nest `aa_guns` | Gun-missile turret `point_defense` |
-| Superweapon | Hypersonic battery `hypersonic_battery` | Strike package airfield `strike_package` | Heavy missile site `heavy_missile_site` | Cruise missile battery `cruise_battery` |
+| Superweapon | Hypersonic battery `hypersonic_battery` ✓ | Strike package airfield `strike_package` ✓ | Heavy missile site `heavy_missile_site` ✓ | Cruise missile battery `cruise_battery` ✓ |
 
 ## Superweapons (one per faction, countdown visible to everyone)
 
 All conventional. Each resolves as sim entities that can be intercepted where that makes sense.
+
+In the game (P3-03): each is a building (5,000 credits, commander rank 3, one per player: `limit`, `requires_rank`) with a `superweapon` ability. Its 4-minute charge starts when it is finished and again after each launch; every player sees each superweapon's countdown under the top bar. It fires anywhere on the map, needs no sight, and can't fire while disabled. America: one `hypersonic_missile` (1,600 damage, 400 hp, very fast); UAE: 4 `strike_package_jet` (3 bombs each); North Korea: one `heavy_ballistic_missile` (700 hp, splits into 6 warheads); EU: 12 `cruise_missile`. The AI builds its superweapon after its build order once it reaches rank 3, and fires it at its attack target.
 
 | Faction | Effect | Counterplay |
 |---|---|---|
