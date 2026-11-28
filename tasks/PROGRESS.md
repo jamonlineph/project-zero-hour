@@ -4,6 +4,30 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-28: P3-23b 2v2 skirmish and Pine Ridge, P3-02e UAE procurement (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P3-23b 2v2:**
+    - `MatchConfig.skirmish_2v2`: you (player 1) and a computer ally of your faction (player 3) against two computers (players 2 and 4). Player n starts at start n.
+    - The menu has a Mode button (1v1 / 2v2), and the map list follows it.
+    - Pine Ridge is the first 2v2 map: winter, 384×384 m, four mirrored starts.
+    - `ai_matches` plays 2v2 on four-start maps, and the map tests accept four starts.
+  - **P3-02e procurement:**
+    - The UAE's Defense Procurement Office orders tanks, IFVs, rocket artillery and attack helicopters at +30%, without using a factory.
+    - 30 s after an order, a cargo flight (900 hp, can be shot down) drops the unit at the office.
+    - The rank-1 power Emergency Procurement halves the next wait.
+    - The build menu shows prices with the premium, refunds include it, and the UAE AI builds and uses both.
+- Tests: `tools/run_tests.sh` -> 381 tests, 0 failed, smoke ok; `check_repo` ok (253 assets).
+- 2v2 runs on Pine Ridge (before procurement), 20 games:
+  - 3 had no result after 30 minutes; the rest ended in 7–17 minutes.
+  - The east team won 11 of the 17 decided games.
+  - The UAE beat the EU in 7 of 9 decided games; North Korea beat America in 5 of 8.
+  - Small samples: re-measure with P3-23e.
+- Not verified:
+  - 2v2 played by a human (ally coordination, HUD with four players on a phone screen).
+  - Procurement's effect on UAE balance.
+- Next: P3-13c (AI: transports, aircraft, superweapon timing), P3-10b tank obstacles, P3-14b LAN for 4 players, P3-18 localization.
+- For the owner: none.
+
 ## 2026-11-28: P3-23c two new maps, P3-04b jets, contested captures (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P3-23c maps:**
