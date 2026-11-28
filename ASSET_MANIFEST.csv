@@ -33,6 +33,7 @@ game/assets/icons/buildings/ae_power_plant.png,Project Zero Hour contributors,"b
 game/assets/icons/buildings/ae_sam_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_sam_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ae_strike_package.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_strike_package)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/ae_vehicle_depot.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_vehicle_depot)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/cell_tower.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: cell_tower)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/data_center.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: data_center)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/eu_barracks.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_barracks)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/eu_bunker.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_bunker)",CC-BY-SA-4.0,script,placeholder
@@ -54,6 +55,7 @@ game/assets/icons/buildings/kp_sam_site.png,Project Zero Hour contributors,"blen
 game/assets/icons/buildings/kp_trench_line.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_trench_line)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_vehicle_plant.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_vehicle_plant)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/oil_field.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: oil_field)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/rail_depot.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: rail_depot)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/solar_farm.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: solar_farm)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/us_barracks.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_barracks)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/us_bunker.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_bunker)",CC-BY-SA-4.0,script,placeholder
@@ -122,6 +124,7 @@ game/assets/models/buildings/ae_power_plant.glb,Project Zero Hour contributors,"
 game/assets/models/buildings/ae_sam_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_sam_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_strike_package.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_strike_package)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_vehicle_depot.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_vehicle_depot)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/cell_tower.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: cell_tower)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/data_center.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: data_center)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/eu_barracks.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_barracks)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/eu_bunker.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_bunker)",CC-BY-SA-4.0,script,placeholder
@@ -143,6 +146,7 @@ game/assets/models/buildings/kp_sam_site.glb,Project Zero Hour contributors,"ble
 game/assets/models/buildings/kp_trench_line.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_trench_line)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_vehicle_plant.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_vehicle_plant)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/oil_field.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: oil_field)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/rail_depot.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: rail_depot)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/solar_farm.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: solar_farm)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/us_barracks.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_barracks)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/us_bunker.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_bunker)",CC-BY-SA-4.0,script,placeholder

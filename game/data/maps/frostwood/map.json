@@ -56,7 +56,11 @@
     ["solar_farm", 40, 236],
     ["oil_field", 226, 100],
     ["solar_farm", 216, 236],
-    ["data_center", 128, 124]
+    ["data_center", 128, 124],
+    ["rail_depot", 16, 180],
+    ["cell_tower", 90, 130],
+    ["rail_depot", 240, 180],
+    ["cell_tower", 166, 130]
   ],
   "start_positions_m": [
     [36, 56],

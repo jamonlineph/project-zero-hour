@@ -45,6 +45,8 @@ static func load_building(db: ContentDb, path: String) -> void:
 		b.heal_radius = Fx.from_ratio(int(ha.get("radius_cm", 0)), 100)
 		b.heal_percent_per_s = int(ha.get("percent_per_s", 0))
 		b.heal_classes = db.string_list(ha, "classes", path)
+	b.spotter = bool(src.get("spotter", false))
+	b.vehicle_build_bonus_percent = int(src.get("vehicle_build_bonus_percent", 0))
 	b.limit = int(src.get("limit", 0))
 	b.requires_rank = int(src.get("requires_rank", 1))
 	for a: Variant in src.get("abilities", []):

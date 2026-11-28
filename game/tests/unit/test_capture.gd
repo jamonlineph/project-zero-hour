@@ -163,3 +163,34 @@ func _capture_hash() -> int:
 
 func test_capturing_is_deterministic() -> void:
 	assert_eq(_capture_hash(), _capture_hash())
+
+
+func test_a_captured_rail_depot_builds_vehicles_faster() -> void:
+	var times: Array[int] = []
+	for captured: bool in [false, true]:
+		var w := _world()
+		w.get_player(1).credits = 10000
+		w.spawn_building(_content().get_building("us_microreactor"), 1, 10, 10, true)
+		var depot: SimEntity = w.get_entity(w.spawn_building(_content().get_building("us_vehicle_depot"), 1, 30, 30, true))
+		var rail := _neutral(w, "rail_depot", 200, 200)
+		if captured:
+			rail.player_id = 1
+		depot.building.queue.append("us_mbt")
+		var ticks: int = 0
+		while not depot.building.queue.is_empty() and ticks < 1000:
+			w.step()
+			ticks += 1
+		times.append(ticks)
+	var expected: int = (times[0] * 100) / 125
+	assert_true(absi(times[1] - expected) <= 2, "a tank took %d ticks with the depot, %d without" % [times[1], times[0]])
+
+
+func test_a_captured_cell_tower_spots_for_its_owner() -> void:
+	var w := _world()
+	var tower := _neutral(w, "cell_tower", 120, 120)
+	w.step()
+	assert_false(w.is_spotted(1, Fx.from_int(150), Fx.from_int(120)), "a neutral tower spotted for someone")
+	tower.player_id = 1
+	w.step()
+	assert_true(w.is_spotted(1, Fx.from_int(150), Fx.from_int(120)), "the captured tower doesn't spot 30 m away")
+	assert_false(w.is_spotted(2, Fx.from_int(150), Fx.from_int(120)), "it spotted for the enemy")

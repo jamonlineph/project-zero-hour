@@ -31,6 +31,10 @@ var income: int = 0
 var heal_radius: int = 0
 var heal_percent_per_s: int = 0
 var heal_classes: PackedStringArray = []
+## P3-08b: a cell tower spots for kill-chain weapons within its vision; a
+## rail depot makes its owner's vehicles build this many percent faster.
+var spotter: bool = false
+var vehicle_build_bonus_percent: int = 0
 var weapons: Array[WeaponDef] = []
 var model_path: String = ""
 var icon_path: String = ""

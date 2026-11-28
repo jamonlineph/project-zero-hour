@@ -1,0 +1,25 @@
+{
+  "id": "rail_depot",
+  "faction": "neutral",
+  "name": "Rail Depot",
+  "armor_class": "structure",
+  "_doc": "Capturable (P3-08b): its owner's vehicles build 25% faster.",
+  "status": "first-pass numbers (P3-08b)",
+  "max_hp": 1800,
+  "cost": 0,
+  "footprint_cells": [
+    5,
+    4
+  ],
+  "build_time_ms": 1000,
+  "power": 0,
+  "vision_cm": 3000,
+  "requires": [],
+  "produces": [],
+  "capture_s": 8,
+  "vehicle_build_bonus_percent": 25,
+  "visual": {
+    "model": "res://assets/models/buildings/rail_depot.glb",
+    "icon": "res://assets/icons/buildings/rail_depot.png"
+  }
+}

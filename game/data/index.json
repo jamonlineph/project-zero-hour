@@ -132,7 +132,9 @@
     "res://data/buildings/oil_field.json",
     "res://data/buildings/solar_farm.json",
     "res://data/buildings/field_hospital.json",
-    "res://data/buildings/data_center.json"
+    "res://data/buildings/data_center.json",
+    "res://data/buildings/rail_depot.json",
+    "res://data/buildings/cell_tower.json"
   ],
   "maps": [
     "res://data/maps/sandbox/map.json",

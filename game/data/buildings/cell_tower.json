@@ -1,0 +1,25 @@
+{
+  "id": "cell_tower",
+  "faction": "neutral",
+  "name": "Cell Tower",
+  "armor_class": "structure",
+  "_doc": "Capturable (P3-08b): spots targets within 80 m for its owner's kill-chain weapons.",
+  "status": "first-pass numbers (P3-08b)",
+  "max_hp": 700,
+  "cost": 0,
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "build_time_ms": 1000,
+  "power": 0,
+  "vision_cm": 8000,
+  "requires": [],
+  "produces": [],
+  "capture_s": 6,
+  "spotter": true,
+  "visual": {
+    "model": "res://assets/models/buildings/cell_tower.glb",
+    "icon": "res://assets/icons/buildings/cell_tower.png"
+  }
+}

@@ -277,7 +277,9 @@
     ["field_hospital", 72, 150],
     ["oil_field", 234, 230],
     ["data_center", 156, 20],
-    ["field_hospital", 184, 150]
+    ["field_hospital", 184, 150],
+    ["cell_tower", 46, 100],
+    ["cell_tower", 210, 100]
   ],
   "start_positions_m": [
     [

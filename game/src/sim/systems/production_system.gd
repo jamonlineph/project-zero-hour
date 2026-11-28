@@ -11,6 +11,7 @@ extends RefCounted
 static func step(world: SimWorld) -> void:
 	if world.content == null:
 		return
+	var bonus: Dictionary[int, int] = _vehicle_bonus(world)
 	for id: int in world.entity_ids:
 		var e: SimEntity = world.entities[id]
 		var b: SimBuilding = e.building
@@ -24,11 +25,31 @@ static func step(world: SimWorld) -> void:
 			b.queue_progress = 0
 			continue
 		b.queue_progress += 1
+		# A captured rail depot (P3-08b): `pct` percent more progress for
+		# vehicles, spread evenly over the ticks.
+		var pct: int = bonus.get(e.player_id, 0)
+		if pct > 0 and def.armor_class in ["light_vehicle", "heavy_armor"] \
+				and (world.tick * pct) / 100 != ((world.tick - 1) * pct) / 100:
+			b.queue_progress += 1
 		if b.queue_progress < def.build_ticks:
 			continue
 		b.queue.remove_at(0)
 		b.queue_progress = 0
 		spawn_from(world, e, def)
+
+
+## Each player's best vehicle production bonus from buildings they own and
+## that work (P3-08b: rail depots).
+static func _vehicle_bonus(world: SimWorld) -> Dictionary[int, int]:
+	var out: Dictionary[int, int] = {}
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		if e.dead or e.player_id == 0 or e.building == null or not e.building.built or e.building.is_disabled(world.tick):
+			continue
+		var def: BuildingDef = world.content.get_building(e.def_id)
+		if def != null and def.vehicle_build_bonus_percent > out.get(e.player_id, 0):
+			out[e.player_id] = def.vehicle_build_bonus_percent
+	return out
 
 
 ## Creates a unit at a building's exit and sends it to the rally point.

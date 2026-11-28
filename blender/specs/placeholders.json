@@ -97,6 +97,8 @@
     {"id": "oil_field", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 8.0, "depth": 8.0, "height": 2.5, "details": ["tanks", "stacks"], "tri_budget": 3000},
     {"id": "solar_farm", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 10.0, "depth": 8.0, "height": 1.2, "details": ["pad"], "tri_budget": 2000},
     {"id": "field_hospital", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 10.0, "depth": 8.0, "height": 3.0, "details": ["flag", "vents"], "tri_budget": 3000},
-    {"id": "data_center", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 8.0, "depth": 8.0, "height": 4.0, "details": ["dish", "mast", "vents"], "tri_budget": 3000}
+    {"id": "data_center", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 8.0, "depth": 8.0, "height": 4.0, "details": ["dish", "mast", "vents"], "tri_budget": 3000},
+    {"id": "rail_depot", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 10.0, "depth": 8.0, "height": 3.5, "details": ["garage", "tanks"], "tri_budget": 3000},
+    {"id": "cell_tower", "category": "buildings", "archetype": "building", "faction": "neutral", "width": 4.0, "depth": 4.0, "height": 2.0, "details": ["mast", "dish"], "tri_budget": 2000}
   ]
 }

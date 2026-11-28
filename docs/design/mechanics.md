@@ -11,7 +11,7 @@ Status: ✅ built · 🔄 in progress · ⬜ planned
 | Builder units | Builders construct structures anywhere on valid ground (no build radius) and repair them (mine clearing: P3-10) | P1-12 | ✅ |
 | Construction | Placing a building reserves its footprint and charges its cost. Builders drive next to it and it rises over `build_time`; extra builders add half speed each | P1-12 | ✅ |
 | Supply harvesting | Logistics trucks load 300 from finite supply sites and unload at drop-off buildings (logistics hubs, which come with a free truck) | P1-15 | ✅ |
-| Capturable neutral buildings | Infantry capture neutral structures: oil field (income), field hospital (heals infantry), data center (reveals area), rail depot (faster vehicles), solar farm (power) | P3-08 | ✅ v1 (P3-08a: capturing, oil field, solar farm, field hospital, data center; rail depot and cell tower in P3-08b) |
+| Capturable neutral buildings | Infantry capture neutral structures: oil field (income), field hospital (heals infantry), data center (reveals area), rail depot (faster vehicles), solar farm (power) | P3-08 | ✅ (P3-08a: capturing, oil field, solar farm, field hospital, data center; P3-08b: rail depot, cell tower) |
 | Power grid | Buildings produce or use power. Low power halves production speed and switches off armed structures (radar effect comes with the minimap) | P1-16 | ✅ |
 | Production | Per-building queues (up to 9, paid up front), rally points, cancel with full refund | P1-13 | ✅ |
 | Tech tree | Units and buildings list `requires` building ids (checked in the sim; references validated at load). Rank requirements: P2-09 | P1-14 | ✅ |
