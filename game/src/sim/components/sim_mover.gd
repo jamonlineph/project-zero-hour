@@ -27,6 +27,10 @@ var follow_leader: int = 0
 var paused: bool = false
 ## Flies (drones): straight-line paths over any terrain, no pushing (P2-01).
 var flying: bool = false
+## Group orders: the slowest member's speed, so a mixed army arrives together
+## instead of its fastest units first (P2-11f). 0 = own speed. Cleared by
+## the next order and on arrival.
+var group_speed: int = 0
 
 
 ## Sets a new destination and asks for a path to it.
@@ -36,15 +40,22 @@ func order_move(tx: int, ty: int) -> void:
 	has_target = true
 	needs_path = true
 	follow_leader = 0
+	group_speed = 0
 	paused = false
 	path.clear()
 	path_index = 0
+
+
+## The speed this tick: the group's pace when it is slower than our own.
+func current_speed() -> int:
+	return group_speed if group_speed > 0 and group_speed < speed else speed
 
 
 func stop() -> void:
 	has_target = false
 	needs_path = false
 	follow_leader = 0
+	group_speed = 0
 	paused = false
 	path.clear()
 	path_index = 0
@@ -62,6 +73,8 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(path_index)
 	if flying:   # only flyers, so older replays hash as before
 		h.add_bool(true)
+	if group_speed != 0:   # only group moves (P2-11f)
+		h.add_int(group_speed)
 	h.add_int(path.size())
 	for p: Vector2i in path:
 		h.add_int(p.x)

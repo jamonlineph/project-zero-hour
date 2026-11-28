@@ -26,9 +26,9 @@ static func step(world: SimWorld) -> void:
 			var heading: int = Fx.atan2_a(dy, dx)
 			var turn: int = clampi(Fx.angle_diff(e.facing, heading), -m.turn_rate, m.turn_rate)
 			e.facing = Fx.wrap_angle(e.facing + turn)
-			var step_len: int = m.speed
+			var step_len: int = m.current_speed()
 			if absi(Fx.angle_diff(e.facing, heading)) > SimMover.FULL_SPEED_ANGLE:
-				step_len = (m.speed * SimMover.SLOW_NUM) / SimMover.SLOW_DEN
+				step_len = (step_len * SimMover.SLOW_NUM) / SimMover.SLOW_DEN
 			if dist > step_len:
 				# Integer division truncates toward zero the same way on every CPU.
 				e.x += (dx * step_len) / dist

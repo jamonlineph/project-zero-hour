@@ -181,3 +181,30 @@ func test_mirrored_groups_get_mirrored_formations() -> void:
 	west_sorted.sort()
 	east_mirrored.sort()
 	assert_eq(east_mirrored, west_sorted, "the two groups did not form up as mirror images")
+
+
+func _fast_def() -> UnitDef:
+	var d := _def()
+	d.id = "fast"
+	d.speed = Fx.from_int(2)
+	return d
+
+
+func test_a_mixed_group_moves_at_its_slowest_members_pace() -> void:
+	# P2-11f: fast units used to run ahead of their army and fight alone.
+	var world := SimWorld.new(1, 200, 100)
+	var slow: int = world.spawn_unit(_def(), 1, Fx.from_int(10), Fx.from_int(40))
+	var fast: int = world.spawn_unit(_fast_def(), 1, Fx.from_int(10), Fx.from_int(60))
+	_order(world, [slow, fast], 150, 50)
+	_run(world, 2)
+	var f: SimMover = world.get_entity(fast).mover
+	assert_eq(f.group_speed, world.get_entity(slow).mover.speed)
+	assert_eq(f.current_speed(), world.get_entity(slow).mover.speed)
+	_run(world, 60)
+	var gap: int = absi(world.get_entity(fast).x - world.get_entity(slow).x)
+	assert_true(gap < Fx.from_int(4), "the fast unit ran %d m ahead" % (gap / Fx.ONE))
+	# Alone, it uses its own speed again.
+	_order(world, [fast], 10, 50)
+	_run(world, 2)
+	assert_eq(f.group_speed, 0)
+	assert_eq(f.current_speed(), Fx.from_int(2))

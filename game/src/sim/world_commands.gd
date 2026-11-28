@@ -39,6 +39,8 @@ static func apply_all(world: SimWorld, cmds: Array) -> void:
 				UnitCommands.apply(world, c)
 			SimCommand.Type.GARRISON, SimCommand.Type.UNLOAD:
 				GarrisonSystem.apply_command(world, c)
+			SimCommand.Type.USE_ABILITY:
+				AbilitySystem.apply_command(world, c)
 			_:
 				push_error("SimWorld: unknown command type %d" % c.type)
 
@@ -89,12 +91,20 @@ static func move(world: SimWorld, c: SimCommand) -> void:
 		var fy: int = -1 if c.target_y < cy else 1
 		for i: int in n:
 			offsets[i] = Vector2i(offsets[i].x * fx, offsets[i].y * fy)
+	# Ground units in a group keep to the slowest one's pace (P2-11f); flyers
+	# keep their own.
+	var slowest: int = 0
+	for e: SimEntity in movers:
+		if not e.mover.flying and (slowest == 0 or e.mover.speed < slowest):
+			slowest = e.mover.speed
 	for i: int in n:
 		var e: SimEntity = movers[i]
 		e.mover.order_move(
 			clampi(c.target_x + offsets[i].x, 0, world.map_width),
 			clampi(c.target_y + offsets[i].y, 0, world.map_height))
 		e.mover.follow_leader = 0 if e == leader or n == 1 else leader.id
+		if n > 1 and not e.mover.flying:
+			e.mover.group_speed = slowest
 		e.order = SimEntity.Order.MOVE
 		e.order_target_id = 0
 		# A direct move order takes builders and gatherers off their jobs.
