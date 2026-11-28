@@ -34,7 +34,8 @@
       "us_mbt"
     ],
     "infantry": [
-      "us_ifv"
+      "us_ifv",
+      "us_rocket_artillery"
     ],
     "light_vehicle": [
       "us_mbt"
