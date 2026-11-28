@@ -71,7 +71,7 @@ func _unit_orders() -> Array[Dictionary]:
 			"action": func() -> void:
 				_selection.disarm()
 				_selection.guard_armed = true},
-		_spoof_entry(),
+		_unload_entry() if _carrying() else _spoof_entry(),
 	]
 	out.append_array(_ability_entries(2))
 	return out
@@ -107,6 +107,25 @@ func _ability_entries(slots: int) -> Array[Dictionary]:
 					_selection.disarm()
 					_selection.ability_armed = aid})
 	return out
+
+
+## True if a selected transport has passengers (P3-06).
+func _carrying() -> bool:
+	for id: int in _selection.selected:
+		var e: SimEntity = _runner.world.get_entity(id)
+		if e != null and e.mover != null and e.garrison != null and not e.garrison.occupants.is_empty():
+			return true
+	return false
+
+
+## "Unload" for selected transports with passengers (P3-06).
+func _unload_entry() -> Dictionary:
+	return {"label": "Unload", "tooltip": "Everyone inside gets out",
+		"action": func() -> void:
+			for id: int in _selection.selected:
+				var e: SimEntity = _runner.world.get_entity(id)
+				if e != null and e.mover != null and e.garrison != null and not e.garrison.occupants.is_empty():
+					_runner.submit(SimCommand.make_unload(e.id))}
 
 
 ## "Spoof" for selected jamming vehicles (P2-03), greyed out while cooling down.

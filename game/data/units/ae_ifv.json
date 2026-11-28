@@ -16,6 +16,7 @@
   "weapons": [
     "ae_ifv_autocannon"
   ],
+  "transport_capacity": 2,
   "visual": {
     "model": "res://assets/models/units/ae_ifv.glb",
     "icon": "res://assets/icons/units/ae_ifv.png"

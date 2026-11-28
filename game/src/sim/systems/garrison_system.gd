@@ -1,6 +1,10 @@
 class_name GarrisonSystem
 extends RefCounted
-## Garrisons (P3-05), right after OrderSystem.
+## Garrisons (P3-05) and transports (P3-06), right after OrderSystem.
+## A transport is a ground vehicle with a garrison: its passengers ride along
+## (they stay at its position), fire from inside through its firing ports,
+## can't be shot, get out next to it with UNLOAD, and are thrown out hurt
+## when it is destroyed.
 ##
 ## - Infantry given a GARRISON order walk to the structure and go inside once
 ##   within ENTER_RANGE of its walls, if it has room and is theirs or an empty
@@ -20,12 +24,15 @@ const CLEAR_PERCENT: int = 50
 const EJECT_DAMAGE_PERCENT: int = 25
 
 
-## True if `e` may go into `s` now.
+## True if `e` may go into `s` now: a finished building, or one of our own
+## ground vehicles with room (a transport, P3-06).
 static func can_enter(e: SimEntity, s: SimEntity) -> bool:
-	return e != null and s != null and not e.dead and not s.dead and e.inside_id == 0 \
-		and e.armor_class == "infantry" and e.mover != null \
-		and s.garrison != null and s.building != null and s.building.built and s.garrison.has_room() \
-		and (s.player_id == e.player_id or s.player_id == 0)
+	if e == null or s == null or e.dead or s.dead or e.inside_id != 0 or e.armor_class != "infantry" \
+			or e.mover == null or s.garrison == null or not s.garrison.has_room():
+		return false
+	if s.building != null:
+		return s.building.built and (s.player_id == e.player_id or s.player_id == 0)
+	return s.mover != null and not s.mover.flying and s.player_id == e.player_id and s.id != e.id
 
 
 static func apply_command(world: SimWorld, c: SimCommand) -> void:

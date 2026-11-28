@@ -92,6 +92,7 @@ static func load_unit(db: ContentDb, path: String) -> void:
 	u.fiber_optic = bool(src.get("fiber_optic", false))
 	u.spotter = bool(src.get("spotter", false))
 	u.crusher = bool(src.get("crusher", false))
+	u.transport_capacity = int(src.get("transport_capacity", 0))
 	if src.has("rearm_s"):
 		u.rearm_ticks = ContentDb.ms_to_ticks(int(src["rearm_s"]) * 1000)
 	if src.has("heal_aura"):
