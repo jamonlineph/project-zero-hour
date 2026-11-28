@@ -1,0 +1,23 @@
+{
+  "id": "eu_transport_heli",
+  "faction": "eu",
+  "role": "air_transport",
+  "name": "Transport Helicopter",
+  "armor_class": "aircraft",
+  "status": "first-pass numbers (P3-04b)",
+  "_doc": "Carries 3 squads; the EU's air-assault squads ride it into battle.",
+  "max_hp": 1000,
+  "cost": 1050,
+  "speed_cm_per_s": 2300,
+  "radius_cm": 350,
+  "vision_cm": 5000,
+  "build_time_ms": 16000,
+  "requires": [],
+  "weapons": [],
+  "flying": true,
+  "transport_capacity": 3,
+  "visual": {
+    "model": "res://assets/models/units/eu_transport_heli.glb",
+    "icon": "res://assets/icons/units/eu_transport_heli.png"
+  }
+}

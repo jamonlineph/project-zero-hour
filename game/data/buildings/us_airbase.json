@@ -18,7 +18,8 @@
   ],
   "produces": [
     "us_attack_heli",
-    "us_stealth_fighter"
+    "us_stealth_fighter",
+    "us_tiltrotor"
   ],
   "_doc": "Aircraft built here come back here to rearm and repair (AirSystem).",
   "visual": {

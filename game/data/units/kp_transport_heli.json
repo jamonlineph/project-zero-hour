@@ -1,0 +1,23 @@
+{
+  "id": "kp_transport_heli",
+  "faction": "kp",
+  "role": "air_transport",
+  "name": "Old Transport Helicopter",
+  "armor_class": "aircraft",
+  "status": "first-pass numbers (P3-04b)",
+  "_doc": "Cheap, slow and fragile; carries 2 squads.",
+  "max_hp": 750,
+  "cost": 700,
+  "speed_cm_per_s": 1800,
+  "radius_cm": 350,
+  "vision_cm": 5000,
+  "build_time_ms": 16000,
+  "requires": [],
+  "weapons": [],
+  "flying": true,
+  "transport_capacity": 2,
+  "visual": {
+    "model": "res://assets/models/units/kp_transport_heli.glb",
+    "icon": "res://assets/icons/units/kp_transport_heli.png"
+  }
+}

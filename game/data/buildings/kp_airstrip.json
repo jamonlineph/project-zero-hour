@@ -17,7 +17,8 @@
     "kp_vehicle_plant"
   ],
   "produces": [
-    "kp_strike_jet"
+    "kp_strike_jet",
+    "kp_transport_heli"
   ],
   "_doc": "North Korea's airfield (P3-04b): concrete shelters for its strike jets, which come back here to rearm and repair (AirSystem).",
   "visual": {

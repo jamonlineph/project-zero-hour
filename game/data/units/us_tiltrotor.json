@@ -1,0 +1,23 @@
+{
+  "id": "us_tiltrotor",
+  "faction": "us",
+  "role": "air_transport",
+  "name": "Tiltrotor Transport",
+  "armor_class": "aircraft",
+  "status": "first-pass numbers (P3-04b)",
+  "_doc": "Fast, unarmed transport: carries 3 squads over rivers and cliffs. Shot down, everyone aboard is lost.",
+  "max_hp": 950,
+  "cost": 1100,
+  "speed_cm_per_s": 2600,
+  "radius_cm": 350,
+  "vision_cm": 5000,
+  "build_time_ms": 16000,
+  "requires": [],
+  "weapons": [],
+  "flying": true,
+  "transport_capacity": 3,
+  "visual": {
+    "model": "res://assets/models/units/us_tiltrotor.glb",
+    "icon": "res://assets/icons/units/us_tiltrotor.png"
+  }
+}

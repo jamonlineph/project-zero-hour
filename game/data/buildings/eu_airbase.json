@@ -18,7 +18,8 @@
   ],
   "produces": [
     "eu_attack_heli",
-    "eu_fighter"
+    "eu_fighter",
+    "eu_transport_heli"
   ],
   "_doc": "Aircraft built here come back here to rearm and repair (AirSystem).",
   "visual": {

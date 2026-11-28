@@ -30,6 +30,15 @@ static func apply(world: SimWorld, target: SimEntity, amount: int, damage_type: 
 		return dealt
 	if target.hp <= 0:
 		target.dead = true
+		if target.garrison != null and target.mover != null and target.mover.flying:
+			# Shot down with passengers aboard (P3-04b): nobody gets out.
+			for oid: int in target.garrison.occupants:
+				var o: SimEntity = world.get_entity(oid)
+				if o != null and not o.dead:
+					o.hp = 0
+					o.dead = true
+					world.events.append({"type": "died", "id": o.id, "def_id": o.def_id,
+							"player": o.player_id, "x": o.x, "y": o.y, "killer": attacker_id})
 		world.events.append({"type": "died", "id": target.id, "def_id": target.def_id,
 				"player": target.player_id, "x": target.x, "y": target.y, "killer": attacker_id})
 		if attacker != null and target.building != null and world.are_enemies(attacker.player_id, target.player_id):

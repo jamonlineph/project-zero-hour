@@ -116,7 +116,11 @@
     "res://data/units/us_stealth_fighter.json",
     "res://data/units/ae_fighter.json",
     "res://data/units/eu_fighter.json",
-    "res://data/units/kp_strike_jet.json"
+    "res://data/units/kp_strike_jet.json",
+    "res://data/units/us_tiltrotor.json",
+    "res://data/units/ae_transport_heli.json",
+    "res://data/units/kp_transport_heli.json",
+    "res://data/units/eu_transport_heli.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",
