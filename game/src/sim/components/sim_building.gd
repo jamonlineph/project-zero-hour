@@ -30,6 +30,8 @@ var disabled_until: int = 0
 ## can't be captured), who is capturing it and how far they got.
 var capture_ticks: int = 0
 var walkable: bool = false       ## no footprint on the map; doesn't keep a player alive (P3-10a)
+var bridge: bool = false         ## from the def (P3-11); not hashed
+var collapsed: bool = false      ## a bridge at 0 hp: its deck is blocked until repaired (P3-11)
 var capture_player: int = 0
 var capture_progress: int = 0
 
@@ -45,6 +47,8 @@ func write_hash(h_: SimHash) -> void:
 	h_.add_int(w)
 	h_.add_int(h)
 	h_.add_bool(built)
+	if collapsed:   # only while a bridge is down (P3-11)
+		h_.add_bool(collapsed)
 	h_.add_int(progress)
 	h_.add_int(total)
 	h_.add_int(power)

@@ -149,6 +149,9 @@ static func _sell(world: SimWorld, c: SimCommand) -> void:
 
 static func _repair(world: SimWorld, c: SimCommand) -> void:
 	var b: SimEntity = _own_building(world, c)
+	var t: SimEntity = world.get_entity(c.target_entity)
+	if b == null and t != null and t.building != null and t.building.bridge and t.hp < t.max_hp:
+		b = t   # any side's builders can repair a bridge (P3-11)
 	if b == null:
 		return
 	for e: SimEntity in WorldCommands.owned(world, c):

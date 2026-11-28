@@ -45,6 +45,11 @@ static func build_from(content: ContentDb, sc: Dictionary, seed_value: int) -> S
 	if house != null:
 		for r: PackedInt32Array in map_def.civilian_buildings_m:
 			world.spawn_structure(house, r[0], r[1], r[2], r[3])
+	# Bridge decks are neutral bridges that can be destroyed and repaired (P3-11).
+	var bridge: BuildingDef = content.get_building("bridge")
+	if bridge != null:
+		for r: PackedInt32Array in map_def.bridges_m:
+			world.spawn_structure(bridge, r[0], r[1], r[2], r[3])
 	# Neutral capturable buildings (P3-08a), centered on their points.
 	for nb: Dictionary in map_def.neutral_buildings:
 		var nd: BuildingDef = content.get_building(str(nb["def"]))

@@ -85,7 +85,7 @@ static func in_range(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 
 
 static func _valid_target(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
-	return not t.dead and t.inside_id == 0 and world.are_enemies(e.player_id, t.player_id) \
+	return not t.dead and t.inside_id == 0 and (world.are_enemies(e.player_id, t.player_id) or BridgeSystem.attackable(e, t)) \
 			and DamageMatrix.can_target(w.targets, t.armor_class) and in_range(e, w, t) \
 			and world.can_see(e.player_id, t.x, t.y) and world.is_detected(e.player_id, t) \
 			and KillChainSystem.may_engage(world, e, w, t) \

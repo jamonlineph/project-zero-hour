@@ -38,7 +38,8 @@ func _initialize() -> void:
 		if not (file.begins_with("test_") and file.ends_with(".gd")):
 			continue
 		var script: GDScript = load(TEST_DIR + file)
-		if script == null:
+		# A script with a parse error still loads, but can't be instantiated.
+		if script == null or not script.can_instantiate():
 			printerr("FAIL could not load ", file)
 			failed += 1
 			continue

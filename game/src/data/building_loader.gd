@@ -47,6 +47,7 @@ static func load_building(db: ContentDb, path: String) -> void:
 		b.heal_classes = db.string_list(ha, "classes", path)
 	b.spotter = bool(src.get("spotter", false))
 	b.walkable = bool(src.get("walkable", false))
+	b.bridge = bool(src.get("bridge", false))
 	b.stealth = bool(src.get("stealth", false))
 	if src.get("mine", null) is Dictionary:
 		var mine: Dictionary = src["mine"]

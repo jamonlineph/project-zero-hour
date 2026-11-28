@@ -30,6 +30,9 @@ static func describe(world: SimWorld, selected: Array[int]) -> String:
 			text = "Supply site   %d credits left" % e.supply.remaining
 		if e.garrison != null:
 			text += "\nInside: %d / %d" % [e.garrison.occupants.size(), e.garrison.capacity]
+		if e.building != null and e.building.bridge:
+			text += "\nCollapsed: builders can repair it (open again at %d%%)" % BridgeSystem.REOPEN_PERCENT \
+				if e.building.collapsed else "\nAttack order (A, then click it) to destroy it"
 		if e.building != null and e.building.capture_ticks > 0:
 			var b: SimBuilding = e.building
 			text += "\n%s" % ("Neutral: infantry can capture it" if e.player_id == 0 else "Captured")

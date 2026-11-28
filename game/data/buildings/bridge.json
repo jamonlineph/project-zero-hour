@@ -1,0 +1,19 @@
+{
+  "id": "bridge",
+  "faction": "neutral",
+  "name": "Bridge",
+  "_doc": "River bridges on maps (map.json bridges_m, P3-11): neutral and walkable. Only an attack order targets one; at 0 hp it collapses and blocks the crossing until builders repair it to half health (free). MatchSetup sizes each one from its deck rectangle; footprint_cells is only the default.",
+  "armor_class": "structure",
+  "max_hp": 3000,
+  "cost": 0,
+  "footprint_cells": [16, 8],
+  "build_time_ms": 1000,
+  "power": 0,
+  "vision_cm": 0,
+  "requires": [],
+  "produces": [],
+  "weapons": [],
+  "walkable": true,
+  "bridge": true,
+  "visual": {}
+}

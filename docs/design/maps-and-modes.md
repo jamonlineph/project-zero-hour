@@ -10,7 +10,7 @@
   - `water_level_cm` (optional): cells lower than this are deep water and impassable; the view draws a water surface over them
   - `terrain_gen` (optional): hills, raised rocks and carved river `channels` that `tools/make_heightmap.py` turns into `height.r16`. `mirror_x: true` copies the west half onto the east, so a 1v1 map's heights are exactly mirrored
   - `civilian_buildings_m` (optional): town houses `[x, y, w, h, roof_height]` in meters. MatchSetup places them as neutral `civilian_house` buildings infantry can garrison (P3-05); `HouseModel` draws them at their size
-  - `bridges_m` (optional): bridge decks `[x, y, w, h]` drawn over river crossings. View only: the crossing itself is ground the channels leave uncarved
+  - `bridges_m` (optional): bridge decks `[x, y, w, h]` over river crossings. The crossing itself is ground the channels leave uncarved; MatchSetup puts a neutral `bridge` building on each deck (P3-11), so make the deck cover the whole dry gap: when the bridge collapses, its deck's cells are what gets blocked
   - `skirmish` (optional, default false): offered in the skirmish menu
   - `neutral_buildings` (optional): capturable buildings `[building_id, x, y]` in meters, placed neutral and centered on the point (P3-08a). On a mirrored map, give each one its mirror, or put it on the middle line with an even footprint width so it mirrors onto itself
   - `biome` (optional, default `temperate`): `temperate`, `desert` or `winter` (`MapDef.BIOMES`). View only (P3-23): `Biomes` holds each one's ground, water and house colors and how obstacles are drawn (temperate rocks and hedges, desert sandstone mesas, winter pine forests). Obstacles are drawn at exactly their rectangles, so what you see still blocks

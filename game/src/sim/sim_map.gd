@@ -169,6 +169,20 @@ func place_footprint(cx: int, cy: int, w: int, h: int, entity_id: int) -> bool:
 	return true
 
 
+## Claims the passable cells of a w x h rectangle for an entity, skipping
+## the rest (a collapsed bridge's deck over water, P3-11). Returns how many.
+func claim_passable(cx: int, cy: int, w: int, h: int, entity_id: int) -> int:
+	var n: int = 0
+	for y: int in range(maxi(cy, 0), mini(cy + h, height_cells)):
+		for x: int in range(maxi(cx, 0), mini(cx + w, width_cells)):
+			if is_passable(x, y):
+				_footprint[index(x, y)] = entity_id
+				walk[padded_index(x, y)] = 0
+				n += 1
+	change_log.append(Rect2i(cx, cy, w, h))
+	return n
+
+
 ## Releases every cell claimed by an entity. Returns how many were released.
 func clear_footprint(entity_id: int) -> int:
 	var released: int = 0

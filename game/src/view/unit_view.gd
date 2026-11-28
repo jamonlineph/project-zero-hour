@@ -337,6 +337,8 @@ func update_from_sim(e: SimEntity, alpha: float) -> void:
 	if _static and e.garrison != null:
 		# Who holds it shows as a flag (houses) and as pips (P3-05).
 		HouseModel.set_holder(_model, TeamColors.for_player(e.player_id) if e.player_id != 0 else null)
+	if _static and e.building != null and e.building.bridge:
+		BridgeModel.set_collapsed(_model, e.building.collapsed)
 	if _static:
 		# Buildings rise out of the ground while under construction.
 		if e.building != null:
@@ -380,6 +382,8 @@ func _make_model(def: UnitDef, radius_m: float, team_color: Color) -> Node3D:
 func _make_building_model(def: BuildingDef, e: SimEntity, team_color: Color) -> Node3D:
 	if def != null and def.id == "civilian_house":
 		return HouseModel.make(e.building.w * 2.0, e.building.h * 2.0, e.building.cell_x + e.building.cell_y)
+	if def != null and def.bridge:
+		return BridgeModel.make(e.building.w * 2.0, e.building.h * 2.0)   # P3-11
 	if def != null and def.model_path != "" and ResourceLoader.exists(def.model_path):
 		var scene: PackedScene = load(def.model_path)
 		if scene != null:

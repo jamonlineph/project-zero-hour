@@ -132,8 +132,10 @@ static func _stop(world: SimWorld, c: SimCommand) -> void:
 ## to hit it ignore the order.
 static func _attack(world: SimWorld, c: SimCommand) -> void:
 	var t: SimEntity = world.get_entity(c.target_entity)
-	if t == null or t.dead or not world.are_enemies(c.player_id, t.player_id) or not world.can_see(c.player_id, t.x, t.y):
+	if t == null or t.dead or not world.can_see(c.player_id, t.x, t.y):
 		return
+	if not world.are_enemies(c.player_id, t.player_id) and not BridgeSystem.standing(t):
+		return   # bridges are the one neutral target (P3-11)
 	for e: SimEntity in owned(world, c):
 		var able: bool = false
 		for w: SimWeapon in e.weapons:

@@ -223,8 +223,8 @@ func order_at(screen_pos: Vector2) -> void:
 	if site != 0 and _selected_any(func(e: SimEntity) -> bool: return e.gatherer != null):
 		runner.submit(SimCommand.make_gather(selected, site))
 		return
-	var own_building: int = _pick(screen_pos, func(e: SimEntity) -> bool:
-		return e.building != null and e.player_id == local_player_id)
+	var own_building: int = _pick(screen_pos, func(e: SimEntity) -> bool:   # or a damaged bridge (P3-11)
+		return e.building != null and (e.player_id == local_player_id or (e.building.bridge and e.hp < e.max_hp)))
 	if own_building != 0 and _selected_any(func(e: SimEntity) -> bool: return e.builder != null):
 		runner.submit(SimCommand.make_repair(selected, own_building))
 		return

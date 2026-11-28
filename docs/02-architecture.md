@@ -93,7 +93,7 @@ Sim `(x, y)` maps to Godot `(x, 0, y)`, so sim Y is Godot +Z. The map runs from 
 
 Keep this list in sync with the code whenever you add a system.
 
-`SimWorld` itself holds the state, the step order and small public helpers. The bulk of the work sits in helper scripts next to it (P2-11d): `WorldCommands` (applying commands), `WorldSpawn` (building entities from definitions), `WorldPlacement` (footprints and approach cells), `WorldDamage` (damage, deaths and experience) and `SpatialIndex` (area searches). On the data side, `ContentDb` loads the index and keeps the shared JSON helpers; `UnitLoader`, `MapLoader` and `PowerLoader` load units and weapons, maps, and powers, strikes and upgrades.
+`SimWorld` itself holds the state, the step order and small public helpers. The bulk of the work sits in helper scripts next to it (P2-11d): `WorldCommands` (applying commands), `WorldSpawn` (building entities from definitions), `WorldPlacement` (footprints and approach cells), `WorldDamage` (damage, deaths and experience; a bridge at 0 hp collapses through `BridgeSystem` instead of dying, P3-11) and `SpatialIndex` (area searches). On the data side, `ContentDb` loads the index and keeps the shared JSON helpers; `UnitLoader`, `MapLoader` and `PowerLoader` load units and weapons, maps, and powers, strikes and upgrades.
 
 ### Commands
 

@@ -9,7 +9,13 @@ extends RefCounted
 ## Runs the pending order at `screen_pos`. Returns true if one was pending.
 static func handle(sel: SelectionController, screen_pos: Vector2) -> bool:
 	if sel.attack_move_armed:
-		sel.order_attack_move(screen_pos)
+		# Attack on a standing bridge targets it: the one way to blow one (P3-11).
+		var bridge: int = sel.pick_entity(screen_pos, func(e: SimEntity) -> bool: return BridgeSystem.standing(e))
+		if bridge != 0:
+			sel.attack_move_armed = false
+			sel.order_attack(bridge)
+		else:
+			sel.order_attack_move(screen_pos)
 		return true
 	if sel.patrol_armed:
 		sel.order_patrol(screen_pos)

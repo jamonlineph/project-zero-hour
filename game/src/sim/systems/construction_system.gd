@@ -20,7 +20,7 @@ static func step(world: SimWorld) -> void:
 		if e.builder == null or e.builder.target_id == 0 or e.dead:
 			continue
 		var t: SimEntity = world.get_entity(e.builder.target_id)
-		var done: bool = t == null or t.dead or t.building == null or t.player_id != e.player_id
+		var done: bool = t == null or t.dead or t.building == null or (t.player_id != e.player_id and not t.building.bridge)
 		if not done:
 			done = t.building.built and (not e.builder.repair or t.hp >= t.max_hp)
 		if done:
@@ -65,10 +65,13 @@ static func _advance(world: SimWorld, t: SimEntity, steps: int) -> void:
 
 
 static func _repair(world: SimWorld, t: SimEntity, builders: int) -> void:
-	var player: SimPlayer = world.get_player(t.player_id)
 	var heal: int = mini(t.max_hp - t.hp, maxi(1, (t.max_hp * REPAIR_PERCENT_PER_SECOND * builders) / 100))
 	var price: int = (t.cost * heal) / (2 * t.max_hp)
-	if player.credits < price:
-		return
-	player.credits -= price
+	if price > 0:   # free repairs (bridges) charge no one
+		var player: SimPlayer = world.get_player(t.player_id)
+		if player.credits < price:
+			return
+		player.credits -= price
 	t.hp += heal
+	if t.building.bridge:
+		BridgeSystem.repaired(world, t)

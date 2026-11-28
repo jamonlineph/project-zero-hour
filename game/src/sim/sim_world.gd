@@ -196,8 +196,8 @@ func spawn_structure(def: BuildingDef, x_m: int, y_m: int, w_m: int, h_m: int) -
 	var cy: int = SimMap.cell_coord(Fx.from_int(y_m))
 	var size := Vector2i(maxi(1, (w_m * 100) / SimMap.CELL_CM), maxi(1, (h_m * 100) / SimMap.CELL_CM))
 	var id: int = _next_id
-	if not map.place_footprint(cx, cy, size.x, size.y, id):
-		return 0
+	if not def.walkable and not map.place_footprint(cx, cy, size.x, size.y, id):
+		return 0   # walkable structures (bridges, P3-11) claim no cells
 	_next_id += 1
 	var e: SimEntity = WorldSpawn.make_building(def, id, 0, cx, cy, true, size)
 	if e.garrison != null:

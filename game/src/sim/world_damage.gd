@@ -8,7 +8,7 @@ extends RefCounted
 ## grants XP to the attacker and its player. Returns the damage dealt. An
 ## entity reaching 0 hp is marked dead and removed at the end of the tick.
 static func apply(world: SimWorld, target: SimEntity, amount: int, damage_type: String, attacker_id: int, drone_hit: bool) -> int:
-	if target.dead:
+	if target.dead or (target.building != null and target.building.collapsed):
 		return 0
 	amount = ProtectionSystem.cage(target, amount, drone_hit)   # P2-06
 	var raw: int = world.damage_matrix.apply(amount, damage_type, target.armor_class)
@@ -25,6 +25,9 @@ static func apply(world: SimWorld, target: SimEntity, amount: int, damage_type: 
 	var attacker: SimEntity = world.get_entity(attacker_id)
 	if attacker != null and dealt > 0 and world.are_enemies(attacker.player_id, target.player_id):
 		_grant_xp(world, attacker, (dealt * target.cost) / maxi(1, target.max_hp))
+	if target.hp <= 0 and target.building != null and target.building.bridge:
+		BridgeSystem.collapse(world, target)   # bridges fall, they don't die (P3-11)
+		return dealt
 	if target.hp <= 0:
 		target.dead = true
 		world.events.append({"type": "died", "id": target.id, "def_id": target.def_id,

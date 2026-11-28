@@ -157,7 +157,8 @@
     "res://data/buildings/us_airbase.json",
     "res://data/buildings/ae_airbase.json",
     "res://data/buildings/eu_airbase.json",
-    "res://data/buildings/kp_minefield.json"
+    "res://data/buildings/kp_minefield.json",
+    "res://data/buildings/bridge.json"
   ],
   "maps": [
     "res://data/maps/sandbox/map.json",
