@@ -1,0 +1,21 @@
+{
+  "id": "eu_air_mobile_doctrine",
+  "_doc": "Granted by its doctrine (P3-12b), never researched.",
+  "faction": "eu",
+  "name": "Air Mobile Doctrine",
+  "scope": "global",
+  "cost": 0,
+  "requires": [],
+  "requires_rank": 1,
+  "applies_to": [
+    "eu_attack_heli",
+    "eu_air_assault",
+    "eu_rifle_squad",
+    "eu_at_team",
+    "eu_medics"
+  ],
+  "effects": {
+    "speed_percent": 15
+  },
+  "granted": true
+}

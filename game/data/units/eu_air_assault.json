@@ -1,0 +1,24 @@
+{
+  "id": "eu_air_assault",
+  "faction": "eu",
+  "role": "air_assault",
+  "name": "Air-Assault Squad",
+  "armor_class": "infantry",
+  "status": "first-pass numbers (P3-12b: doctrine unit)",
+  "max_hp": 280,
+  "cost": 450,
+  "speed_cm_per_s": 460,
+  "radius_cm": 150,
+  "vision_cm": 5000,
+  "build_time_ms": 8000,
+  "requires": [],
+  "weapons": [
+    "eu_assault_rifles",
+    "eu_at_missile"
+  ],
+  "requires_unlock": "eu_doctrine_air_mobile",
+  "visual": {
+    "model": "res://assets/models/units/eu_air_assault.glb",
+    "icon": "res://assets/icons/units/eu_air_assault.png"
+  }
+}

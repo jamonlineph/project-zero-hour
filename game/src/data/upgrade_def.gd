@@ -15,6 +15,7 @@ var scope: String = "global"         ## "global" or "unit"
 var cost: int = 0                    ## per unit for "unit" upgrades
 var research_ticks: int = 1          ## global only (data: research_time_ms)
 var researched_at: String = ""       ## global only: building id that researches it
+var granted: bool = false            ## never researched: a power grants it (P3-12b doctrines)
 var requires: PackedStringArray = [] ## buildings the player must own (built)
 var requires_rank: int = 1           ## commander rank needed
 var applies_to: PackedStringArray = []  ## unit ids

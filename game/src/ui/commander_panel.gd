@@ -7,6 +7,7 @@ var runner: SimRunner
 var player_id: int = 1
 var _list: VBoxContainer
 var _title: Label
+var _shown: Vector2i = Vector2i(-1, -1)   ## rank and powers shown; refresh when they change
 
 
 func setup(sim_runner: SimRunner, local_player: int) -> void:
@@ -47,11 +48,20 @@ func setup(sim_runner: SimRunner, local_player: int) -> void:
 	refresh()
 
 
+## A rank gained, or a choice landing a few ticks after the click, shows
+## without reopening the panel.
+func _process(_delta: float) -> void:
+	var player: SimPlayer = runner.world.get_player(player_id)
+	if Vector2i(player.rank, player.powers.size()) != _shown:
+		refresh()
+
+
 func refresh() -> void:
 	for c: Node in _list.get_children():
 		c.queue_free()
 	var world: SimWorld = runner.world
 	var player: SimPlayer = world.get_player(player_id)
+	_shown = Vector2i(player.rank, player.powers.size())
 	var points: int = CommanderPowers.points(player)
 	_title.text = "Commander: rank %d, %d point%s to spend" % [player.rank, points, "" if points == 1 else "s"]
 	var tier: int = -1
@@ -79,6 +89,9 @@ func refresh() -> void:
 			b.disabled = true
 		elif player.rank < def.tier:
 			b.text = "Rank %d" % def.tier
+			b.disabled = true
+		elif def.group != "" and CommanderPowers.in_group(world, player, def.group):
+			b.text = "Ruled out"   # another doctrine was chosen (P3-12b)
 			b.disabled = true
 		else:
 			b.text = "Choose"

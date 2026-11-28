@@ -1,0 +1,18 @@
+{
+  "id": "eu_air_defense_doctrine",
+  "_doc": "Granted by its doctrine (P3-12b), never researched.",
+  "faction": "eu",
+  "name": "Integrated Air Defense Doctrine",
+  "scope": "global",
+  "cost": 0,
+  "requires": [],
+  "requires_rank": 1,
+  "applies_to": [
+    "eu_shorad",
+    "eu_lr_sam"
+  ],
+  "effects": {
+    "range_percent": 20
+  },
+  "granted": true
+}

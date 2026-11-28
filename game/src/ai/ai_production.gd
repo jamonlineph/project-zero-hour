@@ -45,6 +45,8 @@ static func produce(world: SimWorld, ai: AiPlayer, army: Array[SimEntity], build
 			var def: UnitDef = world.content.get_unit(u)
 			if def == null or not world.has_requirements(ai.player_id, def.requires):
 				continue
+			if def.requires_unlock != "" and not world.get_player(ai.player_id).powers.has(def.requires_unlock):
+				continue   # not unlocked yet: don't hold the factory for it (P3-12b)
 			# How far below its share of the army this unit type is, plus up
 			# to one unit's worth of noise so mixes vary between matches.
 			var score: int = (army.size() + 1) * mix[u] - counts.get(u, 0) * total_weight \

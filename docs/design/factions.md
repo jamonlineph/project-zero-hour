@@ -9,7 +9,7 @@ Four sides, chosen by the owner on 2026-11-26: **America, the United Arab Emirat
 | `us` | America | Expensive and precise: see first, strike from far away | Now (vertical slice) |
 | `kp` | North Korea | Mass and firepower: artillery, jamming and fortifications | Now (vertical slice) |
 | `ae` | United Arab Emirates | Rich and fast: buys the best, strikes with drones and special forces | Playable since P3-02a (base roster); signature mechanics in P3-02b–f |
-| `eu` | European Union | A coalition: well-rounded, tough, adapts its doctrine | Playable since P3-12a (base roster); doctrines and interoperability in P3-12b–c |
+| `eu` | European Union | A coalition: well-rounded, tough, adapts its doctrine | Playable since P3-12a (base roster); doctrines since P3-12b; interoperability in P3-12c |
 
 ## America (`us`): expensive and precise
 
@@ -58,7 +58,7 @@ Four sides, chosen by the owner on 2026-11-26: **America, the United Arab Emirat
 - **Strengths:** tough, well-rounded units, the best repair and medical support, strong air defense, excellent tanks.
 - **Weaknesses:** no single overwhelming strength; slow to mass up; units are costly to replace.
 - **Signature mechanics:**
-  - **Battlegroup doctrine:** at the start of a match, pick one of three doctrines (Heavy Armor, Air Mobile, Integrated Air Defense). Each unlocks one unique unit and a passive bonus.
+  - **Battlegroup doctrine:** at the start of a match, pick one of three doctrines (Heavy Armor, Air Mobile, Integrated Air Defense). Each unlocks one unique unit and a passive bonus. In the game since P3-12b (`docs/design/commander.md`).
   - **Interoperability:** groups that mix three or more unit types fight better together (faster reload).
   - **Field repair and medics:** damaged units heal near repair vehicles and field hospitals.
   - **Sovereign airspace:** air-defense sites share targets with each other and with fighters.

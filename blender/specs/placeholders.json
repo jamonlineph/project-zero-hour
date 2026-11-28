@@ -112,6 +112,9 @@
     {"id": "ae_shorad", "category": "units", "archetype": "wheeled", "faction": "ae", "length": 8.0, "width": 2.8, "height": 3.0, "axles": 4, "cargo": "pods", "tri_budget": 2500},
     {"id": "kp_shorad", "category": "units", "archetype": "wheeled", "faction": "kp", "length": 7.4, "width": 2.7, "height": 3.0, "axles": 3, "cargo": "pods", "tri_budget": 2500},
     {"id": "eu_shorad", "category": "units", "archetype": "wheeled", "faction": "eu", "length": 7.8, "width": 2.6, "height": 3.0, "axles": 3, "cargo": "pods", "tri_budget": 2500},
-    {"id": "kp_minefield", "category": "buildings", "archetype": "building", "faction": "kp", "style": "trench", "width": 4.0, "depth": 4.0, "height": 0.3, "tri_budget": 800}
+    {"id": "kp_minefield", "category": "buildings", "archetype": "building", "faction": "kp", "style": "trench", "width": 4.0, "depth": 4.0, "height": 0.3, "tri_budget": 800},
+    {"id": "eu_heavy_mbt", "category": "units", "archetype": "tracked", "faction": "eu", "length": 8.8, "width": 3.9, "height": 2.7, "turret_scale": 1.15, "barrel_length": 5.6, "barrel_radius": 0.11, "turret_extras": ["sight"], "tri_budget": 3000},
+    {"id": "eu_air_assault", "category": "units", "archetype": "infantry", "faction": "eu", "figures": 4, "weapon": "launcher", "tri_budget": 3200},
+    {"id": "eu_lr_sam", "category": "units", "archetype": "wheeled", "faction": "eu", "length": 9.0, "width": 2.7, "height": 3.2, "axles": 4, "cargo": "launcher", "tri_budget": 2500}
   ]
 }

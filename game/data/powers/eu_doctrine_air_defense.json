@@ -1,0 +1,11 @@
+{
+  "id": "eu_doctrine_air_defense",
+  "faction": "eu",
+  "name": "Doctrine: Integrated Air Defense",
+  "tier": 1,
+  "kind": "unlock",
+  "group": "doctrine",
+  "description": "Unlocks the long-range air-defense vehicle; your air-defense vehicles reach 20% further. One doctrine per match.",
+  "unit": "eu_lr_sam",
+  "grants_upgrade": "eu_air_defense_doctrine"
+}

@@ -28,6 +28,8 @@ static func load_power(db: ContentDb, path: String) -> void:
 	p.strike_id = str(src.get("strike", ""))
 	p.unit_id = str(src.get("unit", ""))
 	p.needs_spotted = bool(src.get("needs_spotted", false))
+	p.group = str(src.get("group", ""))
+	p.grants_upgrade = str(src.get("grants_upgrade", ""))
 	if path.get_file().get_basename() != p.id:
 		db.errors.append("%s: file name must match id '%s'" % [path, p.id])
 	db.powers[p.id] = p
@@ -80,7 +82,8 @@ static func load_upgrade(db: ContentDb, path: String) -> void:
 	if not u.scope in ["global", "unit"]:
 		db.errors.append("%s: scope must be global or unit" % path)
 	u.cost = db.req_int(src, "cost", path, 0)
-	if u.scope == "global":
+	u.granted = bool(src.get("granted", false))
+	if u.scope == "global" and not u.granted:
 		u.research_ticks = ContentDb.ms_to_ticks(db.req_int(src, "research_time_ms", path, 1))
 		u.researched_at = db.req_string(src, "researched_at", path)
 	u.requires = db.string_list(src, "requires", path)

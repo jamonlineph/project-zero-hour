@@ -1,0 +1,24 @@
+{
+  "id": "eu_lr_sam",
+  "faction": "eu",
+  "role": "long_range_air_defense",
+  "name": "Long-Range Air-Defense Vehicle",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-12b: doctrine unit)",
+  "max_hp": 550,
+  "cost": 1600,
+  "speed_cm_per_s": 600,
+  "radius_cm": 290,
+  "vision_cm": 9000,
+  "build_time_ms": 18000,
+  "requires": [],
+  "weapons": [
+    "lr_sam_missile"
+  ],
+  "requires_unlock": "eu_doctrine_air_defense",
+  "turn_rate_deg_per_s": 90,
+  "visual": {
+    "model": "res://assets/models/units/eu_lr_sam.glb",
+    "icon": "res://assets/icons/units/eu_lr_sam.png"
+  }
+}

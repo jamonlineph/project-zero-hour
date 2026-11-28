@@ -1,0 +1,11 @@
+{
+  "id": "eu_doctrine_heavy_armor",
+  "faction": "eu",
+  "name": "Doctrine: Heavy Armor",
+  "tier": 1,
+  "kind": "unlock",
+  "group": "doctrine",
+  "description": "Unlocks the breakthrough tank; your tanks and IFVs get 10% more health. One doctrine per match.",
+  "unit": "eu_heavy_mbt",
+  "grants_upgrade": "eu_heavy_armor_doctrine"
+}

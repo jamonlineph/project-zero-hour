@@ -1,0 +1,12 @@
+{
+  "id": "tank_cannon_130",
+  "status": "first-pass stats (P3-12b)",
+  "damage": 230,
+  "damage_type": "anti_tank",
+  "range_cm": 5200,
+  "reload_ms": 3800,
+  "projectile": "instant",
+  "targets": [
+    "ground"
+  ]
+}

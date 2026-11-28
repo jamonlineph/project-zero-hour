@@ -58,6 +58,16 @@ In the game (P3-02a): satellite pass (`ae_satellite_pass`), drone swarm strike (
 
 In the game (P3-12a): air policing (`eu_air_policing`: 2 `eu_patrol_fighter` for 45 s), field repair (`eu_field_repair`, kind `repair_area`: own vehicles in a 30 m area get 40% of their health back at once), the coalition artillery strike (`eu_coalition_artillery`: 12 `precision_shell` strikes), cyber defense (`eu_cyber_defense`, kind `cyber_defense`: for 30 s jamming and spoofing don't affect your drones and guided weapons) and the stealth cruise strike (`eu_cruise_strike`: 4 `cruise_missile` strikes). The two unlocks wait for doctrines and interoperability (P3-12b–c).
 
+**Doctrines (P3-12b).** The EU also has three rank-1 doctrine powers in the group `doctrine`: choosing one (it costs the starting point, so it is a match-start choice) rules the other two out for the match, and the panel shows them as "Ruled out". Each is kind `unlock` (its unit) and has `grants_upgrade`, a global upgrade marked `granted` that is never researched and applies at once to units on the field and every later one:
+
+| Doctrine | Unlocks | Passive bonus |
+|---|---|---|
+| Heavy Armor (`eu_doctrine_heavy_armor`) | breakthrough tank `eu_heavy_mbt` (vehicle works) | tanks and IFVs +10% health |
+| Air Mobile (`eu_doctrine_air_mobile`) | air-assault squad `eu_air_assault` (barracks) | helicopters and infantry +15% speed |
+| Integrated Air Defense (`eu_doctrine_air_defense`) | long-range air-defense vehicle `eu_lr_sam` (vehicle works) | air-defense vehicles +20% range |
+
+Spending the starting point on a doctrine means rank 1's other powers wait for rank 2. The EU AI takes Heavy Armor and builds the breakthrough tank. Air-assault squads walk for now; the helicopter drop waits for air transports.
+
 ## Superweapons (P3-03)
 
 - Each faction has one superweapon: see [units-and-buildings.md](units-and-buildings.md).

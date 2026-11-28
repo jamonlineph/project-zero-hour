@@ -20,4 +20,8 @@ var count: int = 1
 var percent: int = 0            ## repair_area: percent of max hp restored (P3-12a)
 var strike_id: String = ""
 var unit_id: String = ""        ## reinforce, wingmen, decoys, unlock
+## Choosing one power of a group rules out the others (P3-12b: EU doctrines).
+var group: String = ""
+## A global upgrade the player gets when choosing it (a doctrine's bonus).
+var grants_upgrade: String = ""
 var needs_spotted: bool = false ## strike: the point must be seen by a friendly spotter

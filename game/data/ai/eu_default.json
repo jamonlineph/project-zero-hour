@@ -23,7 +23,8 @@
     "eu_medics": 1,
     "eu_recon_drone": 1,
     "eu_howitzer": 1,
-    "eu_attack_heli": 1
+    "eu_attack_heli": 1,
+    "eu_heavy_mbt": 1
   },
   "max_gatherers": 4,
   "max_spotters": 2,
@@ -52,6 +53,7 @@
     ]
   },
   "power_priority": [
+    "eu_doctrine_heavy_armor",
     "eu_field_repair",
     "eu_air_policing",
     "eu_coalition_artillery",

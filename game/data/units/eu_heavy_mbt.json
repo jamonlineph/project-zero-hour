@@ -1,0 +1,25 @@
+{
+  "id": "eu_heavy_mbt",
+  "faction": "eu",
+  "role": "breakthrough_tank",
+  "name": "Breakthrough Tank",
+  "armor_class": "heavy_armor",
+  "crusher": true,
+  "status": "first-pass numbers (P3-12b: doctrine unit)",
+  "max_hp": 1700,
+  "cost": 1800,
+  "speed_cm_per_s": 600,
+  "radius_cm": 340,
+  "vision_cm": 5000,
+  "build_time_ms": 22000,
+  "requires": [],
+  "weapons": [
+    "tank_cannon_130"
+  ],
+  "requires_unlock": "eu_doctrine_heavy_armor",
+  "turn_rate_deg_per_s": 70,
+  "visual": {
+    "model": "res://assets/models/units/eu_heavy_mbt.glb",
+    "icon": "res://assets/icons/units/eu_heavy_mbt.png"
+  }
+}

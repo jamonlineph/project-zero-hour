@@ -1,0 +1,14 @@
+{
+  "id": "lr_sam_missile",
+  "status": "first-pass stats (P3-12b)",
+  "damage": 160,
+  "damage_type": "anti_air",
+  "range_cm": 12000,
+  "reload_ms": 4000,
+  "projectile": "guided",
+  "targets": [
+    "air",
+    "drone"
+  ],
+  "projectile_speed_cm_per_s": 13000
+}

@@ -6,7 +6,7 @@ Rosters as **role × faction** tables. Every faction fills the same roles in its
 - IDs (`us_mbt` and so on) are the data file names in `game/data/units/` and `game/data/buildings/`. Prefixes: `us_` America, `ae_` UAE, `kp_` North Korea, `eu_` EU.
 - First-pass numbers for the Phase 2 matchup (America vs North Korea) are in [vertical-slice.md](vertical-slice.md). Ids marked ✓ already exist with placeholder art.
 - The UAE's first roster (P3-02a) is in `game/data/` with first-pass numbers: fewer, pricier, faster units. Its raider is simply fast until terrain types exist (P3-02d); the swarm-drone truck came in P3-02c; procurement comes in P3-02e.
-- The EU's first roster (P3-12a) is in `game/data/` too: tough, well-rounded units, combat medics and logistics trucks with healing auras (`heal_aura`), and a patrol fighter for the air-policing power. Doctrine units and the interoperability bonus come in P3-12b and P3-12c.
+- The EU's first roster (P3-12a) is in `game/data/` too: tough, well-rounded units, combat medics and logistics trucks with healing auras (`heal_aura`), and a patrol fighter for the air-policing power. Its three doctrine units arrived in P3-12b (below); the interoperability bonus comes in P3-12c.
 
 ## Units
 
@@ -31,7 +31,7 @@ Rosters as **role × faction** tables. Every faction fills the same roles in its
 | Fighter / strike | F-35-class `stealth_fighter` + drone wingmen `wingman_drone` | Rafale-class `fighter` | Old strike jet `strike_jet` (cheap, fragile) | Eurofighter-class `fighter` |
 | Deception | — | — | Inflatable decoys `decoy_team` | — |
 
-**EU doctrine units** (one per doctrine, chosen at match start): Heavy Armor → breakthrough tank `heavy_mbt`; Air Mobile → air-assault squad `air_assault` (dropped by helicopter); Integrated Air Defense → long-range air-defense vehicle `lr_sam` (SAMP/T-class).
+**EU doctrine units** (one per doctrine, chosen at match start): Heavy Armor → breakthrough tank `heavy_mbt`; Air Mobile → air-assault squad `air_assault` (dropped by helicopter); Integrated Air Defense → long-range air-defense vehicle `lr_sam` (SAMP/T-class). In the game since P3-12b: `eu_heavy_mbt` (1,700 hp, 130 mm gun, crushes, 1,800 credits), `eu_air_assault` (rifles and anti-tank missiles, 450; walks until air transports exist) and `eu_lr_sam` (120 m anti-air missiles, 1,600). Each needs its doctrine (`requires_unlock`).
 
 ## Buildings
 

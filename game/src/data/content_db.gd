@@ -168,11 +168,14 @@ func _check_references() -> void:
 			errors.append("power %s launches unknown strike '%s'" % [p.id, p.strike_id])
 		if p.unit_id != "" and not units.has(p.unit_id):
 			errors.append("power %s uses unknown unit '%s'" % [p.id, p.unit_id])
+	for p: PowerDef in powers.values():
+		if p.grants_upgrade != "" and not upgrades.has(p.grants_upgrade):
+			errors.append("power %s grants unknown upgrade '%s'" % [p.id, p.grants_upgrade])
 	for u: UnitDef in units.values():
 		if u.requires_unlock != "" and not powers.has(u.requires_unlock):
 			errors.append("unit %s requires unknown power '%s'" % [u.id, u.requires_unlock])
 	for up: UpgradeDef in upgrades.values():
-		if up.scope == "global" and not buildings.has(up.researched_at):
+		if up.scope == "global" and not up.granted and not buildings.has(up.researched_at):
 			errors.append("upgrade %s is researched at unknown building '%s'" % [up.id, up.researched_at])
 		for r: String in up.requires:
 			if not buildings.has(r):

@@ -20,7 +20,8 @@
     "eu_rifle_squad",
     "eu_at_team",
     "eu_medics",
-    "eu_loitering_team"
+    "eu_loitering_team",
+    "eu_air_assault"
   ],
   "visual": {
     "model": "res://assets/models/buildings/eu_barracks.glb",

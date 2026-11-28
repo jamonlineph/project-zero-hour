@@ -15,6 +15,15 @@ static func points(player: SimPlayer) -> int:
 	return player.rank - player.powers.size()
 
 
+## True if the player already chose a power of this group (P3-12b).
+static func in_group(world: SimWorld, player: SimPlayer, group: String) -> bool:
+	for id: String in player.powers:
+		var p: PowerDef = world.content.get_power(id)
+		if p != null and p.group == group:
+			return true
+	return false
+
+
 static func apply_command(world: SimWorld, c: SimCommand) -> void:
 	if world.content == null:
 		return
@@ -26,8 +35,12 @@ static func apply_command(world: SimWorld, c: SimCommand) -> void:
 		SimCommand.Type.CHOOSE_POWER:
 			if player.powers.has(def.id) or player.rank < def.tier or points(player) <= 0:
 				return
+			if def.group != "" and in_group(world, player, def.group):
+				return   # one doctrine per match (P3-12b)
 			player.powers.append(def.id)
 			world.events.append({"type": "power_chosen", "player": c.player_id, "power": def.id})
+			if def.grants_upgrade != "":
+				Upgrades.grant(world, c.player_id, def.grants_upgrade)
 		SimCommand.Type.USE_POWER:
 			if not player.powers.has(def.id) or def.kind == "unlock":
 				return

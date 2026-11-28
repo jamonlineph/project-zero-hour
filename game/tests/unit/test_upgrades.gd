@@ -52,7 +52,7 @@ func _power(w: SimWorld, player: int) -> void:
 
 
 func test_upgrades_load_with_valid_references() -> void:
-	assert_eq(_content().upgrades.size(), 12)
+	assert_eq(_content().upgrades.size(), 15)   # 12 researched + 3 EU doctrine bonuses (P3-12b)
 	var u: UpgradeDef = _content().get_upgrade("us_composite_armor")
 	assert_eq(u.scope, "global")
 	assert_eq(u.researched_at, "us_vehicle_depot")

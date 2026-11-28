@@ -42,7 +42,9 @@
     "res://data/weapons/heli_cannon.json",
     "res://data/weapons/kp_suppressed_rifles.json",
     "res://data/weapons/sniper_rifle.json",
-    "res://data/weapons/shorad_missiles.json"
+    "res://data/weapons/shorad_missiles.json",
+    "res://data/weapons/tank_cannon_130.json",
+    "res://data/weapons/lr_sam_missile.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",
@@ -103,7 +105,10 @@
     "res://data/units/us_shorad.json",
     "res://data/units/ae_shorad.json",
     "res://data/units/kp_shorad.json",
-    "res://data/units/eu_shorad.json"
+    "res://data/units/eu_shorad.json",
+    "res://data/units/eu_heavy_mbt.json",
+    "res://data/units/eu_air_assault.json",
+    "res://data/units/eu_lr_sam.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",
@@ -184,7 +189,10 @@
     "res://data/upgrades/ae_express_contracts.json",
     "res://data/upgrades/eu_modular_armor.json",
     "res://data/upgrades/eu_ifv_aps_kit.json",
-    "res://data/upgrades/eu_logistics_network.json"
+    "res://data/upgrades/eu_logistics_network.json",
+    "res://data/upgrades/eu_heavy_armor_doctrine.json",
+    "res://data/upgrades/eu_air_mobile_doctrine.json",
+    "res://data/upgrades/eu_air_defense_doctrine.json"
   ],
   "strikes": [
     "res://data/strikes/guided_rocket.json",
@@ -219,6 +227,9 @@
     "res://data/powers/eu_field_repair.json",
     "res://data/powers/eu_coalition_artillery.json",
     "res://data/powers/eu_cyber_defense.json",
-    "res://data/powers/eu_cruise_strike.json"
+    "res://data/powers/eu_cruise_strike.json",
+    "res://data/powers/eu_doctrine_heavy_armor.json",
+    "res://data/powers/eu_doctrine_air_mobile.json",
+    "res://data/powers/eu_doctrine_air_defense.json"
   ]
 }

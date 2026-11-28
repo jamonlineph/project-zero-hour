@@ -76,12 +76,22 @@ static func step(world: SimWorld) -> void:
 		b.research_progress = 0
 		if def == null:
 			continue
-		player.upgrades.append(def.id)
-		for uid: int in world.entity_ids:
-			var u: SimEntity = world.entities[uid]
-			if u.player_id == e.player_id and not u.dead and def.applies(u.def_id):
-				apply_effects(u, def)
+		grant(world, e.player_id, def.id)
 		world.events.append({"type": "researched", "upgrade": def.id, "player": e.player_id, "building": e.id})
+
+
+## Gives a player a global upgrade now (research done, or a doctrine's bonus,
+## P3-12b): it applies to their units and to every later one.
+static func grant(world: SimWorld, player_id: int, upgrade_id: String) -> void:
+	var def: UpgradeDef = world.content.get_upgrade(upgrade_id) if world.content != null else null
+	var player: SimPlayer = world.get_player(player_id)
+	if def == null or player.upgrades.has(upgrade_id):
+		return
+	player.upgrades.append(def.id)
+	for uid: int in world.entity_ids:
+		var u: SimEntity = world.entities[uid]
+		if u.player_id == player_id and not u.dead and def.applies(u.def_id):
+			apply_effects(u, def)
 
 
 ## A new unit gets every global upgrade its player has researched.

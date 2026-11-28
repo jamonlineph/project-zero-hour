@@ -33,7 +33,8 @@ static func powers(world: SimWorld, ai: AiPlayer, hq: SimEntity, army: Array[Sim
 	if CommanderPowers.points(player) > 0:
 		for id: String in ai.power_priority:
 			var def: PowerDef = world.content.get_power(id)
-			if def != null and not player.powers.has(id) and player.rank >= def.tier:
+			if def != null and not player.powers.has(id) and player.rank >= def.tier \
+					and (def.group == "" or not CommanderPowers.in_group(world, player, def.group)):
 				cmds.append(SimCommand.make_choose_power(id))
 				break
 	for id: String in player.powers:

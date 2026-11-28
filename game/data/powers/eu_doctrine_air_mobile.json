@@ -1,0 +1,11 @@
+{
+  "id": "eu_doctrine_air_mobile",
+  "faction": "eu",
+  "name": "Doctrine: Air Mobile",
+  "tier": 1,
+  "kind": "unlock",
+  "group": "doctrine",
+  "description": "Unlocks the air-assault squad; your helicopters and infantry move 15% faster. One doctrine per match.",
+  "unit": "eu_air_assault",
+  "grants_upgrade": "eu_air_mobile_doctrine"
+}
