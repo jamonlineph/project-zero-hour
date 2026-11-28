@@ -18,6 +18,7 @@
   ],
   "produces": [],
   "dropoff": true,
+  "free_unit": "eu_logistics_truck",
   "visual": {
     "model": "res://assets/models/buildings/eu_logistics_hub.glb",
     "icon": "res://assets/icons/buildings/eu_logistics_hub.png"

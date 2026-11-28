@@ -47,6 +47,20 @@ func test_ai_presets_only_use_their_own_factions_content() -> void:
 			assert_true(_content().upgrades.has(r), "%s: unknown research %s" % [f, r])
 
 
+func test_every_factions_drop_off_comes_with_a_free_truck() -> void:
+	# The UAE and EU hubs once lacked it and their early economy ran at half
+	# speed, which lost them nearly every AI game (2026-11-28).
+	for f: String in MatchConfig.FACTIONS:
+		var ai: AiPlayer = AiPlayer.from_preset(_content(), f + "_default", 1)
+		var found: bool = false
+		for id: String in _content().buildings:
+			var b: BuildingDef = _content().buildings[id]
+			if b.faction == f and b.dropoff:
+				assert_eq(b.free_unit, ai.gatherer_unit, "%s's %s gives no free truck" % [f, id])
+				found = true
+		assert_true(found, "%s has no drop-off building" % f)
+
+
 func test_every_unit_can_be_built_by_its_faction() -> void:
 	for id: String in _content().units:
 		var u: UnitDef = _content().units[id]
