@@ -42,6 +42,7 @@ var aircraft: SimAircraft = null   ## ammo and rearming (P3-04a)
 var stealth: bool = false       ## from the def (P3-09); hashed only when true
 var detection: int = 0          ## from the def (P3-09)
 var revealed_until: int = 0     ## a stealthy unit that fired is visible until this tick
+var interop: bool = false       ## EU interoperability: reloads faster (P3-12c, InteropSystem)
 var ability_ready: Dictionary[String, int] = {}   ## ability id -> first tick it can be used again (P3-02f)
 var strike: SimStrike = null    ## a missile or strike aircraft in flight (P2-07)
 var decoy_of: String = ""       ## a decoy imitating this unit id (P2-08)
@@ -104,6 +105,8 @@ func write_hash(h: SimHash) -> void:
 		launcher.write_hash(h)
 	if aircraft != null:   # only aircraft (P3-04a)
 		aircraft.write_hash(h)
+	if interop:   # only while the bonus is on (P3-12c)
+		h.add_bool(interop)
 	if stealth or revealed_until != 0:   # only stealthy units (P3-09)
 		h.add_bool(stealth)
 		h.add_int(revealed_until)

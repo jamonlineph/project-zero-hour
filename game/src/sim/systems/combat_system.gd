@@ -132,7 +132,7 @@ static func _face(e: SimEntity, t: SimEntity) -> void:
 
 
 static func _fire(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> void:
-	w.cooldown = w.reload_ticks
+	w.cooldown = InteropSystem.reload_ticks(world, e, w)
 	var damage: int = (w.damage * (100 + world.damage_bonus(e))) / 100
 	world.events.append({"type": "fired", "attacker": e.id, "weapon": w.def_id,
 			"x": e.x, "y": e.y, "tx": t.x, "ty": t.y})

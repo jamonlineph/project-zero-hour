@@ -44,7 +44,7 @@ These go into `game/data/damage_matrix.json` in P1-09.
 | `damage` | Damage per hit |
 | `damage_type` | One of the damage types above |
 | `range_cm`, `min_range_cm` | Maximum and minimum range |
-| `reload_ms` | Time between shots |
+| `reload_ms` | Time between shots (the EU's interoperability bonus shortens it, P3-12c) |
 | `projectile` | `instant`, `ballistic`, `guided` or `drone` |
 | `projectile_speed_cm_per_s` | Projectile speed |
 | `splash_radius_cm`, `splash_edge_percent` | Area damage. Splash only hurts what the weapon can `target` (artillery doesn't hit drones overhead) |

@@ -231,6 +231,12 @@ func _load_rules(path: String) -> void:
 	rules.fund_percent = int((fund as Dictionary).get("percent", 0))
 	rules.fund_cap = int((fund as Dictionary).get("cap", 0))
 	rules.fund_cap_doubler = str((fund as Dictionary).get("cap_doubled_by", ""))
+	var interop: Dictionary = src.get("interoperability", {}) if src.get("interoperability", {}) is Dictionary else {}
+	rules.interop_faction = str(interop.get("faction", ""))
+	rules.interop_radius = Fx.from_ratio(int(interop.get("radius_cm", 2500)), 100)
+	rules.interop_min_types = int(interop.get("min_types", 3))
+	rules.interop_reload_percent = clampi(int(interop.get("reload_percent", 0)), 0, 50)
+	rules.interop_doubler = str(interop.get("doubled_by", ""))
 	start_kit = src.get("start_kit", [])
 	if src.has("skirmish_credits"):
 		skirmish_credits = _int_list(src, "skirmish_credits", path, (src["skirmish_credits"] as Array).size())

@@ -58,7 +58,8 @@
     "eu_air_policing",
     "eu_coalition_artillery",
     "eu_cyber_defense",
-    "eu_cruise_strike"
+    "eu_cruise_strike",
+    "eu_unlock_interop"
   ],
   "research": [
     "eu_modular_armor"

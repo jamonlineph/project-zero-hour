@@ -27,6 +27,15 @@ var fund_interval_ticks: int = 60 * 15
 var fund_percent: int = 3
 var fund_cap: int = 300
 var fund_cap_doubler: String = "ae_unlock_fund"
+## EU interoperability (P3-12c, InteropSystem): a unit of this faction with
+## at least interop_min_types different unit types of its own side within
+## interop_radius (itself included) reloads interop_reload_percent faster;
+## twice that once the player chose interop_doubler. Empty faction: off.
+var interop_faction: String = "eu"
+var interop_radius: int = 25 * Fx.ONE
+var interop_min_types: int = 3
+var interop_reload_percent: int = 15
+var interop_doubler: String = "eu_unlock_interop"
 
 
 func write_hash(h: SimHash) -> void:
@@ -43,3 +52,9 @@ func write_hash(h: SimHash) -> void:
 	h.add_int(fund_percent)
 	h.add_int(fund_cap)
 	h.add_string(fund_cap_doubler)
+	if interop_faction != "":   # hashed only when on, so older rules hash as before
+		h.add_string(interop_faction)
+		h.add_int(interop_radius)
+		h.add_int(interop_min_types)
+		h.add_int(interop_reload_percent)
+		h.add_string(interop_doubler)

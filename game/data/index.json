@@ -230,6 +230,7 @@
     "res://data/powers/eu_cruise_strike.json",
     "res://data/powers/eu_doctrine_heavy_armor.json",
     "res://data/powers/eu_doctrine_air_mobile.json",
-    "res://data/powers/eu_doctrine_air_defense.json"
+    "res://data/powers/eu_doctrine_air_defense.json",
+    "res://data/powers/eu_unlock_interop.json"
   ]
 }

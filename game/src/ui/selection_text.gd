@@ -22,6 +22,8 @@ static func describe(world: SimWorld, selected: Array[int]) -> String:
 				var pct: int = (100 * e.building.queue_progress) / maxi(1, def.build_ticks if def != null else 1)
 				text += "\nQueue: %s (%d%%)%s" % [name_of(world, e.building.queue[0]), pct,
 					" + %d more" % (e.building.queue.size() - 1) if e.building.queue.size() > 1 else ""]
+		if e.interop:
+			text += "   mixed group: faster reload"
 		if e.gatherer != null and e.gatherer.carried > 0:
 			text += "   carrying %d" % e.gatherer.carried
 		if e.supply != null:
@@ -42,7 +44,13 @@ static func describe(world: SimWorld, selected: Array[int]) -> String:
 	var parts: PackedStringArray = []
 	for def_id: String in counts:
 		parts.append("%dx %s" % [counts[def_id], name_of(world, def_id)])
-	return "%d selected: %s" % [selected.size(), ", ".join(parts)]
+	var mixed: int = 0
+	for id: int in selected:
+		var e: SimEntity = world.get_entity(id)
+		if e != null and e.interop:
+			mixed += 1
+	return "%d selected: %s%s" % [selected.size(), ", ".join(parts),
+		"\n%d in mixed groups: faster reload" % mixed if mixed > 0 else ""]
 
 
 static func name_of(world: SimWorld, def_id: String) -> String:
