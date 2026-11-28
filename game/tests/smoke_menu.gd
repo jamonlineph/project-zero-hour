@@ -42,7 +42,11 @@ func _run() -> void:
 		map_button.pressed.emit()
 		if menu.get("map_id") == "riverside":
 			failures.append("the map button did not change the map")
-		map_button.pressed.emit()
+		# Cycle on round to Riverside, however many maps there are.
+		for i: int in 20:
+			if menu.get("map_id") == "riverside":
+				break
+			map_button.pressed.emit()
 		menu.call("start_skirmish")
 		for i: int in 20:
 			await process_frame

@@ -1,0 +1,98 @@
+{
+  "id": "three_bridges",
+  "name": "Three Bridges",
+  "_doc": "A 1v1 desert map (P3-23c), its feature the bridges (P3-11): an irrigation canal runs north-south through the middle and three bridges cross it. The middle bridge is the short road between the bases, past a canal village; the north and south bridges are the long flanks. Blow a bridge to close a lane, and repair it with engineers to open it again. Mirrored across x = 128 (terrain_gen.mirror_x makes the heights exact).",
+  "skirmish": true,
+  "biome": "desert",
+  "width_m": 256,
+  "height_m": 256,
+  "_terrain_doc": "height.r16 is built from terrain_gen by tools/make_heightmap.py: low dunes, mesas raised above the sand, and the canal carved in four channels; the gaps between them are the bridges' dry crossings, exactly under the decks.",
+  "height": "height.r16",
+  "height_scale_cm": 800,
+  "max_step_cm": 100,
+  "water_level_cm": 120,
+  "terrain_gen": {
+    "base_m": 2.0,
+    "hills": [
+      [28, 30, 14, 1.0],
+      [20, 226, 12, 0.8],
+      [78, 92, 10, 0.6],
+      [78, 166, 10, 0.6]
+    ],
+    "raise_obstacles_m": 1.5,
+    "channels": [
+      [118, -10, 20, 46, 0.3],
+      [118, 60, 20, 56, 0.3],
+      [118, 140, 20, 56, 0.3],
+      [118, 220, 20, 46, 0.3]
+    ],
+    "bank_m": 6,
+    "mirror_x": true
+  },
+  "_obstacles_doc": "Sandstone mesas and ridges [x_m, y_m, w_m, h_m], west side first, then their mirrors.",
+  "obstacles_m": [
+    [40, 84, 20, 8],
+    [40, 164, 20, 8],
+    [66, 58, 16, 14],
+    [66, 184, 16, 14],
+    [92, 18, 10, 10],
+    [92, 228, 10, 10],
+    [196, 84, 20, 8],
+    [196, 164, 20, 8],
+    [174, 58, 16, 14],
+    [174, 184, 16, 14],
+    [154, 18, 10, 10],
+    [154, 228, 10, 10]
+  ],
+  "_civilian_doc": "Canal village and farm houses [x_m, y_m, w_m, h_m, roof_height_m] (P3-05), west side first, then their mirrors.",
+  "civilian_buildings_m": [
+    [86, 102, 10, 8, 5],
+    [98, 102, 10, 8, 6],
+    [86, 146, 10, 8, 6],
+    [98, 146, 10, 8, 5],
+    [84, 30, 10, 8, 5],
+    [84, 218, 10, 8, 5],
+    [160, 102, 10, 8, 5],
+    [148, 102, 10, 8, 6],
+    [160, 146, 10, 8, 6],
+    [148, 146, 10, 8, 5],
+    [162, 30, 10, 8, 5],
+    [162, 218, 10, 8, 5]
+  ],
+  "_bridges_doc": "Bridge decks [x_m, y_m, w_m, h_m]: neutral bridges that can be destroyed and repaired (P3-11). Each covers its whole dry crossing.",
+  "bridges_m": [
+    [112, 40, 32, 16],
+    [112, 120, 32, 16],
+    [112, 200, 32, 16]
+  ],
+  "_neutral_doc": "Capturable neutral buildings [building_id, x_m, y_m] (P3-08a), west side first, then mirrors.",
+  "neutral_buildings": [
+    ["oil_field", 24, 232],
+    ["oil_field", 24, 24],
+    ["data_center", 98, 70],
+    ["field_hospital", 98, 188],
+    ["cell_tower", 72, 128],
+    ["rail_depot", 50, 206],
+    ["oil_field", 232, 232],
+    ["oil_field", 232, 24],
+    ["data_center", 158, 70],
+    ["field_hospital", 158, 188],
+    ["cell_tower", 184, 128],
+    ["rail_depot", 206, 206]
+  ],
+  "start_positions_m": [
+    [36, 128],
+    [220, 128]
+  ],
+  "_supply_doc": "Per side: a safe site by the base, north-west and south-west expansions, and a contested one at the canal village.",
+  "supply_sites_m": [
+    [58, 118, 30000],
+    [34, 52, 15000],
+    [34, 204, 15000],
+    [98, 128, 15000],
+    [198, 118, 30000],
+    [222, 52, 15000],
+    [222, 204, 15000],
+    [158, 128, 15000]
+  ]
+}

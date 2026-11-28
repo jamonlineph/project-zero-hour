@@ -40,6 +40,8 @@ func test_riverside_and_twin_ridge_are_skirmish_maps() -> void:
 	assert_true(ids.has("twin_ridge"))
 	assert_true(ids.has("desert_crossroads"))
 	assert_true(ids.has("frostwood"))
+	assert_true(ids.has("three_bridges"))
+	assert_true(ids.has("old_town"))
 	assert_false(ids.has("sandbox"), "the sandbox is not mirror-fair")
 
 
@@ -81,7 +83,13 @@ func test_skirmish_maps_are_exact_mirrors() -> void:
 
 
 func test_riverside_river_blocks_except_at_the_bridges() -> void:
-	var m: MapDef = _db().get_map("riverside")
+	for id: String in ["riverside", "three_bridges"]:
+		_river_crossings_are_bridges(_db().get_map(id))
+
+
+## A map whose river runs down the middle can only be crossed on its bridge
+## decks, each at least 10 m wide (P2-12; three_bridges, P3-23c).
+func _river_crossings_are_bridges(m: MapDef) -> void:
 	assert_eq(m.width_m, 256)
 	assert_true(m.has_water())
 	var map: SimMap = m.make_sim_map()
@@ -90,13 +98,13 @@ func test_riverside_river_blocks_except_at_the_bridges() -> void:
 	for y: int in map.height_cells:
 		if map.is_passable(mid, y):
 			open_rows.append(y)
-	assert_false(open_rows.is_empty(), "the river has no crossing")
+	assert_false(open_rows.is_empty(), "%s: the river has no crossing" % m.id)
 	for y: int in open_rows:
 		var on_bridge: bool = false
 		for b: PackedInt32Array in m.bridges_m:
 			if y * 2 >= b[1] and y * 2 < b[1] + b[3]:
 				on_bridge = true
-		assert_true(on_bridge, "the river can be crossed at y = %d m, away from the bridges" % (y * 2))
+		assert_true(on_bridge, "%s: the river can be crossed at y = %d m, away from the bridges" % [m.id, y * 2])
 	# Each bridge is wide enough for vehicles (at least 10 m of open cells).
 	for b: PackedInt32Array in m.bridges_m:
 		var open: int = 0
