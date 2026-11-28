@@ -22,7 +22,8 @@
     "eu_apc",
     "eu_ifv",
     "eu_howitzer",
-    "eu_cuas_truck"
+    "eu_cuas_truck",
+    "eu_shorad"
   ],
   "visual": {
     "model": "res://assets/models/buildings/eu_vehicle_works.glb",

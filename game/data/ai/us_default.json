@@ -44,6 +44,9 @@
     ],
     "drone": [
       "us_laser_cuas"
+    ],
+    "aircraft": [
+      "us_shorad"
     ]
   },
   "power_priority": [

@@ -1,0 +1,14 @@
+{
+  "id": "shorad_missiles",
+  "status": "first-pass stats (P3-01a)",
+  "damage": 110,
+  "damage_type": "anti_air",
+  "range_cm": 7000,
+  "reload_ms": 2500,
+  "projectile": "guided",
+  "targets": [
+    "air",
+    "drone"
+  ],
+  "projectile_speed_cm_per_s": 11000
+}

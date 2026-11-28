@@ -41,7 +41,8 @@
     "res://data/weapons/heli_missiles.json",
     "res://data/weapons/heli_cannon.json",
     "res://data/weapons/kp_suppressed_rifles.json",
-    "res://data/weapons/sniper_rifle.json"
+    "res://data/weapons/sniper_rifle.json",
+    "res://data/weapons/shorad_missiles.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",
@@ -98,7 +99,11 @@
     "res://data/units/ae_attack_heli.json",
     "res://data/units/eu_attack_heli.json",
     "res://data/units/kp_infiltrators.json",
-    "res://data/units/us_sniper_team.json"
+    "res://data/units/us_sniper_team.json",
+    "res://data/units/us_shorad.json",
+    "res://data/units/ae_shorad.json",
+    "res://data/units/kp_shorad.json",
+    "res://data/units/eu_shorad.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",

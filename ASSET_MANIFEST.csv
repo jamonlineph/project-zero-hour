@@ -82,6 +82,7 @@ game/assets/icons/units/ae_recon_drone.png,Project Zero Hour contributors,"blend
 game/assets/icons/units/ae_rifle_squad.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_rifle_squad)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/ae_rocket_artillery.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_rocket_artillery)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/ae_sf_team.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_sf_team)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/ae_shorad.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_shorad)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/ae_swarm_drone.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_swarm_drone)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/ae_swarm_launcher.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_swarm_launcher)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/eu_apc.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_apc)",CC-BY-SA-4.0,script,placeholder
@@ -98,6 +99,7 @@ game/assets/icons/units/eu_medics.png,Project Zero Hour contributors,"blender/bu
 game/assets/icons/units/eu_patrol_fighter.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_patrol_fighter)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/eu_recon_drone.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_recon_drone)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/eu_rifle_squad.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_rifle_squad)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/eu_shorad.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_shorad)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/kp_at_team.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_at_team)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/kp_engineer.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_engineer)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/kp_ew_vehicle.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_ew_vehicle)",CC-BY-SA-4.0,script,placeholder
@@ -109,6 +111,7 @@ game/assets/icons/units/kp_logistics_truck.png,Project Zero Hour contributors,"b
 game/assets/icons/units/kp_loitering_team.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_loitering_team)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/kp_mbt.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_mbt)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/kp_recon_drone.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_recon_drone)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/kp_shorad.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_shorad)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/kp_spotter_officer.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_spotter_officer)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/us_at_team.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_at_team)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/us_attack_heli.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_attack_heli)",CC-BY-SA-4.0,script,placeholder
@@ -121,6 +124,7 @@ game/assets/icons/units/us_recon_drone.png,Project Zero Hour contributors,"blend
 game/assets/icons/units/us_recon_team.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_recon_team)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/us_rifle_squad.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_rifle_squad)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/us_rocket_artillery.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_rocket_artillery)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/units/us_shorad.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_shorad)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/us_sniper_team.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_sniper_team)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/units/us_wingman_drone.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_wingman_drone)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/ae_airbase.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_airbase)",CC-BY-SA-4.0,script,placeholder
@@ -181,6 +185,7 @@ game/assets/models/units/ae_recon_drone.glb,Project Zero Hour contributors,"blen
 game/assets/models/units/ae_rifle_squad.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_rifle_squad)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/ae_rocket_artillery.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_rocket_artillery)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/ae_sf_team.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_sf_team)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/ae_shorad.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_shorad)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/ae_swarm_drone.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_swarm_drone)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/ae_swarm_launcher.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: ae_swarm_launcher)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/eu_apc.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_apc)",CC-BY-SA-4.0,script,placeholder
@@ -197,6 +202,7 @@ game/assets/models/units/eu_medics.glb,Project Zero Hour contributors,"blender/b
 game/assets/models/units/eu_patrol_fighter.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_patrol_fighter)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/eu_recon_drone.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_recon_drone)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/eu_rifle_squad.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_rifle_squad)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/eu_shorad.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: eu_shorad)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/kp_at_team.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_at_team)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/kp_engineer.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_engineer)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/kp_ew_vehicle.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_ew_vehicle)",CC-BY-SA-4.0,script,placeholder
@@ -208,6 +214,7 @@ game/assets/models/units/kp_logistics_truck.glb,Project Zero Hour contributors,"
 game/assets/models/units/kp_loitering_team.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_loitering_team)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/kp_mbt.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_mbt)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/kp_recon_drone.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_recon_drone)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/kp_shorad.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_shorad)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/kp_spotter_officer.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_spotter_officer)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/us_at_team.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_at_team)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/us_attack_heli.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_attack_heli)",CC-BY-SA-4.0,script,placeholder
@@ -220,6 +227,7 @@ game/assets/models/units/us_recon_drone.glb,Project Zero Hour contributors,"blen
 game/assets/models/units/us_recon_team.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_recon_team)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/us_rifle_squad.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_rifle_squad)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/us_rocket_artillery.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_rocket_artillery)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/units/us_shorad.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_shorad)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/us_sniper_team.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_sniper_team)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/units/us_wingman_drone.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: us_wingman_drone)",CC-BY-SA-4.0,script,placeholder
 game/assets/sprites/units/kp_mbt_8dir.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_mbt)",CC-BY-SA-4.0,script,placeholder

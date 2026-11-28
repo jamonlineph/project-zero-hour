@@ -46,6 +46,9 @@
     ],
     "drone": [
       "eu_cuas_truck"
+    ],
+    "aircraft": [
+      "eu_shorad"
     ]
   },
   "power_priority": [

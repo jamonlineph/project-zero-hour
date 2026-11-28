@@ -1,0 +1,23 @@
+{
+  "id": "eu_shorad",
+  "faction": "eu",
+  "role": "anti_air",
+  "name": "Air-Defense Vehicle",
+  "armor_class": "light_vehicle",
+  "status": "first-pass numbers (P3-01a)",
+  "max_hp": 500,
+  "cost": 900,
+  "speed_cm_per_s": 750,
+  "turn_rate_deg_per_s": 110,
+  "radius_cm": 270,
+  "vision_cm": 7000,
+  "build_time_ms": 13000,
+  "requires": [],
+  "weapons": [
+    "shorad_missiles"
+  ],
+  "visual": {
+    "model": "res://assets/models/units/eu_shorad.glb",
+    "icon": "res://assets/icons/units/eu_shorad.png"
+  }
+}

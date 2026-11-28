@@ -41,6 +41,9 @@
     ],
     "drone": [
       "kp_ew_vehicle"
+    ],
+    "aircraft": [
+      "kp_shorad"
     ]
   },
   "power_priority": [

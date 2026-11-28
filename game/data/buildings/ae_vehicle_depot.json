@@ -22,7 +22,8 @@
     "ae_raider",
     "ae_ifv",
     "ae_rocket_artillery",
-    "ae_laser_cuas"
+    "ae_laser_cuas",
+    "ae_shorad"
   ],
   "visual": {
     "model": "res://assets/models/buildings/ae_vehicle_depot.glb",

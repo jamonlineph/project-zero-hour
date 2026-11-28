@@ -117,3 +117,18 @@ func _air_hash() -> int:
 
 func test_aircraft_are_deterministic() -> void:
 	assert_eq(_air_hash(), _air_hash())
+
+
+func test_every_faction_builds_anti_air_and_counters_aircraft_with_it() -> void:
+	for f: String in MatchConfig.FACTIONS:
+		var id: String = f + "_shorad"
+		var u: UnitDef = _content().get_unit(id)
+		assert_true(u != null, "%s has no anti-air vehicle" % f)
+		assert_true(DamageMatrix.can_target(u.weapons[0].targets, "aircraft"), "%s can't shoot aircraft" % id)
+		var built: bool = false
+		for bid: String in _content().buildings:
+			if _content().buildings[bid].faction == f and _content().buildings[bid].produces.has(id):
+				built = true
+		assert_true(built, "nothing builds %s" % id)
+		var ai: AiPlayer = AiPlayer.from_preset(_content(), f + "_default", 1)
+		assert_true(ai.counters.has("aircraft") and ai.counters["aircraft"].has(id), "%s's AI doesn't counter aircraft" % f)

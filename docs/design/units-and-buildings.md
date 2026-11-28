@@ -22,7 +22,7 @@ Rosters as **role × faction** tables. Every faction fills the same roles in its
 | Armored transport | Bradley-class IFV `ifv` ✓ | Rabdan-class 8×8 IFV `ifv` ✓ | VTT-323-class IFV `ifv` ✓ | CV90-class IFV `ifv` ✓ |
 | Main battle tank | Abrams-class `mbt` ✓ + active protection | Leclerc-class `mbt` ✓ | Chonma-class `mbt` ✓ + cage armor | Leopard 2A8-class `mbt` ✓ |
 | Artillery | HIMARS-class `rocket_artillery` ✓ (shoot and scoot) | Jobaria-class rocket launcher `rocket_artillery` ✓; G6-class wheeled howitzer `howitzer` | Koksan-class long-range gun `howitzer` ✓; heavy rocket launcher `rocket_artillery` (KN-25-class) | CAESAR-class truck howitzer `howitzer` ✓ (fast to deploy) |
-| Anti-air | M-SHORAD-class `shorad` | Pantsir-class `shorad` | Pongae-class missile vehicle `shorad` | IRIS-T-class `shorad` |
+| Anti-air | M-SHORAD-class `shorad` ✓ | Pantsir-class `shorad` ✓ | Pongae-class missile vehicle `shorad` ✓ | IRIS-T-class `shorad` ✓ |
 | Counter-drone | Laser vehicle `laser_cuas` ✓ | Laser vehicle `laser_cuas` ✓ | Jamming vehicle `ew_vehicle` ✓ (jamming field) | Gun-drone interceptor truck `cuas_truck` ✓ |
 | Recon drone | Small recon drone `recon_drone` ✓ | Recon drone `recon_drone` ✓ | Recon drone `recon_drone` ✓ | Eurodrone-class MALE drone `recon_drone` ✓ |
 | Strike drones | Loitering munition team `loitering_team` | Swarm-drone truck `swarm_launcher` ✓ (Hunter-class) | Loitering munition team `loitering_team` ✓ | Loitering munition team `loitering_team` ✓ |

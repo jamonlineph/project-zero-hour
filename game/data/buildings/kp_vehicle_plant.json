@@ -21,7 +21,8 @@
     "kp_logistics_truck",
     "kp_ifv",
     "kp_howitzer",
-    "kp_ew_vehicle"
+    "kp_ew_vehicle",
+    "kp_shorad"
   ],
   "visual": {
     "model": "res://assets/models/buildings/kp_vehicle_plant.glb",

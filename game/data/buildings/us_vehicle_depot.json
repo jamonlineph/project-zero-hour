@@ -21,7 +21,8 @@
     "us_logistics_truck",
     "us_ifv",
     "us_rocket_artillery",
-    "us_laser_cuas"
+    "us_laser_cuas",
+    "us_shorad"
   ],
   "visual": {
     "model": "res://assets/models/buildings/us_vehicle_depot.glb",
