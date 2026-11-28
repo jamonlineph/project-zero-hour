@@ -4,6 +4,26 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-28: P3-12b doctrines, P3-12c interoperability, P3-11 bridges, P3-13b AI personalities (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P3-12b EU doctrines:** three exclusive rank-1 powers (power `group`). Each unlocks one unit (breakthrough tank, air-assault squad, long-range air-defense vehicle, with art) and grants a passive upgrade (`grants_upgrade`; upgrades marked `granted` are never researched). The AI skips units it hasn't unlocked (this was a latent bug for every `requires_unlock` unit) and doctrines another one ruled out. The commander panel shows "Ruled out" and refreshes itself when rank or choices change.
+  - **P3-12c interoperability:** `InteropSystem`. Once a second, an armed EU unit with 3+ armed unit types of its own within 25 m reloads 10% faster (20% with the new rank-5 unlock). Numbers live in `rules.json`. 15% was too strong.
+  - **P3-11 bridges:** map decks are neutral, walkable `bridge` buildings. Only an attack order hits one (A, then click it). At 0 hp it collapses: ground units on it fall, and the deck's cells are claimed so nothing crosses. Any side's builders repair it for free; it reopens at 50%. `BridgeModel` draws the fallen span in the river. Decks moved from `MapFeaturesView` to the bridge entities.
+  - **P3-13b AI personalities:** Balanced, Rusher, Turtle, Tech and Random (`game/data/ai/personalities.json`, `AiPersonality`), with a "Style" button in the skirmish menu.
+  - **Refactors:** `RulesLoader` split out of ContentDb; the difficulty overlay moved into `AiPersonality`.
+  - **Test runner:** a test script with a parse error now fails the run. Before, `load()` returned an unusable script and the file was skipped silently.
+- Tests: `tools/run_tests.sh` -> 364 tests, 0 failed, smoke main/menu/lan ok; `python3 tools/check_repo.py` -> ok (241 assets). Golden replays regenerated twice, on purpose: the rules hash now includes the interoperability settings, then the 15% → 10% change.
+- Balance (Riverside, normal vs normal):
+  - EU vs America with doctrines: EU won 9 of 20.
+  - With 15% interoperability: EU won 15 of 20 vs America and 11 of 20 vs North Korea.
+  - With 10%: EU won 19 of 39 vs America (49%).
+- Not verified:
+  - Bridge attack and repair by touch on a real phone.
+  - Personalities' win rates (only their settings are tested).
+  - The AI doesn't blow up or repair bridges yet.
+- Next: P3-04b jets and North Korea's airstrip, P3-13c, P3-23c more 1v1 maps (one with bridges as its feature), P3-10b tank obstacles.
+- For the owner: none.
+
 ## 2026-11-28: P3-04a aircraft, P3-06 transports, P3-09 stealth, P3-10a mines, P3-13a hard AI, P3-14a LAN, anti-air (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P3-04a aircraft:** attack helicopters (America, UAE, EU) from an airbase; weapons with `ammo`; empty, they fly home, rearm and repair (`AirSystem`). Rifles, machine guns and autocannons can hit aircraft. **Anti-air vehicles** for all four factions; the AI counters aircraft with them.
