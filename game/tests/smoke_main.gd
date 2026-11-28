@@ -266,6 +266,16 @@ func _check_unit_views(world: SimWorld, game_view: GameView, selection: Selectio
 		problems.append("the tank survived lethal damage")
 	elif game_view.wrecks_made <= made or not is_instance_valid(tv) or not tv.is_wreck:
 		problems.append("a destroyed tank left no wreck")
+	else:
+		# P1-30b: the wreck look swaps each surface's material; a material_override
+		# stacked on the team-color duplicates made the Compatibility renderer
+		# log "material is null" later.
+		var model: Node3D = tv.get("_model")
+		for node: Node in model.find_children("*", "MeshInstance3D", true, false):
+			var mi := node as MeshInstance3D
+			if mi.material_override != null:
+				problems.append("wreck part %s still uses material_override" % mi.name)
+				break
 	return problems
 
 

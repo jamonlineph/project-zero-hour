@@ -389,11 +389,12 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
   - The sandbox loads it.
 - **Accept:** tests for the loader; the view terrain matches sim heights.
 
-### P1-30b · "material is null" errors under software OpenGL — ⬜
+### P1-30b · "material is null" errors under software OpenGL — ✅ 2026-11-28 (Claude Code: 72 → 0 errors in the 3,300-frame run; a real-GPU check is still for the owner)
 - **Seen:** rendering an `ai_duel` match for about 3:40 of game time with the Compatibility renderer on Mesa llvmpipe (Xvfb) logs 24–48 `Parameter "material" is null` errors (from `material_casts_shadows`, `material_is_animated`, `material_get_instance_shader_parameters`, `material_update_dependency`, in that order). They start soon after the first vehicle wrecks and right after new unit views are created. The game keeps running; nothing visibly breaks. Not seen in the first 1,500 frames.
 - **Reproduce:** `xvfb-run -a godot --rendering-driver opengl3 --path game -- --scenario=ai_duel --screenshot=/tmp/x.png --screenshot-frames=3300`, then grep the output.
 - **Suspects:** a material override or surface override material (wreck darkening in `UnitView.become_wreck`, team-color duplicates in `TeamColors.apply`, `UnitStatus` materials) reaching the renderer before it exists or after it was freed.
 - **Accept:** the run above logs no such errors; check it on a real GPU too (Mobile renderer).
+- **Found (bisect, 3,300 frames each):** all effects off → 72 errors (particles are not it); no wreck darkening → 0; no team-color duplicates → 0. The errors came from the two together: `UnitView.become_wreck` set `material_override` on meshes whose surfaces held team-color duplicates (`TeamColors.apply`). The wreck look now swaps each surface's material instead (`set_surface_override_material`), which releases the duplicates cleanly → 0 errors. `smoke_main.gd` checks that wreck parts use no `material_override`.
 
 ### P1-31 · Skirmish AI v0 — ✅ 2026-11-26 (Claude Code: AI duel ends at about 5:00 game time; play it with `godot --path game -- --scenario=skirmish_vs_ai`)
 - **Needs:** P1-13, P1-15, P1-10

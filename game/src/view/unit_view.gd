@@ -268,9 +268,15 @@ func become_wreck(darken: Material) -> void:
 		t.tween_property(self, "scale", Vector3(1.0, 0.05, 1.0), 0.4)
 		t.tween_callback(queue_free)
 		return
+	# Swap each surface's material rather than stacking material_override on
+	# top of the team-color duplicates: with both set, the Compatibility
+	# renderer later meets the freed duplicates ("material is null", P1-30b).
 	for node: Node in _model.find_children("*", "MeshInstance3D", true, false):
 		var mi := node as MeshInstance3D
-		mi.material_override = darken
+		if mi.mesh == null:
+			continue
+		for i: int in mi.mesh.get_surface_count():
+			mi.set_surface_override_material(i, darken)
 	# A fixed, id-based tilt so every wreck looks a little different.
 	var tilt: float = float(entity_id % 7 - 3) * 0.04
 	if kind == Kind.VEHICLE:
