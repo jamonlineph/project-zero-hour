@@ -83,5 +83,6 @@ The keys for camera movement and unit orders can be rebound in Settings (control
 - Colorblind-safe team colors: ✅ setting, Okabe-Ito palette (blue, orange, reddish purple, bluish green), also on the minimap (P3-20)
 - Remappable keys: ✅ (P1-35)
 - Subtitles for voice lines: when voice lines exist (there are none yet; acknowledgements are radio chirps)
-- Hold-to-confirm off/on: when a destructive command exists (there is no sell button yet)
-- Reduced camera shake: when camera shake exists (there is none yet)
+- Confirm destructive commands: ✅ "Confirm before selling a building" (P3-20, on by default): the Sell button (a selected building of yours, half its price, less if damaged) needs a second tap within 3 s
+- Reduced camera shake: ✅ "Camera shake: Full, Reduced, Off" (P3-20). The camera shakes a little when a building is destroyed or a wide blast (strike, superweapon) lands within 70 m of the view
+- Language: ✅ (P3-18, `docs/localization.md`)

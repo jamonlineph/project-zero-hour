@@ -37,6 +37,10 @@ var battery_saver: bool = false
 var colorblind_colors: bool = false
 ## Interface language (P3-18, Loc.LANGUAGES); "" follows the device.
 var language: String = ""
+## Accessibility (P3-20): selling a building needs a second tap within 3 s.
+var confirm_sell: bool = true
+## Accessibility (P3-20): camera shake on big explosions, 0 off, 1 reduced, 2 full.
+var camera_shake: int = 2
 ## Bus name -> linear volume 0..1.
 var volumes: Dictionary[String, float] = {"Master": 1.0, "Music": 0.7, "SFX": 1.0, "UI": 0.8, "Voice": 1.0}
 ## Action -> physical keycode, only for actions the player rebound.
@@ -148,6 +152,8 @@ func save_to(path: String) -> Error:
 	cfg.set_value("video", "shadows", shadows)
 	cfg.set_value("video", "battery_saver", battery_saver)
 	cfg.set_value("accessibility", "colorblind_colors", colorblind_colors)
+	cfg.set_value("accessibility", "confirm_sell", confirm_sell)
+	cfg.set_value("accessibility", "camera_shake", camera_shake)
 	cfg.set_value("ui", "ui_scale", ui_scale)
 	cfg.set_value("ui", "language", language)
 	cfg.set_value("controls", "edge_pan", edge_pan)
@@ -178,6 +184,8 @@ func load_from(path: String) -> void:
 	shadows = bool(cfg.get_value("video", "shadows", shadows))
 	battery_saver = bool(cfg.get_value("video", "battery_saver", battery_saver))
 	colorblind_colors = bool(cfg.get_value("accessibility", "colorblind_colors", colorblind_colors))
+	confirm_sell = bool(cfg.get_value("accessibility", "confirm_sell", confirm_sell))
+	camera_shake = clampi(int(cfg.get_value("accessibility", "camera_shake", camera_shake)), 0, 2)
 	ui_scale = clampf(float(cfg.get_value("ui", "ui_scale", ui_scale)), 0.5, 2.0)
 	language = str(cfg.get_value("ui", "language", language))
 	if not Loc.LANGUAGES.has(language):

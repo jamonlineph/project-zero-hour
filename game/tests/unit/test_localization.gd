@@ -35,3 +35,18 @@ func test_the_language_setting_round_trips() -> void:
 	assert_eq(t.language, "es")
 	DirAccess.remove_absolute(path)
 	Loc.use("en")
+
+
+func test_the_accessibility_settings_round_trip() -> void:
+	var s := GameSettings.new()
+	s.confirm_sell = false
+	s.camera_shake = 1
+	var path: String = "user://test_settings_a11y.cfg"
+	s.save_to(path)
+	var t := GameSettings.new()
+	t.load_from(path)
+	assert_false(t.confirm_sell)
+	assert_eq(t.camera_shake, 1)
+	DirAccess.remove_absolute(path)
+	assert_eq(RtsCamera.shake_factor(0), 0.0, "camera shake off still shakes")
+	assert_true(RtsCamera.shake_factor(1) < RtsCamera.shake_factor(2))

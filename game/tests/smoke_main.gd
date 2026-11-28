@@ -64,6 +64,7 @@ func _run() -> void:
 		failures.append_array(_check_desktop_controls(main, world, selection))
 		failures.append_array(await _check_touch_controls(main, world, selection))
 		failures.append_array(await _check_spoof_button(main, world, selection))
+		failures.append_array(await _check_sell_button(main, world, selection))
 		failures.append_array(await _check_upgrades(main, world, selection))
 		failures.append_array(await _check_powers(main, world, selection))
 		failures.append_array(await _check_hud_build_and_produce(main, world, selection))
@@ -571,6 +572,40 @@ func _check_units_on_terrain(main: Node, world: SimWorld, game_view: GameView) -
 			hilly = true
 	if not hilly:
 		problems.append("no unit stands on raised ground; is the sandbox terrain loaded?")
+	return problems
+
+
+## P3-20: a selected building of ours offers "Sell"; with the confirm
+## setting on, the first tap only arms it and the second one sells.
+func _check_sell_button(main: Node, world: SimWorld, selection: SelectionController) -> PackedStringArray:
+	var problems: PackedStringArray = []
+	var hud: Hud = main.get("hud")
+	var def: BuildingDef = world.content.get_building("us_microreactor")
+	var id: int = world.spawn_building(def, 1, 10, 52, true)
+	if id == 0:
+		return problems   # no room in this test map: nothing to check
+	GameSettings.current().confirm_sell = true
+	for i: int in 3:
+		await process_frame
+	selection.select_ids([id])
+	var slot: int = -1
+	for i: int in hud.command_grid._entries.size():
+		if str(hud.command_grid._entries[i].get("label", "")).begins_with("Sell"):
+			slot = i
+	if slot < 0:
+		problems.append("a selected building of ours shows no Sell button")
+		return problems
+	hud.command_grid.activate(slot)
+	for i: int in 10:
+		await process_frame
+	if world.get_entity(id) == null or world.get_entity(id).dead:
+		problems.append("one tap on Sell sold the building despite the confirm setting")
+		return problems
+	hud.command_grid.activate(slot)
+	for i: int in 20:
+		await process_frame
+	if world.get_entity(id) != null and not world.get_entity(id).dead:
+		problems.append("the second tap on Sell didn't sell the building")
 	return problems
 
 

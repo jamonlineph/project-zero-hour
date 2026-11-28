@@ -81,6 +81,10 @@ func _build_rows() -> void:
 		settings.ui_scale = _next(GameSettings.UI_SCALES, settings.ui_scale))
 	_cycle("Colorblind-safe team colors", "On" if settings.colorblind_colors else "Off",
 		func() -> void: settings.colorblind_colors = not settings.colorblind_colors).name = "ColorblindColors"
+	_cycle("Camera shake", ["Off", "Reduced", "Full"][settings.camera_shake], func() -> void:
+		settings.camera_shake = (settings.camera_shake + 2) % 3).name = "CameraShake"
+	_cycle("Confirm before selling a building", "On" if settings.confirm_sell else "Off",
+		func() -> void: settings.confirm_sell = not settings.confirm_sell).name = "ConfirmSell"
 	_cycle("Language", Loc.LANGUAGES.get(settings.language, settings.language), func() -> void:
 		var codes: Array = Loc.LANGUAGES.keys()
 		settings.language = codes[(codes.find(settings.language) + 1) % codes.size()]).name = "Language"

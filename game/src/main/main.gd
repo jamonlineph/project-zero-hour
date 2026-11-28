@@ -193,9 +193,24 @@ func _process(_delta: float) -> void:
 		if won and _gauntlet_step >= 0:
 			Gauntlet.record_win(_gauntlet_step)   # the next commander unlocks (P4-03)
 	game_view.play_events(runner.pending_events)
+	_shake_for(runner.pending_events)
 	if director != null:
 		director.observe(runner.pending_events)
 	runner.pending_events.clear()
+
+
+## Big blasts near the view shake the camera (P3-20 setting): a building
+## destroyed, or a hit with a wide splash (strikes, superweapons).
+func _shake_for(events: Array[Dictionary]) -> void:
+	var focus := Vector2(rts_camera.position.x, rts_camera.position.z)
+	for ev: Dictionary in events:
+		var strength: float = 0.0
+		if ev["type"] == "died" and content.get_building(str(ev.get("def_id", ""))) != null:
+			strength = 0.5
+		elif ev["type"] == "hit" and int(ev.get("radius", 0)) >= Fx.from_int(8):
+			strength = 0.35
+		if strength > 0.0 and focus.distance_to(Vector2(Fx.to_float(ev["x"]), Fx.to_float(ev["y"]))) < 70.0:
+			rts_camera.shake(strength)
 
 
 func _select_on_start(def_id: String) -> void:

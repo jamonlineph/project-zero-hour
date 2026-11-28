@@ -28,6 +28,7 @@ var _middle_dragging: bool = false
 var _space_dragging: bool = false
 ## F5–F8 -> {"position", "yaw", "distance"}
 var _bookmarks: Dictionary[int, Dictionary] = {}
+var _shake: float = 0.0   ## meters of camera shake left (P3-20 setting scales it)
 
 
 func _ready() -> void:
@@ -119,7 +120,21 @@ func screen_to_ground(screen_pos: Vector2) -> Variant:
 	return hit
 
 
+## Shakes the view a little (big explosions), scaled by the Camera shake
+## setting: full, reduced (a third) or off.
+func shake(strength_m: float) -> void:
+	_shake = maxf(_shake, strength_m * shake_factor(GameSettings.current().camera_shake))
+
+
+static func shake_factor(level: int) -> float:
+	return [0.0, 0.35, 1.0][clampi(level, 0, 2)]
+
+
 func _process(delta: float) -> void:
+	if _shake > 0.0 and camera != null:
+		_shake = maxf(0.0, _shake - delta * 2.5)
+		camera.h_offset = randf_range(-1.0, 1.0) * _shake
+		camera.v_offset = randf_range(-1.0, 1.0) * _shake
 	var move := Vector2(
 		Input.get_axis("cam_left", "cam_right"),
 		Input.get_axis("cam_forward", "cam_back"))

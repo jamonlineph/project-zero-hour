@@ -164,4 +164,11 @@ T = {
  'Three Bridges': 'Tres Puentes',
  'Old Town': 'Casco Antiguo',
  'Pine Ridge (2v2)': 'Cresta de Pinos (2c2)',
+ 'Camera shake': 'Temblor de cámara',
+ 'Reduced': 'Reducido',
+ 'Full': 'Completo',
+ 'Confirm before selling a building': 'Confirmar antes de vender un edificio',
+ 'Sell?\\ntap again': '¿Vender?\\ntoca otra vez',
+ 'Sell\\n+%d': 'Vender\\n+%d',
+ 'Sell for %d credits (half the price, less if damaged)': 'Vender por %d créditos (la mitad del precio, menos si está dañado)',
 }

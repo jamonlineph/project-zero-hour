@@ -280,6 +280,10 @@ msgstr ""
 msgid "Cage Armor Kit"
 msgstr ""
 
+#: game/src/ui/settings_menu.gd
+msgid "Camera shake"
+msgstr ""
+
 #: game/src/ui/hud.gd
 msgid "Cancel"
 msgstr ""
@@ -346,6 +350,10 @@ msgstr ""
 
 #: game/src/ui/main_menu.gd
 msgid "Computer: %s"
+msgstr ""
+
+#: game/src/ui/settings_menu.gd
+msgid "Confirm before selling a building"
 msgstr ""
 
 #: game/src/ui/lan_menu.gd
@@ -598,6 +606,10 @@ msgstr ""
 
 #: game/data/maps/frostwood/map.json
 msgid "Frostwood"
+msgstr ""
+
+#: game/src/ui/settings_menu.gd
+msgid "Full"
 msgstr ""
 
 #: game/data/powers/kp_gps_jamming.json
@@ -937,6 +949,10 @@ msgid "Recon Drone Sweep"
 msgstr ""
 
 #: game/src/ui/settings_menu.gd
+msgid "Reduced"
+msgstr ""
+
+#: game/src/ui/settings_menu.gd
 msgid "Render scale"
 msgstr ""
 
@@ -1026,6 +1042,18 @@ msgstr ""
 
 #: game/data/units/kp_howitzer.json
 msgid "Self-Propelled Howitzer"
+msgstr ""
+
+#: game/src/ui/command_menus.gd
+msgid "Sell for %d credits (half the price, less if damaged)"
+msgstr ""
+
+#: game/src/ui/command_menus.gd
+msgid "Sell?\ntap again"
+msgstr ""
+
+#: game/src/ui/command_menus.gd
+msgid "Sell\n+%d"
 msgstr ""
 
 #: game/src/ui/main_menu.gd game/src/ui/pause_menu.gd game/src/ui/settings_menu.gd

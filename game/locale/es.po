@@ -137,6 +137,10 @@ msgstr "Los dos dispositivos deben estar en la misma red."
 msgid "Buy %s for %d selected unit(s)"
 msgstr "Comprar %s para %d unidad(es) seleccionada(s)"
 
+#: game/src/ui/settings_menu.gd
+msgid "Camera shake"
+msgstr "Temblor de cámara"
+
 #: game/src/ui/hud.gd
 msgid "Cancel"
 msgstr "Cancelar"
@@ -172,6 +176,10 @@ msgstr "Comandante\n%d punto%s"
 #: game/src/ui/main_menu.gd
 msgid "Computer: %s"
 msgstr "Ordenador: %s"
+
+#: game/src/ui/settings_menu.gd
+msgid "Confirm before selling a building"
+msgstr "Confirmar antes de vender un edificio"
 
 #: game/src/ui/lan_menu.gd
 msgid "Connecting to %s..."
@@ -280,6 +288,10 @@ msgstr "Límite de fotogramas"
 #: game/data/maps/frostwood/map.json
 msgid "Frostwood"
 msgstr "Bosque Helado"
+
+#: game/src/ui/settings_menu.gd
+msgid "Full"
+msgstr "Completo"
 
 #: game/src/ui/pause_menu.gd
 msgid "Game saved"
@@ -438,6 +450,10 @@ msgid "Rank %d"
 msgstr "Rango %d"
 
 #: game/src/ui/settings_menu.gd
+msgid "Reduced"
+msgstr "Reducido"
+
+#: game/src/ui/settings_menu.gd
 msgid "Render scale"
 msgstr "Escala de renderizado"
 
@@ -488,6 +504,18 @@ msgstr "Guardar partida"
 #: game/src/ui/pause_menu.gd
 msgid "Save replay"
 msgstr "Guardar repetición"
+
+#: game/src/ui/command_menus.gd
+msgid "Sell for %d credits (half the price, less if damaged)"
+msgstr "Vender por %d créditos (la mitad del precio, menos si está dañado)"
+
+#: game/src/ui/command_menus.gd
+msgid "Sell?\ntap again"
+msgstr "¿Vender?\ntoca otra vez"
+
+#: game/src/ui/command_menus.gd
+msgid "Sell\n+%d"
+msgstr "Vender\n+%d"
 
 #: game/src/ui/main_menu.gd game/src/ui/pause_menu.gd game/src/ui/settings_menu.gd
 msgid "Settings"

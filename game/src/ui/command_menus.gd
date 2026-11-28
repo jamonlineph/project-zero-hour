@@ -8,6 +8,8 @@ extends RefCounted
 var _runner: SimRunner
 var _selection: SelectionController
 var _placement: PlacementController
+var _sell_armed_id: int = 0      ## the building a first "Sell" tap armed (P3-20)
+var _sell_armed_until: int = 0   ## ms (Time.get_ticks_msec) until that runs out
 
 
 func _init(runner: SimRunner, selection: SelectionController, placement: PlacementController) -> void:
@@ -44,6 +46,9 @@ func entries() -> Array[Dictionary]:
 		out.append_array(UpgradeMenu.research_entries(_runner, _selection.local_player_id, producer))
 	elif not units:
 		out.append_array(_ability_entries(4))   # a superweapon building's launch (P3-03)
+	var sell: Dictionary = _sell_entry(world)
+	if not sell.is_empty() and not units and not builders:
+		out.append(sell)
 	if not shelters.is_empty() and not units:
 		out.append({"label": "Exit all", "tooltip": "Everyone inside comes out",
 			"action": func() -> void:
@@ -116,6 +121,29 @@ func _carrying() -> bool:
 		if e != null and e.mover != null and e.garrison != null and not e.garrison.occupants.is_empty():
 			return true
 	return false
+
+
+## "Sell" for one selected building of ours (P3-20). With "Confirm before
+## selling" on, the first tap arms it and a second one within 3 s sells.
+func _sell_entry(world: SimWorld) -> Dictionary:
+	if _selection.selected.size() != 1:
+		return {}
+	var b: SimEntity = world.get_entity(_selection.selected[0])
+	if b == null or b.building == null or not b.building.built or b.player_id != _selection.local_player_id \
+			or b.building.capture_ticks > 0 or b.building.bridge:
+		return {}
+	var refund: int = (b.cost * b.hp) / maxi(1, 2 * b.max_hp)
+	var armed: bool = _sell_armed_id == b.id and Time.get_ticks_msec() < _sell_armed_until
+	var bid: int = b.id
+	return {"label": Loc.t("Sell?\ntap again") if armed else Loc.t("Sell\n+%d") % refund,
+		"tooltip": Loc.t("Sell for %d credits (half the price, less if damaged)") % refund,
+		"action": func() -> void:
+			if GameSettings.current().confirm_sell and not (_sell_armed_id == bid and Time.get_ticks_msec() < _sell_armed_until):
+				_sell_armed_id = bid
+				_sell_armed_until = Time.get_ticks_msec() + 3000
+			else:
+				_sell_armed_id = 0
+				_runner.submit(SimCommand.make_sell(bid))}
 
 
 ## "Unload" for selected transports with passengers (P3-06).
