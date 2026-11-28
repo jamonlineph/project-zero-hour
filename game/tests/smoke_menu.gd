@@ -42,6 +42,18 @@ func _run() -> void:
 		map_button.pressed.emit()
 		if menu.get("map_id") == "riverside":
 			failures.append("the map button did not change the map")
+		# Credits (P4-06): the screen opens, lists the assets and shows the
+		# engine's licenses.
+		var credits: Control = menu.call("open_credits")
+		await process_frame
+		var credits_text: RichTextLabel = credits.find_child("Text", true, false)
+		if credits_text == null or not credits_text.text.contains("Inter"):
+			failures.append("the credits don't list the asset authors")
+		(credits.find_child("EngineLicenses", true, false) as Button).pressed.emit()
+		if not credits_text.text.contains("Godot Engine"):
+			failures.append("the credits don't show the engine's license")
+		credits.queue_free()
+		await process_frame
 		# 2v2 (P3-23b): the mode button switches to a four-start map and back.
 		var mode_button: Button = menu.find_child("Mode", true, false)
 		mode_button.pressed.emit()

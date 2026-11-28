@@ -59,6 +59,7 @@ This file is the single source of truth for every AI agent working in this repo:
 | Export hand-made art (`art_source/**/<id>.blend` + provenance `.json`) | `tools/export_blend.sh [--check] [--only ID ...]`; self-test: `tools/test_export_blend.sh` |
 | Rebuild a map's height file | `python3 tools/make_heightmap.py game/data/maps/<id>` (from `terrain_gen` in its `map.json`) |
 | Balance numbers as spreadsheets | `python3 tools/balance_sheet.py export` (writes `balance/units.csv`, `weapons.csv`, `buildings.csv`), edit them, then `python3 tools/balance_sheet.py import balance/units.csv` (`--dry-run` lists the changes first). The JSON stays the source of truth; `balance/` is not committed |
+| Update the in-game credits after adding assets by a new author or of a new kind | `python3 tools/gen_credits.py` (`check_repo` says when it's needed) |
 | Rebuild placeholder sounds | `python3 tools/gen_sounds.py` (needs numpy; writes `game/assets/audio/sfx/` and the manifest rows) |
 | Rebuild the music track | `python3 tools/gen_music.py` (needs numpy and ffmpeg; writes `game/assets/audio/music/main_theme.ogg` and its manifest row) |
 | Re-import assets after adding files | `godot --headless --path game --import` |

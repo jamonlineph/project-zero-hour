@@ -101,7 +101,15 @@ func _ready() -> void:
 	_button(box, "LAN game (two devices)", open_lan).name = "Lan"
 	_button(box, "Sandbox (developer test map)", start_sandbox).name = "Sandbox"
 	_button(box, "Load game", open_load).name = "LoadGame"
-	_button(box, "Settings", open_settings).name = "Settings"
+	# Settings and credits share a row (P4-06).
+	var more := HBoxContainer.new()
+	more.add_theme_constant_override("separation", 8)
+	box.add_child(more)
+	_button(more, "Settings", open_settings).name = "Settings"
+	_button(more, "Credits", open_credits).name = "Credits"
+	for b: Node in more.get_children():
+		(b as Button).custom_minimum_size = Vector2(206, 46)
+		(b as Button).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_button(box, "Quit", func() -> void: get_tree().quit())
 	_refresh_labels()
 	DevCapture.attach_if_requested(self)
@@ -117,6 +125,8 @@ func _ready() -> void:
 			open_load.call_deferred()
 		elif arg == "--open=lan":
 			open_lan.call_deferred()
+		elif arg == "--open=credits":
+			open_credits.call_deferred()
 		# `-- --watch=<map> [--side=<faction>]` starts computer vs computer on
 		# that map; --side picks player 1's faction (the HUD's point of view).
 		elif arg.begins_with("--watch="):
@@ -174,6 +184,13 @@ func open_load() -> LoadMenu:
 func load_game(data: Dictionary) -> void:
 	MatchConfig.load_save = data
 	_start(data.get("scenario_data", {}))
+
+
+func open_credits() -> CreditsMenu:
+	var menu := CreditsMenu.new()
+	menu.name = "CreditsMenu"
+	add_child(menu)
+	return menu
 
 
 func open_settings() -> SettingsMenu:

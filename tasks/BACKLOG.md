@@ -633,7 +633,7 @@ Split big tasks into `P1-04a`, `P1-04b`, … before starting.
 | P4-03 | Gauntlet mode (7 AI commanders with personalities) |
 | P4-04 | Operations campaign (original story) |
 | P4-05 | Store listing assets: screenshots, trailer captured in-game |
-| P4-06 | Credits screen and legal notices |
+| P4-06 | Credits screen and legal notices — ✅ v1 2026-11-28 (Claude Code): Credits in the main menu (`CreditsMenu`): the game, its licenses, every asset author and license from `game/data/credits.json` (generated from the manifest by `tools/gen_credits.py`; `check_repo` fails when it is stale), and the Godot Engine license and third-party notices. Left for the owner: a privacy policy (P4-07) |
 | P4-07 | Legal review of the name and trademarks; privacy policy |
 | P4-08 | Launch checklist ([08-testing-and-qa.md](../docs/08-testing-and-qa.md)) |
 

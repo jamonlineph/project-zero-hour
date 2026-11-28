@@ -75,6 +75,14 @@ def main():
             if r not in rows:
                 problems.append("asset without a manifest row: %s" % r)
 
+    # The in-game credits list every author and license in the manifest (P4-06).
+    credits_path = os.path.join(REPO, "game", "data", "credits.json")
+    sys.path.insert(0, os.path.join(REPO, "tools"))
+    import gen_credits
+    current = open(credits_path, encoding="utf-8").read() if os.path.exists(credits_path) else ""
+    if current != gen_credits.text():
+        problems.append("game/data/credits.json is out of date: run python3 tools/gen_credits.py")
+
     if problems:
         print("check_repo: %d problem(s)" % len(problems))
         for p in problems:
