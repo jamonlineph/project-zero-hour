@@ -18,6 +18,7 @@ var weapons: Dictionary[String, WeaponDef] = {}
 var maps: Dictionary[String, MapDef] = {}
 var scenarios: Dictionary[String, Dictionary] = {}   ## raw scenario data, see MatchSetup
 var ai_presets: Dictionary[String, Dictionary] = {}  ## raw AI presets, see AiPlayer
+var ai_personalities: Dictionary = {}  ## raw AI personalities, see AiPersonality (P3-13b)
 ## The cross-device determinism check (P1-37); see data/determinism_check.json.
 var determinism_check: Dictionary = {}
 var upgrades: Dictionary[String, UpgradeDef] = {}
@@ -43,6 +44,7 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 	maps.clear()
 	scenarios.clear()
 	ai_presets.clear()
+	ai_personalities = {}
 	determinism_check = {}
 	upgrades.clear()
 	strikes.clear()
@@ -56,7 +58,10 @@ func load_all(index_path: String = INDEX_PATH) -> bool:
 		errors.append("%s: expected a JSON object" % index_path)
 		return false
 	if (index as Dictionary).has("rules"):
-		_load_rules(str(index["rules"]))
+		RulesLoader.load_rules(self, str(index["rules"]))
+	if index.has("ai_personalities"):
+		var pers: Variant = read_json(str(index["ai_personalities"]))
+		ai_personalities = pers if pers is Dictionary else {}
 	# Order matters: units refer to weapons; weapons refer to damage types.
 	if (index as Dictionary).has("damage_matrix"):
 		_load_damage_matrix(str(index["damage_matrix"]))
@@ -206,52 +211,6 @@ func string_list(d: Dictionary, key: String, path: String) -> PackedStringArray:
 
 static func ms_to_ticks(ms: int) -> int:
 	return maxi(1, (ms * SimWorld.TICK_RATE + 999) / 1000)
-
-
-func _load_rules(path: String) -> void:
-	var parsed: Variant = read_json(path)
-	if not parsed is Dictionary:
-		errors.append("%s: expected a JSON object" % path)
-		return
-	var src: Dictionary = parsed
-	rules.veterancy_xp_multipliers = _int_list(src, "veterancy_xp_multipliers", path, 3)
-	rules.veterancy_damage_bonus = _int_list(src, "veterancy_damage_bonus_percent", path, 4)
-	rules.veterancy_armor_bonus = _int_list(src, "veterancy_armor_bonus_percent", path, 4)
-	rules.self_repair_rank = req_int(src, "veterancy_self_repair_rank", path, 0)
-	rules.self_repair_percent_per_2s = req_int(src, "veterancy_self_repair_percent_per_2s", path, 0)
-	rules.commander_rank_xp = _int_list(src, "commander_rank_xp", path, 5)
-	rules.building_kill_xp_percent = req_int(src, "building_kill_xp_percent", path, 0)
-	rules.crush_percent_per_s = req_int(src, "crush_percent_per_s", path, 0)
-	var fund: Variant = src.get("sovereign_fund", {})
-	if not fund is Dictionary:
-		errors.append("%s: 'sovereign_fund' must be an object" % path)
-		fund = {}
-	rules.fund_faction = str((fund as Dictionary).get("faction", ""))
-	rules.fund_interval_ticks = ms_to_ticks(int((fund as Dictionary).get("interval_s", 60)) * 1000)
-	rules.fund_percent = int((fund as Dictionary).get("percent", 0))
-	rules.fund_cap = int((fund as Dictionary).get("cap", 0))
-	rules.fund_cap_doubler = str((fund as Dictionary).get("cap_doubled_by", ""))
-	var interop: Dictionary = src.get("interoperability", {}) if src.get("interoperability", {}) is Dictionary else {}
-	rules.interop_faction = str(interop.get("faction", ""))
-	rules.interop_radius = Fx.from_ratio(int(interop.get("radius_cm", 2500)), 100)
-	rules.interop_min_types = int(interop.get("min_types", 3))
-	rules.interop_reload_percent = clampi(int(interop.get("reload_percent", 0)), 0, 50)
-	rules.interop_doubler = str(interop.get("doubled_by", ""))
-	start_kit = src.get("start_kit", [])
-	if src.has("skirmish_credits"):
-		skirmish_credits = _int_list(src, "skirmish_credits", path, (src["skirmish_credits"] as Array).size())
-
-
-func _int_list(d: Dictionary, key: String, path: String, size: int) -> PackedInt32Array:
-	var out := PackedInt32Array()
-	var v: Variant = d.get(key, [])
-	if not v is Array or (v as Array).size() != size:
-		errors.append("%s: '%s' must be a list of %d whole numbers" % [path, key, size])
-		out.resize(size)
-		return out
-	for item: Variant in v:
-		out.append(int(item))
-	return out
 
 
 func _load_damage_matrix(path: String) -> void:

@@ -12,9 +12,11 @@ var faction: String = "us"
 var enemy: String = "kp"   ## the computer's faction (P3-02a)
 var credits_index: int = 1
 var difficulty: String = "normal"   ## the computer opponent (P2-11)
+var personality: String = "random"   ## its style (P3-13b, AiPersonality)
 var map_id: String = DEFAULT_MAP
 var _map_button: Button
 var _difficulty_button: Button
+var _style_button: Button
 var _faction_button: Button
 var _enemy_button: Button
 var _credits_button: Button
@@ -72,8 +74,17 @@ func _ready() -> void:
 		b.custom_minimum_size = Vector2(206, 46)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_credits_button = _button(box, "", _cycle_credits)
-	_difficulty_button = _button(box, "", _cycle_difficulty)
+	# Difficulty and style share a row, like the two sides.
+	var computer := HBoxContainer.new()
+	computer.add_theme_constant_override("separation", 8)
+	box.add_child(computer)
+	_difficulty_button = _button(computer, "", _cycle_difficulty)
 	_difficulty_button.name = "Difficulty"
+	_style_button = _button(computer, "", _cycle_style)
+	_style_button.name = "Style"
+	for b: Button in [_difficulty_button, _style_button]:
+		b.custom_minimum_size = Vector2(206, 46)
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_button(box, "Start skirmish vs computer", start_skirmish).name = "StartSkirmish"
 	_button(box, "Watch computer vs computer", start_watch).name = "Watch"
 	_button(box, "LAN game (two devices)", open_lan).name = "Lan"
@@ -109,7 +120,7 @@ func _ready() -> void:
 
 
 func start_skirmish() -> void:
-	_start(MatchConfig.skirmish(content, map_id, faction, content.skirmish_credits[credits_index], false, difficulty, enemy))
+	_start(MatchConfig.skirmish(content, map_id, faction, content.skirmish_credits[credits_index], false, difficulty, enemy, personality))
 
 
 func start_watch() -> void:
@@ -189,6 +200,13 @@ func _cycle_difficulty() -> void:
 	_refresh_labels()
 
 
+func _cycle_style() -> void:
+	var styles: Array[String] = ["random"]
+	styles.append_array(AiPersonality.NAMES)
+	personality = styles[(styles.find(personality) + 1) % styles.size()]
+	_refresh_labels()
+
+
 func _cycle_credits() -> void:
 	credits_index = (credits_index + 1) % content.skirmish_credits.size()
 	_refresh_labels()
@@ -200,7 +218,8 @@ func _refresh_labels() -> void:
 	_faction_button.text = "You: %s" % MatchConfig.FACTIONS[faction]
 	_enemy_button.text = "Enemy: %s" % MatchConfig.FACTIONS[enemy]
 	_credits_button.text = "Starting credits: %d   (tap to change)" % content.skirmish_credits[credits_index]
-	_difficulty_button.text = "Computer: %s   (tap to change)" % difficulty.capitalize()
+	_difficulty_button.text = "Computer: %s" % difficulty.capitalize()
+	_style_button.text = "Style: %s" % personality.capitalize()
 
 
 func _button(parent: Control, text: String, action: Callable) -> Button:

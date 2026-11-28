@@ -35,6 +35,7 @@ var counters: Dictionary[String, PackedStringArray] = {}
 var power_priority: PackedStringArray = []
 var research: PackedStringArray = []
 var superweapon: String = ""   ## building built after the build order once the rank allows (P3-03)
+var personality: String = "balanced"   ## AiPersonality (P3-13b); "random" is picked at the first think
 
 var _attacking: bool = false
 ## Own random numbers, seeded from the sim's state at the first think, so each
@@ -51,7 +52,8 @@ var _target_id: int = 0
 var _rally_set: Dictionary[int, bool] = {}
 
 
-static func from_preset(content: ContentDb, id: String, player: int, level: String = "normal") -> AiPlayer:
+static func from_preset(content: ContentDb, id: String, player: int, level: String = "normal",
+		style: String = "balanced") -> AiPlayer:
 	var p: Dictionary = content.ai_presets.get(id, {})
 	if p.is_empty():
 		push_error("AiPlayer: unknown preset '%s'" % id)
@@ -79,21 +81,11 @@ static func from_preset(content: ContentDb, id: String, player: int, level: Stri
 	for r: Variant in p.get("research", []):
 		ai.research.append(str(r))
 	ai.superweapon = str(p.get("superweapon", ""))
-	ai.difficulty = level
-	if level == "easy":
-		ai.think_interval *= 2
-		ai.attack_wave_size += 3
-		ai.first_attack_tick += 60 * SimWorld.TICK_RATE
-		ai.max_gatherers = maxi(2, ai.max_gatherers - 1)
-		ai.counters.clear()
-		ai.research.clear()
-	elif level == "hard":
-		# Hard (P3-13a): no cheating on sight or income; it reacts faster,
-		# runs a bigger economy and attacks sooner.
-		ai.think_interval = maxi(1, (ai.think_interval * 2) / 3)
-		ai.max_gatherers += 2
-		ai.first_attack_tick = maxi(60 * SimWorld.TICK_RATE, ai.first_attack_tick - 30 * SimWorld.TICK_RATE)
-		ai.attack_wave_size = maxi(3, ai.attack_wave_size - 1)
+	AiPersonality.apply_difficulty(ai, level)
+	if style == "random":
+		ai.personality = style
+	elif style != "balanced":
+		AiPersonality.apply(ai, content, str(p.get("faction", "")), style)
 	return ai
 
 
@@ -122,6 +114,9 @@ func think(world: SimWorld) -> Array[SimCommand]:
 ## game, so AI-vs-AI results said nothing about balance (P2-11c).
 func _seed(world: SimWorld) -> void:
 	_rng = SimRng.new(world.rng.state ^ (player_id * 0x9E3779B1))
+	if personality == "random":
+		var pick: String = AiPersonality.NAMES[_rng.range_int(AiPersonality.NAMES.size())]
+		AiPersonality.apply(self, world.content, world.get_player(player_id).faction, pick)
 	_wave_size = maxi(2, attack_wave_size - 1 + _rng.range_int(3))
 	_first_attack = maxi(0, first_attack_tick - 15 * SimWorld.TICK_RATE + _rng.range_int(30 * SimWorld.TICK_RATE + 1))
 

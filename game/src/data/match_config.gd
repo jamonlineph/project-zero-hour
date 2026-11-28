@@ -36,13 +36,14 @@ static func lan(content: ContentDb, map_id: String, host_faction: String, client
 ## `enemy` is the computer's faction (default_enemy when empty); a mirror
 ## match (same faction) is allowed.
 static func skirmish(content: ContentDb, map_id: String, faction: String, credits: int, watch_only: bool = false,
-		difficulty: String = "normal", enemy: String = "") -> Dictionary:
+		difficulty: String = "normal", enemy: String = "", personality: String = "balanced") -> Dictionary:
 	var map: MapDef = content.get_map(map_id)
 	if enemy == "":
 		enemy = default_enemy(faction)
 	var players: Array = [
 		{"id": 1, "team": 1, "faction": faction, "credits": credits},
-		{"id": 2, "team": 2, "faction": enemy, "credits": credits, "ai": enemy + "_default", "difficulty": difficulty},
+		{"id": 2, "team": 2, "faction": enemy, "credits": credits, "ai": enemy + "_default", "difficulty": difficulty,
+			"personality": personality},
 	]
 	if watch_only:
 		players[0]["ai"] = faction + "_default"

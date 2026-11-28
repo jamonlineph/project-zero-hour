@@ -71,7 +71,8 @@ func add_ai_from_scenario(content: ContentDb, scenario: Dictionary) -> void:
 		if preset == "":
 			continue
 		var pid: int = int(pd.get("id", 0))
-		var ai: AiPlayer = AiPlayer.from_preset(content, preset, pid, str(pd.get("difficulty", "normal")))
+		var ai: AiPlayer = AiPlayer.from_preset(content, preset, pid, str(pd.get("difficulty", "normal")),
+			str(pd.get("personality", "balanced")))
 		if ai == null:
 			continue
 		ai_players[pid] = ai

@@ -1,0 +1,23 @@
+{
+  "_doc": "Skirmish AI personalities (P3-13b, docs/design/ai-opponent.md): overlays on a faction preset. first_attack_shift_s and wave_size_delta move the first attack and the wave size; max_gatherers_delta changes the truck count; defend_radius_delta_m widens the defended area; research 'none' skips research and 'all' researches every global upgrade of the faction; superweapon false never builds one; mix_boost multiplies the unit-mix weight of units by armor class; extra_defenses appends that many of each of the faction's defensive buildings to the build order. 'random' picks one of these per match from the AI's own seed.",
+  "balanced": {"name": "Balanced", "description": "Follows its faction's plan."},
+  "rusher": {
+    "name": "Rusher",
+    "description": "Attacks early and often with infantry and light vehicles; skips research and superweapons.",
+    "first_attack_shift_s": -90, "wave_size_delta": -2, "max_gatherers_delta": -1,
+    "research": "none", "superweapon": false,
+    "mix_boost": {"infantry": 2, "light_vehicle": 2}
+  },
+  "turtle": {
+    "name": "Turtle",
+    "description": "Fortifies its base with extra defenses and attacks late, in big waves.",
+    "first_attack_shift_s": 150, "wave_size_delta": 4, "defend_radius_delta_m": 20,
+    "extra_defenses": 2
+  },
+  "tech": {
+    "name": "Tech",
+    "description": "Researches every upgrade, favors aircraft and attacks a little later.",
+    "first_attack_shift_s": 60, "wave_size_delta": 1,
+    "research": "all", "mix_boost": {"aircraft": 3}
+  }
+}

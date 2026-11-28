@@ -172,6 +172,7 @@
     "res://data/scenarios/ai_duel.json",
     "res://data/scenarios/skirmish_vs_ai.json"
   ],
+  "ai_personalities": "res://data/ai/personalities.json",
   "ai": [
     "res://data/ai/us_default.json",
     "res://data/ai/kp_default.json",

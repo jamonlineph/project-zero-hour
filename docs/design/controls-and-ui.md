@@ -39,6 +39,7 @@ The keys for camera movement and unit orders can be rebound in Settings (control
 | Attack-move, stop, hold | Buttons in the command grid when units are selected | ✅ |
 | LAN game (P3-14a) | Main menu, "LAN game (two devices)": one device hosts (it shows its address), the other types that address and joins; the host's menu choices (map, credits, "You" for the host, "Enemy" for the other player) set the match, and the host presses Start | ✅ |
 | Computer difficulty | Easy, Normal, Hard (P3-13a: Hard thinks faster, runs more trucks and attacks sooner; no cheating) | ✅ |
+| Computer style | Random, Balanced, Rusher, Turtle, Tech (P3-13b, next to the difficulty in the skirmish menu; see `ai-opponent.md`) | ✅ |
 | Transports (P3-06) | Right-click or tap your IFV with infantry selected to board; select the IFV and press "Unload" (same grid slot as Spoof) to let them out | ✅ |
 | Capture (P3-08a) | Right-click or tap a neutral or enemy capturable building (oil field, solar farm, field hospital, data center) with infantry selected; the selection panel shows "capturing n%" | ✅ |
 | Superweapons (P3-03) | Select your superweapon building: its button shows the charge time left, then "Launch" (tap or click the target anywhere on the map). Every player sees every superweapon's countdown under the top bar, on the right | ✅ |

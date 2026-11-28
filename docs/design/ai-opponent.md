@@ -31,7 +31,18 @@ The AI is an ordinary player. It sees the world through the same fog-of-war rule
 
 ## Personalities (for Gauntlet and variety)
 
-Each personality is a JSON preset: build order, unit preferences, aggression and timings. Examples:
+In the game since P3-13b: `game/data/ai/personalities.json` holds four styles that overlay any faction preset (`AiPersonality`), chosen in the skirmish menu ("Style", default Random):
+
+| Style | What changes |
+|---|---|
+| Balanced | Nothing: the faction preset as it is |
+| Rusher | First attack 90 s sooner, waves 2 smaller, one truck fewer, no research or superweapon, twice the weight on infantry and light vehicles |
+| Turtle | Two more of each of its faction's defensive buildings (bunkers, trenches, air-defense sites), a 20 m wider defended area, first attack 150 s later with waves 4 bigger |
+| Tech | Researches every global upgrade of its faction, three times the weight on aircraft, first attack 60 s later |
+
+"Random" picks one per match from the AI's own seed at its first think, so every machine (and a replay) picks the same. Faction-flavored personalities like the ones below can be added as more entries in the same file.
+
+Later examples:
 - **Artillery Grinder:** North Korea, turtles and shells.
 - **Drone Swarmer:** UAE, swarm drones and raids.
 - **Precision Raider:** America, kill-chain strikes on the economy.
@@ -43,4 +54,4 @@ Each personality is a JSON preset: build order, unit preferences, aggression and
 |---|---|---|
 | v0 ✅ | P1-31 | Build order from `game/data/ai/*.json`, keeps a builder and trucks, fills factories with the unit mix it lacks most, defends buildings, attacks in waves. Shortcut: it knows where enemy buildings are (start positions). Code: `game/src/ai/ai_player.gd` |
 | v1 ✅ | P2-11 | Easy (thinks half as often, attacks later and bigger, no counters or research) and normal. Counter-building: every 3 visible enemies of an armor class add weight to the preset's `counters`. Spends commander points in `power_priority` order and aims powers (strikes at the biggest visible enemy group, reveals at the enemy base, decoys in front of its own). Researches `research` upgrades. Code: `game/src/ai/ai_strategy.gd`. Batch AI-vs-AI runs: `tests/tools/ai_matches.gd`. Fairness (P2-11c): every AI thinks on the same tick, and each AI has its own `SimRng` (seeded from the sim's state at its first think) that varies its wave size (±1), first attack (±15 s), unit mix and attack target, so each match seed plays out differently. Riverside (P2-12): it keeps at most `max_spotters` (default 2) unarmed recon drones, and an army that hasn't grown for 90 s attacks without a full wave, so a broke AI can still finish a match |
-| v2 | P3-13 | All factions, hard difficulty, personalities |
+| v2 🔄 | P3-13 | All factions ✅, hard difficulty ✅ (P3-13a), personalities ✅ (P3-13b, above); left: P3-13c (transports, aircraft, superweapon timing) |
