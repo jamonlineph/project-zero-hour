@@ -44,7 +44,10 @@ func _initialize() -> void:
 		var sc: Dictionary
 		if map_id != "":
 			# Any map: a computer-vs-computer skirmish from its start positions.
-			if vs.size() == 2:
+			if db.get_map(map_id).start_positions.size() >= 4:   # a 2v2 map (P3-23b): teams 1 and 2
+				sc = MatchConfig.skirmish_2v2(db, map_id, vs[0] if vs.size() == 2 else "us", 10000, true, "normal",
+					vs[1] if vs.size() == 2 else "kp")
+			elif vs.size() == 2:
 				sc = MatchConfig.skirmish(db, map_id, vs[0], 10000, true, "normal", vs[1])
 			else:
 				sc = MatchConfig.skirmish(db, map_id, "kp" if swap else "us", 10000, true)

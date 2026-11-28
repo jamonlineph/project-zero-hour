@@ -1,0 +1,92 @@
+{
+  "id": "pine_ridge",
+  "name": "Pine Ridge (2v2)",
+  "_doc": "A 2v2 winter map (P3-23b), 384x384 m: two allied bases on the west, two on the east. Pine forests split the ground into a northern and a southern lane and a central valley, where a logging village and a data center on the middle line sit. Allies share a supply site between their bases. Mirrored across x = 192 (terrain_gen.mirror_x makes the heights exact). Start positions: west north, east north, west south, east south, so player n starts at start n (teams 1 and 3 west, 2 and 4 east).",
+  "skirmish": true,
+  "biome": "winter",
+  "width_m": 384,
+  "height_m": 384,
+  "_terrain_doc": "height.r16 is built from terrain_gen by tools/make_heightmap.py: snowy hills, and pine stands raised a little above the snow. No water.",
+  "height": "height.r16",
+  "height_scale_cm": 800,
+  "max_step_cm": 100,
+  "terrain_gen": {
+    "base_m": 2.0,
+    "hills": [
+      [30, 30, 18, 1.1],
+      [30, 354, 18, 1.1],
+      [100, 192, 16, 0.8],
+      [170, 100, 14, 0.6],
+      [170, 284, 14, 0.6]
+    ],
+    "raise_obstacles_m": 0.8,
+    "mirror_x": true
+  },
+  "_obstacles_doc": "Pine forests [x_m, y_m, w_m, h_m], west side first, then their mirrors.",
+  "obstacles_m": [
+    [96, 20, 22, 40],
+    [96, 324, 22, 40],
+    [60, 160, 14, 26],
+    [60, 198, 14, 26],
+    [132, 120, 18, 20],
+    [132, 244, 18, 20],
+    [150, 176, 10, 32],
+    [20, 170, 30, 10],
+    [20, 204, 30, 10],
+    [266, 20, 22, 40],
+    [266, 324, 22, 40],
+    [310, 160, 14, 26],
+    [310, 198, 14, 26],
+    [234, 120, 18, 20],
+    [234, 244, 18, 20],
+    [224, 176, 10, 32],
+    [334, 170, 30, 10],
+    [334, 204, 30, 10]
+  ],
+  "_civilian_doc": "Logging village houses [x_m, y_m, w_m, h_m, roof_height_m] (P3-05), west side first, then their mirrors.",
+  "civilian_buildings_m": [
+    [166, 150, 10, 8, 5],
+    [166, 226, 10, 8, 6],
+    [170, 170, 8, 10, 6],
+    [170, 204, 8, 10, 5],
+    [208, 150, 10, 8, 5],
+    [208, 226, 10, 8, 6],
+    [206, 170, 8, 10, 6],
+    [206, 204, 8, 10, 5]
+  ],
+  "_neutral_doc": "Capturable neutral buildings [building_id, x_m, y_m] (P3-08a), west side first, then mirrors, then the data center on the middle line.",
+  "neutral_buildings": [
+    ["oil_field", 24, 30],
+    ["oil_field", 24, 354],
+    ["field_hospital", 118, 192],
+    ["cell_tower", 120, 80],
+    ["cell_tower", 120, 304],
+    ["solar_farm", 70, 192],
+    ["oil_field", 360, 30],
+    ["oil_field", 360, 354],
+    ["field_hospital", 266, 192],
+    ["cell_tower", 264, 80],
+    ["cell_tower", 264, 304],
+    ["solar_farm", 314, 192],
+    ["data_center", 192, 192]
+  ],
+  "start_positions_m": [
+    [40, 100],
+    [344, 100],
+    [40, 284],
+    [344, 284]
+  ],
+  "_supply_doc": "Per base a safe site; per team a shared one between the bases and two forward ones near the lanes.",
+  "supply_sites_m": [
+    [64, 92, 30000],
+    [64, 292, 30000],
+    [30, 192, 20000],
+    [150, 60, 15000],
+    [150, 324, 15000],
+    [320, 92, 30000],
+    [320, 292, 30000],
+    [354, 192, 20000],
+    [234, 60, 15000],
+    [234, 324, 15000]
+  ]
+}

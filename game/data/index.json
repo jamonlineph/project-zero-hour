@@ -176,7 +176,8 @@
     "res://data/maps/desert_crossroads/map.json",
     "res://data/maps/frostwood/map.json",
     "res://data/maps/three_bridges/map.json",
-    "res://data/maps/old_town/map.json"
+    "res://data/maps/old_town/map.json",
+    "res://data/maps/pine_ridge/map.json"
   ],
   "scenarios": [
     "res://data/scenarios/sandbox.json",

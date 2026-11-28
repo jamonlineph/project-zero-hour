@@ -42,6 +42,7 @@ func test_riverside_and_twin_ridge_are_skirmish_maps() -> void:
 	assert_true(ids.has("frostwood"))
 	assert_true(ids.has("three_bridges"))
 	assert_true(ids.has("old_town"))
+	assert_true(ids.has("pine_ridge"))
 	assert_false(ids.has("sandbox"), "the sandbox is not mirror-fair")
 
 
@@ -58,8 +59,12 @@ func test_skirmish_maps_are_exact_mirrors() -> void:
 			for x: int in map.width_cells / 2:
 				assert_eq(map.is_passable(x, y), map.is_passable(map.width_cells - 1 - x, y),
 					"%s: passability differs at cell (%d, %d) and its mirror" % [m.id, x, y])
-		assert_eq(m.start_positions.size(), 2)
-		assert_eq(m.start_positions[1], Vector2i(m.width_m - m.start_positions[0].x, m.start_positions[0].y))
+		# 1v1 maps have two starts, 2v2 maps four (P3-23b); each odd start
+		# mirrors the one before it, so player n's opposite is player n+1.
+		assert_true(m.start_positions.size() in [2, 4], "%s: %d start positions" % [m.id, m.start_positions.size()])
+		for i: int in range(0, m.start_positions.size(), 2):
+			assert_eq(m.start_positions[i + 1], Vector2i(m.width_m - m.start_positions[i].x, m.start_positions[i].y),
+				"%s: start %d doesn't mirror start %d" % [m.id, i + 1, i])
 		assert_eq(_mirrored_rects(m.obstacles_m, m.width_m, true), _mirrored_rects(m.obstacles_m, m.width_m, false),
 			"%s: obstacles are not mirrored" % m.id)
 		assert_eq(_mirrored_rects(m.civilian_buildings_m, m.width_m, true),

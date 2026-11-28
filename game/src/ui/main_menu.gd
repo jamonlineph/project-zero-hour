@@ -13,6 +13,7 @@ var enemy: String = "kp"   ## the computer's faction (P3-02a)
 var credits_index: int = 1
 var difficulty: String = "normal"   ## the computer opponent (P2-11)
 var personality: String = "random"   ## its style (P3-13b, AiPersonality)
+var team_mode: bool = false   ## 2v2 with a computer ally (P3-23b)
 var map_id: String = DEFAULT_MAP
 var _map_button: Button
 var _difficulty_button: Button
@@ -20,6 +21,7 @@ var _style_button: Button
 var _faction_button: Button
 var _enemy_button: Button
 var _credits_button: Button
+var _mode_button: Button
 
 
 func _ready() -> void:
@@ -73,7 +75,16 @@ func _ready() -> void:
 	for b: Button in [_faction_button, _enemy_button]:
 		b.custom_minimum_size = Vector2(206, 46)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_credits_button = _button(box, "", _cycle_credits)
+	# Credits and 1v1/2v2 share a row.
+	var setup := HBoxContainer.new()
+	setup.add_theme_constant_override("separation", 8)
+	box.add_child(setup)
+	_credits_button = _button(setup, "", _cycle_credits)
+	_mode_button = _button(setup, "", _cycle_mode)
+	_mode_button.name = "Mode"
+	for b: Button in [_credits_button, _mode_button]:
+		b.custom_minimum_size = Vector2(206, 46)
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	# Difficulty and style share a row, like the two sides.
 	var computer := HBoxContainer.new()
 	computer.add_theme_constant_override("separation", 8)
@@ -113,18 +124,30 @@ func _ready() -> void:
 			faction = DevCapture.arg("side", faction)
 			enemy = DevCapture.arg("enemy", MatchConfig.default_enemy(faction))
 			if content.maps.has(watch_map) and MatchConfig.FACTIONS.has(faction) and MatchConfig.FACTIONS.has(enemy):
-				_start.call_deferred(MatchConfig.skirmish(content, watch_map, faction,
-					content.skirmish_credits[credits_index], true, "normal", enemy))
+				map_id = watch_map
+				team_mode = content.maps[watch_map].start_positions.size() >= 4
+				start_watch.call_deferred()
 			else:
 				push_error("Unknown map '%s'" % watch_map)
 
 
 func start_skirmish() -> void:
-	_start(MatchConfig.skirmish(content, map_id, faction, content.skirmish_credits[credits_index], false, difficulty, enemy, personality))
+	_start(_scenario(false))
 
 
 func start_watch() -> void:
-	_start(MatchConfig.skirmish(content, map_id, faction, content.skirmish_credits[credits_index], true, "normal", enemy))
+	_start(_scenario(true))
+
+
+## The 1v1 or 2v2 skirmish the menu describes (watching: computer vs computer).
+func _scenario(watch: bool) -> Dictionary:
+	var credits: int = content.skirmish_credits[credits_index]
+	if team_mode:
+		return MatchConfig.skirmish_2v2(content, map_id, faction, credits, watch,
+			"normal" if watch else difficulty, enemy, "balanced" if watch else personality)
+	if watch:
+		return MatchConfig.skirmish(content, map_id, faction, credits, true, "normal", enemy)
+	return MatchConfig.skirmish(content, map_id, faction, credits, false, difficulty, enemy, personality)
 
 
 func start_sandbox() -> void:
@@ -177,14 +200,26 @@ func _cycle_enemy() -> void:
 	_refresh_labels()
 
 
-## Maps offered for skirmish (MapDef.skirmish), in id order.
+## Maps offered for skirmish (MapDef.skirmish) in the current mode, in id
+## order: 1v1 maps have two start positions, 2v2 maps four (P3-23b).
 func skirmish_maps() -> Array[String]:
 	var ids: Array[String] = []
 	for id: String in content.maps:
-		if content.maps[id].skirmish:
+		var m: MapDef = content.maps[id]
+		if m.skirmish and m.start_positions.size() == (4 if team_mode else 2):
 			ids.append(id)
 	ids.sort()
 	return ids
+
+
+func _cycle_mode() -> void:
+	team_mode = not team_mode
+	var ids: Array[String] = skirmish_maps()
+	if ids.is_empty():
+		team_mode = not team_mode
+		return
+	map_id = DEFAULT_MAP if not team_mode and ids.has(DEFAULT_MAP) else ids[0]
+	_refresh_labels()
 
 
 func _cycle_map() -> void:
@@ -217,7 +252,8 @@ func _refresh_labels() -> void:
 	_map_button.text = "Map: %s   (tap to change)" % (map.name if map != null else map_id)
 	_faction_button.text = "You: %s" % MatchConfig.FACTIONS[faction]
 	_enemy_button.text = "Enemy: %s" % MatchConfig.FACTIONS[enemy]
-	_credits_button.text = "Starting credits: %d   (tap to change)" % content.skirmish_credits[credits_index]
+	_credits_button.text = "Credits: %d" % content.skirmish_credits[credits_index]
+	_mode_button.text = "Mode: %s" % ("2v2 with ally" if team_mode else "1v1")
 	_difficulty_button.text = "Computer: %s" % difficulty.capitalize()
 	_style_button.text = "Style: %s" % personality.capitalize()
 

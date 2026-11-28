@@ -42,6 +42,13 @@ func _run() -> void:
 		map_button.pressed.emit()
 		if menu.get("map_id") == "riverside":
 			failures.append("the map button did not change the map")
+		# 2v2 (P3-23b): the mode button switches to a four-start map and back.
+		var mode_button: Button = menu.find_child("Mode", true, false)
+		mode_button.pressed.emit()
+		var map4: MapDef = menu.get("content").get_map(str(menu.get("map_id")))
+		if not menu.get("team_mode") or map4 == null or map4.start_positions.size() != 4:
+			failures.append("the mode button didn't switch to a 2v2 map")
+		mode_button.pressed.emit()
 		# Cycle on round to Riverside, however many maps there are.
 		for i: int in 20:
 			if menu.get("map_id") == "riverside":

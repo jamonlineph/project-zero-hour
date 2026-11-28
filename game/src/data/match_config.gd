@@ -48,19 +48,52 @@ static func skirmish(content: ContentDb, map_id: String, faction: String, credit
 	if watch_only:
 		players[0]["ai"] = faction + "_default"
 		players[0]["difficulty"] = "normal"
+	return {
+		"id": "skirmish", "name": "Skirmish", "map": map_id, "victory": "buildings",
+		"players": players, "spawns": _start_kits(content, map, players),
+	}
+
+
+## A 2v2 skirmish (P3-23b) on a map with four start positions: you (player
+## 1) and a computer ally of your faction (player 3) against two computers
+## of `enemy`'s faction (players 2 and 4). Player n starts at start n, so on
+## a mirrored 2v2 map the odd players are west and the even ones east.
+static func skirmish_2v2(content: ContentDb, map_id: String, faction: String, credits: int, watch_only: bool = false,
+		difficulty: String = "normal", enemy: String = "", personality: String = "balanced") -> Dictionary:
+	var map: MapDef = content.get_map(map_id)
+	if enemy == "":
+		enemy = default_enemy(faction)
+	var players: Array = []
+	for pid: int in [1, 2, 3, 4]:
+		var mine: bool = pid % 2 == 1
+		var p: Dictionary = {"id": pid, "team": 1 if mine else 2, "faction": faction if mine else enemy, "credits": credits}
+		if pid == 3 or (pid == 1 and watch_only):
+			p["ai"] = faction + "_default"
+			p["difficulty"] = "normal"
+		elif not mine:
+			p["ai"] = enemy + "_default"
+			p["difficulty"] = difficulty
+			p["personality"] = personality
+		players.append(p)
+	return {
+		"id": "skirmish", "name": "Skirmish 2v2", "map": map_id, "victory": "buildings",
+		"players": players, "spawns": _start_kits(content, map, players),
+	}
+
+
+## Each player's starting units (rules start_kit) at its start position:
+## player n at start n, mirrored for starts on the east half.
+static func _start_kits(content: ContentDb, map: MapDef, players: Array) -> Array:
 	var spawns: Array = []
-	for slot: int in 2:
+	for slot: int in players.size():
 		var f: String = players[slot]["faction"]
 		var start: Vector2i = map.start_positions[slot] if slot < map.start_positions.size() else Vector2i(20 + slot * 80, 50)
 		var mirror: int = -1 if start.x > map.width_m / 2 else 1
 		for item: Variant in content.start_kit:
 			var kit: Array = item
 			spawns.append({
-				"def": str(kit[0]).replace("{f}", f), "player": slot + 1,
+				"def": str(kit[0]).replace("{f}", f), "player": int(players[slot]["id"]),
 				"x_m": start.x + int(kit[1]) * mirror, "y_m": start.y + int(kit[2]),
 				"facing_deg": 0 if mirror > 0 else 180,
 			})
-	return {
-		"id": "skirmish", "name": "Skirmish", "map": map_id, "victory": "buildings",
-		"players": players, "spawns": spawns,
-	}
+	return spawns
