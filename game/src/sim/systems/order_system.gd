@@ -49,11 +49,19 @@ static func _attack(world: SimWorld, e: SimEntity) -> void:
 			e.mover.stop()
 		return
 	var in_range: bool = false
+	var able: bool = false
 	for w: SimWeapon in e.weapons:
-		if DamageMatrix.can_target(w.targets, t.armor_class):
+		if DamageMatrix.can_target(w.targets, t.armor_class) and not w.empty():
+			able = true
 			w.target_id = t.id
 			if CombatSystem.in_range(e, w, t):
 				in_range = true
+	if not able:   # every weapon that could hit it is out of ammo (P3-04b)
+		e.order = SimEntity.Order.IDLE
+		e.order_target_id = 0
+		if e.mover != null:
+			e.mover.stop()
+		return
 	if e.mover == null:
 		return
 	if in_range:

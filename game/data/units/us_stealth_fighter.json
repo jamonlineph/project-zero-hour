@@ -1,0 +1,27 @@
+{
+  "id": "us_stealth_fighter",
+  "faction": "us",
+  "role": "stealth_fighter",
+  "name": "Stealth Fighter",
+  "armor_class": "aircraft",
+  "status": "first-pass numbers (P3-04b)",
+  "_doc": "Multirole jet: air-to-air and anti-armor missiles. Flies home to rearm when its order is done.",
+  "max_hp": 700,
+  "cost": 2200,
+  "speed_cm_per_s": 3800,
+  "radius_cm": 320,
+  "vision_cm": 7000,
+  "build_time_ms": 24000,
+  "requires": [],
+  "weapons": [
+    "jet_aa_missiles",
+    "jet_strike_missiles"
+  ],
+  "flying": true,
+  "jet": true,
+  "rearm_s": 14,
+  "visual": {
+    "model": "res://assets/models/units/us_stealth_fighter.glb",
+    "icon": "res://assets/icons/units/us_stealth_fighter.png"
+  }
+}

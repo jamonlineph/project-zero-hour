@@ -1,0 +1,27 @@
+{
+  "id": "eu_fighter",
+  "faction": "eu",
+  "role": "fighter",
+  "name": "Air Superiority Fighter",
+  "armor_class": "aircraft",
+  "status": "first-pass numbers (P3-04b)",
+  "_doc": "Hunts aircraft with missiles; its cannon can strafe ground targets too.",
+  "max_hp": 850,
+  "cost": 1900,
+  "speed_cm_per_s": 3600,
+  "radius_cm": 320,
+  "vision_cm": 7000,
+  "build_time_ms": 24000,
+  "requires": [],
+  "weapons": [
+    "jet_aa_missiles",
+    "jet_cannon"
+  ],
+  "flying": true,
+  "jet": true,
+  "rearm_s": 12,
+  "visual": {
+    "model": "res://assets/models/units/eu_fighter.glb",
+    "icon": "res://assets/icons/units/eu_fighter.png"
+  }
+}

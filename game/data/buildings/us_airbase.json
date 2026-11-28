@@ -17,7 +17,8 @@
     "us_vehicle_depot"
   ],
   "produces": [
-    "us_attack_heli"
+    "us_attack_heli",
+    "us_stealth_fighter"
   ],
   "_doc": "Aircraft built here come back here to rearm and repair (AirSystem).",
   "visual": {

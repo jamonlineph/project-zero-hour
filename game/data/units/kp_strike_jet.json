@@ -1,0 +1,27 @@
+{
+  "id": "kp_strike_jet",
+  "faction": "kp",
+  "role": "strike_jet",
+  "name": "Strike Jet",
+  "armor_class": "aircraft",
+  "status": "first-pass numbers (P3-04b)",
+  "_doc": "An old ground-attack jet: cheap and fragile, with a pod of unguided rockets.",
+  "max_hp": 450,
+  "cost": 1100,
+  "speed_cm_per_s": 3200,
+  "radius_cm": 320,
+  "vision_cm": 7000,
+  "build_time_ms": 24000,
+  "requires": [],
+  "weapons": [
+    "kp_jet_rockets",
+    "jet_cannon"
+  ],
+  "flying": true,
+  "jet": true,
+  "rearm_s": 12,
+  "visual": {
+    "model": "res://assets/models/units/kp_strike_jet.glb",
+    "icon": "res://assets/icons/units/kp_strike_jet.png"
+  }
+}

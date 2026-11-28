@@ -41,6 +41,7 @@ static func make_unit(world: SimWorld, def: UnitDef, id: int, player_id: int, x:
 	if def.rearm_ticks > 0:
 		e.aircraft = SimAircraft.new()
 		e.aircraft.rearm_ticks = def.rearm_ticks
+		e.aircraft.jet = def.jet
 	if def.launch_unit != "":
 		e.launcher = SimLauncher.new()
 		e.launcher.unit_id = def.launch_unit

@@ -1,0 +1,14 @@
+{
+  "id": "jet_cannon",
+  "status": "first-pass stats (P3-04b)",
+  "damage": 32,
+  "damage_type": "autocannon",
+  "range_cm": 3500,
+  "reload_ms": 300,
+  "projectile": "instant",
+  "targets": [
+    "ground",
+    "air"
+  ],
+  "ammo": 30
+}

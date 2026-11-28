@@ -28,6 +28,7 @@ var stealth: bool = false       ## hidden unless detected (P3-09, StealthSystem)
 var detection: int = 0          ## fixed-point meters: sees stealthy units this close (P3-09)
 var transport_capacity: int = 0 ## infantry squads it carries (P3-06); 0 = not a transport
 var rearm_ticks: int = 0        ## aircraft (P3-04a, AirSystem): empty to full ammo at the airbase; 0 = not an aircraft
+var jet: bool = false           ## a jet (P3-04b): never loiters, holds fire while parked
 ## Swarm launchers (P3-02c, LaunchSystem; data: "launcher": {unit, count,
 ## range_cm, cooldown_s}). Empty unit = not a launcher.
 var launch_unit: String = ""

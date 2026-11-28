@@ -21,7 +21,8 @@
     "us_ifv": 1,
     "us_recon_drone": 1,
     "us_rocket_artillery": 1,
-    "us_attack_heli": 1
+    "us_attack_heli": 1,
+    "us_stealth_fighter": 1
   },
   "max_gatherers": 4,
   "max_spotters": 3,

@@ -115,6 +115,11 @@
     {"id": "kp_minefield", "category": "buildings", "archetype": "building", "faction": "kp", "style": "trench", "width": 4.0, "depth": 4.0, "height": 0.3, "tri_budget": 800},
     {"id": "eu_heavy_mbt", "category": "units", "archetype": "tracked", "faction": "eu", "length": 8.8, "width": 3.9, "height": 2.7, "turret_scale": 1.15, "barrel_length": 5.6, "barrel_radius": 0.11, "turret_extras": ["sight"], "tri_budget": 3000},
     {"id": "eu_air_assault", "category": "units", "archetype": "infantry", "faction": "eu", "figures": 4, "weapon": "launcher", "tri_budget": 3200},
-    {"id": "eu_lr_sam", "category": "units", "archetype": "wheeled", "faction": "eu", "length": 9.0, "width": 2.7, "height": 3.2, "axles": 4, "cargo": "launcher", "tri_budget": 2500}
+    {"id": "eu_lr_sam", "category": "units", "archetype": "wheeled", "faction": "eu", "length": 9.0, "width": 2.7, "height": 3.2, "axles": 4, "cargo": "launcher", "tri_budget": 2500},
+    {"id": "us_stealth_fighter", "category": "units", "archetype": "drone", "faction": "us", "size": 7.0, "wing": true, "tri_budget": 1200},
+    {"id": "ae_fighter", "category": "units", "archetype": "drone", "faction": "ae", "size": 7.0, "wing": true, "tri_budget": 1200},
+    {"id": "eu_fighter", "category": "units", "archetype": "drone", "faction": "eu", "size": 7.0, "wing": true, "tri_budget": 1200},
+    {"id": "kp_strike_jet", "category": "units", "archetype": "drone", "faction": "kp", "size": 6.0, "wing": true, "tri_budget": 1200},
+    {"id": "kp_airstrip", "category": "buildings", "archetype": "building", "faction": "kp", "width": 16.0, "depth": 10.0, "height": 3.0, "details": ["pad", "mast", "garage"], "tri_budget": 4000}
   ]
 }

@@ -28,7 +28,7 @@ Rosters as **role × faction** tables. Every faction fills the same roles in its
 | Strike drones | Loitering munition team `loitering_team` | Swarm-drone truck `swarm_launcher` ✓ (Hunter-class) | Loitering munition team `loitering_team` ✓ | Loitering munition team `loitering_team` ✓ |
 | Attack helicopter | Apache-class `attack_heli` (launches drones) | Apache-class `attack_heli` | — | Tiger-class `attack_heli` |
 | Air transport | MV-75-class tiltrotor `tiltrotor` | Chinook-class `transport_heli` (used by Procurement) | Old transport helicopter `transport_heli` | NH90-class `transport_heli` |
-| Fighter / strike | F-35-class `stealth_fighter` + drone wingmen `wingman_drone` | Rafale-class `fighter` | Old strike jet `strike_jet` (cheap, fragile) | Eurofighter-class `fighter` |
+| Fighter / strike | F-35-class `stealth_fighter` ✓ + drone wingmen `wingman_drone` | Rafale-class `fighter` ✓ | Old strike jet `strike_jet` ✓ (cheap, fragile; from the hardened airstrip `kp_airstrip`) | Eurofighter-class `fighter` ✓ |
 | Deception | — | — | Inflatable decoys `decoy_team` | — |
 
 **EU doctrine units** (one per doctrine, chosen at match start): Heavy Armor → breakthrough tank `heavy_mbt`; Air Mobile → air-assault squad `air_assault` (dropped by helicopter); Integrated Air Defense → long-range air-defense vehicle `lr_sam` (SAMP/T-class). In the game since P3-12b: `eu_heavy_mbt` (1,700 hp, 130 mm gun, crushes, 1,800 credits), `eu_air_assault` (rifles and anti-tank missiles, 450; walks until air transports exist) and `eu_lr_sam` (120 m anti-air missiles, 1,600). Each needs its doctrine (`requires_unlock`).

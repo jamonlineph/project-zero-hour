@@ -24,7 +24,8 @@
     "eu_recon_drone": 1,
     "eu_howitzer": 1,
     "eu_attack_heli": 1,
-    "eu_heavy_mbt": 1
+    "eu_heavy_mbt": 1,
+    "eu_fighter": 1
   },
   "max_gatherers": 4,
   "max_spotters": 2,

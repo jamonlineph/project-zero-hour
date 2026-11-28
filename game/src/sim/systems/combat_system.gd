@@ -33,6 +33,9 @@ static func step(world: SimWorld) -> void:
 		if e.building != null and (not e.building.built or world.get_player(e.player_id).low_power() \
 				or e.building.is_disabled(world.tick)):
 			continue
+		# Parked jets hold their fire (P3-04b).
+		if e.aircraft != null and e.aircraft.jet and e.aircraft.docked:
+			continue
 		# Jammed drones can't fire; spoofed ones fire only at their spoofed target.
 		if e.drone != null and e.drone.jammed:
 			continue
@@ -47,6 +50,11 @@ static func step(world: SimWorld) -> void:
 				if w.restock_progress >= w.restock_ticks:
 					w.restock_progress = 0
 					w.stock += 1
+			if w.empty():
+				# Out of ammo until rearmed (P3-04b): let go, so attack-moves
+				# close in for the other weapons and an empty jet heads home.
+				w.target_id = 0
+				continue
 			var t: SimEntity = world.get_entity(w.target_id) if w.target_id != 0 else null
 			var lost: bool = false
 			if t != null and not _valid_target(world, e, w, t):

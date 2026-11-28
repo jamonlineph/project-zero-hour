@@ -97,6 +97,9 @@ static func load_unit(db: ContentDb, path: String) -> void:
 	u.detection = Fx.from_ratio(int(src.get("detection_cm", 0)), 100)
 	if src.has("rearm_s"):
 		u.rearm_ticks = ContentDb.ms_to_ticks(int(src["rearm_s"]) * 1000)
+	u.jet = bool(src.get("jet", false))
+	if u.jet and (u.rearm_ticks == 0 or not u.flying):
+		db.errors.append("%s: a jet must fly and have rearm_s" % path)
 	if src.has("heal_aura"):
 		var ha: Variant = src["heal_aura"]
 		if not ha is Dictionary:

@@ -1,0 +1,27 @@
+{
+  "id": "ae_fighter",
+  "faction": "ae",
+  "role": "fighter",
+  "name": "Multirole Fighter",
+  "armor_class": "aircraft",
+  "status": "first-pass numbers (P3-04b)",
+  "_doc": "Multirole jet: air-to-air and anti-armor missiles.",
+  "max_hp": 750,
+  "cost": 2100,
+  "speed_cm_per_s": 4000,
+  "radius_cm": 320,
+  "vision_cm": 7000,
+  "build_time_ms": 24000,
+  "requires": [],
+  "weapons": [
+    "jet_aa_missiles",
+    "jet_strike_missiles"
+  ],
+  "flying": true,
+  "jet": true,
+  "rearm_s": 14,
+  "visual": {
+    "model": "res://assets/models/units/ae_fighter.glb",
+    "icon": "res://assets/icons/units/ae_fighter.png"
+  }
+}

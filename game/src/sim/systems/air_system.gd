@@ -10,6 +10,10 @@ extends RefCounted
 ##   empty to full in rearm_ticks, one round at a time, and repairs
 ##   REPAIR_PERCENT_PER_S of its max hp a second. Full again, it stays parked
 ##   until given an order.
+## - Jets (P3-04b) can't loiter: when a jet's order is done (idle in the air)
+##   and none of its weapons has a target left, it flies back to its airbase,
+##   even with ammo left. A new order can send it out again on the way.
+##   Parked jets hold their fire (CombatSystem).
 
 const DOCK_RANGE: int = 8 * Fx.ONE
 const REPAIR_PERCENT_PER_S: int = 2
@@ -26,7 +30,9 @@ static func step(world: SimWorld) -> void:
 			home = null
 			a.home_id = 0
 		var moving: bool = e.mover != null and (e.mover.has_target or e.mover.needs_path)
-		a.docked = home != null and not moving and _near(e, home)
+		# A jet with an order isn't parked, even if its target is in range from
+		# the airbase: it fires, and it doesn't rearm while firing (P3-04b).
+		a.docked = home != null and not moving and _near(e, home) and (not a.jet or e.order == SimEntity.Order.IDLE)
 		if a.docked:
 			_rearm(world, e)
 			continue
@@ -34,7 +40,7 @@ static func step(world: SimWorld) -> void:
 			continue
 		if not a.returning and out_of_ammo(e):
 			a.returning = true
-		if a.returning:
+		if a.returning or (a.jet and e.order == SimEntity.Order.IDLE and not moving and not _engaged(e)):
 			_head_home(world, e, home)
 
 
@@ -80,6 +86,14 @@ static func _head_home(world: SimWorld, e: SimEntity, home: SimEntity) -> void:
 		for w: SimWeapon in e.weapons:
 			w.target_id = 0
 		e.mover.order_move(p.x, p.y)
+
+
+## True while any weapon still has a target.
+static func _engaged(e: SimEntity) -> bool:
+	for w: SimWeapon in e.weapons:
+		if w.target_id != 0:
+			return true
+	return false
 
 
 static func _near(e: SimEntity, home: SimEntity) -> bool:

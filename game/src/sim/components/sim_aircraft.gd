@@ -8,6 +8,7 @@ var rearm_ticks: int = 1      ## from empty to full ammo while parked at home
 var returning: bool = false   ## out of ammo, flying home; ignores other orders
 var docked: bool = false      ## parked at home, rearming and repairing
 var rearm_progress: int = 0
+var jet: bool = false         ## from the def (P3-04b): flies home when its order is done
 
 
 func write_hash(h: SimHash) -> void:
@@ -16,3 +17,5 @@ func write_hash(h: SimHash) -> void:
 	h.add_bool(returning)
 	h.add_bool(docked)
 	h.add_int(rearm_progress)
+	if jet:   # only jets, so helicopter hashes stay as before
+		h.add_bool(jet)

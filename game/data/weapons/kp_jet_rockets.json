@@ -1,0 +1,15 @@
+{
+  "id": "kp_jet_rockets",
+  "status": "first-pass stats (P3-04b)",
+  "damage": 110,
+  "damage_type": "high_explosive",
+  "range_cm": 4500,
+  "reload_ms": 700,
+  "projectile": "ballistic",
+  "targets": [
+    "ground"
+  ],
+  "projectile_speed_cm_per_s": 9000,
+  "splash_radius_cm": 400,
+  "ammo": 8
+}

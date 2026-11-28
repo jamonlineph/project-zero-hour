@@ -1,0 +1,14 @@
+{
+  "id": "jet_strike_missiles",
+  "status": "first-pass stats (P3-04b)",
+  "damage": 260,
+  "damage_type": "anti_tank",
+  "range_cm": 5500,
+  "reload_ms": 1800,
+  "projectile": "guided",
+  "targets": [
+    "ground"
+  ],
+  "projectile_speed_cm_per_s": 15000,
+  "ammo": 4
+}

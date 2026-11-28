@@ -11,7 +11,8 @@
     "kp_logistics_hub",
     "kp_drone_launch_site",
     "kp_power_plant",
-    "kp_sam_site"
+    "kp_sam_site",
+    "kp_airstrip"
   ],
   "unit_mix": {
     "kp_mbt": 3,
@@ -19,7 +20,8 @@
     "kp_at_team": 1,
     "kp_ifv": 1,
     "kp_howitzer": 1,
-    "kp_recon_drone": 1
+    "kp_recon_drone": 1,
+    "kp_strike_jet": 1
   },
   "max_gatherers": 4,
   "gatherer_unit": "kp_logistics_truck",

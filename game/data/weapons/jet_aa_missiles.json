@@ -1,0 +1,14 @@
+{
+  "id": "jet_aa_missiles",
+  "status": "first-pass stats (P3-04b)",
+  "damage": 240,
+  "damage_type": "anti_air",
+  "range_cm": 6500,
+  "reload_ms": 2000,
+  "projectile": "guided",
+  "targets": [
+    "air"
+  ],
+  "projectile_speed_cm_per_s": 18000,
+  "ammo": 4
+}

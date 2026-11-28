@@ -48,6 +48,12 @@ static func from_def(def: WeaponDef) -> SimWeapon:
 	return w
 
 
+## Out of ammo until rearmed at an airbase (P3-04a/b): ammo weapons don't
+## refill on their own.
+func empty() -> bool:
+	return stock_max > 0 and stock == 0 and restock_ticks == 0
+
+
 func write_hash(h: SimHash) -> void:
 	h.add_string(def_id)
 	h.add_int(cooldown)

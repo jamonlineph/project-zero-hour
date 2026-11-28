@@ -44,7 +44,11 @@
     "res://data/weapons/sniper_rifle.json",
     "res://data/weapons/shorad_missiles.json",
     "res://data/weapons/tank_cannon_130.json",
-    "res://data/weapons/lr_sam_missile.json"
+    "res://data/weapons/lr_sam_missile.json",
+    "res://data/weapons/jet_aa_missiles.json",
+    "res://data/weapons/jet_strike_missiles.json",
+    "res://data/weapons/jet_cannon.json",
+    "res://data/weapons/kp_jet_rockets.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",
@@ -108,7 +112,11 @@
     "res://data/units/eu_shorad.json",
     "res://data/units/eu_heavy_mbt.json",
     "res://data/units/eu_air_assault.json",
-    "res://data/units/eu_lr_sam.json"
+    "res://data/units/eu_lr_sam.json",
+    "res://data/units/us_stealth_fighter.json",
+    "res://data/units/ae_fighter.json",
+    "res://data/units/eu_fighter.json",
+    "res://data/units/kp_strike_jet.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",
@@ -158,7 +166,8 @@
     "res://data/buildings/ae_airbase.json",
     "res://data/buildings/eu_airbase.json",
     "res://data/buildings/kp_minefield.json",
-    "res://data/buildings/bridge.json"
+    "res://data/buildings/bridge.json",
+    "res://data/buildings/kp_airstrip.json"
   ],
   "maps": [
     "res://data/maps/sandbox/map.json",
