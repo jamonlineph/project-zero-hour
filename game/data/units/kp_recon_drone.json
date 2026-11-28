@@ -18,5 +18,6 @@
   "visual": {
     "model": "res://assets/models/units/kp_recon_drone.glb",
     "icon": "res://assets/icons/units/kp_recon_drone.png"
-  }
+  },
+  "detection_cm": 3000
 }

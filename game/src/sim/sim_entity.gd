@@ -39,6 +39,9 @@ var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
 var crusher: bool = false       ## hurts enemies it drives over (P3-07); from the def, so not hashed
 var launcher: SimLauncher = null   ## swarm-drone launcher (P3-02c)
 var aircraft: SimAircraft = null   ## ammo and rearming (P3-04a)
+var stealth: bool = false       ## from the def (P3-09); hashed only when true
+var detection: int = 0          ## from the def (P3-09)
+var revealed_until: int = 0     ## a stealthy unit that fired is visible until this tick
 var ability_ready: Dictionary[String, int] = {}   ## ability id -> first tick it can be used again (P3-02f)
 var strike: SimStrike = null    ## a missile or strike aircraft in flight (P2-07)
 var decoy_of: String = ""       ## a decoy imitating this unit id (P2-08)
@@ -101,6 +104,9 @@ func write_hash(h: SimHash) -> void:
 		launcher.write_hash(h)
 	if aircraft != null:   # only aircraft (P3-04a)
 		aircraft.write_hash(h)
+	if stealth or revealed_until != 0:   # only stealthy units (P3-09)
+		h.add_bool(stealth)
+		h.add_int(revealed_until)
 	if not ability_ready.is_empty():   # only after an ability was used (P3-02f)
 		var keys: Array = ability_ready.keys()
 		keys.sort()

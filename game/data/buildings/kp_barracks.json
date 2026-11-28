@@ -19,7 +19,8 @@
   "produces": [
     "kp_infantry_squad",
     "kp_at_team",
-    "kp_spotter_officer"
+    "kp_spotter_officer",
+    "kp_infiltrators"
   ],
   "visual": {
     "model": "res://assets/models/buildings/kp_barracks.glb",

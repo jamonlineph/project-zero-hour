@@ -1,0 +1,12 @@
+{
+  "id": "sniper_rifle",
+  "status": "first-pass stats (P3-09)",
+  "damage": 90,
+  "damage_type": "small_arms",
+  "range_cm": 6000,
+  "reload_ms": 3500,
+  "projectile": "instant",
+  "targets": [
+    "ground"
+  ]
+}

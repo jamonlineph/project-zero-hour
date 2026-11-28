@@ -61,7 +61,8 @@ func is_shown(e: SimEntity) -> bool:
 		return true
 	if e.player_id == 0:
 		return world.vision.is_explored(world.team_of(local_player_id), e.x, e.y)
-	return not world.are_enemies(local_player_id, e.player_id) or world.can_see(local_player_id, e.x, e.y)
+	return not world.are_enemies(local_player_id, e.player_id) \
+		or (world.can_see(local_player_id, e.x, e.y) and world.is_detected(local_player_id, e))
 
 
 ## Upgrade parts on the model (P2-05): per-unit kits plus researched upgrades.

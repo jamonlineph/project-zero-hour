@@ -39,7 +39,9 @@
     "res://data/weapons/tank_cannon_120_l55.json",
     "res://data/weapons/eu_howitzer_155.json",
     "res://data/weapons/heli_missiles.json",
-    "res://data/weapons/heli_cannon.json"
+    "res://data/weapons/heli_cannon.json",
+    "res://data/weapons/kp_suppressed_rifles.json",
+    "res://data/weapons/sniper_rifle.json"
   ],
   "units": [
     "res://data/units/us_mbt.json",
@@ -94,7 +96,9 @@
     "res://data/units/eu_patrol_fighter.json",
     "res://data/units/us_attack_heli.json",
     "res://data/units/ae_attack_heli.json",
-    "res://data/units/eu_attack_heli.json"
+    "res://data/units/eu_attack_heli.json",
+    "res://data/units/kp_infiltrators.json",
+    "res://data/units/us_sniper_team.json"
   ],
   "buildings": [
     "res://data/buildings/us_command_hq.json",

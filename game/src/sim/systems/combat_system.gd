@@ -63,6 +63,7 @@ static func step(world: SimWorld) -> void:
 				continue
 			_face(e, t)
 			if w.cooldown == 0 and (w.stock_max == 0 or w.stock > 0):
+				StealthSystem.reveal(world, e)   # firing gives a stealthy unit away (P3-09)
 				if w.stock_max > 0:
 					w.stock -= 1
 				_fire(world, e, w, t)
@@ -86,7 +87,8 @@ static func in_range(e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 static func _valid_target(world: SimWorld, e: SimEntity, w: SimWeapon, t: SimEntity) -> bool:
 	return not t.dead and t.inside_id == 0 and world.are_enemies(e.player_id, t.player_id) \
 			and DamageMatrix.can_target(w.targets, t.armor_class) and in_range(e, w, t) \
-			and world.can_see(e.player_id, t.x, t.y) and KillChainSystem.may_engage(world, e, w, t) \
+			and world.can_see(e.player_id, t.x, t.y) and world.is_detected(e.player_id, t) \
+			and KillChainSystem.may_engage(world, e, w, t) \
 			and not DecoySystem.is_known_decoy(world, e.player_id, t)
 
 
@@ -99,7 +101,8 @@ static func _acquire(world: SimWorld, e: SimEntity, w: SimWeapon) -> SimEntity:
 			continue   # units inside a building can't be shot directly (P3-05)
 		if not DamageMatrix.can_target(w.targets, t.armor_class) or not in_range(e, w, t):
 			continue
-		if not world.can_see(e.player_id, t.x, t.y) or not KillChainSystem.may_engage(world, e, w, t):
+		if not world.can_see(e.player_id, t.x, t.y) or not world.is_detected(e.player_id, t) \
+				or not KillChainSystem.may_engage(world, e, w, t):
 			continue
 		if DecoySystem.is_known_decoy(world, e.player_id, t):
 			continue   # seen through: not worth a shot

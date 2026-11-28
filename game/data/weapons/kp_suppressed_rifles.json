@@ -1,0 +1,14 @@
+{
+  "id": "kp_suppressed_rifles",
+  "status": "first-pass stats (P3-09)",
+  "damage": 14,
+  "damage_type": "small_arms",
+  "range_cm": 2500,
+  "reload_ms": 1000,
+  "projectile": "instant",
+  "targets": [
+    "ground",
+    "drone",
+    "air"
+  ]
+}

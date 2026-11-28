@@ -33,6 +33,8 @@ static func make_unit(world: SimWorld, def: UnitDef, id: int, player_id: int, x:
 		e.drone.fiber_optic = def.fiber_optic
 	e.spotter = def.spotter
 	e.crusher = def.crusher
+	e.stealth = def.stealth
+	e.detection = def.detection
 	if def.transport_capacity > 0:
 		e.garrison = SimGarrison.new()
 		e.garrison.capacity = def.transport_capacity

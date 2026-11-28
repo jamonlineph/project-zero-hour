@@ -1,0 +1,24 @@
+{
+  "id": "us_sniper_team",
+  "faction": "us",
+  "role": "specialist",
+  "name": "Sniper Team",
+  "armor_class": "infantry",
+  "status": "first-pass numbers (P3-09)",
+  "max_hp": 180,
+  "cost": 600,
+  "speed_cm_per_s": 380,
+  "radius_cm": 140,
+  "vision_cm": 6500,
+  "build_time_ms": 12000,
+  "requires": [],
+  "weapons": [
+    "sniper_rifle"
+  ],
+  "spotter": true,
+  "detection_cm": 4500,
+  "visual": {
+    "model": "res://assets/models/units/us_sniper_team.glb",
+    "icon": "res://assets/icons/units/us_sniper_team.png"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "kp_infiltrators",
+  "faction": "kp",
+  "role": "specialist",
+  "name": "Infiltration Team",
+  "armor_class": "infantry",
+  "status": "first-pass numbers (P3-09)",
+  "max_hp": 180,
+  "cost": 600,
+  "speed_cm_per_s": 420,
+  "radius_cm": 140,
+  "vision_cm": 5000,
+  "build_time_ms": 12000,
+  "requires": [],
+  "weapons": [
+    "kp_suppressed_rifles"
+  ],
+  "stealth": true,
+  "abilities": [
+    {
+      "id": "kp_sabotage",
+      "kind": "disable",
+      "name": "Sabotage",
+      "description": "Sabotages an enemy building within 8 m of its walls: no production, research, power or fire for 25 s.",
+      "range_cm": 800,
+      "cooldown_s": 60,
+      "duration_s": 25
+    }
+  ],
+  "visual": {
+    "model": "res://assets/models/units/kp_infiltrators.glb",
+    "icon": "res://assets/icons/units/kp_infiltrators.png"
+  }
+}

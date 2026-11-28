@@ -20,6 +20,8 @@ var map_width: int = 0      ## fixed-point meters
 var map_height: int = 0
 var map: SimMap             ## passability grid (see SimMap)
 var pathfinder: Pathfinder  ## A* over `map`, shared by all movers
+## Stealthy entity id -> teams that can see it this tick (StealthSystem, P3-09).
+var stealth_seen: Dictionary[int, Dictionary] = {}
 var entities: Dictionary[int, SimEntity] = {}
 var entity_ids: Array[int] = []   ## ascending ids: always iterate this
 var damage_matrix: DamageMatrix = DamageMatrix.new()
@@ -84,6 +86,13 @@ func are_enemies(player_a: int, player_b: int) -> bool:
 ## True if `player_id`'s team currently sees the point (fixed-point meters).
 func can_see(player_id: int, x: int, y: int) -> bool:
 	return vision.is_visible(team_of(player_id), x, y)
+
+
+## False only for a stealthy unit `player_id`'s team hasn't detected (P3-09).
+func is_detected(player_id: int, t: SimEntity) -> bool:
+	if not t.stealth or not are_enemies(player_id, t.player_id):
+		return true
+	return (stealth_seen.get(t.id, {}) as Dictionary).has(team_of(player_id))
 
 
 ## Adds a unit and returns its id. x and y are fixed-point meters; facing is a
@@ -278,6 +287,7 @@ func step() -> void:
 	if tick % SimVision.UPDATE_INTERVAL == 0:
 		vision.update(self)
 	_spatial.rebuild(self)
+	StealthSystem.step(self)
 	LaunchSystem.step(self)
 	CrushSystem.step(self)
 	CombatSystem.step(self)

@@ -16,7 +16,7 @@ Rosters as **role × faction** tables. Every faction fills the same roles in its
 | Gatherer | Logistics truck `logistics_truck` ✓ (self-driving upgrade) | Contracted truck `logistics_truck` ✓ (fast, unarmored) | Armored logistics truck `logistics_truck` ✓ | Logistics truck `logistics_truck` ✓ (repairs vehicles nearby) |
 | Basic infantry | Rifle squad `rifle_squad` ✓ | Rifle squad `rifle_squad` ✓ | Infantry squad `infantry_squad` ✓ (cheap, mass) | Rifle squad `rifle_squad` ✓ |
 | Anti-tank infantry | Top-attack missile team `at_team` ✓ | Missile team `at_team` ✓ | Missile team `at_team` ✓ (Bulsae-class) | Missile team `at_team` ✓ |
-| Specialist | Sniper team `sniper_team`: spots for the kill chain, detects stealth | Special forces team `sf_team` ✓: calls precision strikes, disables buildings | Infiltration team `infiltrators`: stealthy, sabotage | Combat medic team `medics` ✓: heals infantry |
+| Specialist | Sniper team `sniper_team` ✓: spots for the kill chain, detects stealth | Special forces team `sf_team` ✓: calls precision strikes, disables buildings | Infiltration team `infiltrators` ✓: stealthy, sabotage | Combat medic team `medics` ✓: heals infantry |
 | Elite (limit 1) | Special recon team `recon_team`: marks targets for every long-range weapon | Presidential guard detachment `guard_unit` ✓: elite assault infantry | Artillery spotter officer `spotter_officer`: doubles artillery accuracy nearby | Doctrine unit (see below) |
 | Light vehicle | JLTV-class `light_vehicle` (carries 4) | Desert raider buggy `raider` ✓ (fast off-road) | Light utility truck `light_truck` | Boxer-class 8×8 `apc` ✓ |
 | Armored transport | Bradley-class IFV `ifv` ✓ | Rabdan-class 8×8 IFV `ifv` ✓ | VTT-323-class IFV `ifv` ✓ | CV90-class IFV `ifv` ✓ |

@@ -24,6 +24,8 @@ var endurance_ticks: int = 0    ## drones: flight time on a full charge (data: e
 var fiber_optic: bool = false   ## drones: immune to jamming and spoofing
 var spotter: bool = false       ## marks targets for kill-chain weapons (P2-04)
 var crusher: bool = false       ## hurts enemies it drives over (P3-07, CrushSystem)
+var stealth: bool = false       ## hidden unless detected (P3-09, StealthSystem)
+var detection: int = 0          ## fixed-point meters: sees stealthy units this close (P3-09)
 var transport_capacity: int = 0 ## infantry squads it carries (P3-06); 0 = not a transport
 var rearm_ticks: int = 0        ## aircraft (P3-04a, AirSystem): empty to full ammo at the airbase; 0 = not an aircraft
 ## Swarm launchers (P3-02c, LaunchSystem; data: "launcher": {unit, count,
