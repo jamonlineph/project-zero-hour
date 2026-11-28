@@ -1,0 +1,33 @@
+{
+  "id": "kp_minefield",
+  "faction": "kp",
+  "name": "Minefield",
+  "armor_class": "structure",
+  "_doc": "P3-10a: engineers lay it; units walk over it; hidden from enemies until detected; goes off once under an enemy ground unit.",
+  "status": "first-pass numbers (P3-10a)",
+  "max_hp": 60,
+  "cost": 250,
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "build_time_ms": 5000,
+  "power": 0,
+  "vision_cm": 800,
+  "requires": [
+    "kp_barracks"
+  ],
+  "produces": [],
+  "walkable": true,
+  "stealth": true,
+  "mine": {
+    "damage": 420,
+    "damage_type": "anti_tank",
+    "trigger_cm": 250,
+    "splash_cm": 400
+  },
+  "visual": {
+    "model": "res://assets/models/buildings/kp_minefield.glb",
+    "icon": "res://assets/icons/buildings/kp_minefield.png"
+  }
+}

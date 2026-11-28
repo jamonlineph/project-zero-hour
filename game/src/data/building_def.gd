@@ -35,6 +35,14 @@ var heal_classes: PackedStringArray = []
 ## rail depot makes its owner's vehicles build this many percent faster.
 var spotter: bool = false
 var vehicle_build_bonus_percent: int = 0
+## Minefields (P3-10a): units walk over it (no footprint on the map), it is
+## hidden from enemies, and it goes off under an enemy ground unit.
+var walkable: bool = false
+var stealth: bool = false
+var mine_damage: int = 0
+var mine_damage_type: String = "anti_tank"
+var mine_trigger: int = 0      ## fixed-point meters
+var mine_splash: int = 0       ## fixed-point meters
 var weapons: Array[WeaponDef] = []
 var model_path: String = ""
 var icon_path: String = ""

@@ -26,7 +26,8 @@ static func step(world: SimWorld) -> void:
 			continue
 		# A town house someone sits in isn't their building (P3-05), and
 		# neither is a captured neutral building (P3-08a).
-		var town: bool = (e.garrison != null and e.garrison.neutral) or (e.building != null and e.building.capture_ticks > 0)
+		var town: bool = (e.garrison != null and e.garrison.neutral) or (e.building != null and e.building.capture_ticks > 0) \
+			or (e.building != null and e.building.walkable)   # nor are minefields (P3-10a)
 		var counts: bool = world.victory_rule == "units" or (e.building != null and not town) or e.builder != null
 		if counts:
 			assets[e.player_id] = assets.get(e.player_id, 0) + 1

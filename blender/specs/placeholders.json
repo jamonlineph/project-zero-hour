@@ -111,6 +111,7 @@
     {"id": "us_shorad", "category": "units", "archetype": "tracked", "faction": "us", "length": 6.6, "width": 3.2, "height": 2.8, "turret_scale": 0.75, "barrel_length": 0, "turret_extras": ["missile_box"], "tri_budget": 3000},
     {"id": "ae_shorad", "category": "units", "archetype": "wheeled", "faction": "ae", "length": 8.0, "width": 2.8, "height": 3.0, "axles": 4, "cargo": "pods", "tri_budget": 2500},
     {"id": "kp_shorad", "category": "units", "archetype": "wheeled", "faction": "kp", "length": 7.4, "width": 2.7, "height": 3.0, "axles": 3, "cargo": "pods", "tri_budget": 2500},
-    {"id": "eu_shorad", "category": "units", "archetype": "wheeled", "faction": "eu", "length": 7.8, "width": 2.6, "height": 3.0, "axles": 3, "cargo": "pods", "tri_budget": 2500}
+    {"id": "eu_shorad", "category": "units", "archetype": "wheeled", "faction": "eu", "length": 7.8, "width": 2.6, "height": 3.0, "axles": 3, "cargo": "pods", "tri_budget": 2500},
+    {"id": "kp_minefield", "category": "buildings", "archetype": "building", "faction": "kp", "style": "trench", "width": 4.0, "depth": 4.0, "height": 0.3, "tri_budget": 800}
   ]
 }

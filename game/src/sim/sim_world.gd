@@ -166,7 +166,8 @@ func get_player(player_id: int) -> SimPlayer:
 ## or 0 if the footprint is blocked. Unbuilt buildings start at 10% health.
 func spawn_building(def: BuildingDef, player_id: int, cx: int, cy: int, built: bool) -> int:
 	var id: int = _next_id
-	if not map.place_footprint(cx, cy, def.footprint_w, def.footprint_h, id):
+	# Walkable buildings (minefields, P3-10a) leave the map open.
+	if not def.walkable and not map.place_footprint(cx, cy, def.footprint_w, def.footprint_h, id):
 		return 0
 	_next_id += 1
 	add_entity(WorldSpawn.make_building(def, id, player_id, cx, cy, built))
@@ -288,6 +289,7 @@ func step() -> void:
 		vision.update(self)
 	_spatial.rebuild(self)
 	StealthSystem.step(self)
+	MineSystem.step(self)
 	LaunchSystem.step(self)
 	CrushSystem.step(self)
 	CombatSystem.step(self)

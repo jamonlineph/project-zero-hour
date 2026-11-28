@@ -29,6 +29,7 @@ var disabled_until: int = 0
 ## Capturable buildings (P3-08a, CaptureSystem): ticks a capture takes (0 =
 ## can't be captured), who is capturing it and how far they got.
 var capture_ticks: int = 0
+var walkable: bool = false       ## no footprint on the map; doesn't keep a player alive (P3-10a)
 var capture_player: int = 0
 var capture_progress: int = 0
 

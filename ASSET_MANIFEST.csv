@@ -52,6 +52,7 @@ game/assets/icons/buildings/kp_command_hq.png,Project Zero Hour contributors,"bl
 game/assets/icons/buildings/kp_drone_launch_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_drone_launch_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_heavy_missile_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_heavy_missile_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_logistics_hub.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_logistics_hub)",CC-BY-SA-4.0,script,placeholder
+game/assets/icons/buildings/kp_minefield.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_minefield)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_power_plant.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_power_plant)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_sam_site.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_sam_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/icons/buildings/kp_trench_line.png,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_trench_line)",CC-BY-SA-4.0,script,placeholder
@@ -155,6 +156,7 @@ game/assets/models/buildings/kp_command_hq.glb,Project Zero Hour contributors,"b
 game/assets/models/buildings/kp_drone_launch_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_drone_launch_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_heavy_missile_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_heavy_missile_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_logistics_hub.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_logistics_hub)",CC-BY-SA-4.0,script,placeholder
+game/assets/models/buildings/kp_minefield.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_minefield)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_power_plant.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_power_plant)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_sam_site.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_sam_site)",CC-BY-SA-4.0,script,placeholder
 game/assets/models/buildings/kp_trench_line.glb,Project Zero Hour contributors,"blender/build_assets.py (procedural, spec: kp_trench_line)",CC-BY-SA-4.0,script,placeholder

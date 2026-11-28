@@ -99,6 +99,8 @@ static func make_building(def: BuildingDef, id: int, player_id: int, cx: int, cy
 	b.built = built
 	b.capture_ticks = def.capture_ticks
 	e.spotter = def.spotter   # cell towers (P3-08b)
+	e.stealth = def.stealth   # minefields (P3-10a)
+	b.walkable = def.walkable
 	b.total = def.build_ticks * 2
 	b.progress = b.total if built else 0
 	b.power = def.power
