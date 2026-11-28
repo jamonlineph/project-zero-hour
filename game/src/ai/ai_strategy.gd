@@ -65,6 +65,14 @@ static func _aim(world: SimWorld, ai: AiPlayer, def: PowerDef, hq: SimEntity, ar
 			return c
 		"jam_area", "wingmen":
 			return _enemy_cluster(world, ai)
+		"repair_area":
+			return _damaged_vehicles(world, ai, def.radius)
+		"cyber_defense":
+			# Only when one of ours is inside an enemy jamming field (P3-12a).
+			for e: SimEntity in army:
+				if world.jam_level(ai.player_id, e.x, e.y) > 0:
+					return Vector2i.ZERO
+			return null
 		"decoys":
 			if hq == null:
 				return null
@@ -73,6 +81,30 @@ static func _aim(world: SimWorld, ai: AiPlayer, def: PowerDef, hq: SimEntity, ar
 				return null
 			return Vector2i(hq.x + (b.x - hq.x) / 4, hq.y + (b.y - hq.y) / 4)
 	return null
+
+
+## Where field repair (P3-12a) would mend the most: the own vehicle with
+## the most missing health among own vehicles within `radius`, if that is
+## at least half a tank's worth (ties: lower id). Else null.
+static func _damaged_vehicles(world: SimWorld, ai: AiPlayer, radius: int) -> Variant:
+	var best: SimEntity = null
+	var best_missing: int = 0
+	for id: int in world.entity_ids:
+		var e: SimEntity = world.entities[id]
+		if e.dead or e.player_id != ai.player_id or e.building != null or not e.armor_class in ["light_vehicle", "heavy_armor"]:
+			continue
+		if e.hp >= e.max_hp:
+			continue
+		var missing: int = 0
+		for t: SimEntity in world.query_radius(e.x, e.y, radius):
+			if not t.dead and t.player_id == ai.player_id and t.building == null and t.armor_class in ["light_vehicle", "heavy_armor"]:
+				missing += t.max_hp - t.hp
+		if best == null or missing > best_missing:
+			best = e
+			best_missing = missing
+	if best == null or best_missing < 600:
+		return null
+	return Vector2i(best.x, best.y)
 
 
 ## The visible enemy unit with the most visible enemy units within 20 m

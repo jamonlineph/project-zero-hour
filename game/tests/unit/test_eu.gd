@@ -138,3 +138,19 @@ func test_eu_against_north_korea_builds_and_fights() -> void:
 				trained += 1
 	assert_true(trained >= 3, "the EU AI trained only %d units in 2.5 min" % trained)
 	runner.free()
+
+
+func test_the_ai_uses_field_repair_on_its_damaged_vehicles() -> void:
+	var w := _world()
+	w.get_player(1).powers.append("eu_field_repair")
+	var ai: AiPlayer = AiPlayer.from_preset(_content(), "eu_default", 1)
+	var tank := _unit(w, "eu_mbt", 1, 150, 150)
+	var cmds: Array[SimCommand] = []
+	AiStrategy.powers(w, ai, null, [tank], cmds)
+	assert_eq(cmds.size(), 0, "repaired a healthy army")
+	tank.hp = 300
+	AiStrategy.powers(w, ai, null, [tank], cmds)
+	assert_eq(cmds.size(), 1)
+	assert_eq(cmds[0].type, SimCommand.Type.USE_POWER)
+	assert_eq(cmds[0].target_x, tank.x)
+
