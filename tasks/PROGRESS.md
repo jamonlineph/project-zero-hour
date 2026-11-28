@@ -4,6 +4,23 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-28: laser shield, second doctrine, transport helicopters, balance sheets, mods, credits, Gauntlet (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P3-02f laser shield** (UAE, rank 3): for 30 s, air-defense sites in a 60 m area burn down enemy shells, rockets and missiles that come within 35 m, and hurt drones there (`LaserShield`).
+  - **P3-12b second doctrine:** the EU's rank-3 unlock (power `extra_in_group`) allows a second doctrine.
+  - **P3-04b transport helicopters** for all four factions. Infantry board them, ride over rivers and cliffs, and unload on open ground. Everyone aboard dies if one is shot down.
+  - **P3-19 `tools/balance_sheet.py`:** units, weapons and buildings to CSV and back. A self-test runs in CI.
+  - **P3-17 mods:** folders in `user://mods` with an `index.json` load on top of the game. A mod file replaces content with the same id or adds new content. Mod models and icons load at run time. LAN refuses to start when the two machines' content differs. Guide: `docs/modding.md`.
+  - **P4-06 Credits screen:** asset authors and licenses, generated from the manifest by `tools/gen_credits.py`; `check_repo` fails when it's stale. It also shows the Godot Engine license and third-party notices.
+  - **P4-03 Gauntlet:** seven fictional commanders, identified by call sign, each with its own faction, personality, difficulty and map. Beat one to unlock the next.
+- Tests: `tools/run_tests.sh` -> 399 tests, 0 failed, smoke main/menu/lan ok; `check_repo` ok; `balance_sheet.py self-test` ok.
+- Not verified:
+  - Mods on Android (where `user://` lives, and file access on the device).
+  - Loading a mod's `.glb` model at run time (no sample mod model was tested).
+  - Gauntlet difficulty curve with a human player.
+- Next: P3-18 localization, P3-20 accessibility, P3-13c AI transports, P3-10b tank obstacles, P3-23e fairness runs.
+- For the owner: P4-07 (legal review of the name, privacy policy) needs you.
+
 ## 2026-11-28: P3-23b 2v2 skirmish and Pine Ridge, P3-02e UAE procurement (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P3-23b 2v2:**
