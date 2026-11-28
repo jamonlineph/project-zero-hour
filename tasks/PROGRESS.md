@@ -4,6 +4,21 @@ Newest entry at the top. Every session adds one entry using the template in [AGE
 
 ---
 
+## 2026-11-28: P3-04a aircraft, P3-06 transports, P3-09 stealth, P3-10a mines, P3-13a hard AI, P3-14a LAN, anti-air (Claude Code, branch claude/phase-0-wrapup)
+- Done:
+  - **P3-04a aircraft:** attack helicopters (America, UAE, EU) from an airbase; weapons with `ammo`; empty, they fly home, rearm and repair (`AirSystem`). Rifles, machine guns and autocannons can hit aircraft. **Anti-air vehicles** for all four factions; the AI counters aircraft with them.
+  - **P3-06 transports:** garrisons work in vehicles: IFVs and the EU carrier take 2 squads, who ride along, fire from inside, can't be shot, and get out with "Unload".
+  - **P3-09 stealth:** `StealthSystem`: hidden unless a detector (sniper team, recon drones) or a unit within 6 m sees them, or they fired. North Korea's infiltration team (stealthy, Sabotage) and America's sniper team.
+  - **P3-10a minefields:** North Korea's walkable, hidden mines that go off once under an enemy ground unit (`MineSystem`).
+  - **P3-13a hard AI:** thinks faster, more trucks, attacks sooner; beat normal 14–6 in 20 runs. Menu: Easy, Normal, Hard.
+  - **P3-14a LAN:** 1v1 over ENet (`NetSession`): host or join by address, the host sends the match, batches and hashes cross, desync and disconnect notices. `smoke_lan.gd` runs two sessions over localhost in `tools/run_tests.sh`.
+- Tests: `tools/run_tests.sh` -> 340 tests, 0 failed, and all three smoke tests (main, menus, LAN). `python3 tools/check_repo.py` -> ok (235 assets).
+- Not verified: LAN between two real devices (Wi-Fi, phones); helicopters and transports with touch controls; balance with aircraft in the mix.
+- Next: P3-11 destructible bridges, P3-12b EU doctrines, P3-04b jets, P3-14b LAN for more players, P3-18 localization.
+- For the owner: please try a LAN game between two of your devices (Main menu, LAN game); the address to type is shown on the host.
+
+---
+
 ## 2026-11-28: P3-03 superweapons, P3-08 capturable buildings, P3-25, faction fixes (Claude Code, branch claude/phase-0-wrapup)
 - Done:
   - **P3-03 superweapons:** one per faction (5,000 credits, rank 3, one each), built on building abilities: a 4-minute charge everyone sees under the top bar, then interceptable strikes anywhere. The AI builds and fires them. `BuildingLoader` split out of `ContentDb`.
