@@ -15,7 +15,7 @@
   "weapons": [],
   "heal_aura": {
     "radius_cm": 1500,
-    "percent_per_s": 3,
+    "percent_per_s": 2,
     "classes": [
       "infantry"
     ]

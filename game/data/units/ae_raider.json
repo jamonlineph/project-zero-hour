@@ -5,7 +5,7 @@
   "name": "Desert Raider",
   "armor_class": "light_vehicle",
   "status": "first-pass numbers (P3-02g: cost-efficiency matched to North Korea's, class by class)",
-  "max_hp": 400,
+  "max_hp": 390,
   "cost": 500,
   "speed_cm_per_s": 1150,
   "turn_rate_deg_per_s": 200,

@@ -5,7 +5,7 @@
   "name": "Infantry Fighting Vehicle",
   "armor_class": "light_vehicle",
   "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
-  "max_hp": 760,
+  "max_hp": 700,
   "cost": 850,
   "speed_cm_per_s": 760,
   "turn_rate_deg_per_s": 110,

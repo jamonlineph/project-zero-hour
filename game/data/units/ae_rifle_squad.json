@@ -5,7 +5,7 @@
   "name": "Rifle Squad",
   "armor_class": "infantry",
   "status": "first-pass numbers (P3-02g: cost-efficiency matched to North Korea's, class by class)",
-  "max_hp": 260,
+  "max_hp": 250,
   "cost": 260,
   "speed_cm_per_s": 400,
   "radius_cm": 150,

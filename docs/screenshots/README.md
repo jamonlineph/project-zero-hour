@@ -33,6 +33,7 @@ Captured on a machine without a GPU, through a virtual display and software Open
 
 | File | What |
 |---|---|
+| `captured_data_center.png` | Frostwood, 2:19: North Korea's computer player has captured the data center in the middle of the map (red stripe) (P3-08a) |
 | `garrisoned_town_house.png` | Riverside, 0:49: North Korea's computer player holds an east-bank town house (red flag) (P3-05) |
 
 ## Infantry animations (`infantry/`, P2-16)

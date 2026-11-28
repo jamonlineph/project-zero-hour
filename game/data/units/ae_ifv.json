@@ -5,7 +5,7 @@
   "name": "8x8 Infantry Fighting Vehicle",
   "armor_class": "light_vehicle",
   "status": "first-pass numbers (P3-02g: cost-efficiency matched to North Korea's, class by class)",
-  "max_hp": 700,
+  "max_hp": 680,
   "cost": 780,
   "speed_cm_per_s": 900,
   "turn_rate_deg_per_s": 120,

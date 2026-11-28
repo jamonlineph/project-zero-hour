@@ -5,7 +5,7 @@
   "name": "8x8 Armored Carrier",
   "armor_class": "light_vehicle",
   "status": "first-pass numbers (P3-12a; cost-efficiency near North Korea's, class by class)",
-  "max_hp": 720,
+  "max_hp": 650,
   "cost": 720,
   "speed_cm_per_s": 850,
   "turn_rate_deg_per_s": 120,
